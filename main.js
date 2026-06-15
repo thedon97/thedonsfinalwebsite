@@ -209,6 +209,140 @@ const emeraldRadianceMetals = [
   ["18K White Gold", 1800],
   ["18K Rose Gold", 1800],
 ];
+const bandMetalOptions = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold"];
+const mensBandFields = (diamondLayout, finishOptions) => [
+  ["Metal", bandMetalOptions],
+  ["Ring Size", ringSizes],
+  ["Band Width", ["6mm", "7mm", "8mm", "10mm", "Custom width"]],
+  ["Diamond Layout", diamondLayout],
+  ["Diamond Type", ["Lab-Grown Diamond", "Natural Diamond", "Not sure yet"]],
+  ["Diamond Color", ["D", "E", "F", "Custom color request"]],
+  ["Clarity", ["VVS", "VS", "SI by request"]],
+  ["Finish", finishOptions],
+  ["Specification Note", ["Request final pricing by exact gold weight, diamond weight, ring size, width, and finish."]],
+];
+const uploadedMensBandProducts = [
+  {
+    id: "marquise-crown-diamond-engagement-ring",
+    category: "Engagement Rings",
+    name: "Marquise Crown Diamond Engagement Ring",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-01.png",
+    alt: "Yellow gold marquise diamond engagement ring with side diamonds",
+    lede: "A marquise center engagement ring with a crown-like diamond cluster and yellow gold band, quoted by center stone, diamond type, metal, and ring size.",
+    cta: "Request Marquise Crown Ring Quote",
+    badges: ["Engagement Ring", "Marquise Center", "14K or 18K Gold", "Made to Order"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [
+      ["Metal", bandMetalOptions],
+      ["Ring Size", ringSizes],
+      ["Center Stone Shape", ["Marquise"]],
+      ["Side Stone Layout", ["Crown cluster", "Marquise and round accents", "Custom side stones"]],
+      ["Diamond Type", ["Lab-Grown Diamond", "Natural Diamond", "Not sure yet"]],
+      ["Diamond Color", ["D", "E", "F", "Custom color request"]],
+      ["Clarity", ["VVS", "VS", "SI by request"]],
+      ["Specification Note", ["Request final pricing by center stone size, gold weight, diamond quality, and custom details."]],
+    ],
+  },
+  {
+    id: "atlas-brushed-diamond-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Atlas Brushed Diamond Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-02.png",
+    alt: "Yellow gold brushed men's wedding band with diamond channel",
+    lede: "A yellow gold men's wedding band with a brushed center, polished rails, and a round diamond channel. Built by width, ring size, gold karat, and diamond quality.",
+    cta: "Request Atlas Men's Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "14K or 18K Gold", "Request Pricing"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Round diamond center channel", "Half diamond channel", "Full diamond channel", "Custom diamond layout"], ["Brushed center", "Polished rails", "Satin center", "Custom finish"]),
+  },
+  {
+    id: "imperial-scroll-diamond-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Imperial Scroll Diamond Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-03.png",
+    alt: "Yellow gold engraved men's wedding band with floral diamond accents",
+    lede: "A carved yellow gold men's band with black scroll engraving, floral detail, and diamond accents. Final pricing depends on width, gold weight, engraving, and stone layout.",
+    cta: "Request Imperial Scroll Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "Engraved", "14K or 18K Gold"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Floral diamond accents", "Diamond flower stations", "No diamonds", "Custom diamond accents"], ["Black enamel scroll", "Engraved gold", "Polished edges", "Custom engraving"]),
+  },
+  {
+    id: "sterling-flora-engraved-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Sterling Flora Engraved Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-04.png",
+    alt: "White gold engraved men's wedding band with floral detail",
+    lede: "A white gold floral engraved men's wedding band with milgrain edges and refined bright-cut detail, quoted by size, width, metal, and engraving depth.",
+    cta: "Request Sterling Flora Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "Engraved", "14K or 18K Gold"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Floral diamond accents", "No diamonds", "Custom diamond stations"], ["Floral engraving", "Milgrain edges", "High polish interior", "Custom engraving"]),
+  },
+  {
+    id: "regent-three-row-diamond-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Regent Three-Row Diamond Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-05.png",
+    alt: "Two-tone men's diamond wedding band with three diamond rows",
+    lede: "A bold two-tone men's wedding band with princess-cut center diamonds and round diamond rows, custom quoted by width, carat weight, metal, and ring size.",
+    cta: "Request Regent Diamond Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "Two-Tone", "Request Pricing"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Princess-cut center row", "Round diamond outer rows", "Three-row diamond setting", "Custom row layout"], ["Two-tone polished", "White gold center", "Yellow gold rails", "Custom two-tone finish"]),
+  },
+  {
+    id: "aureate-floral-diamond-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Aureate Floral Diamond Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-06.png",
+    alt: "Yellow gold floral engraved men's wedding band with diamond accents",
+    lede: "A yellow gold floral engraved men's band with bead borders and diamond accents, made to order in 14K or 18K gold.",
+    cta: "Request Aureate Floral Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "Floral Engraving", "14K or 18K Gold"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Diamond floral stations", "Scattered diamond accents", "No diamonds", "Custom diamond accents"], ["Floral engraving", "Beaded edges", "High polish interior", "Custom finish"]),
+  },
+  {
+    id: "titan-brushed-diamond-edge-mens-band",
+    category: "Wedding Bands",
+    secondaryCategories: ["Men's Rings"],
+    name: "Titan Brushed Diamond Edge Men's Band",
+    price: "Request Pricing",
+    estimate: null,
+    priceLabel: "Request Pricing",
+    image: "mens-band-black-07.png",
+    alt: "White gold brushed men's wedding band with diamond edges",
+    lede: "A wide white gold men's band with a brushed center and diamond-set edges, quoted by width, ring size, diamond weight, and gold karat.",
+    cta: "Request Titan Diamond Edge Band Quote",
+    badges: ["Men's Ring", "Wedding Band", "Diamond Edges", "14K or 18K Gold"],
+    buttons: ["Request Pricing", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: mensBandFields(["Diamond edges", "Single diamond edge", "Double diamond edge", "Custom diamond edge layout"], ["Brushed center", "Polished bevels", "Satin center", "Custom finish"]),
+  },
+];
 const uploadedRingProducts = [
   {
     id: "rose-three-stone-diamond-engagement-ring",
@@ -416,6 +550,7 @@ const uploadedRingProducts = [
 ];
 
 const products = [
+  ...uploadedMensBandProducts,
   ...uploadedRingProducts,
   {
     id: "queen-aurelia-oval-marquise-ring",
@@ -2278,6 +2413,10 @@ function productGrid(list, title, body = "", action = "") {
   `);
 }
 
+function productMatchesCategory(product, label) {
+  return product.category === label || (product.secondaryCategories || []).includes(label);
+}
+
 function category(slug) {
   if (slug === "select-diamond") return diamondInventoryPage();
   const categoryLabels = {
@@ -2317,7 +2456,7 @@ function category(slug) {
     ? allProducts().filter((p) => ["Pendants / Charms", "Pendants"].includes(p.category) || ["silver-cross-chain", "marquise-arc"].includes(p.id))
     : slug === "bracelets"
       ? allProducts().filter((p) => ["Bracelets", "Tennis Bracelets"].includes(p.category))
-      : allProducts().filter((p) => p.category === label);
+      : allProducts().filter((p) => productMatchesCategory(p, label));
   const action = slug === "engagement-rings"
     ? `<a class="button button-gold" href="#/build-engagement-ring">Build Your Engagement Ring</a>`
     : slug === "chains"
