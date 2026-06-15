@@ -91,6 +91,19 @@ const earringCarats = [
   ["5.5 carat", 3925],
   ["6 carat", 4300],
 ];
+const premiumStudEarringCarats = [
+  ["1 carat", 1075],
+  ["1.5 carat", 1325],
+  ["2 carat", 1575],
+  ["2.5 carat", 1825],
+  ["3 carat", 2075],
+  ["3.5 carat", 2325],
+  ["4 carat", 2575],
+  ["4.5 carat", 2825],
+  ["5 carat", 3075],
+  ["5.5 carat", 3325],
+  ["6 carat", 3575],
+];
 const monarchRingCarats = [
   ["1 carat", 1950],
   ["1.5 carat", 2325],
@@ -120,7 +133,9 @@ const queenAureliaCarats = [
 const ringSizes = ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"];
 const metals = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"];
 const braceletMetals = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum", "Silver"];
+const braceletGoldMetals = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold"];
 const pendantMetals = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum", "Silver"];
+const pendantGoldPlatinumMetals = ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"];
 const shapes = ["Round", "Cushion", "Emerald", "Asscher", "Oval", "Pear", "Marquise", "Radiant", "Custom Shape"];
 const engagementRingMetalSurcharges = {
   "18K Yellow Gold": 375,
@@ -134,6 +149,46 @@ const quoteCategories = ["Custom Engagement Ring Request", "Custom Tennis Bracel
 const quoteQualityOptions = ["VVS", "VS", "SI", "DE Color", "Natural diamond quote", "Lab-grown diamond quote", "Not sure yet"];
 const importedDiamondQualityOptions = ["VVS", "VS"];
 const handcraftedNotice = "Due to the handcrafted nature of fine jewelry, final gold weight, diamond weight, stone count, and specifications may vary slightly. Contact us to request exact weight and specifications before purchase.";
+
+const premiumStudMetalSurcharges = {
+  "18K Yellow Gold": 375,
+  "18K White Gold": 375,
+  "18K Rose Gold": 375,
+  Platinum: 625,
+};
+
+const premiumStudProducts = [
+  ["asscher-diamond-stud-earrings", "Asscher Diamond Stud Earrings", "asscher-stud-earrings-product-black.png", "Asscher cut diamond screw-back stud earrings", "Asscher"],
+  ["cushion-diamond-stud-earrings", "Cushion Diamond Stud Earrings", "cushion-stud-earrings-product-black.png", "Cushion cut diamond screw-back stud earrings", "Cushion"],
+  ["emerald-diamond-stud-earrings", "Emerald Diamond Stud Earrings", "emerald-stud-earrings-product-black.png", "Emerald cut diamond screw-back stud earrings", "Emerald"],
+  ["oval-diamond-stud-earrings", "Oval Diamond Stud Earrings", "oval-stud-earrings-product-black.png", "Oval cut diamond screw-back stud earrings", "Oval"],
+  ["pear-diamond-stud-earrings", "Pear Diamond Stud Earrings", "pear-stud-earrings-product-black.png", "Pear shape diamond screw-back stud earrings", "Pear"],
+  ["round-brilliant-diamond-stud-earrings", "Round Brilliant Diamond Stud Earrings", "round-stud-earrings-product-black.png", "Round brilliant diamond screw-back stud earrings", "Round"],
+].map(([id, name, image, alt, shape]) => ({
+  id,
+  category: "Earrings",
+  name,
+  price: 1075,
+  estimate: 1075,
+  priceLabel: "Starting at $1,075 for 1 carat",
+  image,
+  alt,
+  lede: `${name} with screw-back posts, starting at $1,075 for 1 carat total weight. Select total carat weight from 1 to 6 carats, diamond quality, and metal. Final pricing updates by carat weight and metal, with natural diamonds available by request.`,
+  cta: `Message Us for Custom ${shape} Stud Earrings`,
+  metalSurcharges: premiumStudMetalSurcharges,
+  badges: ["Diamond Studs", "Screw Backs", "Starting at $1,075", "Made to Order"],
+  buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+  fields: [
+    ["Total Diamond Weight", premiumStudEarringCarats],
+    ["Diamond Shape", [shape]],
+    ["Diamond Type", ["Lab-Grown Diamond", "Natural Diamond"]],
+    ["Diamond Color", ["D", "E", "F"]],
+    ["Clarity", ["VVS", "VS"]],
+    ["Metal", metals],
+    ["Back Type", ["Screw back"]],
+    ["Specification Note", ["Weight varies. Request weight details."]],
+  ],
+}));
 
 const products = [
   {
@@ -166,7 +221,6 @@ const products = [
     image: "engagement-ring-feature.jpg",
     alt: "Radiant diamond engagement ring on hand",
     lede: "Select a diamond size, stone shape, diamond color, clarity, metal, and exact ring size. Your luxury engagement ring summary updates instantly.",
-    note: "Look below for video preview.",
     cta: "Message Us for Custom Design / Custom Stone Size",
     fields: [
       ["Diamond Size", lunaCarats],
@@ -445,8 +499,9 @@ const products = [
     id: "yellow-canary-diamond-studs",
     category: "Earrings",
     name: "Yellow Canary Diamond Studs",
-    price: 750,
-    estimate: 750,
+    price: 950,
+    estimate: 950,
+    priceLabel: "Starting at $950",
     image: "yellow-canary-diamond-studs.jpeg",
     alt: "Yellow canary diamond stud earrings",
     lede: "Select total diamond weight, diamond color, clarity, and metal for a custom round colored diamond stud quote.",
@@ -463,8 +518,9 @@ const products = [
     id: "pink-monarch-diamond-studs",
     category: "Earrings",
     name: "Pink Monarch Diamond Studs",
-    price: 750,
-    estimate: 750,
+    price: 950,
+    estimate: 950,
+    priceLabel: "Starting at $950",
     image: "pink-monarch-diamond-studs.jpeg",
     alt: "Pink monarch diamond stud earrings",
     lede: "Select total diamond weight, diamond color, clarity, and metal for a custom round colored diamond stud quote.",
@@ -481,8 +537,9 @@ const products = [
     id: "blue-monarch-diamond-studs",
     category: "Earrings",
     name: "Blue Monarch Diamond Studs",
-    price: 750,
-    estimate: 750,
+    price: 950,
+    estimate: 950,
+    priceLabel: "Starting at $950",
     image: "blue-monarch-diamond-studs.jpeg",
     alt: "Blue monarch diamond stud earrings",
     lede: "Select total diamond weight, diamond color, clarity, and metal for a custom round colored diamond stud quote.",
@@ -495,6 +552,7 @@ const products = [
     },
     fields: [["Total Diamond Weight", earringCarats], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", metals], ["Type of Earring", ["Stud"]]],
   },
+  ...premiumStudProducts,
   {
     id: "marquise-arc",
     category: "Necklaces",
@@ -566,6 +624,101 @@ const products = [
     badges: ["Customizable", "Made to Order", "Financing Available", "Lab Diamonds"],
     buttons: ["Add to Cart", "Build Your Bracelet", "Request Custom Quote", "Financing Available"],
     fields: [["Diamond Size", tennisBraceletPointers], ["Bracelet Size", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Metal", braceletMetals], ["Diamond Type", ["Lab Diamonds", "Natural Diamonds by request"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Bracelet Style", ["Tennis"]]],
+  },
+  {
+    id: "lab-diamond-tennis-bracelet-8-1ct",
+    category: "Bracelets",
+    name: "8.1 CT Lab Diamond Tennis Bracelet",
+    price: 3400,
+    estimate: 3400,
+    priceLabel: "Starting at $3,400 in 14K gold",
+    image: "diamond-bracelet.png",
+    alt: "Lab-grown diamond tennis bracelet",
+    lede: "Build a 7-inch lab-grown diamond tennis bracelet in 14K gold with approximately 8.1 carats, 18-pointer diamonds, and approximately 11 grams of gold. Gold grams and final pricing may vary depending on selected gold, exact length, and customization.",
+    cta: "Build Your Diamond Tennis Bracelet",
+    metalSurcharges: {
+      "18K Yellow Gold": 550,
+      "18K White Gold": 550,
+      "18K Rose Gold": 550,
+    },
+    badges: ["Lab Diamonds", "14K Gold", "Made to Order", "Financing Available"],
+    buttons: ["Add to Cart", "Build Your Bracelet", "Request Custom Quote", "Financing Available"],
+    fields: [["Diamond Size", [["18 pointers / approx. 8.1 carats", 3400], ["10 pointers / custom quote", 2600], ["15 pointers / custom quote", 3100], ["20 pointers / custom quote", 3900], ["25 pointers / custom quote", 4700]]], ["Bracelet Length", ["7 inches", "6.5 inches", "7.5 inches", "8 inches", "Custom size"]], ["Estimated Gold Weight", ["Approx. 11 grams", "12 grams", "13 grams", "Custom gram weight"]], ["Metal", braceletGoldMetals], ["Diamond Type", ["Lab-grown diamonds"]], ["Diamond Quality", ["VVS", "VS"]], ["Specification Note", ["Gold grams may increase and pricing may vary depending on selected gold, exact length, and customization."]]],
+  },
+  {
+    id: "celeste-bezel-diamond-station-bracelet",
+    category: "Bracelets",
+    name: "Celeste Bezel Diamond Station Bracelet",
+    price: 965,
+    estimate: 965,
+    priceLabel: "Starting at $965 in 14K gold",
+    image: "bracelet-01.png",
+    alt: "Gold bezel-set lab diamond station bracelet on a black background",
+    lede: "Made-to-order 14K lab-grown diamond station bracelet with five bezel-set diamond stations and an estimated 0.35 to 0.50 CTW, depending on final size and customization. Platinum is available by custom quote.",
+    cta: "Request Celeste Bracelet Quote",
+    badges: ["Bracelets", "Lab Diamonds", "14K Gold", "Made to Order"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", [["14K Yellow Gold", 965], ["14K White Gold", 965], ["14K Rose Gold", 965], ["18K Yellow Gold", 1300], ["18K White Gold", 1300], ["18K Rose Gold", 1300]]], ["Bracelet Length", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Diamond Type", ["Lab-Grown Diamond"]], ["Estimated Diamond Weight", ["Approx. 0.35 to 0.50 CTW"]], ["Platinum Option", ["Available by custom quote"]], ["Specification Note", ["Weight varies. Request weight details."]]],
+  },
+  {
+    id: "lumiere-pearl-paperclip-bracelet",
+    category: "Bracelets",
+    name: "Lumiere Pearl Paperclip Bracelet",
+    price: 1100,
+    estimate: 1100,
+    priceLabel: "Starting at $1,100 in 14K gold",
+    image: "bracelet-04.png",
+    alt: "Gold paperclip bracelet with pearl stations on a black satin background",
+    lede: "Made-to-order pearl paperclip bracelet in 14K gold with luminous pearl stations and adjustable chain detail. Available in 14K or 18K gold only.",
+    cta: "Request Pearl Bracelet Quote",
+    badges: ["Bracelets", "Pearls", "14K Gold", "Made to Order"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", [["14K Yellow Gold", 1100], ["14K White Gold", 1100], ["14K Rose Gold", 1100], ["18K Yellow Gold", 1500], ["18K White Gold", 1500], ["18K Rose Gold", 1500]]], ["Bracelet Length", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Pearl Detail", ["Pearl stations"]], ["Production", ["Made to Order"]], ["Specification Note", ["Weight varies. Request weight details."]]],
+  },
+  {
+    id: "fleur-diamond-cluster-station-bracelet",
+    category: "Bracelets",
+    name: "Fleur Diamond Cluster Station Bracelet",
+    price: 1000,
+    estimate: 1000,
+    priceLabel: "Starting at $1,000 in 14K gold",
+    image: "bracelet-05.png",
+    alt: "Gold lab diamond flower cluster station bracelet on black satin",
+    lede: "Made-to-order 14K lab-grown diamond cluster station bracelet with floral diamond stations and an estimated 0.55 to 0.75 CTW, depending on bracelet length and final stone layout. Platinum is available by custom quote.",
+    cta: "Request Fleur Bracelet Quote",
+    badges: ["Bracelets", "Lab Diamonds", "Cluster Detail", "Made to Order"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", [["14K Yellow Gold", 1000], ["14K White Gold", 1000], ["14K Rose Gold", 1000], ["18K Yellow Gold", 1350], ["18K White Gold", 1350], ["18K Rose Gold", 1350]]], ["Bracelet Length", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Diamond Type", ["Lab-Grown Diamond"]], ["Estimated Diamond Weight", ["Approx. 0.55 to 0.75 CTW"]], ["Platinum Option", ["Available by custom quote"]], ["Specification Note", ["Weight varies. Request weight details."]]],
+  },
+  {
+    id: "aurora-multi-gemstone-paperclip-bracelet",
+    category: "Bracelets",
+    name: "Aurora Multi-Gemstone Paperclip Bracelet",
+    price: 1200,
+    estimate: 1200,
+    priceLabel: "Starting at $1,200 in 14K gold",
+    image: "bracelet-06.png",
+    alt: "Gold paperclip bracelet with blue topaz pink tourmaline and green peridot style stones",
+    lede: "Made-to-order multi-gemstone paperclip bracelet with blue topaz, peridot, pink tourmaline-style, and teal gemstone stations. Final gemstone mix and specs are confirmed before production.",
+    cta: "Request Aurora Gemstone Bracelet Quote",
+    badges: ["Bracelets", "Gemstones", "14K Gold", "Made to Order"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", [["14K Yellow Gold", 1200], ["14K White Gold", 1200], ["14K Rose Gold", 1200], ["18K Yellow Gold", 1600], ["18K White Gold", 1600], ["18K Rose Gold", 1600]]], ["Bracelet Length", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Gemstone Mix", ["Blue topaz, peridot, pink tourmaline-style, and teal gemstones"]], ["Production", ["Made to Order"]], ["Specification Note", ["Weight varies. Request weight details."]]],
+  },
+  {
+    id: "solene-diamond-paperclip-station-bracelet",
+    category: "Bracelets",
+    name: "Solene Diamond Paperclip Station Bracelet",
+    price: 1025,
+    estimate: 1025,
+    priceLabel: "Starting at $1,025 in 14K gold",
+    image: "bracelet-08.png",
+    alt: "Gold paperclip bracelet with bezel-set lab diamond stations",
+    lede: "Made-to-order 14K lab-grown diamond paperclip bracelet with bezel-set diamond stations and an estimated 0.40 to 0.60 CTW, depending on final size and stone layout. Platinum is available by custom quote.",
+    cta: "Request Solene Bracelet Quote",
+    badges: ["Bracelets", "Lab Diamonds", "Paperclip Link", "Made to Order"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", [["14K Yellow Gold", 1025], ["14K White Gold", 1025], ["14K Rose Gold", 1025], ["18K Yellow Gold", 1475], ["18K White Gold", 1475], ["18K Rose Gold", 1475]]], ["Bracelet Length", ["6.5 inches", "7 inches", "7.5 inches", "8 inches", "Custom Size - Message Request"]], ["Diamond Type", ["Lab-Grown Diamond"]], ["Estimated Diamond Weight", ["Approx. 0.40 to 0.60 CTW"]], ["Platinum Option", ["Available by custom quote"]], ["Specification Note", ["Weight varies. Request weight details."]]],
   },
   {
     id: "triple-row-diamond-tennis-bracelet",
@@ -1029,17 +1182,18 @@ const products = [
     id: "large-round-diamond-cross-pendant",
     category: "Pendants / Charms",
     name: "Large Round Diamond Cross Pendant",
-    price: "Request Pricing",
-    estimate: null,
-    priceLabel: "Price available upon request",
+    price: 2414,
+    estimate: 2414,
+    priceLabel: "Starting at $2,414 in 14K white gold",
     image: "large-round-diamond-cross-pendant.jpeg",
     alt: "Large round diamond cross pendant on black background",
     lede: "A large round diamond cross pendant priced for lab-grown diamonds, with statement stones and a high-polish prong setting.",
     cta: "Request Diamond Cross Quote",
-    badges: ["Lab Diamonds", "Diamond Pendant", "Custom Quote Required", "Made to Order"],
+    metalSurcharges: engagementRingMetalSurcharges,
+    badges: ["Lab Diamonds", "Diamond Pendant", "14K Gold", "Made to Order"],
     notice: handcraftedNotice,
-    buttons: ["Request Price", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
-    fields: [["Metal", pendantMetals], ["Diamond Type", ["Lab-grown diamonds", "Natural diamonds by request"]], ["Diamond Size", ["Large round stones", "Custom stone size"]], ["Pendant Size", ["Small", "Medium", "Large", "Custom size"]]],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Metal", pendantGoldPlatinumMetals], ["Diamond Type", ["Lab-grown diamonds", "Natural diamonds by request"]], ["Diamond Size", ["Large round stones", "Custom stone size"]], ["Pendant Size", ["Small", "Medium", "Large", "Custom size"]]],
   },
   {
     id: "yellow-gold-round-diamond-cross-pendant",
@@ -1076,14 +1230,15 @@ const products = [
   {
     id: "elephant-head-diamond-pendant",
     category: "Pendants / Charms",
-    name: "Elephant Head Diamond Pendant",
-    price: 6500,
+    name: "Iced Diamond Pendants",
+    price: 4800,
     estimate: 6500,
+    priceLabel: "Starting at $4,800 in 14K gold",
     image: "elephant-head-diamond-pendants.jpeg",
-    alt: "Rose and white gold elephant head diamond pendants",
-    lede: "14K elephant head diamond pendant shown in rose and white gold finishes with approximately 1.85 CTW diamonds. Ready to request in natural diamond or lab-grown diamond options.",
-    cta: "Request Elephant Pendant Details",
-    badges: ["14K Gold", "Diamond Pendant", "Ready to Ship", "Customizable"],
+    alt: "Rose and white gold iced diamond pendants",
+    lede: "14K iced diamond pendants shown in rose and white gold finishes with approximately 1.85 CTW diamonds. Starting at $4,800 in 14K gold with a retail value of $6,500. Request exact weight and specifications before purchase.",
+    cta: "Request Iced Pendant Details",
+    badges: ["14K Gold", "Diamond Pendant", "Starting at $4,800", "Retail $6,500"],
     notice: handcraftedNotice,
     buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Request Custom Order", "Financing Available"],
     fields: [["Metal", pendantMetals], ["Diamond Type", ["Natural diamonds", "Lab-grown diamonds by request"]], ["Finish", ["Rose gold", "White gold", "Yellow gold"]], ["Specification Note", ["Weight varies. Request weight details."]]],
@@ -1092,27 +1247,28 @@ const products = [
     id: "baguette-diamond-letter-z-pendant",
     category: "Pendants / Charms",
     name: "Baguette Diamond Letter Z Pendant",
-    price: "Request Pricing",
-    estimate: null,
-    priceLabel: "Price available upon request",
+    price: 1600,
+    estimate: 1600,
+    priceLabel: "Starting at $1,600",
     image: "baguette-diamond-letter-z-pendant.jpeg",
     alt: "Baguette diamond Letter Z pendant",
     lede: "A custom 14K Letter Z pendant with baguette and round diamond coverage. Pricing varies by letter, size, stone weight, gold weight, and customization.",
     cta: "Request Letter Z Pendant",
     badges: ["Natural Diamonds", "14K Gold", "Customizable", "Made to Order"],
     notice: handcraftedNotice,
-    buttons: ["Request Price", "Request Exact Weight & Specifications", "Request Custom Letter", "Financing Available"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Request Custom Letter", "Financing Available"],
     fields: [["Metal", pendantMetals], ["Letter", ["Z", "All letters available", "Custom initials"]], ["Diamond Style", ["Baguette and round diamonds", "Round diamonds only", "Custom layout"]], ["Specification Note", ["Weight varies. Request weight details."]]],
   },
   {
     id: "diamond-letter-l-pendant",
     category: "Pendants / Charms",
     name: "Diamond Letter L Pendant",
-    price: 2420,
-    estimate: 2420,
+    price: 1200,
+    estimate: 1200,
+    priceLabel: "Starting at $1,200",
     image: "diamond-letter-l-pendant.jpeg",
     alt: "Diamond Letter L pendant",
-    lede: "14K Letter L diamond pendant with approximately 0.55 CTW diamonds. Pricing and final specifications vary by size and customization.",
+    lede: "14K Letter L diamond pendant starting at $1,200. Pricing and final specifications vary by size, gold weight, diamond weight, and customization.",
     cta: "Request Letter L Details",
     badges: ["Natural Diamonds", "14K Gold", "Customizable", "Ready to Ship"],
     notice: handcraftedNotice,
@@ -1123,13 +1279,13 @@ const products = [
     id: "diamond-letter-n-pendant",
     category: "Pendants / Charms",
     name: "Diamond Letter N Pendant",
-    price: 3300,
-    estimate: 3300,
+    price: 1200,
+    estimate: 1200,
+    priceLabel: "Starting at $1,200",
     image: "diamond-letter-n-pendant.jpeg",
     gallery: ["diamond-letter-n-pendant-gallery.jpeg"],
-    video: "diamond-letter-n-pendant-video.mp4",
     alt: "Diamond Letter N pendant",
-    lede: "14K Letter N diamond pendant with approximately 0.97 CTW diamonds. Includes an uploaded video preview and gallery view.",
+    lede: "14K Letter N diamond pendant starting at $1,200. Includes an additional gallery view. Pricing varies by size, gold weight, diamond weight, and customization.",
     cta: "Request Letter N Details",
     badges: ["Natural Diamonds", "14K Gold", "Customizable", "Ready to Ship"],
     notice: handcraftedNotice,
@@ -1140,11 +1296,12 @@ const products = [
     id: "diamond-letter-j-pendant",
     category: "Pendants / Charms",
     name: "Diamond Letter J Pendant",
-    price: 2100,
-    estimate: 2100,
+    price: 1200,
+    estimate: 1200,
+    priceLabel: "Starting at $1,200",
     image: "diamond-letter-j-pendant.jpeg",
     alt: "Diamond Letter J pendant",
-    lede: "14K Letter J diamond pendant with approximately 0.52 CTW diamonds. Final weight and diamond count may vary slightly.",
+    lede: "14K Letter J diamond pendant starting at $1,200. Final weight and diamond count may vary slightly.",
     cta: "Request Letter J Details",
     badges: ["Natural Diamonds", "14K Gold", "Customizable", "Ready to Ship"],
     notice: handcraftedNotice,
@@ -1154,13 +1311,14 @@ const products = [
   {
     id: "lion-head-diamond-pendant",
     category: "Pendants / Charms",
-    name: "Lion Head Diamond Pendant",
-    price: 8500,
-    estimate: 8500,
+    name: "Iced Jesus Pendant",
+    price: 7214,
+    estimate: 7214,
+    priceLabel: "Starting at $7,214 in 14K gold",
     image: "lion-head-diamond-pendant.jpeg",
-    alt: "Gold lion head diamond pendant",
-    lede: "14K lion head diamond pendant with bold sculptural detail and diamond accents. Pricing shown from the uploaded tag; request exact weight and specifications before purchase.",
-    cta: "Request Lion Pendant Details",
+    alt: "Gold iced Jesus pendant",
+    lede: "14K iced Jesus pendant with bold sculptural detail and diamond accents. Starting at $7,214 in 14K gold; request exact weight and specifications before purchase.",
+    cta: "Request Jesus Pendant Details",
     badges: ["14K Gold", "Diamond Pendant", "Statement Piece", "Ready to Ship"],
     notice: handcraftedNotice,
     buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Request Custom Order", "Financing Available"],
@@ -1387,17 +1545,17 @@ const products = [
     id: "round-cluster-diamond-stud-earrings",
     category: "Earrings",
     name: "Round Cluster Diamond Stud Earrings",
-    price: "Request Pricing",
-    estimate: null,
-    priceLabel: "Price available upon request",
+    price: 875,
+    estimate: 875,
+    priceLabel: "Starting at $875 for 1 carat",
     image: "round-cluster-diamond-stud-earrings-close.jpeg",
     gallery: ["round-cluster-diamond-stud-earrings-render.jpeg"],
     alt: "Round cluster diamond stud earrings render",
-    lede: "Round cluster diamond stud earrings with screw-back posts, available as a custom earring request.",
+    lede: "Round cluster diamond stud earrings with screw-back posts, starting at $875 for 1 carat. Final pricing varies by diamond type, gold, total carat weight, and customization.",
     cta: "Request Stud Earring Quote",
-    badges: ["Earrings", "Diamond Studs", "Custom Quote Required"],
-    buttons: ["Request Price", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
-    fields: [["Metal", metals], ["Diamond Type", ["Lab diamonds", "Natural diamonds by request"]], ["Back Type", ["Screw back", "Push back by request"]], ["Specification Note", ["Weight varies. Request weight details."]]],
+    badges: ["Earrings", "Diamond Studs", "Starting at $875"],
+    buttons: ["Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"],
+    fields: [["Total Diamond Weight", [["1 carat", 875], ["1.5 carat", 1125], ["2 carat", 1400], ["Custom total carat weight", 875]]], ["Metal", metals], ["Diamond Type", ["Lab diamonds", "Natural diamonds by request"]], ["Back Type", ["Screw back", "Push back by request"]], ["Specification Note", ["Weight varies. Request weight details."]]],
   },
 ];
 
@@ -1418,8 +1576,18 @@ const diamondOriginByProduct = {
   "yellow-canary-diamond-studs": "LGD",
   "pink-monarch-diamond-studs": "LGD",
   "blue-monarch-diamond-studs": "LGD",
+  "asscher-diamond-stud-earrings": "LGD",
+  "cushion-diamond-stud-earrings": "LGD",
+  "emerald-diamond-stud-earrings": "LGD",
+  "oval-diamond-stud-earrings": "LGD",
+  "pear-diamond-stud-earrings": "LGD",
+  "round-brilliant-diamond-stud-earrings": "LGD",
   "marquise-arc": "LGD",
   "ever-band": "LGD",
+  "lab-diamond-tennis-bracelet-8-1ct": "LGD",
+  "celeste-bezel-diamond-station-bracelet": "LGD",
+  "fleur-diamond-cluster-station-bracelet": "LGD",
+  "solene-diamond-paperclip-station-bracelet": "LGD",
   "thirty-pointer-diamond-cross": "LGD",
   "triple-row-diamond-tennis-bracelet": "LGD",
   "yellow-gold-diamond-cuban-link-ring": "LGD",
@@ -1461,16 +1629,6 @@ function productGallery(product) {
     <div class="product-gallery" aria-label="${productName(product)} gallery">
       ${images.map((image) => `<img src="${asset(image)}" alt="${productName(product)} additional view" ${imageSafety}>`).join("")}
     </div>
-  `;
-}
-
-function productVideo(product) {
-  if (!product.video) return `<p class="video-empty">No video posted for this diamond or jewelry piece yet.</p>`;
-  return `
-    <video class="product-video-player" controls preload="metadata" playsinline>
-      <source src="${asset(product.video)}" type="video/mp4">
-      Your browser does not support video playback.
-    </video>
   `;
 }
 
@@ -1533,15 +1691,17 @@ function productNotice(product) {
 }
 
 function productActionButtons(product) {
-  const buttons = product.buttons || [];
+  const buttons = product.buttons || ((product.price === "Request Pricing" || product.estimate === null)
+    ? ["Request Price", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available"]
+    : []);
   if (!buttons.length) return "";
   const hrefByButton = (label) => {
     if (/financing/i.test(label)) return "#/financing-policy";
     if (/cart/i.test(label)) return "";
-    if (/exact weight|specifications/i.test(label)) return `mailto:${contactEmail}?subject=${encodeURIComponent(`Exact weight and specifications - ${productName(product)}`)}`;
+    if (/exact weight|specifications/i.test(label)) return requestHref(product, "exact-weight-specifications");
     if (/custom order/i.test(label)) return "#/custom-orders";
-    if (/request price|custom quote|pricing|custom size|custom letter|build your chain|build your bracelet/i.test(label)) return "#/custom-orders";
-    return `mailto:${contactEmail}?subject=${encodeURIComponent(`Product request - ${productName(product)}`)}`;
+    if (/request price|custom quote|pricing|custom size|custom letter|build your chain|build your bracelet/i.test(label)) return requestHref(product, "custom-quote");
+    return requestHref(product, "product-request");
   };
   return `<div class="builder-actions product-extra-actions">
     ${buttons.filter((label) => !/cart/i.test(label)).map((label, index) => {
@@ -1571,16 +1731,16 @@ function startingText(product) {
 }
 
 const categories = [
-  ["rings", "Rings", "yellow-gold-diamond-cuban-link-ring.jpeg"],
-  ["engagement-rings", "Engagement Rings", "engagement-ring-feature.jpg"],
   ["select-diamond", "Live Diamond Selection", "diamond-banner.jpg"],
-  ["wedding-bands", "Wedding Bands", "mens-royal-filigree-princess-channel-wedding-band.jpg"],
-  ["necklaces", "Necklaces", "yellow-gold-cuban-chain-display.jpeg"],
-  ["chains", "Chains", "yellow-gold-rope-chain-triple.jpeg"],
+  ["engagement-rings", "Engagement Rings", "pink-oval-engagement-ring.jpeg"],
+  ["wedding-bands", "Wedding Bands", "mens-round-diamond-filigree-wedding-band.jpg"],
   ["pendants-charms", "Pendants / Charms", "saint-michael-diamond-angel-pendant.jpeg"],
+  ["chains", "Chains", "yellow-gold-rope-chain-triple.jpeg"],
+  ["necklaces", "Necklaces", "yellow-gold-cuban-chain-display.jpeg"],
+  ["earrings", "Earrings", "princess-diamond-earrings.png"],
+  ["bracelets", "Bracelets", "diamond-bracelet.png"],
+  ["rings", "Rings", "yellow-gold-diamond-cuban-link-ring.jpeg"],
   ["custom-jewelry", "Custom Jewelry", "custom-dejaun-diamond-name-pendant.jpeg"],
-  ["earrings", "Earrings", "round-cluster-diamond-stud-earrings-close.jpeg"],
-  ["bracelets", "Bracelets", "yellow-gold-rope-bracelet.jpeg"],
   ["watches", "Watches", "two-tone-rolex-datejust-diamond-dial.jpeg"],
   ["custom-orders", "Custom Orders", "don-logo.jpg"],
 ];
@@ -1605,15 +1765,23 @@ function payableCartItems() {
 }
 
 function stripePayButton(total) {
-  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer">Pay Now with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
+  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer" data-stripe-checkout="true" data-stripe-total="${total || 0}">Pay Now with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
 }
 
 function stripeCheckoutButton(total) {
-  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer">Checkout with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
+  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer" data-stripe-checkout="true" data-stripe-total="${total || 0}">Checkout with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
 }
 
 function requestPriceButton(product, className = "button button-light") {
-  return `<a class="${className}" href="mailto:${contactEmail}?subject=${encodeURIComponent(`Request Price - ${productName(product)}`)}">Request Price</a>`;
+  return `<a class="${className}" href="${requestHref(product, "pricing")}">Request Price</a>`;
+}
+
+function requestHref(product, intent = "product") {
+  const params = new URLSearchParams();
+  params.set("product", productName(product));
+  params.set("category", product.category || "Product Inquiry");
+  params.set("intent", intent);
+  return `#/request/product?${params.toString()}`;
 }
 
 function hideSplashScreen() {
@@ -1697,7 +1865,7 @@ function footer() {
         <a href="#/request/contact">General Contact</a>
         <a href="#/checkout">Checkout</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
-        <span class="deploy-version">Vercel-ready policies and customer checkout support</span>
+        <span class="site-version">Customer policies and checkout support</span>
       </div>
     </footer>
   `;
@@ -1738,7 +1906,7 @@ function productCard(product) {
         ${productBadges(product)}
         <div class="card-actions">
           <a class="button button-dark" href="#/product/${product.id}">View Details</a>
-          ${priced ? `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer">Checkout with Stripe</a>` : requestPriceButton(product)}
+          ${priced ? `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer" data-stripe-checkout="true" data-stripe-total="${numericPrice(product.price)}" data-stripe-product="${htmlSafe(productName(product))}">Checkout with Stripe</a>` : requestPriceButton(product)}
         </div>
       </div>
     </article>
@@ -1850,7 +2018,7 @@ function home() {
         </div>
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
-            <a class="collection-tile" href="#/${slug === "custom-orders" ? "custom-orders" : `category/${slug}`}">
+            <a class="collection-tile" href="#/${slug === "custom-orders" || slug === "select-diamond" ? slug : `category/${slug}`}">
               <img src="${asset(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
@@ -1888,8 +2056,13 @@ function category(slug) {
     "custom-jewelry": "Custom Jewelry",
     "gold-buying-services": "Gold Buying / Services",
   };
+  const engagementFirst = (list) => [...list].sort((a, b) => {
+    if (a.category === "Engagement Rings" && b.category !== "Engagement Rings") return -1;
+    if (a.category !== "Engagement Rings" && b.category === "Engagement Rings") return 1;
+    return 0;
+  });
   if (slug === "rings") {
-    productGrid(allProducts().filter((p) => ["Rings", "Engagement Rings", "Wedding Bands"].includes(p.category)), "Browse all rings from The Don", "Explore Cuban link rings, floral gemstone rings, engagement rings, and wedding bands in one place.");
+    productGrid(engagementFirst(allProducts().filter((p) => ["Rings", "Engagement Rings", "Wedding Bands"].includes(p.category))), "Browse all rings from The Don", "Explore Cuban link rings, floral gemstone rings, engagement rings, and wedding bands in one place.");
     return;
   }
   const names = {
@@ -1914,7 +2087,7 @@ function category(slug) {
       ? `<a class="button button-gold" href="#/product/build-your-own-diamond-tennis-chain">Build Your Tennis Chain</a>`
       : "";
   const body = slug === "engagement-rings" ? "All engagement rings include IGI or GIA certified diamond paperwork and an appraisal for the ring itself." : "";
-  productGrid(list, names[slug] || `Shop ${label || "All Luxury Jewelry"} with The Don`, body, action);
+  productGrid(slug === "engagement-rings" ? engagementFirst(list) : list, names[slug] || `Shop ${label || "All Luxury Jewelry"} with The Don`, body, action);
 }
 
 function diamondSpecs(diamond) {
@@ -1929,6 +2102,7 @@ function diamondSpecs(diamond) {
     diamond.symmetry ? `Symmetry ${diamond.symmetry}` : "",
     diamond.certificate ? `${diamond.certificate} certified` : "",
     diamond.reportNumber ? `Report ${diamond.reportNumber}` : "",
+    diamond.growthMethod || "CVD",
     diamond.price ? `Price ${diamond.price}` : "",
     diamond.diamondType,
   ].filter(Boolean).join(" | ");
@@ -1938,7 +2112,6 @@ function diamondMediaLinks(diamond) {
   const vendorLinks = Array.isArray(diamond.mediaLinks) ? diamond.mediaLinks.map((link) => [link.label || "View Vendor Link", link.url, link.type || "media"]) : [];
   const directLinks = [
     ["View Diamond Photo", diamond.imageUrl || diamond.mediaUrl, "image"],
-    ["View Diamond Video", diamond.videoUrl, "video"],
     ["View IGI Report", diamond.reportUrl, "report"],
   ];
   const seen = new Set();
@@ -1950,7 +2123,7 @@ function diamondMediaLinks(diamond) {
   });
   return links.length
     ? `<div class="diamond-media-links">${links.map(([label, url, type]) => `<a class="button button-light" href="${htmlSafe(url)}" target="_blank" rel="noopener noreferrer" data-diamond-media-link="${htmlSafe(url)}" data-media-type="${htmlSafe(type || "media")}">${htmlSafe(label)}</a>`).join("")}</div>`
-    : `<p class="quote-note">Vendor image, video, and grading report links will show here when provided by the live API feed.</p>`;
+    : `<p class="quote-note">Vendor image and grading report links will show here when provided by the live API feed.</p>`;
 }
 
 function showDiamondMediaModal({ url, type = "media", label = "Diamond media" }) {
@@ -1960,14 +2133,11 @@ function showDiamondMediaModal({ url, type = "media", label = "Diamond media" })
   const modal = document.createElement("div");
   modal.className = "diamond-media-modal";
   const isImage = type === "image" || /\.(jpe?g|png|webp|gif)(\?|$)/i.test(safeUrl);
-  const isVideoFile = /\.(mp4|webm|mov)(\?|$)/i.test(safeUrl);
   const reportMatch = safeUrl.match(/([A-Z]{1,4}\d{5,})/i);
   const reportNumber = reportMatch ? reportMatch[1].toUpperCase() : "";
   const media = isImage
     ? `<img class="diamond-media-preview-image" src="${htmlSafe(safeUrl)}" alt="${htmlSafe(label)}">`
-    : isVideoFile
-      ? `<video class="diamond-media-preview-video" src="${htmlSafe(safeUrl)}" controls playsinline></video>`
-      : `<iframe class="diamond-media-preview-frame" src="${htmlSafe(safeUrl)}" title="${htmlSafe(label)}"></iframe>`;
+    : `<iframe class="diamond-media-preview-frame" src="${htmlSafe(safeUrl)}" title="${htmlSafe(label)}"></iframe>`;
   modal.innerHTML = `
     <div class="diamond-media-dialog" role="dialog" aria-modal="true" aria-label="${htmlSafe(label)}">
       <button class="natural-diamond-close" type="button" aria-label="Close media preview">Close</button>
@@ -1993,7 +2163,7 @@ function showDiamondMediaModal({ url, type = "media", label = "Diamond media" })
 function diamondInventoryCard(diamond) {
   const imageUrl = safeExternalUrl(diamond.imageUrl || diamond.mediaUrl);
   return `
-    <article class="diamond-inventory-card" data-diamond-id="${htmlSafe(diamond.id)}" data-stock-number="${htmlSafe(diamond.stockNumber || diamond.id || "")}" data-shape="${htmlSafe(diamond.shape)}" data-carat="${htmlSafe(diamond.carat || "")}" data-color="${htmlSafe(diamond.color)}" data-clarity="${htmlSafe(diamond.clarity)}" data-certificate="${htmlSafe(diamond.certificate)}" data-report-number="${htmlSafe(diamond.reportNumber || "")}" data-price="${htmlSafe(diamond.price || "")}" data-diamond-type="${htmlSafe(diamond.diamondType || "")}">
+    <article class="diamond-inventory-card" data-diamond-id="${htmlSafe(diamond.id)}" data-stock-number="${htmlSafe(diamond.stockNumber || diamond.id || "")}" data-shape="${htmlSafe(diamond.shape)}" data-carat="${htmlSafe(diamond.carat || "")}" data-color="${htmlSafe(diamond.color)}" data-clarity="${htmlSafe(diamond.clarity)}" data-certificate="${htmlSafe(diamond.certificate)}" data-report-number="${htmlSafe(diamond.reportNumber || "")}" data-price="${htmlSafe(diamond.price || "")}" data-diamond-type="${htmlSafe(diamond.diamondType || "")}" data-growth-method="${htmlSafe(diamond.growthMethod || "CVD")}">
       ${imageUrl ? `<img class="diamond-inventory-image" src="${htmlSafe(imageUrl)}" alt="${htmlSafe(`${diamond.shape || "Lab-grown"} diamond`)}">` : ""}
       <div>
         <p class="eyebrow">${htmlSafe(diamond.diamondType || "Lab-Grown Diamond")}</p>
@@ -2014,18 +2184,19 @@ function diamondInventoryPage(initialParams = new URLSearchParams()) {
   const selectedShape = initialParams.get("shape") || "all";
   const selectedColor = initialParams.get("color") || "all";
   const selectedClarity = initialParams.get("clarity") || "all";
-  const selectedDiamondType = initialParams.get("diamondType") || "all";
+  const selectedTypeParam = initialParams.get("type") || "";
+  const selectedDiamondType = initialParams.get("diamondType") || (selectedTypeParam === "certified_color" || selectedTypeParam === "certified-color" ? "Certified Color Diamond" : selectedTypeParam === "certified" ? "Certified Diamond" : "all");
   const option = (value, selected) => `<option value="${htmlSafe(value)}" ${String(value).toLowerCase() === String(selected).toLowerCase() ? "selected" : ""}>${htmlSafe(value === "all" ? "All shapes" : value)}</option>`;
   shell(`
     <main>
-      ${pageHero("Live Diamond Inventory", "Select your lab-grown diamond", "Browse live lab-grown diamond specs, images, video links, and grading reports from the vendor feed. Pricing stays inside your ring build and quote process.")}
+      ${pageHero("Live Diamond Inventory", "Select your CVD certified diamond", "Browse loose CVD certified white diamonds and color diamonds only, 1.00 carat and above, with live specs, images, and grading reports from the vendor feed.")}
       <section class="diamond-inventory-section">
         <form class="diamond-filter-bar" id="diamond-filter-form">
           <label>Diamond type
             <select name="diamondType">
-              <option value="all" ${selectedDiamondType === "all" ? "selected" : ""}>All diamonds</option>
-              <option value="Certified Diamond" ${selectedDiamondType === "Certified Diamond" ? "selected" : ""}>Certified Diamonds</option>
-              <option value="Certified Color Diamond" ${selectedDiamondType === "Certified Color Diamond" ? "selected" : ""}>Certified Color Diamonds</option>
+              <option value="all" ${selectedDiamondType === "all" ? "selected" : ""}>White & color diamonds</option>
+              <option value="Certified Diamond" ${selectedDiamondType === "Certified Diamond" ? "selected" : ""}>White Diamonds</option>
+              <option value="Certified Color Diamond" ${selectedDiamondType === "Certified Color Diamond" ? "selected" : ""}>Color Diamonds</option>
             </select>
           </label>
           <label>Shape
@@ -2034,11 +2205,11 @@ function diamondInventoryPage(initialParams = new URLSearchParams()) {
             </select>
           </label>
           <label>Minimum carat<input name="minCarat" type="number" min="1" step="0.1" placeholder="1" value="${htmlSafe(initialParams.get("minCarat") || "1")}"></label>
-          <label>Maximum carat<input name="maxCarat" type="number" min="0" step="0.1" placeholder="6" value="${htmlSafe(initialParams.get("maxCarat") || "")}"></label>
+          <label>Maximum carat<input name="maxCarat" type="number" min="1" step="0.1" placeholder="6" value="${htmlSafe(initialParams.get("maxCarat") || "")}"></label>
           <label>Color
             <select name="color">
-              <option value="all" ${selectedColor === "all" ? "selected" : ""}>All DEF colors</option>
-              ${["D", "E", "F"].map((color) => option(color, selectedColor)).join("")}
+              <option value="all" ${selectedColor === "all" ? "selected" : ""}>All colors</option>
+              ${["D", "E", "F", "Light Yellow", "Fancy Yellow", "Pink", "Blue", "Green", "Champagne"].map((color) => option(color, selectedColor)).join("")}
             </select>
           </label>
           <label>Clarity
@@ -2049,6 +2220,7 @@ function diamondInventoryPage(initialParams = new URLSearchParams()) {
           </label>
           <label>Max price<input name="maxPrice" type="number" min="0" step="1" placeholder="Any" value="${htmlSafe(initialParams.get("maxPrice") || "")}"></label>
           <label>Certificate #<input name="certificateNumber" placeholder="IGI report #" value="${htmlSafe(initialParams.get("certificateNumber") || "")}"></label>
+          <label>Page<input name="page" type="number" min="1" step="1" value="${htmlSafe(initialParams.get("page") || "1")}"></label>
           <button class="button button-dark" type="submit">Search Diamonds</button>
         </form>
         <div class="diamond-api-note" id="diamond-api-note">Loading diamond inventory...</div>
@@ -2074,25 +2246,41 @@ async function loadDiamondInventory(params = new URLSearchParams()) {
   if (!grid || !note) return;
   note.textContent = "Loading live diamond inventory...";
   grid.innerHTML = "";
-  const minCarat = Number(params.get("minCarat") || 1);
-  const maxCarat = Number(params.get("maxCarat") || 99);
+  const minCarat = Math.max(1, Number(params.get("minCarat") || 1) || 1);
+  const maxCarat = Math.max(1, Number(params.get("maxCarat") || 99) || 99);
   const maxPrice = Number(params.get("maxPrice") || 0);
   const shape = params.get("shape") || "all";
   const color = params.get("color") || "all";
   const clarity = params.get("clarity") || "all";
   const diamondType = params.get("diamondType") || "all";
   const certificateNumber = String(params.get("certificateNumber") || "").trim().toUpperCase();
+  const page = Math.max(1, Number(params.get("page") || 1) || 1);
   let payload = {};
   try {
-    const response = await fetch("/api/diamonds", { headers: { Accept: "application/json" } });
-    const text = await response.text();
-    try {
-      payload = JSON.parse(text);
-    } catch {
-      throw new Error("Diamond inventory route did not return JSON.");
-    }
-    if (!response.ok || !Array.isArray(payload.diamonds)) throw new Error(payload.message || payload.error || "Diamond inventory unavailable.");
-    liveDiamondInventory = payload.diamonds;
+    const endpoints = diamondType === "Certified Diamond"
+      ? ["/api/diamonds/certified"]
+      : diamondType === "Certified Color Diamond"
+        ? ["/api/diamonds/certified-color"]
+        : ["/api/diamonds/certified", "/api/diamonds/certified-color"];
+    const results = await Promise.all(endpoints.map(async (endpoint) => {
+      const response = await fetch(`${endpoint}?page=${encodeURIComponent(page)}`, { headers: { Accept: "application/json" } });
+      const text = await response.text();
+      let routePayload;
+      try {
+        routePayload = JSON.parse(text);
+      } catch {
+        throw new Error("Diamond inventory route did not return JSON.");
+      }
+      if (!response.ok || !Array.isArray(routePayload.diamonds)) throw new Error(routePayload.message || routePayload.error || "Diamond inventory unavailable.");
+      return routePayload;
+    }));
+    liveDiamondInventory = results.flatMap((result) => result.diamonds || []);
+    payload = {
+      ok: liveDiamondInventory.length > 0,
+      cached: results.some((result) => result.cached),
+      message: results.find((result) => result.message)?.message || "",
+      error: results.map((result) => result.error).filter(Boolean).join(" | "),
+    };
   } catch (error) {
     note.textContent = "Live diamond inventory is being updated. Contact us for real-time diamond options.";
     grid.innerHTML = `<div class="empty-state">Live diamond inventory is being updated. Contact us for real-time diamond options.</div>`;
@@ -2107,10 +2295,11 @@ async function loadDiamondInventory(params = new URLSearchParams()) {
     const typeMatch = diamondType === "all" || String(diamond.diamondType || "") === diamondType;
     const priceMatch = !maxPrice || (numericPrice && numericPrice <= maxPrice);
     const certificateMatch = !certificateNumber || String(diamond.reportNumber || "").toUpperCase().includes(certificateNumber);
-    return shapeMatch && colorMatch && clarityMatch && typeMatch && priceMatch && certificateMatch && Number(diamond.carat) >= minCarat && Number(diamond.carat) <= maxCarat;
+    const cvdMatch = !/\bHPHT\b/i.test(`${diamond.growthMethod || ""} ${diamond.diamondType || ""}`) && /\bCVD\b/i.test(`${diamond.growthMethod || "CVD"} ${diamond.diamondType || ""}`);
+    return shapeMatch && colorMatch && clarityMatch && typeMatch && priceMatch && certificateMatch && cvdMatch && Number(diamond.carat) >= minCarat && Number(diamond.carat) <= maxCarat;
   });
   const cacheText = payload.cached ? " Showing cached inventory while the live feed refreshes." : "";
-  note.textContent = payload.message || `Live diamond inventory loaded. Showing ${diamonds.length} of ${liveDiamondInventory.length} diamonds.${cacheText}`;
+  note.textContent = payload.message || `Live diamond inventory loaded. Page ${page}. Showing ${diamonds.length} of ${liveDiamondInventory.length} diamonds.${cacheText}`;
   grid.innerHTML = diamonds.length
     ? diamonds.map(diamondInventoryCard).join("")
     : `<div class="empty-state">${payload.message || "No diamonds matched that search. Submit a request for a custom diamond match."}</div>`;
@@ -2122,7 +2311,7 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
   const returnProduct = initialParams.get("returnProduct") || "";
   const filterParams = () => {
     const params = new URLSearchParams();
-    ["diamondType", "shape", "minCarat", "maxCarat", "color", "clarity", "maxPrice", "certificateNumber"].forEach((name) => {
+    ["diamondType", "shape", "minCarat", "maxCarat", "color", "clarity", "maxPrice", "certificateNumber", "page"].forEach((name) => {
       const value = form?.elements[name]?.value || "";
       if (value) params.set(name, value);
     });
@@ -2210,24 +2399,15 @@ function productDetail(id) {
           ${productBadges(product)}
           ${diamondOriginNote(product)}
           ${engagementCertificationNote(product)}
-          ${product.note ? `<p class="video-preview-note">${product.note}</p>` : ""}
           ${productFields(product).map(([label, values]) => optionGroup(label, values, product)).join("")}
           <div class="builder-actions">
-            <a class="button button-gold" href="mailto:${contactEmail}?subject=Request%20Quote%20/%20Message%20Us">Request Quote / Message Us</a>
+            <a class="button button-gold" href="${requestHref(product, "quote-message")}">Request Quote / Message Us</a>
             <a class="button button-dark" href="#/custom-orders">${product.cta}</a>
-            ${product.extraCta ? `<a class="button button-light" href="mailto:${contactEmail}?subject=Special%20Jewelry%20Request">${product.extraCta}</a>` : ""}
+            ${product.extraCta ? `<a class="button button-light" href="${requestHref(product, "special-request")}">${product.extraCta}</a>` : ""}
           </div>
           ${productActionButtons(product)}
         </div>
         <aside class="summary-panel" id="summary"></aside>
-      </section>
-      <section class="diamond-video-section">
-        <div class="section-heading">
-          <p class="eyebrow">Diamond Video</p>
-          <h2>Watch Video Preview</h2>
-          <p>Watch a close-up video of this diamond or jewelry piece before requesting a quote.</p>
-        </div>
-        <div class="diamond-video-public">${productVideo(product)}</div>
       </section>
       <section class="custom-form-section">
         <div class="section-heading">
@@ -2289,7 +2469,7 @@ function showNaturalDiamondModal() {
       <h2>Request a custom quote</h2>
       <p>Please request natural diamond pricing through direct messaging, custom design, custom stone size, or Request Quote so we can price your natural diamond selection accurately.</p>
       <div class="hero-actions">
-        <a class="button button-gold" href="mailto:${contactEmail}?subject=Natural%20Diamond%20Quote%20Request">Request Quote</a>
+        <a class="button button-gold" href="#/request/product?intent=natural-diamond-quote">Request Quote</a>
         <a class="button button-dark" href="#/custom-orders">Custom Design / Stone Size</a>
       </div>
     </div>
@@ -2362,7 +2542,7 @@ function renderSummary(product) {
       ${tennisQuote ? `<div><dt>Estimated CTW</dt><dd>${tennisQuote.caratWeight}</dd></div><div><dt>Estimated gold weight</dt><dd>${tennisQuote.goldWeight}</dd></div>` : ""}
       <div><dt>Live Diamond</dt><dd>${htmlSafe(liveDiamondLabel(liveDiamond))}</dd></div>
     </dl>
-    <a class="button button-gold" href="mailto:${contactEmail}?subject=Request%20Quote%20/%20Message%20Us">Request Quote / Message Us</a>
+    <a class="button button-gold" href="${requestHref(product, "quote-message")}">Request Quote / Message Us</a>
     <a class="button button-light" href="${liveDiamondHref}">Select Live Diamond</a>
     <div class="price-row"><span>${naturalDiamond ? "Final selected price" : "Final selected price"}</span><strong>${naturalDiamond ? "Request pricing" : money.format(price)}</strong></div>
     ${naturalDiamond ? requestPriceButton(product, "button button-gold") : stripeCheckoutButton(price)}
@@ -2593,7 +2773,7 @@ function importedProductDetail(product) {
             <div><dt>Price</dt><dd>${product.priceLabel || "Request Pricing"}</dd></div>
           </dl>
           <div class="builder-actions">
-            <a class="button button-gold" href="mailto:${contactEmail}?subject=Custom%20Quote%20Request%20-%20${encodeURIComponent(productName(product))}">Request Custom Quote</a>
+            <a class="button button-gold" href="${requestHref(product, "custom-quote")}">Request Custom Quote</a>
             <a class="button button-dark" href="#/custom-orders">Message Us for Custom Design</a>
             <a class="button button-light" href="#/request/contact">Contact The Don Jewelers & Jewelry</a>
           </div>
@@ -2660,7 +2840,7 @@ function normalizeFileName(name) {
 function csvRowForFile(rows, fileName) {
   const normalized = normalizeFileName(fileName);
   return rows.find((row) => {
-    const candidates = [row.filename, row.file, row.media, row.medianame, row.image, row.video, row.path, row.url].map(normalizeFileName);
+    const candidates = [row.filename, row.file, row.media, row.medianame, row.image, row.path, row.url].map(normalizeFileName);
     return candidates.includes(normalized);
   }) || {};
 }
@@ -2739,27 +2919,6 @@ function fileToDataUrl(file) {
   });
 }
 
-function videoThumbnail(file) {
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    video.muted = true;
-    video.src = URL.createObjectURL(file);
-    video.addEventListener("loadeddata", () => {
-      video.currentTime = Math.min(1, video.duration || 1);
-    }, { once: true });
-    video.addEventListener("seeked", () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth || 900;
-      canvas.height = video.videoHeight || 900;
-      canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(video.src);
-      resolve(canvas.toDataURL("image/jpeg", .86));
-    }, { once: true });
-    video.addEventListener("error", () => resolve(""), { once: true });
-  });
-}
-
 function renderImportDrafts(drafts) {
   const host = document.getElementById("import-drafts");
   if (!host) return;
@@ -2778,11 +2937,11 @@ function renderImportDrafts(drafts) {
         <div class="builder-actions">
           <button class="button button-gold" type="button" data-approve="${index}">Approve Listing</button>
           <button class="button button-light" type="button" data-remove-draft="${index}">Remove Draft</button>
-          <a class="button button-dark" href="mailto:${contactEmail}?subject=Custom%20Quote%20Request%20-%20${encodeURIComponent(draft.name)}">Request Custom Quote</a>
+          <a class="button button-dark" href="#/request/product?product=${encodeURIComponent(draft.name)}&category=${encodeURIComponent(draft.category || "Product Inquiry")}&intent=custom-quote">Request Custom Quote</a>
         </div>
       </div>
     </article>
-  `).join("") : `<div class="empty-state">Upload images/videos or paste CSV rows to create draft listings for review.</div>`;
+  `).join("") : `<div class="empty-state">Upload images or paste CSV rows to create draft listings for review.</div>`;
 }
 
 function updateDraftFromForm(drafts, card) {
@@ -2811,17 +2970,19 @@ function wireRequestForm(formId, successText) {
     if (error) error.hidden = true;
     try {
       const payload = requestPayloadFromForm(form);
+      await sendWebsiteRequest(payload);
       savePendingRequest(payload);
       if (success) {
         success.hidden = false;
-        success.textContent = `${successText} This website saved the request in this browser for follow-up review.`;
+        success.textContent = `${successText} A notification was sent to The Don Jewelers & Jewelry.`;
       }
       form.reset();
     } catch (submitError) {
-      savePendingRequest(requestPayloadFromForm(form));
+      const fallbackPayload = requestPayloadFromForm(form);
+      savePendingRequest(fallbackPayload);
       if (error) {
         error.hidden = false;
-        error.textContent = "Your request was saved in this browser for follow-up review.";
+        error.textContent = `${submitError.message || "Email notification could not be sent."} Your request was saved in this browser for follow-up review.`;
       }
     } finally {
       if (button) {
@@ -2886,6 +3047,59 @@ function savePendingRequest(payload) {
   pending.unshift({ ...payload, savedAt: new Date().toISOString() });
   localStorage.setItem("donPendingCustomRequests", JSON.stringify(pending.slice(0, 50)));
 }
+
+async function sendWebsiteRequest(payload) {
+  const response = await fetch("/api/send-request", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.ok === false) {
+    throw new Error(data.message || "Email notification could not be sent.");
+  }
+  return data;
+}
+
+function sendStripeStartAlert(link) {
+  const payableItems = payableCartItems();
+  const total = Number(link.dataset.stripeTotal || cartTotal(payableItems) || 0);
+  const payload = {
+    type: "Stripe checkout started",
+    source: location.href,
+    customer: {},
+    jewelry: {
+      requestType: "Stripe checkout started",
+      productName: link.dataset.stripeProduct || "Cart checkout",
+      productCategory: "Checkout",
+      notes: cart.length
+        ? cart.map((item) => `${item.name} - ${item.pricingNote || money.format(item.price)} - ${Object.entries(item.selections || {}).map(([key, value]) => `${key}: ${value}`).join(" | ")}`).join("\n")
+        : "Customer clicked Stripe checkout from the website.",
+    },
+    checkout: {
+      provider: "Stripe Payment Link",
+      estimatedTotal: total > 0 ? money.format(total) : "Not available",
+      paymentLink: stripePaymentLink,
+      note: "This alert confirms the customer clicked the Stripe payment button. Confirm completed payment inside Stripe or add a Stripe webhook for completed-payment emails.",
+    },
+  };
+  const body = JSON.stringify(payload);
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/send-request", new Blob([body], { type: "application/json" }));
+    return;
+  }
+  fetch("/api/send-request", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: true,
+  }).catch(() => {});
+}
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("[data-stripe-checkout]");
+  if (link) sendStripeStartAlert(link);
+});
 
 function choiceGroup(label, name, options, wide = false) {
   return `
@@ -2956,10 +3170,11 @@ function requestTypeToCategory(requestType) {
 function customRequestForm({ formId, requestType = "Request Custom Design Form", productCategory = "", productName = "" }) {
   const category = productCategory || requestTypeToCategory(requestType);
   return `
-    <form class="custom-order-form engagement-build-form" id="${formId}" data-request-type="${requestType}" data-product-category="${category}" data-product-name="${productName}">
+    <form class="custom-order-form engagement-build-form" id="${formId}" data-request-type="${htmlSafe(requestType)}" data-product-category="${htmlSafe(category)}" data-product-name="${htmlSafe(productName)}">
       <label>Full Name<input name="fullName" autocomplete="name" required></label>
       <label>Email Address<input name="email" type="email" autocomplete="email" required></label>
       <label>Phone Number<input name="phone" type="tel" autocomplete="tel" required></label>
+      ${productName ? `<label class="form-wide">Product<input name="productName" value="${htmlSafe(productName)}" readonly></label>` : ""}
       <label>Product Category
         <select name="productCategory">
           ${quoteCategories.map((item) => `<option ${item === requestType ? "selected" : ""}>${item}</option>`).join("")}
@@ -3016,17 +3231,25 @@ const requestPageTypes = {
   design: "Request Custom Design Form",
 };
 
-function customRequestPage(slug) {
+function customRequestPage(slug, params = new URLSearchParams()) {
   const requestType = requestPageTypes[slug] || "General Contact Form";
+  const productName = params.get("product") || "";
+  const productCategory = params.get("category") || "";
+  const intent = params.get("intent") || "";
+  const detail = productName
+    ? `Request for ${productName}${intent ? ` (${intent.replace(/-/g, " ")})` : ""}.`
+    : "Submit your details and inspiration photos.";
   shell(`
     <main>
-      ${pageHero("Custom Quote", requestType, "Submit your details and inspiration photos. Every request saves to the website system and is routed to The Don Jewelers & Jewelry for follow-up.")}
+      ${pageHero("Custom Quote", requestType, `${detail} Every request is routed to The Don Jewelers & Jewelry for follow-up.`)}
       <section class="custom-form-section">
-        ${customRequestForm({ formId: "request-form", requestType })}
+        ${customRequestForm({ formId: "request-form", requestType, productCategory, productName })}
       </section>
       ${aboutUs()}
     </main>
   `);
+  const notes = document.querySelector("#request-form textarea[name='notes']");
+  if (notes && productName) notes.value = `I am requesting ${intent ? intent.replace(/-/g, " ") : "information"} for ${productName}.`;
   wireRequestForm("request-form", "Thank you for your submission. Your request has been received and is currently under review. We will contact you regarding pricing, design details, and next steps.");
 }
 
@@ -3149,7 +3372,7 @@ function adminDashboard() {
             <div><dt>Products</dt><dd>${allProducts().length}</dd></div>
             <div><dt>Diamond records</dt><dd>${liveDiamondInventory.length}</dd></div>
           </dl>
-          <p class="quote-note">Confirm live API and payment processor settings in Vercel and Stripe before going live.</p>
+          <p class="quote-note">Confirm live inventory and payment processor settings before going live.</p>
         </article>
       `;
   };
@@ -3301,7 +3524,7 @@ function paymentStatusPage(status) {
         <div class="hero-actions">
           <a class="button button-gold" href="#/cart">Return to Cart</a>
           <a class="button button-dark" href="#/checkout">Checkout Details</a>
-          <a class="button button-light" href="mailto:${contactEmail}?subject=Order%20Payment%20Support">Email Support</a>
+          <a class="button button-light" href="#/request/contact?intent=order-payment-support">Email Support</a>
         </div>
       `)}
       ${aboutUs()}
@@ -3446,7 +3669,7 @@ function router() {
   if (path === "select-diamond") return diamondInventoryPage(params);
   if (path === "products") return productGrid(allProducts(), "Shop All Luxury Jewelry with The Don");
   if (path === "admin") return adminDashboard();
-  if (parts[0] === "request") return customRequestPage(parts[1]);
+  if (parts[0] === "request") return customRequestPage(parts[1], params);
   if (parts[0] === "category") return category(parts[1]);
   if (parts[0] === "product") return productDetail(parts[1]);
   if (path === "custom-orders") return customOrders();

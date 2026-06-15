@@ -221,7 +221,7 @@ async function fetchFeed(feed, page = 1) {
 
 function routeFeed(feed) {
   return async function handler(req, res) {
-    const page = Math.max(1, Number(new URL(req.url, "https://the-don-jewelers.local").searchParams.get("page") || 1) || 1);
+    const page = Math.max(1, Number(new URL(req.url, "http://localhost").searchParams.get("page") || 1) || 1);
     const missing = missingEnv(feed);
     if (missing.length) {
       sendJson(res, 500, {

@@ -3,7 +3,6 @@
 node_modules/
 server-runtime.log
 *.zip
-_vercel_*/
-_vercel_ready_export*/
+_*/
 _project_export*/
 _zip_under_25mb/

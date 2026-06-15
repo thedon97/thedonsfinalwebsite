@@ -5,6 +5,10 @@ const path = require("path");
 const root = path.resolve(__dirname);
 const preferredPort = Number(process.env.PORT || 4173);
 const diamondHandler = require("./api/diamonds");
+const diamondCertifiedHandler = require("./api/diamonds/certified");
+const diamondCertifiedColorHandler = require("./api/diamonds/certified-color");
+const testDiamondHandler = require("./api/test-diamond-api");
+const sendRequestHandler = require("./api/send-request");
 const types = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -34,6 +38,65 @@ function resolveFile(req) {
 }
 
 const server = http.createServer((req, res) => {
+  if (req.url.startsWith("/api/send-request")) {
+    sendRequestHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Cache-Control", "no-store");
+      res.end(JSON.stringify({
+        ok: false,
+        message: error?.message || "Request notification could not be sent.",
+      }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/test-diamond-api")) {
+    testDiamondHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
+      res.end(JSON.stringify({
+        ok: false,
+        message: "Diamond API test route is unavailable.",
+        error: error?.message || "Diamond API test failed.",
+      }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/diamonds/certified-color")) {
+    diamondCertifiedColorHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
+      res.end(JSON.stringify({
+        ok: false,
+        diamonds: [],
+        count: 0,
+        message: "Live diamond inventory is being updated. Contact us for real-time diamond options.",
+        error: error?.message || "Certified color diamond API unavailable.",
+      }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/diamonds/certified")) {
+    diamondCertifiedHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
+      res.end(JSON.stringify({
+        ok: false,
+        diamonds: [],
+        count: 0,
+        message: "Live diamond inventory is being updated. Contact us for real-time diamond options.",
+        error: error?.message || "Certified diamond API unavailable.",
+      }));
+    });
+    return;
+  }
+
   if (req.url.startsWith("/api/diamonds")) {
     diamondHandler(req, res).catch((error) => {
       res.statusCode = 200;
