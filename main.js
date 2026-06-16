@@ -2416,16 +2416,43 @@ function customOrderBand() {
 }
 
 function home() {
+  const heroProductIds = [
+    "silver-cross-chain",
+    "build-your-own-diamond-tennis-chain",
+    "rose-two-tone-flower-diamond-pendants",
+    "ruby-accent-crucifix-cross-pendant",
+    "saint-michael-diamond-angel-pendant",
+    "yellow-gold-diamond-ankh-pendant",
+    "large-round-diamond-cross-pendant",
+    "celeste-bezel-diamond-station-bracelet",
+    "lumiere-pearl-paperclip-bracelet",
+    "fleur-diamond-cluster-station-bracelet",
+    "celeste-bezel-diamond-station-anklet",
+    "lumiere-pearl-paperclip-anklet",
+    "queen-aurelia-oval-marquise-ring",
+    "marquise-crown-diamond-engagement-ring",
+    "rose-three-stone-diamond-engagement-ring",
+    "classic-marquise-engagement-ring",
+  ];
+  const heroProducts = heroProductIds.map((id) => allProducts().find((product) => product.id === id)).filter(Boolean);
   shell(`
     <main>
       <section class="hero">
+        <div class="hero-rotator" aria-label="Featured jewelry pieces">
+          ${heroProducts.map((product, index) => `
+            <a class="hero-slide" href="#/product/${product.id}" style="animation-delay: ${index * 3}s">
+              <img src="${productImageSrc(product)}" alt="${product.alt || productName(product)}" ${imageSafety}>
+              <span>${productName(product)}</span>
+            </a>
+          `).join("")}
+        </div>
         <div class="hero-content">
-          <p class="eyebrow">Luxury engagement rings and custom jewelry</p>
+          <p class="eyebrow">Custom fine jewelry</p>
           <h1>The Don Jewelers & Jewelry</h1>
-          <p>Build your engagement ring, select high-end diamond jewelry, or start a one-of-one custom order with a premium client experience from first idea to final piece.</p>
+          <p>Engagement rings, pendants, chains, bracelets, anklets, and custom pieces.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="#/build-engagement-ring">Build Your Engagement Ring</a>
-            <a class="button button-ghost" href="#/custom-orders">Message Us for Custom Design</a>
+            <a class="button button-gold" href="#/products">Shop Jewelry</a>
+            <a class="button button-ghost" href="#/custom-orders">Custom Design</a>
           </div>
         </div>
       </section>
