@@ -10,6 +10,10 @@ const diamondCertifiedColorHandler = require("./api/diamonds/certified-color");
 const diamondMatchingPairHandler = require("./api/diamonds/matching-pair");
 const diamondMatchingPairColorHandler = require("./api/diamonds/matching-pair-color");
 const jewelryHandler = require("./api/jewelry");
+const productsHandler = require("./api/products");
+const jewelrySyncHandler = require("./api/admin/jewelry-sync");
+const checkoutSessionHandler = require("./api/create-checkout-session");
+const systemStatusHandler = require("./api/system-status");
 const testDiamondHandler = require("./api/test-diamond-api");
 const sendRequestHandler = require("./api/send-request");
 const types = {
@@ -41,6 +45,26 @@ function resolveFile(req) {
 }
 
 const server = http.createServer((req, res) => {
+  if (req.url.startsWith("/api/create-checkout-session")) {
+    checkoutSessionHandler(req, res);
+    return;
+  }
+
+  if (req.url.startsWith("/api/system-status")) {
+    systemStatusHandler(req, res);
+    return;
+  }
+
+  if (req.url.startsWith("/api/admin/jewelry-sync")) {
+    jewelrySyncHandler(req, res);
+    return;
+  }
+
+  if (req.url.startsWith("/api/products")) {
+    productsHandler(req, res);
+    return;
+  }
+
   if (req.url.startsWith("/api/send-request")) {
     sendRequestHandler(req, res).catch((error) => {
       res.statusCode = 200;

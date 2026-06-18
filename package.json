@@ -7,7 +7,11 @@
     "build": "echo Build complete",
     "dev": "node preview-server.js",
     "start": "node preview-server.js",
-    "check": "node --check main.js && node --check preview-server.js && node --check api/diamonds.js && node --check api/_diamond-utils.js && node --check api/_live-inventory-utils.js && node --check api/jewelry.js && node --check api/diamonds/certified.js && node --check api/diamonds/certified-color.js && node --check api/diamonds/matching-pair.js && node --check api/diamonds/matching-pair-color.js && node --check api/test-diamond-api.js && node --check api/send-request.js",
+    "check": "node --check main.js && node --check preview-server.js && node --check api/_db.js && node --check api/_http.js && node --check api/_product-store.js && node --check api/_inventory-cache.js && node --check api/_jewelry-sync.js && node --check api/products.js && node --check api/system-status.js && node --check api/create-checkout-session.js && node --check api/admin/jewelry-sync.js && node --check api/cron/jewelry-sync.js && node --check api/diamonds.js && node --check api/_diamond-utils.js && node --check api/_live-inventory-utils.js && node --check api/jewelry.js && node --check api/diamonds/certified.js && node --check api/diamonds/certified-color.js && node --check api/diamonds/matching-pair.js && node --check api/diamonds/matching-pair-color.js && node --check api/test-diamond-api.js && node --check api/send-request.js",
     "validate": "echo Validation skipped"
+  },
+  "dependencies": {
+    "pg": "^8.21.0",
+    "stripe": "^22.2.1"
   }
 }

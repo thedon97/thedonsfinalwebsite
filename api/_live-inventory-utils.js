@@ -10,6 +10,7 @@ const snapshots = {
   "matching-pair": require("./data/matching-pair.json"),
   "matching-pair-color": require("./data/matching-pair-color.json"),
 };
+const { getInventoryCache, setInventoryCache } = require("./_inventory-cache");
 
 const cache = {
   jewelry: { items: snapshots.jewelry.items || [], fetchedAt: 0, vendorTotal: snapshots.jewelry.vendorTotal || 0 },
@@ -97,6 +98,7 @@ function jewelryCategory(raw) {
   if (/RING|BAND/.test(category)) {
     if (/\bMEN'?S?\b|GENT|MENS/.test(details)) return /WEDDING|BAND/.test(details) ? "Wedding Bands" : "Men's Rings";
     if (/WEDDING/.test(details)) return "Wedding Bands";
+    if (/ENGAGEMENT|SOLITAIRE|HALO|BRIDAL/.test(details)) return "Engagement Rings";
     if (/ETERNITY|BAND/.test(details)) return "Women's Rings";
     return "Women's Rings";
   }
@@ -194,7 +196,7 @@ async function fetchVendor(feed, page = 1) {
   if (!rows.length) throw new Error(payload?.message || `LGD ${feed} feed returned no inventory rows.`);
   const items = feed === "jewelry"
     ? rows
-      .filter((raw) => /^CVD$/i.test(String(raw.Growth_Type || "").trim()) && Number(raw.Price) > 0)
+      .filter((raw) => /^CVD$/i.test(String(raw.Growth_Type || "").trim()))
       .map(normalizeJewelry)
     : rows
       .filter((raw) => /^CVD$/i.test(String(raw.Brand || raw.Growth_Type || "").trim()))
@@ -204,13 +206,24 @@ async function fetchVendor(feed, page = 1) {
 
 async function inventory(feed, forceRefresh = false) {
   const stored = cache[feed];
-  if (!forceRefresh && stored.fetchedAt === 0) return { ...stored, cached: true, snapshot: true };
+  if (feed !== "jewelry" && !forceRefresh) {
+    const persistent = await getInventoryCache(`${feed}:1`);
+    if (persistent?.payload?.items?.length) {
+      return { ...persistent.payload, cached: true, persistent: true };
+    }
+  }
+  if (feed === "jewelry" && !forceRefresh && stored.fetchedAt === 0) return { ...stored, cached: true, snapshot: true };
   if (!forceRefresh && stored.items.length && Date.now() - stored.fetchedAt < CACHE_TTL_MS) return { ...stored, cached: true };
   try {
     const result = await fetchVendor(feed, 1);
     cache[feed] = { items: result.items, fetchedAt: Date.now(), vendorTotal: result.vendorTotal };
+    if (feed !== "jewelry") await setInventoryCache(`${feed}:1`, cache[feed], CACHE_TTL_MS / 1000);
     return { ...cache[feed], cached: false };
   } catch (error) {
+    if (feed !== "jewelry") {
+      const stale = await getInventoryCache(`${feed}:1`, { allowStale: true });
+      if (stale?.payload?.items?.length) return { ...stale.payload, cached: true, persistent: true, stale: true, error: error.message };
+    }
     if (stored.items.length) return { ...stored, cached: true, stale: true, error: error.message };
     throw error;
   }

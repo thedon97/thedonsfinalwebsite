@@ -1,5 +1,6 @@
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const FALLBACK_MESSAGE = "Live diamond inventory is being updated. Contact us for real-time diamond options.";
+const { getInventoryCache, setInventoryCache } = require("./_inventory-cache");
 
 const feedCache = {
   certified: { diamonds: [], fetchedAt: 0, error: "" },
@@ -237,6 +238,21 @@ function routeFeed(feed) {
 
     const cache = feedCache[feed];
     const now = Date.now();
+    const persistent = await getInventoryCache(`${feed}:${page}`);
+    if (persistent?.payload?.diamonds?.length) {
+      sendJson(res, 200, {
+        ok: true,
+        cached: true,
+        persistent: true,
+        feed,
+        page,
+        count: persistent.payload.diamonds.length,
+        diamonds: persistent.payload.diamonds,
+        fetchedAt: persistent.fetchedAt,
+        message: "",
+      });
+      return;
+    }
     if (cache.diamonds.length && now - cache.fetchedAt < CACHE_TTL_MS) {
       sendJson(res, 200, {
         ok: true,
@@ -274,6 +290,7 @@ function routeFeed(feed) {
       }
 
       feedCache[feed] = { diamonds: result.diamonds, fetchedAt: Date.now(), error: "" };
+      await setInventoryCache(`${feed}:${page}`, { diamonds: result.diamonds }, CACHE_TTL_MS / 1000);
       sendJson(res, 200, {
         ok: true,
         cached: false,
@@ -285,6 +302,23 @@ function routeFeed(feed) {
         message: "",
       });
     } catch (error) {
+      const stalePersistent = await getInventoryCache(`${feed}:${page}`, { allowStale: true });
+      if (stalePersistent?.payload?.diamonds?.length) {
+        sendJson(res, 200, {
+          ok: true,
+          cached: true,
+          persistent: true,
+          stale: true,
+          feed,
+          page,
+          count: stalePersistent.payload.diamonds.length,
+          diamonds: stalePersistent.payload.diamonds,
+          fetchedAt: stalePersistent.fetchedAt,
+          message: FALLBACK_MESSAGE,
+          error: error?.message || FALLBACK_MESSAGE,
+        });
+        return;
+      }
       if (cache.diamonds.length) {
         sendJson(res, 200, {
           ok: true,
