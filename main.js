@@ -2283,6 +2283,23 @@ function shell(main) {
     ${footer()}
   `;
   wireSidebar();
+  hydrateDeferredImages();
+}
+
+function hydrateDeferredImages() {
+  const images = [...document.querySelectorAll("img[data-deferred-src]")];
+  const loadNext = () => {
+    const image = images.shift();
+    if (!image) return;
+    image.src = image.dataset.deferredSrc;
+    image.removeAttribute("data-deferred-src");
+    window.setTimeout(loadNext, 180);
+  };
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(loadNext, { timeout: 1000 });
+  } else {
+    window.setTimeout(loadNext, 300);
+  }
 }
 
 function footer() {
@@ -2457,7 +2474,7 @@ function home() {
         <div class="hero-rotator" aria-label="Featured jewelry pieces">
           ${heroProducts.map((product, index) => `
             <a class="hero-slide" href="#/product/${product.id}" style="animation-delay: ${index * 3}s">
-              <img src="${productImageSrc(product)}" alt="${product.alt || productName(product)}" ${imageSafety}>
+              <img ${index === 0 ? `src="${productImageSrc(product)}" loading="eager" fetchpriority="high"` : `data-deferred-src="${productImageSrc(product)}" loading="lazy" fetchpriority="low"`} decoding="async" alt="${product.alt || productName(product)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
               <span>${productName(product)}</span>
             </a>
           `).join("")}
