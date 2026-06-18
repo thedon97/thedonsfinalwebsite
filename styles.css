@@ -1198,36 +1198,11 @@ dd { margin: 0; font-weight: 850; text-align: right; }
 }
 .empty-state { padding: 28px; border: 1px dashed var(--line); border-radius: 8px; background: var(--soft); }
 
-.live-jewelry-section,
-.live-detail-shell {
+.catalog-detail-shell {
   padding: 64px 5vw;
 }
 
-.live-jewelry-section .section-heading {
-  max-width: 760px;
-}
-
-.live-inventory-card {
-  position: relative;
-  border-color: rgba(173, 132, 53, 0.42);
-}
-
-.live-inventory-card::before {
-  content: "LIVE";
-  position: absolute;
-  z-index: 2;
-  top: 12px;
-  right: 12px;
-  padding: 6px 9px;
-  border-radius: 999px;
-  background: #15120d;
-  color: #f4d98a;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.live-price {
+.product-detail-price {
   margin: 12px 0;
   color: var(--gold-dark);
   font-family: Georgia, serif;
@@ -1235,7 +1210,7 @@ dd { margin: 0; font-weight: 850; text-align: right; }
   font-weight: 700;
 }
 
-.live-image-placeholder {
+.product-image-placeholder {
   display: grid;
   min-height: 280px;
   place-items: center;
@@ -1245,6 +1220,10 @@ dd { margin: 0; font-weight: 850; text-align: right; }
   font-family: Georgia, serif;
   font-size: 1.3rem;
   text-align: center;
+}
+
+.catalog-feed-controls {
+  padding: 0 5vw 54px;
 }
 
 .inventory-pagination {
@@ -1296,7 +1275,7 @@ dd { margin: 0; font-weight: 850; text-align: right; }
   margin-bottom: 18px;
 }
 
-.live-jewelry-detail {
+.catalog-jewelry-detail {
   padding: 0;
 }
 .checkout-placeholder { max-width: 820px; margin: clamp(34px,8vw,84px) auto; padding: clamp(28px,5vw,58px); text-align: center; }
