@@ -1,19 +1,26 @@
 const CACHE_TTL_MS = 15 * 60 * 1000;
+const FETCH_TIMEOUT_MS = 8000;
 const JEWELRY_MARKUP = 1.35;
 const DEFAULT_JEWELRY_URL = "https://lgdusallc.com/developer-api/jewelry?type=all";
 const DEFAULT_MATCHING_PAIR_URL = "https://lgdusallc.com/developer-api/diamond?type=matching_pair";
 const DEFAULT_COLOR_PAIR_URL = "https://lgdusallc.com/developer-api/diamond?type=matching_pair_color";
 
+const snapshots = {
+  jewelry: require("./data/jewelry.json"),
+  "matching-pair": require("./data/matching-pair.json"),
+  "matching-pair-color": require("./data/matching-pair-color.json"),
+};
+
 const cache = {
-  jewelry: { items: [], fetchedAt: 0 },
-  "matching-pair": { items: [], fetchedAt: 0 },
-  "matching-pair-color": { items: [], fetchedAt: 0 },
+  jewelry: { items: snapshots.jewelry.items || [], fetchedAt: 0, vendorTotal: snapshots.jewelry.vendorTotal || 0 },
+  "matching-pair": { items: snapshots["matching-pair"].items || [], fetchedAt: 0, vendorTotal: snapshots["matching-pair"].vendorTotal || 0 },
+  "matching-pair-color": { items: snapshots["matching-pair-color"].items || [], fetchedAt: 0, vendorTotal: snapshots["matching-pair-color"].vendorTotal || 0 },
 };
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
+  res.setHeader("Cache-Control", "public, s-maxage=900, stale-while-revalidate=604800");
   res.end(JSON.stringify(payload));
 }
 
@@ -167,7 +174,14 @@ function normalizePair(raw, colorPair) {
 }
 
 async function fetchVendor(feed, page = 1) {
-  const response = await fetch(feedUrl(feed, page), { headers: { Accept: "application/json" } });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  let response;
+  try {
+    response = await fetch(feedUrl(feed, page), { headers: { Accept: "application/json" }, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
   const text = await response.text();
   let payload;
   try {
@@ -188,9 +202,10 @@ async function fetchVendor(feed, page = 1) {
   return { items, vendorTotal: Number(payload?.total_results) || rows.length };
 }
 
-async function inventory(feed) {
+async function inventory(feed, forceRefresh = false) {
   const stored = cache[feed];
-  if (stored.items.length && Date.now() - stored.fetchedAt < CACHE_TTL_MS) return { ...stored, cached: true };
+  if (!forceRefresh && stored.fetchedAt === 0) return { ...stored, cached: true, snapshot: true };
+  if (!forceRefresh && stored.items.length && Date.now() - stored.fetchedAt < CACHE_TTL_MS) return { ...stored, cached: true };
   try {
     const result = await fetchVendor(feed, 1);
     cache[feed] = { items: result.items, fetchedAt: Date.now(), vendorTotal: result.vendorTotal };
@@ -244,7 +259,7 @@ function routeInventory(feed) {
       const params = new URL(req.url, "http://localhost").searchParams;
       const page = Math.max(1, Number(params.get("page")) || 1);
       const limit = Math.min(48, Math.max(1, Number(params.get("limit")) || 24));
-      const result = await inventory(feed);
+      const result = await inventory(feed, params.get("refresh") === "1");
       const filtered = queryItems(result.items, params, feed);
       const paged = paginate(filtered, page, limit);
       sendJson(res, 200, {
@@ -252,6 +267,7 @@ function routeInventory(feed) {
         feed,
         cached: result.cached,
         stale: result.stale || false,
+        snapshot: result.snapshot || false,
         ...paged,
         items: paged.items,
         message: "",

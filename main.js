@@ -12,7 +12,7 @@ const serviceArea = "Pennsylvania, New Jersey, New York, and nationwide shipping
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const asset = (name) => `./${name}`;
 const fallbackImage = "don-logo.jpg";
-const imageSafety = `loading="eager" decoding="async" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
+const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
 
 const baseCarats = [
@@ -2078,6 +2078,20 @@ function safeExternalUrl(value) {
   return /^https?:\/\//i.test(url) ? url : "";
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...options,
+      headers: { Accept: "application/json", ...(options.headers || {}) },
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
 function selectedLiveDiamondFor(productId) {
   try {
     return JSON.parse(localStorage.getItem(`donLiveDiamond:${productId}`) || "null");
@@ -2582,7 +2596,7 @@ function category(slug) {
   }[slug];
   const catalogControls = liveCategory ? `
     <div class="catalog-feed-controls">
-      <div class="diamond-api-note" id="catalog-feed-note">Loading more products...</div>
+      <div class="diamond-api-note" id="catalog-feed-note" hidden></div>
       <div class="inventory-pagination" id="catalog-feed-pagination"></div>
     </div>
   ` : "";
@@ -2624,11 +2638,11 @@ async function loadCatalogFeed(categoryName, page = 1) {
   const note = document.getElementById("catalog-feed-note");
   const pagination = document.getElementById("catalog-feed-pagination");
   if (!grid || !note || !pagination) return;
-  note.hidden = false;
-  note.textContent = "Loading more products...";
+  note.hidden = true;
+  note.textContent = "";
   try {
     const params = new URLSearchParams({ category: categoryName, page: String(page), limit: "24" });
-    const response = await fetch(`/api/jewelry?${params}`, { headers: { Accept: "application/json" } });
+    const response = await fetchWithTimeout(`/api/jewelry?${params}`);
     const payload = await response.json();
     if (!payload.ok || !Array.isArray(payload.items)) throw new Error(payload.message || "Live jewelry unavailable.");
     liveJewelryInventory = payload.items;
@@ -2668,7 +2682,7 @@ async function catalogJewelryDetail(stockNumber) {
   `);
   const container = document.getElementById("catalog-jewelry-detail");
   try {
-    const response = await fetch(`/api/jewelry?stock=${encodeURIComponent(stockNumber)}&limit=1`, { headers: { Accept: "application/json" } });
+    const response = await fetchWithTimeout(`/api/jewelry?stock=${encodeURIComponent(stockNumber)}&limit=1`);
     const payload = await response.json();
     const product = payload.items?.[0];
     if (!payload.ok || !product) throw new Error("Piece unavailable.");
@@ -3059,7 +3073,7 @@ async function loadDiamondInventory(params = new URLSearchParams()) {
         if (maxCarat < 99) apiParams.set("maxCarat", String(maxCarat));
         if (certificateNumber) apiParams.set("search", certificateNumber);
       }
-      const response = await fetch(`${endpoint}?${apiParams}`, { headers: { Accept: "application/json" } });
+      const response = await fetchWithTimeout(`${endpoint}?${apiParams}`);
       const text = await response.text();
       let routePayload;
       try {
