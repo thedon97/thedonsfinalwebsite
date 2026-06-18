@@ -7,7 +7,7 @@
     "build": "echo Build complete",
     "dev": "node preview-server.js",
     "start": "node preview-server.js",
-    "check": "node --check main.js && node --check preview-server.js && node --check api/diamonds.js && node --check api/_diamond-utils.js && node --check api/diamonds/certified.js && node --check api/diamonds/certified-color.js && node --check api/test-diamond-api.js && node --check api/send-request.js",
+    "check": "node --check main.js && node --check preview-server.js && node --check api/diamonds.js && node --check api/_diamond-utils.js && node --check api/_live-inventory-utils.js && node --check api/jewelry.js && node --check api/diamonds/certified.js && node --check api/diamonds/certified-color.js && node --check api/diamonds/matching-pair.js && node --check api/diamonds/matching-pair-color.js && node --check api/test-diamond-api.js && node --check api/send-request.js",
     "validate": "echo Validation skipped"
   }
 }

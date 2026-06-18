@@ -2158,6 +2158,7 @@ function startingText(product) {
 
 const categories = [
   ["select-diamond", "Live Diamond Selection", "diamond-banner.jpg"],
+  ["matching-pairs", "Matching Diamond Pairs", "round-diamond-studs.jpeg"],
   ["engagement-rings", "Engagement Rings", "pink-oval-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-round-diamond-filigree-wedding-band.jpg"],
   ["mens-rings", "Men's Rings", "ring-product-black-07.png"],
@@ -2179,6 +2180,8 @@ let selections = {};
 let approvedPreviewProducts = [];
 const splashStartedAt = Date.now();
 let liveDiamondInventory = [];
+let liveJewelryInventory = [];
+let liveMatchingPairInventory = [];
 
 function numericPrice(value) {
   const amount = Number(value);
@@ -2229,6 +2232,7 @@ function navLinks() {
     <a href="#/">Home</a>
     <a href="#/category/engagement-rings">Engagement Rings</a>
     <a href="#/select-diamond">Live Diamond Selection</a>
+    <a href="#/matching-pairs">Matching Diamond Pairs</a>
     <a href="#/category/wedding-bands">Wedding Bands</a>
     <a href="#/category/mens-rings">Men's Rings</a>
     <a href="#/category/womens-rings">Women's Rings</a>
@@ -2477,7 +2481,7 @@ function home() {
         </div>
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
-            <a class="collection-tile" href="#/${slug === "custom-orders" || slug === "select-diamond" ? slug : `category/${slug}`}">
+            <a class="collection-tile" href="#/${["custom-orders", "select-diamond", "matching-pairs"].includes(slug) ? slug : `category/${slug}`}">
               <img src="${asset(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
@@ -2495,11 +2499,12 @@ function home() {
   `);
 }
 
-function productGrid(list, title, body = "", action = "") {
+function productGrid(list, title, body = "", action = "", afterGrid = "") {
   shell(`
     <main>
       ${pageHero("Jewelry Marketplace", title, body, action)}
       <section class="product-grid">${list.map(productCard).join("")}</section>
+      ${afterGrid}
       ${aboutUs()}
     </main>
   `);
@@ -2511,6 +2516,7 @@ function productMatchesCategory(product, label) {
 
 function category(slug) {
   if (slug === "select-diamond") return diamondInventoryPage();
+  if (slug === "matching-pairs") return matchingPairsPage();
   const categoryLabels = {
     "tennis-bracelets": "Tennis Bracelets",
     "mens-rings": "Men's Rings",
@@ -2565,7 +2571,142 @@ function category(slug) {
       ? `<a class="button button-gold" href="#/product/build-your-own-diamond-tennis-chain">Build Your Tennis Chain</a>`
       : "";
   const body = slug === "engagement-rings" ? "All engagement rings include IGI or GIA certified diamond paperwork and an appraisal for the ring itself." : "";
-  productGrid(slug === "engagement-rings" ? engagementFirst(list) : list, names[slug] || `Shop ${label || "All Luxury Jewelry"} with The Don`, body, action);
+  const liveCategory = {
+    "wedding-bands": "Wedding Bands",
+    "mens-rings": "Men's Rings",
+    "womens-rings": "Women's Rings",
+    "mens-earrings": "Men's Earrings",
+    "womens-earrings": "Women's Earrings",
+    necklaces: "Necklaces",
+    chains: "Chains",
+    bracelets: "Bracelets",
+    anklets: "Anklets",
+    "pendants-charms": "Pendants / Charms",
+  }[slug];
+  const liveSection = liveCategory ? `
+    <section class="live-jewelry-section">
+      <div class="section-heading">
+        <p class="eyebrow">Live CVD Jewelry</p>
+        <h2>More ${htmlSafe(liveCategory)} available now</h2>
+        <p>Current CVD lab-grown diamond jewelry from our live sourcing network. HPHT pieces are excluded, and displayed prices include our 35% retail markup.</p>
+      </div>
+      <div class="diamond-api-note" id="live-jewelry-note">Loading live CVD jewelry...</div>
+      <div class="product-grid live-jewelry-grid" id="live-jewelry-grid"></div>
+      <div class="inventory-pagination" id="live-jewelry-pagination"></div>
+    </section>
+  ` : "";
+  productGrid(slug === "engagement-rings" ? engagementFirst(list) : list, names[slug] || `Shop ${label || "All Luxury Jewelry"} with The Don`, body, action, liveSection);
+  if (liveCategory) wireLiveJewelryCategory(liveCategory);
+}
+
+function liveJewelryCard(product) {
+  const imageUrl = safeExternalUrl(product.imageUrl);
+  const price = Number(product.price);
+  return `
+    <article class="product-card live-inventory-card">
+      <a href="#/live-jewelry/${encodeURIComponent(product.stockNumber)}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}">
+        ${imageUrl ? `<img src="${htmlSafe(imageUrl)}" alt="${htmlSafe(product.name)}" loading="lazy">` : `<div class="live-image-placeholder">Live CVD Jewelry</div>`}
+      </a>
+      <div class="product-card-body">
+        <p class="eyebrow">${htmlSafe(product.category)} · Live CVD</p>
+        <h3>${htmlSafe(product.name)}</h3>
+        <p class="muted">${htmlSafe(product.metal || "")}${product.diamondWeight ? ` · ${htmlSafe(product.diamondWeight)} ct total diamond weight` : ""}</p>
+        <p class="live-price">${price > 0 ? money.format(price) : "Request Pricing"}</p>
+        <p class="diamond-report-pill">${htmlSafe(product.availability || "Check availability")} · Stock # ${htmlSafe(product.stockNumber)}</p>
+        <div class="card-actions">
+          <a class="button button-dark" href="#/live-jewelry/${encodeURIComponent(product.stockNumber)}">View Details</a>
+          <a class="button button-gold" href="#/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}&intent=live-cvd-jewelry">Request Purchase</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+async function loadLiveJewelryCategory(categoryName, page = 1) {
+  const grid = document.getElementById("live-jewelry-grid");
+  const note = document.getElementById("live-jewelry-note");
+  const pagination = document.getElementById("live-jewelry-pagination");
+  if (!grid || !note || !pagination) return;
+  note.textContent = "Loading live CVD jewelry...";
+  try {
+    const params = new URLSearchParams({ category: categoryName, page: String(page), limit: "24" });
+    const response = await fetch(`/api/jewelry?${params}`, { headers: { Accept: "application/json" } });
+    const payload = await response.json();
+    if (!payload.ok || !Array.isArray(payload.items)) throw new Error(payload.message || "Live jewelry unavailable.");
+    liveJewelryInventory = payload.items;
+    grid.innerHTML = payload.items.length
+      ? payload.items.map(liveJewelryCard).join("")
+      : `<div class="empty-state">No live CVD pieces are listed in this category right now. Contact us and we will source one for you.</div>`;
+    note.textContent = `Showing ${payload.items.length} of ${payload.total} live CVD pieces. Prices include the 35% retail markup.${payload.cached ? " Inventory is cached briefly for faster browsing." : ""}`;
+    pagination.innerHTML = `
+      <button class="button button-light" type="button" data-live-page="${Math.max(1, payload.page - 1)}" ${payload.page <= 1 ? "disabled" : ""}>Previous</button>
+      <span>Page ${payload.page} of ${payload.totalPages}</span>
+      <button class="button button-light" type="button" data-live-page="${Math.min(payload.totalPages, payload.page + 1)}" ${payload.page >= payload.totalPages ? "disabled" : ""}>Next</button>
+    `;
+  } catch {
+    grid.innerHTML = `<div class="empty-state">Live CVD jewelry is being updated. Contact us for current pieces and pricing.</div>`;
+    note.textContent = "Live CVD jewelry is being updated.";
+    pagination.innerHTML = "";
+  }
+}
+
+function wireLiveJewelryCategory(categoryName) {
+  document.getElementById("live-jewelry-pagination")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-live-page]");
+    if (!button || button.disabled) return;
+    loadLiveJewelryCategory(categoryName, Number(button.dataset.livePage) || 1);
+    document.getElementById("live-jewelry-note")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  loadLiveJewelryCategory(categoryName);
+}
+
+async function liveJewelryDetail(stockNumber) {
+  shell(`
+    <main>
+      ${pageHero("Live CVD Jewelry", "Loading live jewelry details", "Current CVD-only vendor jewelry with our 35% retail markup.")}
+      <section class="live-detail-shell" id="live-jewelry-detail"><div class="diamond-api-note">Loading live piece...</div></section>
+      ${aboutUs()}
+    </main>
+  `);
+  const container = document.getElementById("live-jewelry-detail");
+  try {
+    const response = await fetch(`/api/jewelry?stock=${encodeURIComponent(stockNumber)}&limit=1`, { headers: { Accept: "application/json" } });
+    const payload = await response.json();
+    const product = payload.items?.[0];
+    if (!payload.ok || !product) throw new Error("Piece unavailable.");
+    const imageUrl = safeExternalUrl(product.imageUrl);
+    const videoUrl = safeExternalUrl(product.videoUrl);
+    const gallery = (product.gallery || []).map(safeExternalUrl).filter(Boolean);
+    container.innerHTML = `
+      <section class="product-detail-hero live-jewelry-detail">
+        <div class="product-media-stack">
+          ${imageUrl ? `<img src="${htmlSafe(imageUrl)}" alt="${htmlSafe(product.name)}">` : `<div class="live-image-placeholder">Live CVD Jewelry</div>`}
+          ${gallery.map((url) => `<img src="${htmlSafe(url)}" alt="${htmlSafe(product.name)} alternate view" loading="lazy">`).join("")}
+        </div>
+        <div>
+          <p class="eyebrow">${htmlSafe(product.category)} · Live CVD Inventory</p>
+          <h1>${htmlSafe(product.name)}</h1>
+          <p class="live-price">${product.price ? money.format(Number(product.price)) : "Request Pricing"}</p>
+          <p class="product-description">${htmlSafe(product.remarks || "A current CVD lab-grown diamond jewelry piece from our live sourcing network.")}</p>
+          <dl class="summary-list">
+            <div><dt>Stock</dt><dd>${htmlSafe(product.stockNumber)}</dd></div>
+            <div><dt>Metal</dt><dd>${htmlSafe(product.metal || "Confirm availability")}</dd></div>
+            <div><dt>Diamond shape</dt><dd>${htmlSafe(product.shape || "Mixed")}</dd></div>
+            <div><dt>Total diamond weight</dt><dd>${product.diamondWeight ? `${htmlSafe(product.diamondWeight)} ct` : "Confirm availability"}</dd></div>
+            <div><dt>Growth method</dt><dd>CVD lab-grown diamond only</dd></div>
+            <div><dt>Availability</dt><dd>${htmlSafe(product.availability)}</dd></div>
+          </dl>
+          <p class="quote-note">The displayed price includes The Don Jewelers & Jewelry's 35% retail markup. Final availability is confirmed before payment.</p>
+          <div class="builder-actions">
+            <a class="button button-gold" href="#/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}&intent=live-cvd-jewelry-${encodeURIComponent(product.stockNumber)}">Request Purchase</a>
+            ${videoUrl ? `<a class="button button-light" href="${htmlSafe(videoUrl)}" target="_blank" rel="noopener noreferrer">View Product Video</a>` : ""}
+          </div>
+        </div>
+      </section>
+    `;
+  } catch {
+    container.innerHTML = `<div class="empty-state">This live piece is no longer available or the inventory is refreshing. Contact us with stock number ${htmlSafe(stockNumber)} for help sourcing a similar CVD piece.</div>`;
+  }
 }
 
 function diamondSpecs(diamond) {
@@ -2658,6 +2799,160 @@ function diamondInventoryCard(diamond) {
   `;
 }
 
+function matchingPairCard(pair) {
+  const imageUrl = safeExternalUrl(pair.imageUrl);
+  return `
+    <article class="diamond-inventory-card matching-pair-card" data-pair-id="${htmlSafe(pair.id)}" data-stock-number="${htmlSafe(pair.stockNumber)}" data-shape="${htmlSafe(pair.shape)}" data-carat="${htmlSafe(pair.carat || "")}" data-color="${htmlSafe(pair.color)}" data-clarity="${htmlSafe(pair.clarity)}" data-certificate="${htmlSafe(pair.certificate)}" data-pair-type="${htmlSafe(pair.pairType)}">
+      ${imageUrl ? `<img class="diamond-inventory-image" src="${htmlSafe(imageUrl)}" alt="${htmlSafe(`${pair.shape || "CVD"} matching diamond pair`)}" loading="lazy">` : ""}
+      <div>
+        <p class="eyebrow">${pair.pairType === "color" ? "Colored CVD Pair" : "White CVD Pair"}</p>
+        <h3>${htmlSafe(pair.shape || "Matched")} Diamond Pair ${pair.carat ? `· ${htmlSafe(pair.carat)} ct` : ""}</h3>
+        <p class="muted">${htmlSafe([pair.color && `${pair.color} color`, pair.clarity, pair.measurements, pair.lab, pair.certificate && `Certificate ${pair.certificate}`, "CVD only"].filter(Boolean).join(" | "))}</p>
+        <p class="diamond-report-pill">${htmlSafe(pair.availability || "Check availability")} · Stock # ${htmlSafe(pair.stockNumber)}</p>
+      </div>
+      ${diamondMediaLinks(pair)}
+      <div class="builder-actions">
+        <button class="button button-gold" type="button" data-select-pair="${htmlSafe(pair.id)}">Request This Pair</button>
+      </div>
+    </article>
+  `;
+}
+
+function matchingPairsPage(initialParams = new URLSearchParams()) {
+  const selectedPairType = initialParams.get("pairType") || "white";
+  shell(`
+    <main>
+      ${pageHero("Custom Earrings & Studs", "Source a professionally matched CVD diamond pair", "Browse white or colored CVD matching pairs for custom studs and earrings. Every HPHT record is excluded from this experience.", `<a class="button button-light" href="#/select-diamond">Browse Single Certified Diamonds</a>`)}
+      <section class="diamond-inventory-section">
+        <div class="sourcing-choice-grid">
+          <button class="sourcing-choice ${selectedPairType === "white" ? "is-active" : ""}" type="button" data-pair-type-choice="white">
+            <span class="eyebrow">Classic Studs</span>
+            <strong>White Diamond Pairs</strong>
+            <span>Matched CVD stones for timeless earrings.</span>
+          </button>
+          <button class="sourcing-choice ${selectedPairType === "color" ? "is-active" : ""}" type="button" data-pair-type-choice="color">
+            <span class="eyebrow">Statement Earrings</span>
+            <strong>Colored Diamond Pairs</strong>
+            <span>Matched fancy-color CVD stones for custom designs.</span>
+          </button>
+        </div>
+        <form class="diamond-filter-bar matching-pair-filter" id="matching-pair-filter-form">
+          <input type="hidden" name="pairType" value="${htmlSafe(selectedPairType)}">
+          <label>Shape
+            <select name="shape">
+              <option value="">All shapes</option>
+              ${["Round", "Oval", "Marquise", "Radiant", "Emerald", "Pear", "Cushion", "Princess", "Asscher"].map((shape) => `<option value="${shape}">${shape}</option>`).join("")}
+            </select>
+          </label>
+          <label>Minimum pair weight<input name="minCarat" type="number" min="0" step="0.1" placeholder="Any"></label>
+          <label>Maximum pair weight<input name="maxCarat" type="number" min="0" step="0.1" placeholder="Any"></label>
+          <label>Search color, clarity, stock #<input name="search" placeholder="Example: D VVS or stock number"></label>
+          <button class="button button-dark" type="submit">Search Matching Pairs</button>
+        </form>
+        <div class="diamond-api-note" id="matching-pair-note">Loading matching pairs...</div>
+        <div class="diamond-inventory-grid" id="matching-pair-grid"></div>
+        <div class="inventory-pagination" id="matching-pair-pagination"></div>
+      </section>
+      <section class="custom-form-section">
+        <div class="section-heading">
+          <p class="eyebrow">Custom Earring Request</p>
+          <h2>Build your earrings around the selected pair</h2>
+        </div>
+        ${customRequestForm({ formId: "matching-pair-request-form", requestType: "Product Inquiry Form", productCategory: "CVD Matching Diamond Pairs", productName: "Selected matching diamond pair" })}
+      </section>
+      ${aboutUs()}
+    </main>
+  `);
+  wireMatchingPairs(initialParams);
+  wireRequestForm("matching-pair-request-form", "Thank you. Your matching-pair request has been received, and we will contact you about availability, setting choices, and pricing.");
+}
+
+async function loadMatchingPairs(params = new URLSearchParams()) {
+  const grid = document.getElementById("matching-pair-grid");
+  const note = document.getElementById("matching-pair-note");
+  const pagination = document.getElementById("matching-pair-pagination");
+  if (!grid || !note || !pagination) return;
+  note.textContent = "Loading CVD matching pairs...";
+  const pairType = params.get("pairType") === "color" ? "color" : "white";
+  const endpoint = pairType === "color" ? "/api/diamonds/matching-pair-color" : "/api/diamonds/matching-pair";
+  const apiParams = new URLSearchParams({ page: params.get("page") || "1", limit: "24" });
+  ["shape", "minCarat", "maxCarat", "search"].forEach((name) => {
+    const value = params.get(name);
+    if (value) apiParams.set(name, value);
+  });
+  try {
+    const response = await fetch(`${endpoint}?${apiParams}`, { headers: { Accept: "application/json" } });
+    const payload = await response.json();
+    if (!payload.ok || !Array.isArray(payload.items)) throw new Error(payload.message || "Matching pairs unavailable.");
+    liveMatchingPairInventory = payload.items;
+    grid.innerHTML = payload.items.length
+      ? payload.items.map(matchingPairCard).join("")
+      : `<div class="empty-state">No matching pairs fit that search. Submit the request below and we will source one.</div>`;
+    note.textContent = `Showing ${payload.items.length} of ${payload.total} ${pairType === "color" ? "colored" : "white"} CVD matching pairs. HPHT inventory is excluded.`;
+    pagination.innerHTML = `
+      <button class="button button-light" type="button" data-pair-page="${Math.max(1, payload.page - 1)}" ${payload.page <= 1 ? "disabled" : ""}>Previous</button>
+      <span>Page ${payload.page} of ${payload.totalPages}</span>
+      <button class="button button-light" type="button" data-pair-page="${Math.min(payload.totalPages, payload.page + 1)}" ${payload.page >= payload.totalPages ? "disabled" : ""}>Next</button>
+    `;
+  } catch {
+    grid.innerHTML = `<div class="empty-state">Matching-pair inventory is refreshing. Submit a request and we will source a CVD pair for you.</div>`;
+    note.textContent = "Live matching-pair inventory is being updated.";
+    pagination.innerHTML = "";
+  }
+}
+
+function wireMatchingPairs(initialParams = new URLSearchParams()) {
+  const form = document.getElementById("matching-pair-filter-form");
+  const requestForm = document.getElementById("matching-pair-request-form");
+  const currentParams = () => {
+    const params = new URLSearchParams();
+    ["pairType", "shape", "minCarat", "maxCarat", "search"].forEach((name) => {
+      const value = form?.elements[name]?.value || "";
+      if (value) params.set(name, value);
+    });
+    return params;
+  };
+  document.querySelectorAll("[data-pair-type-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      form.elements.pairType.value = button.dataset.pairTypeChoice;
+      document.querySelectorAll("[data-pair-type-choice]").forEach((choice) => choice.classList.toggle("is-active", choice === button));
+      loadMatchingPairs(currentParams());
+    });
+  });
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    loadMatchingPairs(currentParams());
+  });
+  document.getElementById("matching-pair-pagination")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-pair-page]");
+    if (!button || button.disabled) return;
+    const params = currentParams();
+    params.set("page", button.dataset.pairPage);
+    loadMatchingPairs(params);
+  });
+  document.getElementById("matching-pair-grid")?.addEventListener("click", (event) => {
+    const mediaLink = event.target.closest("[data-diamond-media-link]");
+    if (mediaLink) {
+      event.preventDefault();
+      showDiamondMediaModal({ url: mediaLink.dataset.diamondMediaLink || mediaLink.href, type: mediaLink.dataset.mediaType, label: mediaLink.textContent.trim() });
+      return;
+    }
+    const button = event.target.closest("[data-select-pair]");
+    if (!button || !requestForm) return;
+    const card = button.closest(".matching-pair-card");
+    const details = card?.innerText?.replace(/\n+/g, " | ") || button.dataset.selectPair;
+    requestForm.elements.stoneType.value = "Lab-Grown Diamond";
+    requestForm.elements.diamondShape.value = card?.dataset.shape || "";
+    requestForm.elements.caratWeight.value = card?.dataset.carat || "";
+    requestForm.elements.notes.value = `Selected CVD matching pair: ${details}`;
+    requestForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  loadMatchingPairs(new URLSearchParams({
+    pairType: initialParams.get("pairType") || "white",
+    page: initialParams.get("page") || "1",
+  }));
+}
+
 function diamondInventoryPage(initialParams = new URLSearchParams()) {
   const selectedShape = initialParams.get("shape") || "all";
   const selectedColor = initialParams.get("color") || "all";
@@ -2667,7 +2962,7 @@ function diamondInventoryPage(initialParams = new URLSearchParams()) {
   const option = (value, selected) => `<option value="${htmlSafe(value)}" ${String(value).toLowerCase() === String(selected).toLowerCase() ? "selected" : ""}>${htmlSafe(value === "all" ? "All shapes" : value)}</option>`;
   shell(`
     <main>
-      ${pageHero("Live Diamond Inventory", "Select your CVD certified diamond", "Browse loose CVD certified white diamonds and color diamonds only, 1.00 carat and above, with live specs, images, and grading reports from the vendor feed.")}
+      ${pageHero("Live Diamond Inventory", "Select your CVD certified diamond", "Browse loose CVD certified white diamonds and color diamonds only, 1.00 carat and above, with live specs, images, and grading reports from the vendor feed.", `<a class="button button-light" href="#/matching-pairs">Source a Matching Pair for Earrings</a>`)}
       <section class="diamond-inventory-section">
         <form class="diamond-filter-bar" id="diamond-filter-form">
           <label>Diamond type
@@ -4152,10 +4447,12 @@ function router() {
   if (hash === "#/" || hash === "") return home();
   if (path === "build-engagement-ring") return engagementRingBuilder();
   if (path === "select-diamond") return diamondInventoryPage(params);
+  if (path === "matching-pairs") return matchingPairsPage(params);
   if (path === "products") return productGrid(allProducts(), "Shop All Luxury Jewelry with The Don");
   if (path === "admin") return adminDashboard();
   if (parts[0] === "request") return customRequestPage(parts[1], params);
   if (parts[0] === "category") return category(parts[1]);
+  if (parts[0] === "live-jewelry") return liveJewelryDetail(parts[1]);
   if (parts[0] === "product") return productDetail(parts[1]);
   if (path === "custom-orders") return customOrders();
   if (path === "cart") return cartPage();

@@ -7,6 +7,9 @@ const preferredPort = Number(process.env.PORT || 4173);
 const diamondHandler = require("./api/diamonds");
 const diamondCertifiedHandler = require("./api/diamonds/certified");
 const diamondCertifiedColorHandler = require("./api/diamonds/certified-color");
+const diamondMatchingPairHandler = require("./api/diamonds/matching-pair");
+const diamondMatchingPairColorHandler = require("./api/diamonds/matching-pair-color");
+const jewelryHandler = require("./api/jewelry");
 const testDiamondHandler = require("./api/test-diamond-api");
 const sendRequestHandler = require("./api/send-request");
 const types = {
@@ -61,6 +64,33 @@ const server = http.createServer((req, res) => {
         message: "Diamond API test route is unavailable.",
         error: error?.message || "Diamond API test failed.",
       }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/jewelry")) {
+    jewelryHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ ok: false, items: [], message: "Live jewelry inventory is unavailable.", error: error?.message || "" }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/diamonds/matching-pair-color")) {
+    diamondMatchingPairColorHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ ok: false, items: [], message: "Color matching pairs are unavailable.", error: error?.message || "" }));
+    });
+    return;
+  }
+
+  if (req.url.startsWith("/api/diamonds/matching-pair")) {
+    diamondMatchingPairHandler(req, res).catch((error) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ ok: false, items: [], message: "Matching pairs are unavailable.", error: error?.message || "" }));
     });
     return;
   }
