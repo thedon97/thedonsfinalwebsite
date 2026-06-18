@@ -48,7 +48,7 @@ Website quote forms, product inquiry forms, checkout inquiry forms, and Stripe p
 The production product catalog supports PostgreSQL through `DATABASE_URL`. On first database-backed product request, manual products and the bundled CVD jewelry snapshot are seeded without deleting custom products. Supplier jewelry refreshes through:
 
 - `POST /api/admin/jewelry-sync` with `x-admin-key: ADMIN_SYNC_SECRET`
-- Vercel cron at Sunday midnight in `America/New_York`
+- GitHub Actions at Sunday midnight in `America/New_York`
 
 Required private Vercel environment variables:
 

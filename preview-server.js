@@ -1,25 +1,15 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const apiRouter = require("./api/index");
 
 const root = path.resolve(__dirname);
 const preferredPort = Number(process.env.PORT || 4173);
-const diamondHandler = require("./api/diamonds");
-const diamondCertifiedHandler = require("./api/diamonds/certified");
-const diamondCertifiedColorHandler = require("./api/diamonds/certified-color");
-const diamondMatchingPairHandler = require("./api/diamonds/matching-pair");
-const diamondMatchingPairColorHandler = require("./api/diamonds/matching-pair-color");
-const jewelryHandler = require("./api/jewelry");
-const productsHandler = require("./api/products");
-const jewelrySyncHandler = require("./api/admin/jewelry-sync");
-const checkoutSessionHandler = require("./api/create-checkout-session");
-const systemStatusHandler = require("./api/system-status");
-const testDiamondHandler = require("./api/test-diamond-api");
-const sendRequestHandler = require("./api/send-request");
 const types = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
@@ -45,157 +35,30 @@ function resolveFile(req) {
 }
 
 const server = http.createServer((req, res) => {
-  if (req.url.startsWith("/api/create-checkout-session")) {
-    checkoutSessionHandler(req, res);
+  if (req.url.startsWith("/api/")) {
+    apiRouter(req, res);
     return;
   }
-
-  if (req.url.startsWith("/api/system-status")) {
-    systemStatusHandler(req, res);
-    return;
-  }
-
-  if (req.url.startsWith("/api/admin/jewelry-sync")) {
-    jewelrySyncHandler(req, res);
-    return;
-  }
-
-  if (req.url.startsWith("/api/products")) {
-    productsHandler(req, res);
-    return;
-  }
-
-  if (req.url.startsWith("/api/send-request")) {
-    sendRequestHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.setHeader("Cache-Control", "no-store");
-      res.end(JSON.stringify({
-        ok: false,
-        message: error?.message || "Request notification could not be sent.",
-      }));
+  const resolved = resolveFile(req);
+  if (resolved.forbidden) return send(res, 403, "Forbidden");
+  fs.readFile(resolved.file, (error, data) => {
+    if (!error) return send(res, 200, data, types[path.extname(resolved.file).toLowerCase()] || "application/octet-stream");
+    fs.readFile(path.join(root, "index.html"), (indexError, indexData) => {
+      if (indexError) return send(res, 404, "Not found");
+      send(res, 200, indexData, types[".html"]);
     });
-    return;
-  }
-
-  if (req.url.startsWith("/api/test-diamond-api")) {
-    testDiamondHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
-      res.end(JSON.stringify({
-        ok: false,
-        message: "Diamond API test route is unavailable.",
-        error: error?.message || "Diamond API test failed.",
-      }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/jewelry")) {
-    jewelryHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.end(JSON.stringify({ ok: false, items: [], message: "Live jewelry inventory is unavailable.", error: error?.message || "" }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/diamonds/matching-pair-color")) {
-    diamondMatchingPairColorHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.end(JSON.stringify({ ok: false, items: [], message: "Color matching pairs are unavailable.", error: error?.message || "" }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/diamonds/matching-pair")) {
-    diamondMatchingPairHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.end(JSON.stringify({ ok: false, items: [], message: "Matching pairs are unavailable.", error: error?.message || "" }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/diamonds/certified-color")) {
-    diamondCertifiedColorHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
-      res.end(JSON.stringify({
-        ok: false,
-        diamonds: [],
-        count: 0,
-        message: "Live diamond inventory is being updated. Contact us for real-time diamond options.",
-        error: error?.message || "Certified color diamond API unavailable.",
-      }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/diamonds/certified")) {
-    diamondCertifiedHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
-      res.end(JSON.stringify({
-        ok: false,
-        diamonds: [],
-        count: 0,
-        message: "Live diamond inventory is being updated. Contact us for real-time diamond options.",
-        error: error?.message || "Certified diamond API unavailable.",
-      }));
-    });
-    return;
-  }
-
-  if (req.url.startsWith("/api/diamonds")) {
-    diamondHandler(req, res).catch((error) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
-      res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=900");
-      res.end(JSON.stringify({
-        ok: false,
-        diamonds: [],
-        count: 0,
-        message: "Live diamond inventory is being updated. Contact us for real-time diamond options.",
-        error: error?.message || "Diamond API unavailable.",
-      }));
-    });
-    return;
-  }
-
-  const { file, forbidden } = resolveFile(req);
-  if (forbidden) {
-    send(res, 403, "Forbidden");
-    return;
-  }
-
-  const finalFile = fs.existsSync(file) && fs.statSync(file).isFile()
-    ? file
-    : path.join(root, "index.html");
-  fs.readFile(finalFile, (error, buffer) => {
-    if (error) {
-      send(res, 404, "Not found");
-      return;
-    }
-    send(res, 200, buffer, types[path.extname(finalFile)] || "application/octet-stream");
   });
 });
 
-function listen(port) {
-  server.once("error", (error) => {
-    if (error.code === "EADDRINUSE" && port < preferredPort + 20) {
-      listen(port + 1);
-      return;
-    }
-    throw error;
-  });
-  server.listen(port, "0.0.0.0", () => {
-    console.log(`Clean frontend preview running on port ${port}`);
-  });
-}
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE" && preferredPort !== 0) {
+    server.listen(0, "127.0.0.1");
+    return;
+  }
+  throw error;
+});
 
-listen(preferredPort);
+server.listen(preferredPort, "127.0.0.1", () => {
+  const address = server.address();
+  console.log(`Preview server running at http://127.0.0.1:${address.port}`);
+});
