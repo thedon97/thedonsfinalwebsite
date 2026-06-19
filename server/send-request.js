@@ -1,6 +1,6 @@
 const BUSINESS_EMAIL = "thedonjewelersandjewelry@gmail.com";
 const DEFAULT_FROM_EMAIL = "The Don Jewelers & Jewelry <onboarding@resend.dev>";
-const MAX_BODY_BYTES = 200000;
+const MAX_BODY_BYTES = 4_200_000;
 
 function sendJson(res, status, body) {
   res.statusCode = status;
@@ -67,6 +67,7 @@ function requestSubject(payload) {
 }
 
 function requestText(payload) {
+  const fileNames = (payload.files || []).map((file) => `${clean(file.name)} (${Math.round(Number(file.size || 0) / 1024)} KB)`).join(", ");
   return [
     "New website request for The Don Jewelers & Jewelry",
     "",
@@ -81,19 +82,81 @@ function requestText(payload) {
     formatLines(payload.jewelry) || "Not provided",
     "",
     payload.checkout ? ["Checkout / Stripe", formatLines(payload.checkout)].join("\n") : "",
-    payload.files?.length ? ["", "Uploaded file names", formatLines({ files: payload.files })].join("\n") : "",
+    fileNames ? ["", "Inspiration images attached", fileNames].join("\n") : "",
   ].filter(Boolean).join("\n");
 }
 
-function requestHtml(payload) {
-  const text = requestText(payload);
+function titleCaseLabel(value) {
+  return String(value || "")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[._-]+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function detailRows(obj) {
+  if (!obj || typeof obj !== "object") return "";
+  return Object.entries(obj)
+    .filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== "")
+    .map(([key, value]) => `
+      <tr>
+        <td style="width:34%;padding:10px 12px;border-bottom:1px solid #e7dfd2;color:#766b5a;font-size:13px;font-weight:700;vertical-align:top">${htmlEscape(titleCaseLabel(key))}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e7dfd2;color:#18140f;font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word">${htmlEscape(typeof value === "object" ? JSON.stringify(value) : value)}</td>
+      </tr>
+    `).join("");
+}
+
+function emailSection(title, rows) {
+  if (!rows) return "";
   return `
-    <div style="font-family:Arial,sans-serif;color:#181818;line-height:1.5">
-      <h2 style="margin:0 0 12px">New Website Request</h2>
-      <p style="margin:0 0 16px">The Don Jewelers & Jewelry received a website request.</p>
-      <pre style="white-space:pre-wrap;background:#f7f4ef;border:1px solid #ddd;padding:16px;border-radius:8px">${htmlEscape(text)}</pre>
+    <div style="margin:0 0 22px">
+      <h2 style="margin:0;padding:12px 16px;background:#17130d;color:#f0d58a;font-family:Georgia,serif;font-size:17px">${htmlEscape(title)}</h2>
+      <table role="presentation" style="width:100%;border-collapse:collapse;background:#fff">${rows}</table>
     </div>
   `;
+}
+
+function requestHtml(payload) {
+  const submitted = new Date().toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "long", timeStyle: "short" });
+  const files = payload.files || [];
+  return `
+    <div style="margin:0;padding:24px;background:#f4efe6;font-family:Arial,sans-serif;color:#18140f">
+      <div style="max-width:720px;margin:0 auto;background:#fff;border:1px solid #ded4c4">
+        <div style="padding:26px;background:#17130d;text-align:center">
+          <div style="color:#f0d58a;font-family:Georgia,serif;font-size:25px;font-weight:700">The Don Jewelers &amp; Jewelry</div>
+          <div style="margin-top:8px;color:#fff;font-size:14px;letter-spacing:.08em;text-transform:uppercase">New Website Request</div>
+        </div>
+        <div style="padding:26px">
+          <p style="margin:0 0 6px;font-size:18px;font-weight:700">${htmlEscape(payload.type || payload.jewelry?.requestType || "Website Request")}</p>
+          <p style="margin:0 0 24px;color:#766b5a;font-size:13px">Submitted ${htmlEscape(submitted)} · <a href="${htmlEscape(payload.source)}" style="color:#8a6418">View source page</a></p>
+          ${emailSection("Customer Information", detailRows(payload.customer))}
+          ${emailSection("Jewelry & Order Details", detailRows(payload.jewelry))}
+          ${payload.checkout ? emailSection("Checkout Information", detailRows(payload.checkout)) : ""}
+          ${files.length ? `
+            <div style="padding:16px;border:1px solid #ded4c4;background:#fbf8f2">
+              <strong style="display:block;margin-bottom:6px">Inspiration Images Attached (${files.length})</strong>
+              <span style="color:#766b5a;font-size:13px">${files.map((file) => htmlEscape(file.name)).join(", ")}</span>
+            </div>
+          ` : ""}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function emailAttachments(files = []) {
+  if (files.length > 5) throw new Error("No more than 5 inspiration images may be attached.");
+  let totalBytes = 0;
+  return files.map((file) => {
+    const content = clean(file.content);
+    if (!content || !/^[A-Za-z0-9+/=]+$/.test(content)) throw new Error(`Uploaded image ${clean(file.name) || "file"} is invalid.`);
+    const estimatedBytes = Math.floor(content.length * 0.75);
+    totalBytes += estimatedBytes;
+    if (totalBytes > 2_600_000) throw new Error("Uploaded inspiration images are too large.");
+    return {
+      filename: clean(file.name) || "inspiration.jpg",
+      content,
+    };
+  });
 }
 
 async function sendEmail(payload) {
@@ -122,6 +185,7 @@ async function sendEmail(payload) {
       subject: requestSubject(payload),
       text: requestText(payload),
       html: requestHtml(payload),
+      attachments: emailAttachments(payload.files),
     }),
   });
 
@@ -161,3 +225,5 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+module.exports._test = { emailAttachments, requestHtml, requestSubject, requestText };

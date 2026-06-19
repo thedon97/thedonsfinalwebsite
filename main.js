@@ -3368,10 +3368,6 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
 }
 
 function manualProductInformation(product) {
-  const rows = productFields(product).map(([label, values]) => {
-    const first = Array.isArray(values?.[0]) ? values[0][0] : values?.[0];
-    return [label, first];
-  }).filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== "");
   return `
     <section class="product-information-section">
       <div class="product-detail-copy">
@@ -3379,7 +3375,6 @@ function manualProductInformation(product) {
         <h2>${htmlSafe(productName(product))}</h2>
         <p>${htmlSafe(product.lede || "Made-to-order fine jewelry by The Don Jewelers & Jewelry.")}</p>
       </div>
-      ${rows.length ? `<div class="product-specification-block"><h2>Specifications & Starting Options</h2><dl class="summary-list product-spec-list">${rows.map(([label, value]) => `<div><dt>${htmlSafe(label)}</dt><dd>${htmlSafe(value)}</dd></div>`).join("")}</dl></div>` : ""}
       <p class="shipping-note">${product.category === "Watches" ? "Availability and insured shipping timing are confirmed before fulfillment." : "Made to order. Production timing and insured shipping are confirmed after the final specifications are approved."}</p>
     </section>
   `;
@@ -3994,8 +3989,9 @@ function wireRequestForm(formId, successText) {
       button.textContent = "Submitting...";
     }
     if (error) error.hidden = true;
+    let payload;
     try {
-      const payload = requestPayloadFromForm(form);
+      payload = await requestPayloadFromForm(form);
       await sendWebsiteRequest(payload);
       savePendingRequest(payload);
       if (success) {
@@ -4004,7 +4000,21 @@ function wireRequestForm(formId, successText) {
       }
       form.reset();
     } catch (submitError) {
-      const fallbackPayload = requestPayloadFromForm(form);
+      const fallbackPayload = payload || {
+        source: location.href,
+        customer: {
+          fullName: selectedFormValue(form, "fullName") || selectedFormValue(form, "name"),
+          email: selectedFormValue(form, "email"),
+          phone: selectedFormValue(form, "phone"),
+        },
+        jewelry: {
+          requestType: form.dataset.requestType || "Website Request",
+          productCategory: form.dataset.productCategory || "",
+          productName: form.dataset.productName || selectedFormValue(form, "productName"),
+          notes: selectedFormValue(form, "description") || selectedFormValue(form, "notes"),
+        },
+        files: [],
+      };
       savePendingRequest(fallbackPayload);
       if (error) {
         error.hidden = false;
@@ -4025,12 +4035,59 @@ function selectedFormValue(form, name) {
   return form.elements[name]?.value || "";
 }
 
-function requestPayloadFromForm(form) {
-  const files = [...form.querySelectorAll('input[type="file"]')].flatMap((input) => [...input.files].map((file) => ({
-    name: file.name,
-    type: file.type,
-    size: file.size,
-  })));
+async function imageFileAttachment(file) {
+  const maxDimension = 1600;
+  const image = "createImageBitmap" in window
+    ? await createImageBitmap(file)
+    : await new Promise((resolve, reject) => {
+      const preview = new Image();
+      const url = URL.createObjectURL(file);
+      preview.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve(preview);
+      };
+      preview.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error(`Could not read ${file.name}.`));
+      };
+      preview.src = url;
+    });
+  const sourceWidth = image.width || image.naturalWidth;
+  const sourceHeight = image.height || image.naturalHeight;
+  const scale = Math.min(1, maxDimension / Math.max(sourceWidth, sourceHeight));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(sourceWidth * scale));
+  canvas.height = Math.max(1, Math.round(sourceHeight * scale));
+  canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+  image.close?.();
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.82));
+  if (!blob) throw new Error(`Could not prepare ${file.name}.`);
+  const dataUrl = await fileToDataUrl(blob);
+  return {
+    name: String(file.name || "inspiration.jpg").replace(/\.[^.]+$/, "") + ".jpg",
+    type: "image/jpeg",
+    size: blob.size,
+    content: dataUrl.split(",")[1],
+  };
+}
+
+async function requestAttachments(form) {
+  const selected = [...form.querySelectorAll('input[type="file"]')].flatMap((input) => [...input.files]);
+  if (selected.length > 5) throw new Error("Please upload no more than 5 inspiration images.");
+  const files = [];
+  let totalBytes = 0;
+  for (const file of selected) {
+    if (!String(file.type || "").startsWith("image/")) throw new Error(`${file.name} is not a supported image.`);
+    const attachment = await imageFileAttachment(file);
+    totalBytes += attachment.size;
+    if (totalBytes > 2_500_000) throw new Error("The uploaded images are too large together. Please use fewer or smaller images.");
+    files.push(attachment);
+  }
+  return files;
+}
+
+async function requestPayloadFromForm(form) {
+  const files = await requestAttachments(form);
   const requestType = form.dataset.requestType || selectedFormValue(form, "requestType") || "General Contact Form";
   const productCategory = form.dataset.productCategory || selectedFormValue(form, "productCategory") || requestType;
   return {
@@ -4070,7 +4127,11 @@ function requestPayloadFromForm(form) {
 
 function savePendingRequest(payload) {
   const pending = JSON.parse(localStorage.getItem("donPendingCustomRequests") || "[]");
-  pending.unshift({ ...payload, savedAt: new Date().toISOString() });
+  pending.unshift({
+    ...payload,
+    files: (payload.files || []).map(({ name, type, size }) => ({ name, type, size })),
+    savedAt: new Date().toISOString(),
+  });
   localStorage.setItem("donPendingCustomRequests", JSON.stringify(pending.slice(0, 50)));
 }
 
