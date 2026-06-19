@@ -1,6 +1,6 @@
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const FETCH_TIMEOUT_MS = 8000;
-const JEWELRY_MARKUP = 1.35;
+const JEWELRY_MARKUP = 1.4;
 const DEFAULT_JEWELRY_URL = "https://lgdusallc.com/developer-api/jewelry?type=all";
 const DEFAULT_MATCHING_PAIR_URL = "https://lgdusallc.com/developer-api/diamond?type=matching_pair";
 const DEFAULT_COLOR_PAIR_URL = "https://lgdusallc.com/developer-api/diamond?type=matching_pair_color";
