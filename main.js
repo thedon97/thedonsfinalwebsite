@@ -2816,6 +2816,27 @@ function productSpecRows(product) {
   return rows.map(([label, value]) => `<div><dt>${htmlSafe(label)}</dt><dd>${htmlSafe(value)}</dd></div>`).join("");
 }
 
+function supplierLuxuryDescription(product) {
+  const specs = product.specs || {};
+  const metadata = product.metadata || {};
+  const details = [];
+  if (specs.metal) details.push(`crafted in ${specs.metal}`);
+  if (specs.diamondType) details.push(`set with ${specs.diamondType.toLowerCase()}s`);
+  const opening = `${product.name} is ${details.length ? details.join(" and ") : "a fine diamond jewelry design"} selected for The Don Jewelers & Jewelry collection.`;
+  const diamondDetails = [
+    metadata.diamondPieces ? `${metadata.diamondPieces} diamond${Number(metadata.diamondPieces) === 1 ? "" : "s"}` : "",
+    specs.caratWeight ? `approximately ${specs.caratWeight} total carat weight` : "",
+    specs.shape ? `${specs.shape} shape` : "",
+    specs.color ? `${specs.color} color` : "",
+    specs.clarity ? `${specs.clarity} clarity` : "",
+  ].filter(Boolean);
+  const quality = diamondDetails.length ? `Its diamond specifications include ${diamondDetails.join(", ")}.` : "";
+  const sizing = specs.size ? `The listed size or length is ${specs.size}; contact us if you need a different fit or customization.` : "";
+  const sourceDescription = String(product.description || "").trim();
+  const source = sourceDescription ? `Supplier design reference: ${sourceDescription}.` : "";
+  return [opening, quality, sizing, source].filter(Boolean).join(" ");
+}
+
 async function catalogJewelryDetail(productId) {
   shell(`
     <main>
@@ -2835,7 +2856,7 @@ async function catalogJewelryDetail(productId) {
     const gallery = (product.gallery || []).map(safeExternalUrl).filter(Boolean);
     const price = Number(product.price ?? (product.priceCents ? product.priceCents / 100 : 0));
     container.innerHTML = `
-      <section class="product-detail-hero catalog-jewelry-detail product-detail-expanded">
+      <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero">
         <div class="product-media-stack">
           ${imageUrl ? `<img src="${htmlSafe(imageUrl)}" alt="${htmlSafe(product.name)}">` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
           ${gallery.map((url) => `<img src="${htmlSafe(url)}" alt="${htmlSafe(product.name)} alternate view" loading="lazy">`).join("")}
@@ -2844,21 +2865,26 @@ async function catalogJewelryDetail(productId) {
           <p class="eyebrow">${htmlSafe(product.category)}</p>
           <h1>${htmlSafe(product.name)}</h1>
           <p class="product-detail-price">${price ? money.format(price) : "Request Pricing"}</p>
-          <div class="product-detail-copy">
-            <h2>Description</h2>
-            <p>${htmlSafe(product.description || "CVD lab-grown diamond jewelry selected for The Don Jewelers & Jewelry catalog.")}</p>
-          </div>
-          <div class="product-specification-block">
-            <h2>Product Specifications</h2>
-            <dl class="summary-list product-spec-list">${productSpecRows(product)}</dl>
-          </div>
-          <p class="shipping-note">${product.madeToOrder ? "Made to order. Production and insured shipping timing are confirmed after purchase." : "Availability and insured shipping timing are confirmed before fulfillment."}</p>
+          <p class="supplier-product-intro">CVD lab-grown diamond jewelry with complete specifications and secure purchase support.</p>
           <div class="builder-actions">
             ${price && product.available !== false ? productCheckoutButton(product, price) : `<button class="button button-light" type="button" disabled>Unavailable or pricing required</button>`}
             <a class="button button-dark" href="#/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}&intent=product-${encodeURIComponent(product.id)}">Ask a Question</a>
             ${videoUrl ? `<a class="button button-light" href="${htmlSafe(videoUrl)}" target="_blank" rel="noopener noreferrer">View Product Video</a>` : ""}
           </div>
         </div>
+      </section>
+      <section class="supplier-product-information">
+        <article class="supplier-description-card">
+          <p class="eyebrow">Product Description</p>
+          <h2>${htmlSafe(product.name)}</h2>
+          <p>${htmlSafe(supplierLuxuryDescription(product))}</p>
+        </article>
+        <article class="supplier-specification-card">
+          <p class="eyebrow">Complete Details</p>
+          <h2>Product Specifications</h2>
+          <dl class="summary-list product-spec-list">${productSpecRows(product)}</dl>
+        </article>
+        <p class="shipping-note supplier-shipping-note">${product.madeToOrder ? "Made to order. Production and insured shipping timing are confirmed after purchase." : "Availability and insured shipping timing are confirmed before fulfillment."}</p>
       </section>
     `;
   } catch {
