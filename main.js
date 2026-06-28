@@ -2247,16 +2247,407 @@ const blogImagePool = [
   "custom-st-diamond-initial-pendant-front.jpeg",
 ];
 
-const blogArticles = blogTopics.map((title, index) => {
-  const slug = title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const slugify = (value) => String(value || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const educationPath = (slug) => `education/${slug}`;
+const faqPath = (slug) => `faq/${slug}`;
+
+const educationResources = [
+  {
+    slug: "diamond-education",
+    title: "Diamond Education",
+    eyebrow: "Start Here",
+    description: "A private jeweler's overview of diamond quality, certification, lab grown diamonds, natural diamonds, and the details that matter before you buy.",
+    image: "live-diamond-selection.svg",
+    keyword: "diamond education",
+    productKeyword: "diamond",
+    related: ["what-is-a-diamond", "lab-diamonds-vs-natural-diamonds", "diamond-cut", "certified-diamonds"],
+    quote: "The point of diamond education is not to turn every client into a gemologist. It is to make the buying decision feel clear, calm, and protected.",
+    sections: [
+      ["Learn the language before the purchase", "Diamonds are often described with grades, reports, abbreviations, and pricing language that can feel intimidating at first. Once you understand cut, color, clarity, carat, certification, and origin, the conversation becomes much more comfortable."],
+      ["Look beyond the certificate", "A certificate is important, but it does not replace taste, proportion, setting style, and the way the diamond looks in real life. The best buying process combines paperwork with visual review."],
+      ["Use education to narrow the choices", "The goal is not to compare every stone on the market. The goal is to narrow the field to diamonds and jewelry options that fit your budget, style, timeline, and comfort level."],
+    ],
+    faqs: [
+      ["Where should I start with diamond education?", "Start with the 4Cs, then learn the difference between lab grown and natural diamonds, certification, and how the stone will be used in the final piece."],
+      ["Can a private jeweler explain diamonds before I buy?", "Yes. The Don Jewelers can walk through diamond options, certificates, videos, and custom design details before you commit."],
+      ["Do you help beginners?", "Yes. The process is built to be clear for first-time buyers and detailed enough for clients comparing higher-end stones."],
+    ],
+  },
+  {
+    slug: "what-is-a-diamond",
+    title: "What Is a Diamond?",
+    eyebrow: "Diamond Education",
+    description: "A clear, jeweler-written guide to what diamonds are, how they form, why cut matters, and how to compare stones with confidence.",
+    image: "live-diamond-selection.svg",
+    keyword: "diamond education",
+    productKeyword: "diamond",
+    related: ["diamond-cut", "diamond-color", "diamond-clarity", "diamond-carat"],
+    quote: "A diamond is not just a size on paper. The life of the stone is in the cut, the light return, and how it looks in the piece you actually want to wear.",
+    sections: [
+      ["A diamond, in plain English", "A diamond is crystallized carbon arranged under extreme pressure and heat. That sounds technical, but what matters to a buyer is simpler: a diamond is valued by how beautifully it handles light, how rare its characteristics are, and how well it fits the jewelry being made."],
+      ["Natural diamonds and lab grown diamonds", "Natural diamonds form underground over long geological periods. Lab grown diamonds are grown in controlled environments and have the same optical and chemical identity as diamond. The choice is not about one being beautiful and the other not; it is about budget, origin preference, size goals, and the story you want behind the piece."],
+      ["Why two diamonds with the same carat can look different", "Carat weight only tells you weight. Cut, measurements, depth, table, polish, symmetry, color, and clarity all influence what your eye sees. A smaller diamond with excellent proportions can look brighter than a heavier diamond that carries weight in the wrong places."],
+    ],
+    faqs: [
+      ["Is a lab grown diamond a real diamond?", "Yes. A lab grown diamond is a real diamond with the same basic optical and chemical properties as a mined diamond, but it has a different origin story."],
+      ["What should beginners look at first?", "Start with shape, cut quality, budget, and the finished jewelry design. Certification matters, but the stone also has to look right in person or on video."],
+      ["Can The Don Jewelers help source a diamond?", "Yes. The Don Jewelers can help compare certified stones, explain tradeoffs, and source diamonds for engagement rings, pendants, earrings, tennis chains, and custom jewelry."],
+    ],
+  },
+  {
+    slug: "lab-diamonds-vs-natural-diamonds",
+    title: "Lab Diamonds vs Natural Diamonds",
+    eyebrow: "Diamond Buying Guide",
+    description: "Understand the real differences between lab grown diamonds and natural diamonds before choosing a stone for an engagement ring or custom jewelry.",
+    image: "yellow-gold-oval-pave-engagement-ring.jpeg",
+    keyword: "lab diamonds",
+    productKeyword: "diamond",
+    related: ["what-is-a-diamond", "certified-diamonds", "diamond-carat", "engagement-rings"],
+    quote: "The best choice is the one that matches your priorities. Some clients want maximum size for the budget. Others want natural rarity. Both can be done beautifully.",
+    sections: [
+      ["What is actually different?", "Lab grown and natural diamonds can look identical to the naked eye when quality is comparable. The difference is origin: one is grown in a laboratory, the other formed naturally underground. That origin affects price, availability, and personal preference."],
+      ["Where lab diamonds shine", "Lab diamonds often let clients move up in size, color, or clarity without stretching the budget as far. They are especially popular for engagement rings, tennis bracelets, earrings, and statement pieces where visual presence matters."],
+      ["Where natural diamonds still matter", "Natural diamonds appeal to clients who value rarity, tradition, and the natural origin of the stone. For some buyers, especially for bridal jewelry, that story is part of the emotional value."],
+    ],
+    comparison: [
+      ["Category", "Lab Grown Diamond", "Natural Diamond"],
+      ["Origin", "Grown in a controlled environment", "Formed naturally underground"],
+      ["Visual look", "Can be visually identical at comparable quality", "Can be visually identical at comparable quality"],
+      ["Budget", "Usually more size for the money", "Usually higher cost at the same specs"],
+      ["Best for", "Size, value, modern custom jewelry", "Rarity, tradition, natural origin"],
+    ],
+    faqs: [
+      ["Can people tell the difference by looking?", "Usually no. Proper testing equipment and certification identify origin, but comparable stones can look the same to the eye."],
+      ["Are lab diamonds good for engagement rings?", "Yes. Many clients choose lab diamonds for engagement rings because they can prioritize size, color, and clarity within budget."],
+      ["Do you source both?", "Yes. The Don Jewelers can source both lab grown and natural diamonds based on your goals."],
+    ],
+  },
+  {
+    slug: "diamond-cut",
+    title: "Diamond Cut",
+    eyebrow: "The 4Cs",
+    description: "Diamond cut explained by a private jeweler: proportions, sparkle, brilliance, and why cut quality often matters more than the number on the tag.",
+    image: "live-diamond-selection.svg",
+    keyword: "diamond cut",
+    productKeyword: "diamond",
+    related: ["diamond-color", "diamond-clarity", "diamond-carat", "certified-diamonds"],
+    quote: "Cut is where a diamond earns its personality. Color and clarity matter, but cut is what makes the stone wake up.",
+    sections: [
+      ["Cut is not the same as shape", "Shape is round, oval, emerald, pear, marquise, cushion, radiant, or princess. Cut is how well that shape has been proportioned and finished. A round diamond and an oval diamond are shapes; their brightness depends on cutting decisions."],
+      ["Why sparkle changes from stone to stone", "A diamond has to return light back to your eye. If the stone is too deep, too shallow, or poorly proportioned, light leaks out instead of reflecting back. That is why two diamonds with similar paperwork can feel very different."],
+      ["How to judge cut in real life", "Look at the diamond in motion. Watch the brightness, contrast, and pattern. A stone should not only look good under jewelry-store lighting; it should still have life in softer, everyday light."],
+    ],
+    faqs: [
+      ["Is cut the most important C?", "For many buyers, yes. Cut has a major effect on beauty because it controls light performance."],
+      ["Does every shape receive the same cut grade?", "No. Round diamonds have the most standardized cut grading. Fancy shapes need a more hands-on review of measurements and appearance."],
+      ["Can you help compare diamond cuts?", "Yes. The Don Jewelers can review stones, measurements, videos, and certificates before you commit."],
+    ],
+  },
+  {
+    slug: "diamond-color",
+    title: "Diamond Color",
+    eyebrow: "The 4Cs",
+    description: "A practical guide to diamond color, metal choice, and when paying for a higher color grade is worth it.",
+    image: "yellow-canary-diamond-studs.jpeg",
+    keyword: "diamond color",
+    productKeyword: "diamond",
+    related: ["diamond-cut", "diamond-clarity", "diamond-carat", "lab-diamonds-vs-natural-diamonds"],
+    quote: "Color is about balance. The metal, shape, setting, and budget all affect how much color grade you really need.",
+    sections: [
+      ["What color grades mean", "White diamonds are graded on a scale that usually runs from D, the most colorless, down through warmer grades. Most clients do not need to memorize the whole scale; they need to know what looks clean in the setting they want."],
+      ["Metal color changes perception", "Yellow gold and rose gold can be forgiving because the setting already carries warmth. White gold and platinum make body color easier to notice, especially in larger stones."],
+      ["Fancy color diamonds", "Yellow, pink, blue, and other fancy color diamonds are judged differently. With fancy colors, the color itself becomes the feature, not something to hide."],
+    ],
+    faqs: [
+      ["Is D color always best?", "D color is the highest colorless grade, but it is not always the smartest spend. Many designs look excellent below D when the stone is well chosen."],
+      ["Does yellow gold hide diamond warmth?", "It can soften the look of warmer diamonds, especially in certain settings."],
+      ["Can you source fancy color diamonds?", "Yes. Fancy color options can be discussed by budget, shape, intensity, and timing."],
+    ],
+  },
+  {
+    slug: "diamond-clarity",
+    title: "Diamond Clarity",
+    eyebrow: "The 4Cs",
+    description: "Clarity explained without the confusion: VVS, VS, eye-clean diamonds, and what actually matters once the stone is set.",
+    image: "round-diamond-studs.jpeg",
+    keyword: "diamond clarity",
+    productKeyword: "diamond",
+    related: ["diamond-cut", "diamond-color", "diamond-carat", "certified-diamonds"],
+    quote: "Clarity should protect beauty, not drain the budget for something the eye cannot appreciate.",
+    sections: [
+      ["What clarity measures", "Clarity describes internal inclusions and surface characteristics. Higher clarity means fewer or less visible characteristics under magnification, but the key question is whether anything distracts from the stone's beauty."],
+      ["VVS, VS, and eye-clean stones", "VVS diamonds are very clean under magnification. VS diamonds can also look completely clean to the eye and often offer strong value. For many pieces, an eye-clean diamond is the sweet spot."],
+      ["When clarity matters more", "Clarity becomes more important in step cuts like emerald and asscher shapes because their broad facets show the inside of the stone more clearly. Brilliant cuts can hide inclusions better."],
+    ],
+    faqs: [
+      ["Is VVS always worth it?", "VVS is beautiful, but it is not always necessary. The right choice depends on shape, size, budget, and how visible the inclusions are."],
+      ["What does eye-clean mean?", "Eye-clean means no distracting inclusions are visible to the naked eye in normal viewing."],
+      ["Can you help avoid bad inclusions?", "Yes. The Don Jewelers can review stone plots, videos, and photos before sourcing."],
+    ],
+  },
+  {
+    slug: "diamond-carat",
+    title: "Diamond Carat",
+    eyebrow: "The 4Cs",
+    description: "Carat weight explained with practical buying advice for engagement rings, pendants, earrings, tennis chains, and bracelets.",
+    image: "queen-aurelia-oval-marquise-ring.jpeg",
+    keyword: "diamond carat",
+    productKeyword: "diamond",
+    related: ["diamond-cut", "diamond-color", "diamond-clarity", "engagement-rings"],
+    quote: "Carat is weight, not magic. The smartest stone is the one that gives you the look you want without sacrificing life.",
+    sections: [
+      ["Carat is weight", "Carat tells you how much a diamond weighs. It does not automatically tell you how large the diamond will look from the top, because shape and proportions affect spread."],
+      ["Why measurements matter", "Two one-carat diamonds can face up differently. A well-proportioned stone can look balanced and bright, while another may hide weight in depth."],
+      ["Total carat weight", "For tennis chains, bracelets, earrings, and multi-stone pieces, total carat weight describes all diamonds combined. Pointer size and layout affect the finished look just as much as the total number."],
+    ],
+    faqs: [
+      ["Does higher carat always look bigger?", "Not always. Shape and measurements affect how large a diamond appears."],
+      ["What is total carat weight?", "Total carat weight is the combined weight of all diamonds in a piece."],
+      ["Can you build around a target carat size?", "Yes. The Don Jewelers can source or design around a target size and budget."],
+    ],
+  },
+  {
+    slug: "certified-diamonds",
+    title: "Certified Diamonds",
+    eyebrow: "Diamond Paperwork",
+    description: "What diamond certificates mean, how IGI and GIA reports help, and why paperwork should support the buying decision rather than replace your eye.",
+    image: "live-diamond-selection.svg",
+    keyword: "certified diamonds",
+    productKeyword: "diamond",
+    related: ["diamond-cut", "diamond-clarity", "lab-diamonds-vs-natural-diamonds", "diamond-carat"],
+    quote: "A certificate is the map. The diamond is still the destination.",
+    sections: [
+      ["What a certificate tells you", "A diamond report records measurements, carat weight, color, clarity, proportions, polish, symmetry, fluorescence, and origin details when applicable. It gives you a common language for comparison."],
+      ["IGI and GIA", "GIA is deeply respected for natural diamonds, while IGI is widely used for lab grown diamonds. Both can be useful, but the stone still has to be reviewed visually."],
+      ["Why paperwork is not the whole story", "Certificates do not fully capture beauty, personality, or how a diamond looks in a setting. Videos, photos, measurements, and a jeweler's review help complete the picture."],
+    ],
+    faqs: [
+      ["Should I buy only certified diamonds?", "For important diamonds, certification is strongly recommended because it protects clarity around specs and origin."],
+      ["Is IGI good for lab diamonds?", "IGI is widely used for lab grown diamonds and can be useful for comparing stones."],
+      ["Can you review a certificate?", "Yes. You can send a certificate or stock number for review before a custom order."],
+    ],
+  },
+  {
+    slug: "nyc-jewelers",
+    title: "NYC Jewelers",
+    eyebrow: "New York Jewelry Guide",
+    description: "How to choose an NYC jeweler, what to ask before buying, and why private guidance can make the Diamond District feel easier.",
+    image: "queen-aurelia-oval-marquise-ring.jpeg",
+    keyword: "NYC jeweler",
+    productKeyword: "custom",
+    related: ["diamond-district", "custom-jewelry", "engagement-rings", "jewelry-financing"],
+    quote: "The right jeweler should make you feel informed, not rushed.",
+    sections: [
+      ["What makes a good NYC jeweler", "A good jeweler listens first. Before discussing price, they should understand the piece, budget, timeline, stone preference, and how the jewelry will be worn."],
+      ["Private jeweler vs showroom shopping", "Showrooms can be useful, but they can also feel fast and crowded. A private jeweler gives you room to compare options without pressure."],
+      ["Working beyond New York", "The Don Jewelers primarily serves the tri-state area and works with clients nationwide through Zoom, FaceTime, video chat, insured shipping, and clear communication."],
+    ],
+    faqs: [
+      ["Do you work with NYC clients?", "Yes. NYC, Manhattan, Diamond District, New Jersey, Pennsylvania, and nationwide clients can work with The Don Jewelers."],
+      ["Can appointments happen remotely?", "Yes. Zoom, FaceTime, and video chat are available for clients outside the area."],
+      ["Can you help with custom jewelry?", "Yes. Custom jewelry, CAD design, diamond sourcing, and private consultations are available."],
+    ],
+  },
+  {
+    slug: "diamond-district",
+    title: "NYC Diamond District",
+    eyebrow: "New York Jewelry Guide",
+    description: "A buyer-friendly guide to the NYC Diamond District, private sourcing, appointment-based jewelry buying, and how to avoid feeling rushed.",
+    image: "medusa-diamond-signet-ring.jpeg",
+    keyword: "Diamond District jeweler",
+    productKeyword: "diamond",
+    related: ["nyc-jewelers", "certified-diamonds", "engagement-rings", "custom-jewelry"],
+    quote: "The Diamond District has access. The key is having someone help you slow it down and make sense of the options.",
+    sections: [
+      ["Why the Diamond District matters", "The Diamond District is known for access to diamonds, setters, designers, manufacturers, and jewelry professionals. That access can be powerful when guided properly."],
+      ["What buyers should avoid", "Avoid rushing into a stone because it sounds like a deal. Compare certificates, videos, measurements, return terms, production details, and the finished design plan."],
+      ["How private sourcing helps", "Private sourcing narrows the field. Instead of sorting through everything, you review diamonds and designs that fit your budget and taste."],
+    ],
+    faqs: [
+      ["Do I need to visit the Diamond District in person?", "Not always. Many decisions can be handled through video, photos, certificates, and private consultation."],
+      ["Can you source diamonds from NYC?", "Yes. Diamond sourcing can be arranged around shape, carat, color, clarity, certification, and budget."],
+      ["Do you serve nationwide clients?", "Yes. Clients across the United States can work remotely with insured shipping."],
+    ],
+  },
+  {
+    slug: "engagement-rings",
+    title: "Engagement Rings",
+    eyebrow: "Bridal Jewelry",
+    description: "A practical engagement ring guide covering diamond shape, setting style, metal choice, budget, and custom design.",
+    image: "pink-oval-engagement-ring.jpeg",
+    keyword: "engagement rings",
+    productKeyword: "engagement",
+    related: ["diamond-cut", "lab-diamonds-vs-natural-diamonds", "diamond-carat", "jewelry-financing"],
+    quote: "An engagement ring should feel like the person wearing it, not like a copy of what everyone else bought.",
+    sections: [
+      ["Start with style", "Before comparing certificates, look at the style: solitaire, halo, three-stone, hidden halo, pavé, vintage, bezel, or custom. The setting shapes the personality of the ring."],
+      ["Choose the diamond thoughtfully", "Shape, cut, color, clarity, carat, and certification all matter. The best engagement ring balances the center stone with the setting and the hand that will wear it."],
+      ["Think about the wedding band early", "A beautiful engagement ring should also make sense next to a wedding band. Some settings sit flush easily, while others need a custom curved or contoured band."],
+    ],
+    faqs: [
+      ["Can you build a custom engagement ring?", "Yes. The Don Jewelers can help with CAD design, diamond sourcing, metal choice, and production."],
+      ["Do you offer lab and natural diamonds?", "Yes. Both lab grown and natural diamonds are available depending on preference and budget."],
+      ["Can I start with inspiration photos?", "Yes. Photos are one of the best ways to begin a custom ring conversation."],
+    ],
+  },
+  {
+    slug: "tennis-chains",
+    title: "Diamond Tennis Chains",
+    eyebrow: "Diamond Chains",
+    description: "Learn how diamond tennis chains are priced, what pointer size means, and how to choose length, metal, clasp, and diamond type.",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    keyword: "diamond tennis chain",
+    productKeyword: "tennis chain",
+    related: ["tennis-bracelets", "diamond-carat", "certified-diamonds", "jewelry-financing"],
+    quote: "A good tennis chain should sit right, move right, and feel secure. The details matter because the piece is meant to be worn.",
+    sections: [
+      ["Pointer size and total carat weight", "Pointer size describes the approximate size of each diamond. Total carat weight adds up every stone in the chain. Both affect price and visual presence."],
+      ["Metal and length", "White gold, yellow gold, rose gold, 14K, and 18K all create a different look and feel. Length changes how the chain sits and how much diamond weight is needed."],
+      ["Clasp and build quality", "A tennis chain needs a secure clasp and strong construction. Beauty matters, but security matters just as much on a high-value piece."],
+    ],
+    faqs: [
+      ["Can I build a custom tennis chain?", "Yes. You can choose pointer size, length, metal, diamond type, and clasp style."],
+      ["Are lab diamonds available?", "Yes. Lab grown and natural diamond options can be discussed."],
+      ["What affects tennis chain price?", "Diamond size, total carat weight, metal, length, clasp style, and labor all affect price."],
+    ],
+  },
+  {
+    slug: "tennis-bracelets",
+    title: "Diamond Tennis Bracelets",
+    eyebrow: "Diamond Bracelets",
+    description: "A jeweler's guide to diamond tennis bracelets, including carat weight, flexibility, clasp security, metal choice, and everyday wear.",
+    image: "diamond-bracelet.png",
+    keyword: "diamond tennis bracelet",
+    productKeyword: "tennis bracelet",
+    related: ["tennis-chains", "diamond-carat", "jewelry-care", "jewelry-financing"],
+    quote: "The best tennis bracelets feel effortless on the wrist, but they are built with a lot of quiet engineering.",
+    sections: [
+      ["Fit and comfort", "A tennis bracelet should move comfortably without sliding too far down the hand. Fit affects both comfort and security."],
+      ["Carat weight and layout", "Total carat weight matters, but stone size and spacing control the finished look. A bracelet can be delicate, bold, or somewhere in between."],
+      ["Clasp security", "A secure clasp is essential. For daily wear, ask about safety features and have the bracelet inspected periodically."],
+    ],
+    faqs: [
+      ["Can tennis bracelets be made custom?", "Yes. Metal, diamond type, carat weight, length, and clasp style can be selected."],
+      ["Can I wear a tennis bracelet daily?", "Many clients do, but it should be worn responsibly and inspected."],
+      ["Do you offer financing?", "Financing may be available through third-party providers depending on approval."],
+    ],
+  },
+  {
+    slug: "pendants",
+    title: "Diamond Pendants",
+    eyebrow: "Custom Pendants",
+    description: "A guide to diamond pendants, initials, name pieces, religious pendants, and custom designs that feel personal and wearable.",
+    image: "saint-michael-diamond-angel-pendant.jpeg",
+    keyword: "diamond pendant",
+    productKeyword: "pendant",
+    related: ["custom-jewelry", "gold-jewelry", "certified-diamonds", "jewelry-financing"],
+    quote: "A pendant sits close to the heart. That is why the best ones usually mean something.",
+    sections: [
+      ["Start with meaning", "Initials, names, crosses, icons, numbers, and symbols all carry a story. The best pendant starts with what the piece is supposed to say."],
+      ["Choose scale carefully", "Size affects cost, comfort, visibility, and how the pendant works with a chain. A bold piece needs enough structure; a daily piece needs balance."],
+      ["CAD design helps", "For custom pendants, CAD previews help confirm proportions, stone layout, bail size, and the overall feel before production."],
+    ],
+    faqs: [
+      ["Can you design a custom pendant?", "Yes. Custom pendant design, CAD, diamond layout, and metal options are available."],
+      ["Can I use initials or names?", "Yes. Initial pendants, name pendants, and symbolic designs can be created."],
+      ["Can you help choose a chain?", "Yes. Chain style, length, and strength should match the pendant."],
+    ],
+  },
+  {
+    slug: "gold-jewelry",
+    title: "Gold Jewelry",
+    eyebrow: "Fine Jewelry Materials",
+    description: "Understand 14K, 18K, yellow gold, white gold, rose gold, and how to choose the right metal for custom jewelry.",
+    image: "yellow-gold-cuban-link-chain.jpeg",
+    keyword: "gold jewelry",
+    productKeyword: "gold",
+    related: ["pendants", "custom-jewelry", "jewelry-care", "tennis-chains"],
+    quote: "Gold choice is not just color. It affects durability, feel, maintenance, and the mood of the entire piece.",
+    sections: [
+      ["14K vs 18K", "14K gold is durable and practical for many everyday pieces. 18K gold has a richer gold content and a deeper luxury feel, but it can be softer depending on the design."],
+      ["Yellow, white, and rose gold", "Yellow gold feels classic and warm. White gold gives a crisp diamond-forward look. Rose gold adds softness and warmth with a distinct personality."],
+      ["Match metal to lifestyle", "Rings and bracelets take more impact than pendants. If a piece will be worn daily, durability should be part of the conversation."],
+    ],
+    faqs: [
+      ["Is 14K or 18K better?", "Neither is automatically better. 14K is practical and durable; 18K has a richer gold feel."],
+      ["Can custom jewelry be made in different gold colors?", "Yes. Yellow gold, white gold, rose gold, and platinum options can be discussed."],
+      ["Does gold price change?", "Yes. Gold pricing can change with market conditions and piece weight."],
+    ],
+  },
+  {
+    slug: "jewelry-financing",
+    title: "Jewelry Financing",
+    eyebrow: "Buying Options",
+    description: "A clear guide to jewelry financing, custom order deposits, approval terms, and how to plan a fine jewelry purchase responsibly.",
+    image: "don-logo.jpg",
+    keyword: "jewelry financing",
+    productKeyword: "jewelry",
+    related: ["engagement-rings", "tennis-chains", "tennis-bracelets", "custom-jewelry"],
+    quote: "Financing should make the purchase clearer, not more confusing.",
+    sections: [
+      ["How financing usually works", "Jewelry financing is typically handled through third-party providers. Approval, terms, interest, payment schedule, and eligibility depend on that provider."],
+      ["Custom orders and deposits", "Custom work may require a deposit before sourcing, CAD design, or production begins. The balance is usually due before release, shipping, or pickup."],
+      ["Plan around the full cost", "Consider taxes, shipping, insurance, sizing, CAD, appraisal, or rush timing when planning the purchase."],
+    ],
+    faqs: [
+      ["Is financing guaranteed?", "No. Financing depends on third-party provider approval."],
+      ["Can financing be used for custom jewelry?", "It may be available depending on the provider, purchase amount, and order details."],
+      ["Can I ask questions before applying?", "Yes. The Don Jewelers can explain available purchase paths before you move forward."],
+    ],
+  },
+  {
+    slug: "custom-jewelry",
+    title: "Custom Jewelry",
+    eyebrow: "Custom Design",
+    description: "How custom jewelry works from idea to CAD design, diamond sourcing, production, approval, and finished piece.",
+    image: "custom-dejaun-diamond-name-pendant.jpeg",
+    keyword: "custom jewelry",
+    productKeyword: "custom",
+    related: ["pendants", "engagement-rings", "gold-jewelry", "jewelry-financing"],
+    quote: "Custom jewelry is personal. The process should feel organized enough to trust and creative enough to enjoy.",
+    sections: [
+      ["Bring the idea", "A custom project can start with a sketch, a photo, a name, a symbol, a stone, or a loose concept. The first step is understanding what the piece should mean and how it should be worn."],
+      ["CAD and approvals", "CAD design helps translate the idea into structure. This is where proportions, stone placement, bail size, ring size, and design details can be reviewed before production."],
+      ["Production and finishing", "After approval, the piece moves through production, setting, polishing, and quality review. Custom timelines vary by complexity and sourcing."],
+    ],
+    faqs: [
+      ["Can you make one-of-one jewelry?", "Yes. The Don Jewelers works on custom rings, pendants, chains, bracelets, earrings, and other personal pieces."],
+      ["Do I need a finished design before contacting you?", "No. Inspiration photos and a rough direction are enough to start."],
+      ["Can CAD be used before production?", "Yes. CAD is available when the design requires technical approval."],
+    ],
+  },
+];
+
+function buildBlogArticle(title, index) {
+  const slug = slugify(title);
   const keyword = primaryKeywords[index % primaryKeywords.length];
+  const matched = educationResources.find((item) => slug.includes(item.slug) || item.title.toLowerCase() === title.toLowerCase());
+  const image = matched?.image || blogImagePool[index % blogImagePool.length];
+  const focus = title.replace(/\?$/, "");
   return {
     slug,
     title,
-    description: `${title} Private jeweler guidance for diamonds, gold, custom jewelry, and buying decisions.`,
-    keyword,
-    image: blogImagePool[index % blogImagePool.length],
+    description: matched?.description || `${focus} explained by The Don Jewelers with practical buying advice, diamond guidance, and custom jewelry context.`,
+    keyword: matched?.keyword || keyword,
+    image,
+    productKeyword: matched?.productKeyword || keyword,
+    related: matched?.related || educationResources.slice(index % 6, (index % 6) + 4).map((item) => item.slug),
+    quote: matched?.quote || `Good jewelry advice should make the decision feel calmer. Once the details are clear, the right piece becomes much easier to recognize.`,
+    sections: matched?.sections || [
+      [`What ${focus.toLowerCase()} really means`, `The best way to approach ${focus.toLowerCase()} is to connect the technical details to the finished piece. A number, grade, or label only matters when it improves the way the jewelry looks, feels, wears, or holds meaning for the person receiving it.`],
+      ["What affects price and quality", "Pricing usually depends on material, diamond quality, carat weight, labor, certification, design complexity, and timing. Two pieces can sound similar on paper but feel very different once stone quality, gold weight, setting work, and finishing are compared."],
+      ["How a private jeweler helps", "A private jeweler can narrow the options, explain tradeoffs, and keep the process personal. That matters when you are buying an engagement ring, tennis chain, tennis bracelet, pendant, watch, or one-of-one custom piece."],
+    ],
+    faqs: matched?.faqs || [
+      [`Can The Don Jewelers help with ${focus.toLowerCase()}?`, `Yes. The Don Jewelers can explain options, compare quality, and help plan a purchase or custom project around ${focus.toLowerCase()}.`],
+      ["Can I request a custom quote?", "Yes. Send photos, budget, metal preference, diamond preference, and timing so the project can be reviewed clearly."],
+      ["Can this be handled remotely?", "Yes. Clients can work through phone, text, Zoom, FaceTime, or video chat, with insured shipping available nationwide."],
+    ],
   };
+}
+
+const blogArticles = blogTopics.map((title, index) => {
+  return buildBlogArticle(title, index);
 });
 
 let cart = JSON.parse(localStorage.getItem("donCart") || "[]");
@@ -2603,6 +2994,25 @@ function faqSchema(faqs = []) {
   };
 }
 
+function articleSchema(article, path, type = "Article") {
+  if (!article) return null;
+  const image = article.image ? `${siteUrl}/${article.image}` : `${siteUrl}/${defaultSeoImage}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    headline: article.title,
+    description: article.description,
+    image,
+    mainEntityOfPage: canonicalUrl(path),
+    author: { "@type": "Organization", name: businessName },
+    publisher: {
+      "@type": "Organization",
+      name: businessName,
+      logo: { "@type": "ImageObject", url: `${siteUrl}/don-logo.jpg` },
+    },
+  };
+}
+
 function productSchema(product) {
   if (!product) return null;
   const amount = Number(product.price);
@@ -2729,7 +3139,7 @@ function faqSection(faqs = globalFaqs) {
       <div class="faq-grid">
         ${faqs.map(([question, answer]) => `
           <article class="faq-item">
-            <h3>${question}</h3>
+            <h3><a href="${internalLink(faqPath(slugify(question)))}">${question}</a></h3>
             <p>${answer}</p>
           </article>
         `).join("")}
@@ -2785,6 +3195,163 @@ function relatedCategoryLinks(slugs = [], options = {}) {
       </div>
     </section>
   `;
+}
+
+function relatedArticleCards(slugs = [], currentSlug = "") {
+  const resolve = (slug) => {
+    const education = educationResources.find((item) => item.slug === slug);
+    if (education) return { ...education, href: educationPath(education.slug) };
+    const blog = blogArticles.find((item) => item.slug === slug);
+    if (blog) return { ...blog, href: `blog/${blog.slug}` };
+    return null;
+  };
+  const picked = slugs
+    .map(resolve)
+    .filter((item) => item && item.slug !== currentSlug)
+    .slice(0, 4);
+  const items = picked.length ? picked : educationResources.filter((item) => item.slug !== currentSlug).slice(0, 4).map((item) => ({ ...item, href: educationPath(item.slug) }));
+  return `
+    <section class="seo-section related-article-section">
+      <div class="section-heading">
+        <p class="eyebrow">Related Articles</p>
+        <h2>You May Also Like</h2>
+      </div>
+      <div class="article-card-grid">
+        ${items.map((item) => `
+          <a class="article-resource-card" href="${internalLink(item.href)}">
+            <img src="${asset(item.image || defaultSeoImage)}" alt="${item.title} jewelry education" ${imageSafety}>
+            <span>${item.eyebrow || item.keyword || "Jewelry Guide"}</span>
+            <strong>${item.title}</strong>
+            <em>${item.description}</em>
+          </a>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function comparisonTable(rows = []) {
+  if (!rows.length) return "";
+  const [head, ...body] = rows;
+  return `
+    <div class="resource-table-wrap">
+      <table class="resource-table">
+        <thead><tr>${head.map((cell) => `<th>${cell}</th>`).join("")}</tr></thead>
+        <tbody>${body.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function articleBody(article) {
+  return `
+    <article class="resource-article">
+      <img class="resource-feature-image" src="${asset(article.image || defaultSeoImage)}" alt="${article.title} by The Don Jewelers & Jewelry" ${imageSafety}>
+      <blockquote>${article.quote}</blockquote>
+      <p class="resource-lede">${article.description}</p>
+      <div class="resource-callout">
+        <strong>Did you know?</strong>
+        <span>Fine jewelry decisions become easier when you compare the finished look, the material quality, the paperwork, and how the piece will actually be worn.</span>
+      </div>
+      ${article.sections.map(([heading, body]) => `
+        <section>
+          <h2>${heading}</h2>
+          <p>${body}</p>
+        </section>
+      `).join("")}
+      ${comparisonTable(article.comparison || [])}
+      <section class="tip-grid" aria-label="Jewelry buying tips">
+        <article>
+          <h3>Buying tip</h3>
+          <p>Ask to compare more than one option. A good decision usually comes from seeing the tradeoffs clearly, not from being pushed toward the first piece.</p>
+        </article>
+        <article>
+          <h3>Expert recommendation</h3>
+          <p>Send inspiration photos, budget, timing, metal preference, and any diamond requirements before the consultation. Better context leads to better sourcing.</p>
+        </article>
+      </section>
+      <div class="article-cta-band">
+        <div>
+          <p class="eyebrow">Ready for private guidance?</p>
+          <h2>Talk through the piece before you buy.</h2>
+          <p>Whether you are comparing diamonds or planning custom jewelry, The Don Jewelers can help you move from idea to finished piece with a clear plan.</p>
+        </div>
+        <div class="hero-actions">
+          <a class="button button-gold" href="${internalLink("select-diamond")}">Shop Diamonds</a>
+          <a class="button button-dark" href="${categoryUrl("custom-jewelry")}">Browse Jewelry</a>
+          <a class="button button-light" href="${internalLink("custom-orders")}">Start Custom Project</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function resourceArticlePage(article, options = {}) {
+  const path = options.path || educationPath(article.slug);
+  const faqs = article.faqs || globalFaqs;
+  setSeo(`${article.title} | ${businessName}`, article.description, {
+    path,
+    image: article.image,
+    type: "article",
+    faqs,
+    breadcrumbs: options.breadcrumbs || [["Education", "blog"], [article.title, path]],
+    schema: [articleSchema(article, path, options.schemaType || "Article")],
+  });
+  shell(`
+    <main>
+      ${pageHero(article.eyebrow || "Jewelry Education", article.title, article.description, `<div class="hero-actions"><a class="button button-gold" href="${internalLink("select-diamond")}">Shop Diamonds</a><a class="button button-light" href="${internalLink("custom-orders")}">Schedule an Appointment</a></div>`)}
+      ${articleBody(article)}
+      ${relatedProductGrid(article.productKeyword || article.keyword || article.title)}
+      ${relatedArticleCards(article.related || [], article.slug)}
+      ${faqSection(faqs)}
+    </main>
+  `);
+}
+
+function educationResourcePage(slug, pathOverride = "") {
+  const article = educationResources.find((item) => item.slug === slug) || educationResources[0];
+  const path = pathOverride || educationPath(article.slug);
+  resourceArticlePage(article, {
+    path,
+    breadcrumbs: [["Education", "blog"], [article.title, path]],
+    schemaType: "Article",
+  });
+}
+
+function allFaqResources() {
+  const entries = [...globalFaqs];
+  educationResources.forEach((article) => (article.faqs || []).forEach((faq) => entries.push(faq)));
+  blogArticles.forEach((article) => (article.faqs || []).forEach((faq) => entries.push(faq)));
+  return entries;
+}
+
+function faqDetailPage(slug) {
+  const faqs = allFaqResources();
+  const found = faqs.find(([question]) => slugify(question) === slug);
+  const question = found?.[0] || slug.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  const answer = found?.[1] || "Yes. The Don Jewelers & Jewelry can help review the details, explain the options, and guide the next step through a private consultation.";
+  const article = {
+    slug,
+    title: question,
+    eyebrow: "Jewelry FAQ",
+    description: answer,
+    image: defaultSeoImage,
+    keyword: "jewelry FAQ",
+    productKeyword: "jewelry",
+    quote: "A good answer should make the next step feel simple.",
+    related: ["what-is-a-diamond", "custom-jewelry", "jewelry-financing", "nyc-jewelers"],
+    sections: [
+      ["The short answer", answer],
+      ["What to do next", "If the question affects budget, timing, diamond quality, metal choice, sizing, shipping, or a custom design approval, it is worth discussing before you buy. Clear communication protects both the client and the finished piece."],
+      ["How The Don Jewelers handles it", "The process is private and practical: review the goal, compare the realistic options, explain the tradeoffs, and then decide whether a finished piece, sourced diamond, or custom design is the right move."],
+    ],
+    faqs: [[question, answer], ["Can I ask follow-up questions?", "Yes. You can contact The Don Jewelers before purchasing or starting a custom order."], ["Can this be handled remotely?", "Yes. Phone, text, Zoom, FaceTime, and insured nationwide shipping are available where appropriate."]],
+  };
+  resourceArticlePage(article, {
+    path: faqPath(slug),
+    breadcrumbs: [["FAQ", "blog"], [question, faqPath(slug)]],
+    schemaType: "Article",
+  });
 }
 
 function nycJewelerStorySection() {
@@ -2895,13 +3462,41 @@ function servicePage(slug) {
 }
 
 function blogIndex() {
-  setSeo("Jewelry Blog | Diamond Education & Buying Guides", "Read 50 jewelry buying guides from The Don Jewelers & Jewelry covering engagement rings, lab diamonds, natural diamonds, tennis chains, gold, CAD design, financing, and care.", {
+  setSeo("Jewelry Knowledge Center | Diamond Education & Buying Guides", "Read diamond education, jewelry buying guides, NYC jeweler advice, engagement ring tips, tennis chain guidance, financing explainers, and custom jewelry resources from The Don Jewelers & Jewelry.", {
     path: "blog",
     breadcrumbs: [["Blog", "blog"]],
+    schema: [{
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Jewelry Knowledge Center",
+      url: canonicalUrl("blog"),
+      hasPart: [...educationResources, ...blogArticles].slice(0, 25).map((article) => ({
+        "@type": "Article",
+        headline: article.title,
+        url: canonicalUrl(article.slug ? (educationResources.includes(article) ? educationPath(article.slug) : `blog/${article.slug}`) : "blog"),
+      })),
+    }],
   });
   shell(`
     <main>
-      ${pageHero("Jewelry Blog", "Diamond education and buying guides", "Learn how to buy engagement rings, diamond tennis chains, tennis bracelets, gold jewelry, custom pendants, lab grown diamonds, natural diamonds, watches, and custom jewelry.")}
+      ${pageHero("Jewelry Knowledge Center", "Diamond education and buying guides", "Learn how to buy engagement rings, diamond tennis chains, tennis bracelets, gold jewelry, custom pendants, lab grown diamonds, natural diamonds, watches, and custom jewelry.")}
+      <section class="seo-section related-article-section">
+        <div class="section-heading">
+          <p class="eyebrow">Start Here</p>
+          <h2>Core jewelry and diamond guides</h2>
+          <p>These pages are written to help you understand the language of diamonds and fine jewelry before you request a quote, schedule an appointment, or start a custom project.</p>
+        </div>
+        <div class="article-card-grid">
+          ${educationResources.map((article) => `
+            <a class="article-resource-card" href="${internalLink(educationPath(article.slug))}">
+              <img src="${asset(article.image || defaultSeoImage)}" alt="${article.title} education guide" ${imageSafety}>
+              <span>${article.eyebrow}</span>
+              <strong>${article.title}</strong>
+              <em>${article.description}</em>
+            </a>
+          `).join("")}
+        </div>
+      </section>
       <section class="blog-grid">
         ${blogArticles.map((article) => `
           <article class="blog-card">
@@ -2920,34 +3515,11 @@ function blogIndex() {
 
 function blogArticlePage(slug) {
   const article = blogArticles.find((item) => item.slug === slug) || blogArticles[0];
-  const faqs = [
-    [`Is ${article.title.toLowerCase()} something a private jeweler can help with?`, `Yes. A private jeweler can explain pricing, diamond options, gold choices, CAD design, sourcing, and financing around ${article.keyword}.`],
-    ["Should I choose lab grown or natural diamonds?", "Choose lab grown diamonds when size and value are priorities, and natural diamonds when origin, rarity, or tradition matters more. Certification and cut quality still matter for both."],
-    ["Can I request a custom quote?", "Yes. The Don Jewelers & Jewelry can prepare a quote after reviewing design goals, diamond specs, gold color, size, and timing."],
-  ];
-  setSeo(`${article.title} | The Don Jewelers & Jewelry Blog`, article.description, {
+  resourceArticlePage(article, {
     path: `blog/${article.slug}`,
-    image: article.image,
-    faqs,
     breadcrumbs: [["Blog", "blog"], [article.title, `blog/${article.slug}`]],
+    schemaType: "BlogPosting",
   });
-  shell(`
-    <main>
-      ${pageHero("Jewelry Buying Guide", article.title, article.description, `<a class="button button-gold" href="${internalLink("custom-orders")}">Ask a Private Jeweler</a>`)}
-      <article class="blog-article">
-        <img src="${asset(article.image)}" alt="${article.title} from The Don Jewelers & Jewelry" ${imageSafety}>
-        <p>Use this guide as a quick decision checklist before you request a quote or choose a finished piece.</p>
-        <h2>What affects the price?</h2>
-        <p>Price usually comes down to diamond size and quality, metal choice, gold weight, setting complexity, labor, and whether the piece is ready-made or fully custom.</p>
-        <h2>What should you compare?</h2>
-        <p>Compare the finished look first, then review stone quality, certification, metal color, durability, sizing, and how often the piece will be worn.</p>
-        <h2>When to request help</h2>
-        <p>Send photos, budget, metal preference, timing, and any inspiration. A private consultation is best when you want a specific look, custom CAD work, or diamond sourcing.</p>
-      </article>
-      ${relatedProductGrid(article.keyword)}
-      ${faqSection(faqs)}
-    </main>
-  `);
 }
 
 function customOrderBand() {
@@ -5462,6 +6034,9 @@ function router() {
   if (path === "" || path === "/" || path === "index.html") return home();
   if (path === "blog") return blogIndex();
   if (parts[0] === "blog") return blogArticlePage(parts[1]);
+  if (path === "diamond-education") return educationResourcePage("diamond-education", "diamond-education");
+  if (parts[0] === "education") return educationResourcePage(parts[1]);
+  if (parts[0] === "faq") return faqDetailPage(parts[1]);
   if (servicePages.some(([slug]) => slug === path)) return servicePage(path);
   if (path === "build-engagement-ring") return engagementRingBuilder();
   if (path === "select-diamond") return diamondInventoryPage(params);

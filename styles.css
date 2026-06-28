@@ -679,6 +679,148 @@ h3 {
 .blog-article h2 {
   margin: 28px 0 10px;
 }
+.article-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.article-resource-card {
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(8,7,6,.08);
+}
+.article-resource-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.article-resource-card span,
+.article-resource-card strong,
+.article-resource-card em {
+  margin-inline: 16px;
+}
+.article-resource-card span {
+  color: var(--gold-dark);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.article-resource-card strong {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.16rem;
+}
+.article-resource-card em {
+  margin-bottom: 16px;
+  color: #5b5146;
+  font-style: normal;
+  line-height: 1.55;
+}
+.resource-article {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(36px, 6vw, 72px) clamp(18px, 5vw, 72px);
+}
+.resource-feature-image {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.resource-article blockquote {
+  margin: clamp(24px, 4vw, 42px) 0;
+  padding: 22px clamp(18px, 4vw, 34px);
+  border-left: 4px solid var(--gold);
+  background: #fbfaf7;
+  color: #221b13;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+  line-height: 1.35;
+}
+.resource-lede,
+.resource-article section p,
+.resource-callout span,
+.tip-grid p,
+.article-cta-band p {
+  color: #4f473d;
+  line-height: 1.78;
+}
+.resource-article section {
+  margin-top: 30px;
+}
+.resource-article section h2 {
+  margin-bottom: 10px;
+}
+.resource-callout {
+  display: grid;
+  gap: 6px;
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px solid rgba(190,154,85,.38);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fffdfa, #f4ead8);
+}
+.resource-callout strong {
+  color: #2f2518;
+}
+.resource-table-wrap {
+  overflow-x: auto;
+  margin: 30px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.resource-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: #fff;
+}
+.resource-table th,
+.resource-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.resource-table th {
+  background: #14100c;
+  color: #f7e7b5;
+}
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+.tip-grid article,
+.article-cta-band {
+  border: 1px solid rgba(190,154,85,.32);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(8,7,6,.07);
+}
+.tip-grid article {
+  padding: 20px;
+}
+.article-cta-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  margin-top: 34px;
+  padding: clamp(22px, 4vw, 34px);
+  background: #14100c;
+}
+.article-cta-band h2,
+.article-cta-band p:not(.eyebrow) {
+  color: #fff7df;
+}
 .product-card {
   overflow: hidden;
   background: white;
@@ -1661,9 +1803,12 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .product-information-section { grid-template-columns: 1fr; }
   .collection-grid, .product-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .blog-grid,
+  .article-card-grid,
   .faq-grid,
   .related-links-section .policy-link-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .split-seo { grid-template-columns: 1fr; }
+  .article-cta-band,
+  .tip-grid { grid-template-columns: 1fr; }
   .ring-showcase { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .customizer-layout, .preview-layout, .cart-layout, .product-detail-hero, .split-section, .engagement-feature, .custom-order-band, .site-footer {
     grid-template-columns: 1fr;
@@ -1705,7 +1850,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
     font-size: .68rem;
     letter-spacing: .08em;
   }
-  .collection-grid, .product-grid, .blog-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
+  .collection-grid, .product-grid, .blog-grid, .article-card-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
   .import-fields, .admin-product-fields { grid-template-columns: 1fr; }
   .ring-showcase {
     display: flex;
