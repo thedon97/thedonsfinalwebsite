@@ -14,6 +14,7 @@ const types = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".svg": "image/svg+xml; charset=utf-8",
 };
 
 function send(res, status, body, type = "text/plain; charset=utf-8") {

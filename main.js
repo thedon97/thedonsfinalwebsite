@@ -2176,7 +2176,7 @@ function startingText(product) {
 }
 
 const categories = [
-  ["select-diamond", "Live Diamond Selection", "round-diamond-studs.jpeg"],
+  ["select-diamond", "Live Diamond Selection", "live-diamond-selection.svg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "diamond-bracelet.png"],
   ["engagement-rings", "Engagement Rings", "pink-oval-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-round-diamond-filigree-wedding-band.jpg"],
@@ -2187,7 +2187,7 @@ const categories = [
   ["mens-earrings", "Men's Earrings", "round-diamond-studs.jpeg"],
   ["womens-earrings", "Women's Earrings", "princess-diamond-earrings.png"],
   ["pendants-charms", "Pendants / Charms", "saint-michael-diamond-angel-pendant.jpeg"],
-  ["chains", "Chains", "yellow-gold-rope-chain-triple.jpeg"],
+  ["chains", "Gold Chains", "yellow-gold-rope-chain-triple.jpeg"],
   ["necklaces", "Necklaces", "yellow-gold-cuban-chain-display.jpeg"],
   ["bracelets", "Bracelets", "diamond-bracelet.png"],
   ["anklets", "Anklets", "yellow-gold-rope-bracelet.jpeg"],
@@ -2381,20 +2381,16 @@ function hideSplashScreen() {
 }
 
 function navLinks() {
+  const categoryLinks = categories.map(([slug, name]) => {
+    const href = ["custom-orders", "select-diamond"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
+    const className = slug === "custom-orders" ? ` class="nav-highlight"` : "";
+    return `<a${className} href="${href}">${name}</a>`;
+  }).join("");
   return `
     <a href="${internalLink("/")}">Home</a>
-    <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
-    <a href="${internalLink("select-diamond")}">Live Diamond Selection</a>
-    <a href="${categoryUrl("cvd-lab-grown-diamond-jewelry")}">CVD Lab-Grown Diamond Jewelry</a>
-    <a href="${categoryUrl("wedding-bands")}">Wedding Bands</a>
-    <a href="${categoryUrl("diamond-tennis-chains")}">Tennis Chains</a>
-    <a href="${categoryUrl("diamond-tennis-bracelets")}">Tennis Bracelets</a>
-    <a href="${categoryUrl("chains")}">Gold Chains</a>
-    <a href="${categoryUrl("pendants-charms")}">Pendants / Charms</a>
-    <a href="${categoryUrl("custom-jewelry")}">Custom Jewelry</a>
+    ${categoryLinks}
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
     <a href="${internalLink("blog")}">Blog</a>
-    <a class="nav-highlight" href="${internalLink("custom-orders")}">Custom Orders</a>
     <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a>
   `;
 }
@@ -3247,7 +3243,7 @@ function category(slug) {
     "mens-earrings": "Shop Men's Earrings with The Don",
     "womens-earrings": "Shop Women's Earrings with The Don",
     necklaces: "Shop Necklaces with The Don",
-    chains: "Shop Chains with The Don",
+    chains: "Shop Gold Chains with The Don",
     bracelets: "Shop Bracelets with The Don",
     anklets: "Shop Anklets with The Don",
     "pendants-charms": "Shop Pendants / Charms with The Don",

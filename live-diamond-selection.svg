@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Live diamond selection with multiple diamond shapes</title>
+  <desc id="desc">A polished luxury graphic showing round, oval, emerald, pear, marquise, radiant, cushion, and heart diamond shapes on a dark jewelry background.</desc>
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#3b3328"/>
+      <stop offset=".42" stop-color="#181411"/>
+      <stop offset="1" stop-color="#050504"/>
+    </radialGradient>
+    <linearGradient id="diamondFace" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".34" stop-color="#dff5ff"/>
+      <stop offset=".68" stop-color="#9ec4d8"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="diamondCut" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#7ca8be"/>
+      <stop offset=".5" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#bdd9e6"/>
+    </linearGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#000000" flood-opacity=".45"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#ffffff" flood-opacity=".36"/>
+    </filter>
+    <g id="roundDiamond">
+      <circle cx="0" cy="0" r="92" fill="url(#diamondFace)" stroke="#ffffff" stroke-width="6"/>
+      <path d="M-82 0H82M0-82V82M-58-58L58 58M58-58L-58 58" stroke="#6f9caf" stroke-width="4" opacity=".62"/>
+      <circle cx="0" cy="0" r="45" fill="none" stroke="#ffffff" stroke-width="4" opacity=".82"/>
+    </g>
+    <g id="emeraldDiamond">
+      <path d="M-92-48L-52-88H52L92-48V48L52 88H-52L-92 48Z" fill="url(#diamondFace)" stroke="#ffffff" stroke-width="6"/>
+      <path d="M-62-34L-32-62H32L62-34V34L32 62H-32L-62 34ZM-92-48H92M-92 48H92M-52-88L52 88M52-88L-52 88" fill="none" stroke="#6f9caf" stroke-width="4" opacity=".62"/>
+    </g>
+    <g id="pearDiamond">
+      <path d="M0-112C58-54 92-2 72 54C56 102 8 122-36 96C-82 68-84 8-58-42C-42-72-18-94 0-112Z" fill="url(#diamondFace)" stroke="#ffffff" stroke-width="6"/>
+      <path d="M0-100L0 102M-55-32L72 54M-64 28L42-78M-34 92L32-82" stroke="#6f9caf" stroke-width="4" opacity=".62"/>
+    </g>
+    <g id="marquiseDiamond">
+      <path d="M-128 0C-78-82 78-82 128 0C78 82-78 82-128 0Z" fill="url(#diamondFace)" stroke="#ffffff" stroke-width="6"/>
+      <path d="M-118 0H118M0-68V68M-68-52L68 52M68-52L-68 52" stroke="#6f9caf" stroke-width="4" opacity=".62"/>
+    </g>
+    <g id="heartDiamond">
+      <path d="M0 98C-72 34-108-6-94-54C-82-96-28-102 0-62C28-102 82-96 94-54C108-6 72 34 0 98Z" fill="url(#diamondFace)" stroke="#ffffff" stroke-width="6"/>
+      <path d="M0-54V88M-76-32L0 88L76-32M-48 26H48" stroke="#6f9caf" stroke-width="4" opacity=".62"/>
+    </g>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bgGlow)"/>
+  <path d="M120 650C340 520 470 690 675 555C855 438 975 496 1090 410" fill="none" stroke="#c8a24a" stroke-width="3" opacity=".34"/>
+  <g opacity=".45">
+    <circle cx="182" cy="166" r="2.5" fill="#fff"/>
+    <circle cx="1020" cy="144" r="3" fill="#fff"/>
+    <circle cx="102" cy="718" r="2" fill="#fff"/>
+    <circle cx="1120" cy="694" r="2.5" fill="#fff"/>
+    <circle cx="580" cy="116" r="2" fill="#fff"/>
+    <circle cx="732" cy="765" r="2.4" fill="#fff"/>
+  </g>
+  <g filter="url(#softShadow)">
+    <g transform="translate(600 404) scale(1.55)"><use href="#roundDiamond"/></g>
+    <g transform="translate(332 356) rotate(-8) scale(1.05)"><use href="#emeraldDiamond"/></g>
+    <g transform="translate(864 372) rotate(12) scale(1.02)"><use href="#pearDiamond"/></g>
+    <g transform="translate(244 596) rotate(7) scale(.9)"><use href="#marquiseDiamond"/></g>
+    <g transform="translate(928 620) rotate(-10) scale(.86)"><use href="#heartDiamond"/></g>
+    <g transform="translate(508 645) rotate(45) scale(.78)"><use href="#emeraldDiamond"/></g>
+    <g transform="translate(722 650) scale(.78)"><use href="#roundDiamond"/></g>
+  </g>
+  <g transform="translate(600 790)" text-anchor="middle">
+    <text y="0" fill="#f7e7b5" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700">Live Diamond Selection</text>
+    <text y="48" fill="#ffffff" opacity=".78" font-family="Arial, sans-serif" font-size="24" letter-spacing="3">ROUND  OVAL  EMERALD  PEAR  MARQUISE  RADIANT</text>
+  </g>
+</svg>
