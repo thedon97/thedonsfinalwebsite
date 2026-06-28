@@ -12,6 +12,7 @@ const serviceArea = "NYC, Manhattan, the Diamond District, Easton PA, Bethlehem 
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 const asset = (name) => `/${name}`;
+const mediaSrc = (name) => /^https?:\/\//i.test(String(name || "")) ? name : asset(name);
 const fallbackImage = "don-logo.jpg";
 const defaultSeoImage = "queen-aurelia-oval-marquise-ring.jpeg";
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
@@ -2177,22 +2178,22 @@ function startingText(product) {
 
 const categories = [
   ["select-diamond", "Live Diamond Selection", "live-diamond-selection.jpeg"],
-  ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "red-diamond-necklace.png"],
+  ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "https://dna3.dnalinks.in/TJ4594NCW/1.jpg"],
   ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-band-black-04.png"],
   ["diamond-tennis-chains", "Diamond Tennis Chains", "triple-row-diamond-tennis-bracelet.jpeg"],
   ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "diamond-bracelet.png"],
-  ["mens-rings", "Men's Rings", "silver-medusa-nugget-ring-lifestyle.jpeg"],
+  ["mens-rings", "Men's Rings", "medusa-diamond-signet-ring.jpeg"],
   ["womens-rings", "Women's Rings", "ring-product-black-02.png"],
-  ["mens-earrings", "Men's Earrings", "round-stud-earrings-product-black.png"],
+  ["mens-earrings", "Men's Earrings", "https://dna3.dnalinks.in/TJ6671ESC/1.jpg"],
   ["womens-earrings", "Women's Earrings", "blue-monarch-diamond-studs.jpeg"],
-  ["pendants-charms", "Pendants / Charms", "saint-michael-diamond-angel-pendant.jpeg"],
+  ["pendants-charms", "Pendants / Charms", "large-round-diamond-cross-pendant.jpeg"],
   ["chains", "Gold Chains", "yellow-gold-rope-chain-triple.jpeg"],
   ["necklaces", "Necklaces", "red-diamond-necklace.png"],
   ["bracelets", "Bracelets", "diamond-bracelet.png"],
   ["anklets", "Anklets", "bracelet-05.png"],
-  ["custom-jewelry", "Custom Jewelry", "custom-dejaun-diamond-name-pendant.jpeg"],
   ["watches", "Watches", "iced-cartier-santos-watch.jpeg"],
+  ["custom-jewelry", "Custom Jewelry", "custom-dejaun-diamond-name-pendant.jpeg"],
   ["custom-orders", "Custom Orders", "don-logo.jpg"],
 ];
 
@@ -3607,7 +3608,7 @@ function home() {
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
             <a class="collection-tile" href="${["custom-orders", "select-diamond"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
-              <img src="${asset(image)}" alt="${name}" ${imageSafety}>
+              <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
           `).join("")}
