@@ -13,6 +13,7 @@ const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 const asset = (name) => `/${name}`;
 const fallbackImage = "don-logo.jpg";
+const defaultSeoImage = "queen-aurelia-oval-marquise-ring.jpeg";
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania"];
@@ -1168,7 +1169,7 @@ const products = [
     name: "10-Pointer Diamond Tennis Chain",
     price: 3600,
     estimate: 3600,
-    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    image: "yellow-gold-cuban-chain-display.jpeg",
     alt: "10 pointer diamond tennis chain",
     lede: "Build a 10-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1183,7 +1184,7 @@ const products = [
     name: "Build Your Own Diamond Tennis Chain",
     price: 3600,
     estimate: 3600,
-    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    image: "yellow-gold-cuban-link-chain.jpeg",
     alt: "Build your own diamond tennis chain",
     lede: "Build a custom diamond tennis chain by selecting diamond pointer size, chain length, metal type, gold color, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1198,7 +1199,7 @@ const products = [
     name: "15-Pointer Diamond Tennis Chain",
     price: 5200,
     estimate: 5200,
-    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    image: "yellow-gold-rope-chain-triple.jpeg",
     alt: "15 pointer diamond tennis chain",
     lede: "Build a 15-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1213,7 +1214,7 @@ const products = [
     name: "20-Pointer Diamond Tennis Chain",
     price: 6600,
     estimate: 6600,
-    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    image: "yellow-gold-layered-figaro-chain.jpeg",
     alt: "20 pointer diamond tennis chain",
     lede: "Build a 20-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1228,7 +1229,7 @@ const products = [
     name: "25-Pointer Diamond Tennis Chain",
     price: 7800,
     estimate: 7800,
-    image: "triple-row-diamond-tennis-bracelet.jpeg",
+    image: "yellow-gold-rope-chain-flat.jpeg",
     alt: "25 pointer diamond tennis chain",
     lede: "Build a 25-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -2175,7 +2176,7 @@ function startingText(product) {
 }
 
 const categories = [
-  ["select-diamond", "Live Diamond Selection", "diamond-banner.jpg"],
+  ["select-diamond", "Live Diamond Selection", "round-diamond-studs.jpeg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "diamond-bracelet.png"],
   ["engagement-rings", "Engagement Rings", "pink-oval-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-round-diamond-filigree-wedding-band.jpg"],
@@ -2203,22 +2204,22 @@ const globalFaqs = [
 ];
 
 const servicePages = [
-  ["custom-engagement-rings", "Custom Engagement Rings", "Custom engagement rings in NYC, Manhattan, the Diamond District, and Lehigh Valley PA with lab grown or natural diamonds, CAD design, and private jeweler guidance.", "engagement-ring-feature.jpg", ["engagement rings NYC", "custom engagement rings", "diamond engagement rings", "bridal jewelry"], ["custom-jewelry", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["custom-engagement-rings", "Custom Engagement Rings", "Custom engagement rings in NYC, Manhattan, the Diamond District, and Lehigh Valley PA with lab grown or natural diamonds, CAD design, and private jeweler guidance.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings NYC", "custom engagement rings", "diamond engagement rings", "bridal jewelry"], ["custom-jewelry", "lab-diamond-rings", "natural-diamond-rings"]],
   ["lab-diamond-rings", "Lab Diamond Rings", "Lab diamond rings with IGI certified stones, VVS and VS options, 14K or 18K gold, platinum settings, and custom CAD ring design.", "queen-aurelia-oval-marquise-ring.jpeg", ["lab diamond rings", "lab grown diamonds", "diamond engagement rings"], ["custom-engagement-rings", "lab-diamonds-vs-natural-diamonds", "diamond-education"]],
   ["natural-diamond-rings", "Natural Diamond Rings", "Natural diamond rings sourced for clients who want GIA or IGI paperwork, investment-quality details, and private jeweler consultation.", "classic-marquise-engagement-ring.jpeg", ["natural diamonds", "diamond dealer", "private jeweler"], ["custom-engagement-rings", "diamond-education", "lab-diamonds-vs-natural-diamonds"]],
-  ["diamond-tennis-chains", "Diamond Tennis Chains", "Diamond tennis chains in 14K and 18K yellow gold, white gold, and rose gold with lab grown or natural diamond options.", "diamond-banner.jpg", ["diamond tennis chain", "tennis chains NYC", "diamond chains"], ["diamond-tennis-bracelets", "custom-jewelry", "jewelry-financing"]],
+  ["diamond-tennis-chains", "Diamond Tennis Chains", "Diamond tennis chains in 14K and 18K yellow gold, white gold, and rose gold with lab grown or natural diamond options.", "yellow-gold-cuban-chain-display.jpeg", ["diamond tennis chain", "tennis chains NYC", "diamond chains"], ["diamond-tennis-bracelets", "custom-jewelry", "jewelry-financing"]],
   ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "Diamond tennis bracelets with custom carat weight, pointer size, gold color, clasp style, and financing support.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond tennis bracelet", "diamond jewelry", "luxury jewelry"], ["diamond-tennis-chains", "jewelry-care", "jewelry-financing"]],
   ["diamond-pendants", "Diamond Pendants", "Custom diamond pendants, initials, name pendants, religious pendants, anniversary jewelry, birthday jewelry, and custom diamond pendant design.", "saint-michael-diamond-angel-pendant.jpeg", ["diamond pendant", "custom diamond pendant", "jewelry gifts"], ["diamond-crosses", "custom-cad-design", "custom-jewelry"]],
   ["diamond-crosses", "Diamond Crosses", "Diamond cross pendants and crucifix pendants in yellow gold, white gold, rose gold, 14K gold, 18K gold, lab diamonds, and natural diamonds.", "large-round-diamond-cross-pendant.jpeg", ["diamond cross", "cross pendants", "diamond pendant"], ["diamond-pendants", "custom-jewelry", "jewelry-financing"]],
   ["custom-jewelry", "Custom Jewelry", "Custom jewelry by a private jeweler for rings, pendants, chains, bracelets, earrings, watches, grillz, CAD jewelry design, and diamond consultation.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry", "custom jeweler", "custom jewelry NYC", "custom grillz"], ["custom-cad-design", "private-jeweler", "appointment-only-jeweler"]],
   ["jewelry-financing", "Jewelry Financing", "Jewelry financing support for engagement rings, diamond tennis chains, tennis bracelets, pendants, watches, and custom jewelry orders.", "don-logo.jpg", ["jewelry financing", "engagement rings", "luxury jewelry"], ["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants"]],
-  ["diamond-education", "Diamond Education", "Learn diamond grading, the 4Cs, VVS vs VS clarity, lab grown diamonds, natural diamonds, diamond shapes, and buying strategy.", "diamond-banner.jpg", ["diamond education", "how diamonds are graded", "VVS diamonds"], ["lab-diamonds-vs-natural-diamonds", "lab-diamond-rings", "natural-diamond-rings"]],
-  ["lab-diamonds-vs-natural-diamonds", "Lab Diamonds vs Natural Diamonds", "Compare lab diamonds vs natural diamonds by origin, price, certification, appearance, resale considerations, and custom jewelry use.", "diamond-banner.jpg", ["lab diamonds vs natural diamonds", "lab grown diamonds", "natural diamonds"], ["diamond-education", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["diamond-education", "Diamond Education", "Learn diamond grading, the 4Cs, VVS vs VS clarity, lab grown diamonds, natural diamonds, diamond shapes, and buying strategy.", "round-diamond-studs.jpeg", ["diamond education", "how diamonds are graded", "VVS diamonds"], ["lab-diamonds-vs-natural-diamonds", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["lab-diamonds-vs-natural-diamonds", "Lab Diamonds vs Natural Diamonds", "Compare lab diamonds vs natural diamonds by origin, price, certification, appearance, resale considerations, and custom jewelry use.", "yellow-gold-oval-pave-engagement-ring.jpeg", ["lab diamonds vs natural diamonds", "lab grown diamonds", "natural diamonds"], ["diamond-education", "lab-diamond-rings", "natural-diamond-rings"]],
   ["jewelry-care", "Jewelry Care", "Jewelry care guidance for engagement rings, diamond chains, tennis bracelets, gold jewelry, watches, pendants, and custom pieces.", "yellow-gold-rope-chain-flat.jpeg", ["how to clean jewelry", "jewelry repair", "fine jewelry"], ["diamond-tennis-bracelets", "diamond-pendants", "custom-jewelry"]],
   ["custom-cad-design", "Custom CAD Design", "Custom CAD design for rings, pendants, initials, nameplates, grillz, chains, bracelets, and one-of-one diamond jewelry.", "custom-st-diamond-initial-pendant-front.jpeg", ["CAD jewelry design", "custom jewelry", "custom jeweler"], ["custom-jewelry", "custom-engagement-rings", "diamond-pendants"]],
-  ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "NYC Diamond District jeweler serving Manhattan and New York City clients seeking private custom jewelry, engagement rings, and diamond sourcing.", "diamond-banner.jpg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
-  ["private-jeweler", "Private Jeweler", "Private jeweler for luxury custom jewelry, diamond consultation, engagement rings, tennis chains, pendants, watches, and gift jewelry.", "don-logo.jpg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
-  ["appointment-only-jeweler", "Appointment Only Jeweler", "Appointment-only jeweler for serious buyers who want private guidance on diamonds, engagement rings, custom CAD design, and luxury jewelry.", "don-logo.jpg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
+  ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "NYC Diamond District jeweler serving Manhattan and New York City clients seeking private custom jewelry, engagement rings, and diamond sourcing.", "queen-aurelia-oval-marquise-ring.jpeg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
+  ["private-jeweler", "Private Jeweler", "Private jeweler for luxury custom jewelry, diamond consultation, engagement rings, tennis chains, pendants, watches, and gift jewelry.", "medusa-diamond-signet-ring.jpeg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
+  ["appointment-only-jeweler", "Appointment Only Jeweler", "Appointment-only jeweler for serious buyers who want private guidance on diamonds, engagement rings, custom CAD design, and luxury jewelry.", "two-tone-rolex-datejust-diamond-dial.jpeg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
 ];
 
 const blogTopics = [
@@ -2229,15 +2230,30 @@ const blogTopics = [
   "Custom Grillz Buying Guide", "Easton PA Custom Jeweler Guide", "Lehigh Valley Jeweler Guide", "Bethlehem PA Engagement Ring Guide", "Allentown PA Jewelry Buying Guide", "Manhattan Private Jeweler Guide", "How to Plan a Custom Engagement Ring Budget", "Diamond Pendant Size Guide", "Tennis Bracelet Carat Size Guide", "Questions to Ask a Jeweler Before Buying",
 ];
 
+const blogImagePool = [
+  "yellow-gold-cuban-chain-display.jpeg",
+  "queen-aurelia-oval-marquise-ring.jpeg",
+  "triple-row-diamond-tennis-bracelet.jpeg",
+  "large-round-diamond-cross-pendant.jpeg",
+  "custom-dejaun-diamond-name-pendant.jpeg",
+  "two-tone-rolex-datejust-diamond-dial.jpeg",
+  "round-diamond-studs.jpeg",
+  "yellow-gold-rope-chain-triple.jpeg",
+  "medusa-diamond-signet-ring.jpeg",
+  "saint-michael-diamond-angel-pendant.jpeg",
+  "yellow-gold-oval-pave-engagement-ring.jpeg",
+  "custom-st-diamond-initial-pendant-front.jpeg",
+];
+
 const blogArticles = blogTopics.map((title, index) => {
   const slug = title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const keyword = primaryKeywords[index % primaryKeywords.length];
   return {
     slug,
     title,
-    description: `${title} Expert private jeweler guidance from The Don Jewelers & Jewelry for custom jewelry, diamonds, gold, financing, and buying decisions.`,
+    description: `${title} Private jeweler guidance for diamonds, gold, custom jewelry, and buying decisions.`,
     keyword,
-    image: index % 3 === 0 ? "diamond-banner.jpg" : index % 3 === 1 ? "engagement-ring-feature.jpg" : "triple-row-diamond-tennis-bracelet.jpeg",
+    image: blogImagePool[index % blogImagePool.length],
   };
 });
 
@@ -2807,18 +2823,19 @@ function servicePage(slug) {
       <section class="seo-section split-seo">
         <img src="${asset(image)}" alt="${title} by The Don Jewelers & Jewelry in NYC and Pennsylvania" ${imageSafety}>
         <div>
-          <p class="eyebrow">SEO Service Page</p>
-          <h2>${title} for NYC, Manhattan, and Lehigh Valley clients</h2>
+          <p class="eyebrow">Private Jewelry Service</p>
+          <h2>${title}</h2>
           <p>${description}</p>
-          <p>The Don Jewelers & Jewelry works as a custom jeweler and private jeweler for clients comparing engagement rings, diamond jewelry, fine jewelry, gold chains, bridal jewelry, watches, jewelry gifts, anniversary jewelry, birthday jewelry, CAD jewelry design, and diamond consultation.</p>
-          <p>Popular options include 14K gold, 18K gold, white gold, yellow gold, rose gold, lab grown diamonds, natural diamonds, VVS diamonds, VS diamonds, custom diamond pendants, diamond chains, and jewelry financing.</p>
+          <ul class="service-bullets">
+            <li>Private consultation before design or sourcing starts.</li>
+            <li>Lab grown and natural diamond options when the piece calls for them.</li>
+            <li>14K, 18K, white gold, yellow gold, rose gold, and platinum options by quote.</li>
+          </ul>
         </div>
       </section>
-      ${buyingGuide(page)}
       ${relatedProductGrid(keywords.join(" "))}
       ${relatedCategoryLinks(related)}
       ${faqSection(faqs)}
-      ${aboutUs()}
     </main>
   `);
 }
@@ -2865,15 +2882,13 @@ function blogArticlePage(slug) {
       ${pageHero("Jewelry Buying Guide", article.title, article.description, `<a class="button button-gold" href="${internalLink("custom-orders")}">Ask a Private Jeweler</a>`)}
       <article class="blog-article">
         <img src="${asset(article.image)}" alt="${article.title} from The Don Jewelers & Jewelry" ${imageSafety}>
-        <p>The right jewelry decision starts with clarity. For ${article.title.toLowerCase()}, compare the finished look, diamond specifications, gold weight, labor, certification, and how the piece will be worn. The Don Jewelers & Jewelry helps buyers who want a custom jeweler, private jeweler, NYC jeweler, Manhattan jeweler, Diamond District jeweler, Easton jeweler, or Lehigh Valley jeweler.</p>
-        <h2>What affects the final price?</h2>
-        <p>Final pricing depends on diamond type, carat weight, clarity, color, cut, gold karat, gold color, setting complexity, CAD jewelry design, chain or bracelet length, clasp style, and whether the piece is ready-made or fully custom. Lab grown diamonds usually allow a larger look for the budget, while natural diamonds are chosen for rarity and traditional appeal.</p>
-        <h2>What should buyers compare?</h2>
-        <p>Compare VVS and VS clarity, 14K gold and 18K gold, white gold and yellow gold, rose gold and platinum, IGI and GIA paperwork, and the long-term care requirements. For engagement rings, also compare shape, ring size, wedding band fit, and bridal jewelry styling. For diamond tennis chains and bracelets, compare pointer size, flexibility, security, and total carat weight.</p>
-        <h2>Why work with a private jeweler?</h2>
-        <p>A private jeweler can source diamonds around your exact target, explain tradeoffs without a retail showcase script, and build custom jewelry around your lifestyle. This matters for custom engagement rings, diamond pendants, diamond crosses, gold chains, watches, custom grillz, anniversary jewelry, birthday jewelry, and one-of-one pieces.</p>
-        <h2>Next step</h2>
-        <p>Send photos, budget, metal preference, diamond preference, timing, and any inspiration. The Don Jewelers & Jewelry can help with diamond consultation, custom CAD design, diamond sourcing, jewelry financing questions, and a production plan.</p>
+        <p>Use this guide as a quick decision checklist before you request a quote or choose a finished piece.</p>
+        <h2>What affects the price?</h2>
+        <p>Price usually comes down to diamond size and quality, metal choice, gold weight, setting complexity, labor, and whether the piece is ready-made or fully custom.</p>
+        <h2>What should you compare?</h2>
+        <p>Compare the finished look first, then review stone quality, certification, metal color, durability, sizing, and how often the piece will be worn.</p>
+        <h2>When to request help</h2>
+        <p>Send photos, budget, metal preference, timing, and any inspiration. A private consultation is best when you want a specific look, custom CAD work, or diamond sourcing.</p>
       </article>
       ${relatedProductGrid(article.keyword)}
       ${faqSection(faqs)}
@@ -2901,7 +2916,7 @@ function customOrderBand() {
 function home() {
   setSeo("Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers", "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, tennis bracelets, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.", {
     path: "/",
-    image: "diamond-banner.jpg",
+    image: defaultSeoImage,
     faqs: globalFaqs,
   });
   const heroProductIds = [
@@ -2989,7 +3004,7 @@ function productGrid(list, title, body = "", action = "", afterGrid = "", gridId
   const description = body || `${title} from ${businessName}. Shop custom jewelry, diamond jewelry, engagement rings, gold jewelry, and private jeweler services across NYC, Manhattan, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.`;
   setSeo(`${title} | ${businessName}`, description, {
     path: seoOptions.path || currentRoutePath(),
-    image: seoOptions.image || list[0]?.image || "diamond-banner.jpg",
+    image: seoOptions.image || list[0]?.image || defaultSeoImage,
     breadcrumbs: seoOptions.breadcrumbs || [["Jewelry", seoOptions.path || currentRoutePath()]],
   });
   shell(`
@@ -2997,9 +3012,6 @@ function productGrid(list, title, body = "", action = "", afterGrid = "", gridId
       ${pageHero("Jewelry Marketplace", title, body, action)}
       <section class="product-grid" ${gridId ? `id="${gridId}"` : ""}>${list.map(productCard).join("")}</section>
       ${afterGrid}
-      ${relatedCategoryLinks(seoOptions.related || ["custom-jewelry", "jewelry-financing", "diamond-education"])}
-      ${faqSection(globalFaqs)}
-      ${aboutUs()}
     </main>
   `);
 }
@@ -3016,13 +3028,32 @@ const braceletFeaturedIds = [
   "lgd-jewelry-LGD3602BFC",
 ];
 
-function savedProductCard(product) {
+const chainDisplayImagePool = [
+  "yellow-gold-cuban-chain-display.jpeg",
+  "yellow-gold-cuban-link-chain.jpeg",
+  "yellow-gold-rope-chain-triple.jpeg",
+  "yellow-gold-layered-figaro-chain.jpeg",
+  "yellow-gold-rope-chain-flat.jpeg",
+  "silver-cross-chain.png",
+  "triple-row-diamond-tennis-bracelet.jpeg",
+];
+
+function savedProductImage(product, index = 0) {
+  const source = product.imageUrl || product.image || "";
+  if (product.category === "Chains" && /triple-row-diamond-tennis-bracelet/i.test(source)) {
+    return asset(chainDisplayImagePool[index % chainDisplayImagePool.length]);
+  }
+  return source;
+}
+
+function savedProductCard(product, index = 0) {
   const price = Number(product.price ?? (product.priceCents ? product.priceCents / 100 : 0));
   const href = product.source === "manual" ? `#/product/${product.id}` : `#/catalog-jewelry/${product.id}`;
+  const imageSource = savedProductImage(product, index);
   return `
     <article class="product-card">
       <a href="${href}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}">
-        ${product.imageUrl ? `<img src="${htmlSafe(product.imageUrl)}" alt="${htmlSafe(product.name)}" ${imageSafety}>` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
+        ${imageSource ? `<img src="${htmlSafe(imageSource)}" alt="${htmlSafe(product.name)}" ${imageSafety}>` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
       </a>
       <div class="product-card-body">
         <p class="eyebrow">${htmlSafe(product.category)}</p>
@@ -3043,7 +3074,7 @@ function databaseCategoryPage(slug, label) {
   const description = `Shop ${label || "luxury jewelry"} from ${businessName}, a private jeweler for custom jewelry, lab grown diamonds, natural diamonds, engagement rings, wedding bands, chains, pendants, bracelets, and watches.`;
   setSeo(`Shop ${label || "Jewelry"} | ${businessName}`, description, {
     path,
-    image: "diamond-banner.jpg",
+    image: defaultSeoImage,
     breadcrumbs: [["Jewelry", path]],
   });
   shell(`
@@ -3061,9 +3092,6 @@ function databaseCategoryPage(slug, label) {
         ${Array.from({ length: 8 }, () => `<div class="product-card product-skeleton" aria-hidden="true"></div>`).join("")}
       </section>
       <div class="inventory-pagination" id="database-product-pagination"></div>
-      ${relatedCategoryLinks(["custom-jewelry", "custom-engagement-rings", "jewelry-financing"])}
-      ${faqSection(globalFaqs)}
-      ${aboutUs()}
     </main>
   `);
   wireDatabaseCategory({
@@ -3095,7 +3123,7 @@ function wireDatabaseCategory({ category, source, featured }) {
           return aRank - bRank;
         });
       }
-      grid.innerHTML = items.length ? items.map(savedProductCard).join("") : `<div class="empty-state">No available products were found in this category.</div>`;
+      grid.innerHTML = items.length ? items.map((item, index) => savedProductCard(item, index)).join("") : `<div class="empty-state">No available products were found in this category.</div>`;
       pagination.innerHTML = `
         <button class="button button-light" type="button" data-db-page="${Math.max(1, payload.page - 1)}" ${payload.page <= 1 ? "disabled" : ""}>Previous</button>
         <span>Page ${payload.page} of ${payload.totalPages}</span>
@@ -3607,7 +3635,7 @@ function wireMatchingPairs(initialParams = new URLSearchParams()) {
 function diamondInventoryPage(initialParams = new URLSearchParams()) {
   setSeo("Live Diamond Selection | Lab Grown Diamonds & Diamond Sourcing", "Browse live diamond inventory and request private diamond sourcing for lab grown diamonds, certified diamonds, matching diamond pairs, engagement rings, and custom jewelry with The Don Jewelers & Jewelry.", {
     path: "select-diamond",
-    image: "diamond-banner.jpg",
+    image: "round-diamond-studs.jpeg",
     breadcrumbs: [["Diamond Education", "diamond-education"], ["Live Diamond Selection", "select-diamond"]],
     faqs: globalFaqs,
   });
