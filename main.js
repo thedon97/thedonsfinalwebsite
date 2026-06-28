@@ -8,12 +8,15 @@ const contactEmail = "thedonjewelersandjewelry@gmail.com";
 const phoneDisplay = "(484) 761-2008";
 const phoneHref = "tel:+14847612008";
 const businessName = "The Don Jewelers & Jewelry";
-const serviceArea = "Pennsylvania, New Jersey, New York, and nationwide shipping";
+const serviceArea = "NYC, Manhattan, the Diamond District, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, and Northampton County PA";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
-const asset = (name) => `./${name}`;
+const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
+const asset = (name) => `/${name}`;
 const fallbackImage = "don-logo.jpg";
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
+const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania"];
+const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
 
 const baseCarats = [
   ["1 carat", 1900],
@@ -2190,6 +2193,54 @@ const categories = [
   ["custom-orders", "Custom Orders", "don-logo.jpg"],
 ];
 
+const globalFaqs = [
+  ["Do you make custom engagement rings?", "Yes. The Don Jewelers & Jewelry designs custom engagement rings with lab grown diamonds, natural diamonds, 14K gold, 18K gold, platinum, CAD design, and private diamond sourcing."],
+  ["Do you serve NYC and the Diamond District?", "Yes. The business serves clients looking for an NYC jeweler, Manhattan jeweler, Diamond District jeweler, private jeweler, and appointment-only jewelry consultation."],
+  ["Do you work with clients in Pennsylvania?", "Yes. The Don Jewelers & Jewelry serves Lehigh Valley PA, Easton PA, Bethlehem PA, Allentown PA, and clients throughout Pennsylvania."],
+  ["Can I finance jewelry?", "Jewelry financing may be available through third-party providers depending on approval, purchase amount, order type, and provider terms."],
+  ["Do you source lab grown and natural diamonds?", "Yes. Clients can request lab grown diamonds, natural diamonds, IGI or GIA certified stones, VVS, VS, specific shapes, color ranges, and budget targets."],
+  ["Do you offer CAD jewelry design?", "Yes. CAD jewelry design is available for custom rings, pendants, chains, bracelets, name pendants, grillz, and other one-of-one jewelry projects."],
+];
+
+const servicePages = [
+  ["custom-engagement-rings", "Custom Engagement Rings", "Custom engagement rings in NYC, Manhattan, the Diamond District, and Lehigh Valley PA with lab grown or natural diamonds, CAD design, and private jeweler guidance.", "engagement-ring-feature.jpg", ["engagement rings NYC", "custom engagement rings", "diamond engagement rings", "bridal jewelry"], ["custom-jewelry", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["lab-diamond-rings", "Lab Diamond Rings", "Lab diamond rings with IGI certified stones, VVS and VS options, 14K or 18K gold, platinum settings, and custom CAD ring design.", "queen-aurelia-oval-marquise-ring.jpeg", ["lab diamond rings", "lab grown diamonds", "diamond engagement rings"], ["custom-engagement-rings", "lab-diamonds-vs-natural-diamonds", "diamond-education"]],
+  ["natural-diamond-rings", "Natural Diamond Rings", "Natural diamond rings sourced for clients who want GIA or IGI paperwork, investment-quality details, and private jeweler consultation.", "classic-marquise-engagement-ring.jpeg", ["natural diamonds", "diamond dealer", "private jeweler"], ["custom-engagement-rings", "diamond-education", "lab-diamonds-vs-natural-diamonds"]],
+  ["diamond-tennis-chains", "Diamond Tennis Chains", "Diamond tennis chains in 14K and 18K yellow gold, white gold, and rose gold with lab grown or natural diamond options.", "diamond-banner.jpg", ["diamond tennis chain", "tennis chains NYC", "diamond chains"], ["diamond-tennis-bracelets", "custom-jewelry", "jewelry-financing"]],
+  ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "Diamond tennis bracelets with custom carat weight, pointer size, gold color, clasp style, and financing support.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond tennis bracelet", "diamond jewelry", "luxury jewelry"], ["diamond-tennis-chains", "jewelry-care", "jewelry-financing"]],
+  ["diamond-pendants", "Diamond Pendants", "Custom diamond pendants, initials, name pendants, religious pendants, anniversary jewelry, birthday jewelry, and custom diamond pendant design.", "saint-michael-diamond-angel-pendant.jpeg", ["diamond pendant", "custom diamond pendant", "jewelry gifts"], ["diamond-crosses", "custom-cad-design", "custom-jewelry"]],
+  ["diamond-crosses", "Diamond Crosses", "Diamond cross pendants and crucifix pendants in yellow gold, white gold, rose gold, 14K gold, 18K gold, lab diamonds, and natural diamonds.", "large-round-diamond-cross-pendant.jpeg", ["diamond cross", "cross pendants", "diamond pendant"], ["diamond-pendants", "custom-jewelry", "jewelry-financing"]],
+  ["custom-jewelry", "Custom Jewelry", "Custom jewelry by a private jeweler for rings, pendants, chains, bracelets, earrings, watches, grillz, CAD jewelry design, and diamond consultation.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry", "custom jeweler", "custom jewelry NYC", "custom grillz"], ["custom-cad-design", "private-jeweler", "appointment-only-jeweler"]],
+  ["jewelry-financing", "Jewelry Financing", "Jewelry financing support for engagement rings, diamond tennis chains, tennis bracelets, pendants, watches, and custom jewelry orders.", "don-logo.jpg", ["jewelry financing", "engagement rings", "luxury jewelry"], ["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants"]],
+  ["diamond-education", "Diamond Education", "Learn diamond grading, the 4Cs, VVS vs VS clarity, lab grown diamonds, natural diamonds, diamond shapes, and buying strategy.", "diamond-banner.jpg", ["diamond education", "how diamonds are graded", "VVS diamonds"], ["lab-diamonds-vs-natural-diamonds", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["lab-diamonds-vs-natural-diamonds", "Lab Diamonds vs Natural Diamonds", "Compare lab diamonds vs natural diamonds by origin, price, certification, appearance, resale considerations, and custom jewelry use.", "diamond-banner.jpg", ["lab diamonds vs natural diamonds", "lab grown diamonds", "natural diamonds"], ["diamond-education", "lab-diamond-rings", "natural-diamond-rings"]],
+  ["jewelry-care", "Jewelry Care", "Jewelry care guidance for engagement rings, diamond chains, tennis bracelets, gold jewelry, watches, pendants, and custom pieces.", "yellow-gold-rope-chain-flat.jpeg", ["how to clean jewelry", "jewelry repair", "fine jewelry"], ["diamond-tennis-bracelets", "diamond-pendants", "custom-jewelry"]],
+  ["custom-cad-design", "Custom CAD Design", "Custom CAD design for rings, pendants, initials, nameplates, grillz, chains, bracelets, and one-of-one diamond jewelry.", "custom-st-diamond-initial-pendant-front.jpeg", ["CAD jewelry design", "custom jewelry", "custom jeweler"], ["custom-jewelry", "custom-engagement-rings", "diamond-pendants"]],
+  ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "NYC Diamond District jeweler serving Manhattan and New York City clients seeking private custom jewelry, engagement rings, and diamond sourcing.", "diamond-banner.jpg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
+  ["private-jeweler", "Private Jeweler", "Private jeweler for luxury custom jewelry, diamond consultation, engagement rings, tennis chains, pendants, watches, and gift jewelry.", "don-logo.jpg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
+  ["appointment-only-jeweler", "Appointment Only Jeweler", "Appointment-only jeweler for serious buyers who want private guidance on diamonds, engagement rings, custom CAD design, and luxury jewelry.", "don-logo.jpg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
+];
+
+const blogTopics = [
+  "How Much Does a Diamond Tennis Chain Cost?", "Lab Diamonds vs Natural Diamonds", "How to Buy an Engagement Ring", "Best Diamond Shapes", "How Diamonds Are Graded", "How to Clean Jewelry", "What Makes VVS Diamonds Better", "How to Finance Jewelry", "Custom Jewelry Process", "Best Engagement Ring Styles",
+  "How to Choose a Diamond Tennis Bracelet", "14K Gold vs 18K Gold for Custom Jewelry", "White Gold vs Yellow Gold vs Rose Gold", "How to Buy a Diamond Pendant", "What to Know Before Buying a Diamond Cross", "How CAD Jewelry Design Works", "Natural Diamond Buying Guide", "Lab Diamond Ring Buying Guide", "How to Choose Wedding Bands", "Private Jeweler vs Retail Jewelry Store",
+  "NYC Diamond District Jeweler Buying Tips", "Engagement Rings in NYC: What to Know", "Tennis Chains NYC Buying Guide", "Best Jewelry Gifts for Anniversaries", "Best Jewelry Gifts for Birthdays", "How to Design a Custom Diamond Pendant", "Rolex, Cartier, Audemars Piguet and Patek Philippe Watch Buying Notes", "How to Choose Gold Chains", "Cuban Chains Buying Guide", "Diamond Clarity Explained",
+  "Diamond Color Explained", "Diamond Cut Explained", "Diamond Carat Weight Explained", "VVS vs VS Diamonds", "IGI vs GIA Diamond Certificates", "How to Source a Diamond", "Jewelry Repair: What Can Be Fixed?", "How Often Should Jewelry Be Inspected?", "How to Protect Diamond Jewelry", "How to Store Fine Jewelry",
+  "Custom Grillz Buying Guide", "Easton PA Custom Jeweler Guide", "Lehigh Valley Jeweler Guide", "Bethlehem PA Engagement Ring Guide", "Allentown PA Jewelry Buying Guide", "Manhattan Private Jeweler Guide", "How to Plan a Custom Engagement Ring Budget", "Diamond Pendant Size Guide", "Tennis Bracelet Carat Size Guide", "Questions to Ask a Jeweler Before Buying",
+];
+
+const blogArticles = blogTopics.map((title, index) => {
+  const slug = title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const keyword = primaryKeywords[index % primaryKeywords.length];
+  return {
+    slug,
+    title,
+    description: `${title} Expert private jeweler guidance from The Don Jewelers & Jewelry for custom jewelry, diamonds, gold, financing, and buying decisions.`,
+    keyword,
+    image: index % 3 === 0 ? "diamond-banner.jpg" : index % 3 === 1 ? "engagement-ring-feature.jpg" : "triple-row-diamond-tennis-bracelet.jpeg",
+  };
+});
+
 let cart = JSON.parse(localStorage.getItem("donCart") || "[]");
 let selections = {};
 let approvedPreviewProducts = [];
@@ -2226,6 +2277,68 @@ function productCheckoutButton(product, total, label = "Buy Now / Checkout with 
   return `<button class="button button-gold" type="button" data-buy-product="${htmlSafe(product.id)}">${label}${total ? ` - ${money.format(total)}` : ""}</button>`;
 }
 
+function routePath(path = "") {
+  const normalized = String(path || "").replace(/^#?\//, "").replace(/^\/+/, "");
+  return normalized ? `/${normalized}` : "/";
+}
+
+function categoryUrl(slug) {
+  return routePath(`category/${slug}`);
+}
+
+function productUrl(id) {
+  return routePath(`product/${id}`);
+}
+
+function canonicalUrl(path = currentRoutePath()) {
+  return `${siteUrl}${routePath(path)}`;
+}
+
+function currentRoutePath() {
+  if (location.hash && location.hash.startsWith("#/")) return routePath(location.hash.slice(2));
+  return routePath(location.pathname);
+}
+
+function internalLink(path) {
+  return routePath(path);
+}
+
+function upsertLink(rel, href, attrs = {}) {
+  let link = document.querySelector(`link[rel="${rel}"]`);
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = rel;
+    document.head.appendChild(link);
+  }
+  link.href = href;
+  Object.entries(attrs).forEach(([key, value]) => link.setAttribute(key, value));
+}
+
+function upsertMeta(selector, attrName, attrValue, content) {
+  let meta = document.querySelector(selector);
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute(attrName, attrValue);
+    document.head.appendChild(meta);
+  }
+  meta.content = content;
+}
+
+function removeSeoJsonLd() {
+  document.querySelectorAll('script[data-seo-jsonld="true"]').forEach((node) => node.remove());
+}
+
+function injectJsonLd(items = []) {
+  removeSeoJsonLd();
+  items.filter(Boolean).forEach((item) => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.seoJsonld = "true";
+    script.textContent = JSON.stringify(item);
+    document.head.appendChild(script);
+  });
+}
+
 function requestPriceButton(product, className = "button button-light") {
   return `<a class="${className}" href="${requestHref(product, "pricing")}">Request Price</a>`;
 }
@@ -2251,24 +2364,20 @@ function hideSplashScreen() {
 
 function navLinks() {
   return `
-    <a href="#/">Home</a>
-    <a href="#/category/engagement-rings">Engagement Rings</a>
-    <a href="#/select-diamond">Live Diamond Selection</a>
-    <a href="#/category/cvd-lab-grown-diamond-jewelry">CVD Lab-Grown Diamond Jewelry</a>
-    <a href="#/category/wedding-bands">Wedding Bands</a>
-    <a href="#/category/mens-rings">Men's Rings</a>
-    <a href="#/category/womens-rings">Women's Rings</a>
-    <a href="#/category/necklaces">Necklaces</a>
-    <a href="#/category/chains">Chains</a>
-    <a href="#/category/pendants-charms">Pendants / Charms</a>
-    <a href="#/category/custom-jewelry">Custom Jewelry</a>
-    <a href="#/category/mens-earrings">Men's Earrings</a>
-    <a href="#/category/womens-earrings">Women's Earrings</a>
-    <a href="#/category/bracelets">Bracelets</a>
-    <a href="#/category/anklets">Anklets</a>
-    <a href="#/category/watches">Watches</a>
-    <a class="nav-highlight" href="#/custom-orders">Custom Orders</a>
-    <a href="#/cart">Cart <span class="cart-pill">${cart.length}</span></a>
+    <a href="${internalLink("/")}">Home</a>
+    <a href="${internalLink("custom-engagement-rings")}">Engagement Rings</a>
+    <a href="${internalLink("select-diamond")}">Live Diamond Selection</a>
+    <a href="${categoryUrl("cvd-lab-grown-diamond-jewelry")}">CVD Lab-Grown Diamond Jewelry</a>
+    <a href="${categoryUrl("wedding-bands")}">Wedding Bands</a>
+    <a href="${internalLink("diamond-tennis-chains")}">Tennis Chains</a>
+    <a href="${internalLink("diamond-tennis-bracelets")}">Tennis Bracelets</a>
+    <a href="${categoryUrl("chains")}">Gold Chains</a>
+    <a href="${categoryUrl("pendants-charms")}">Pendants / Charms</a>
+    <a href="${internalLink("custom-jewelry")}">Custom Jewelry</a>
+    <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
+    <a href="${internalLink("blog")}">Blog</a>
+    <a class="nav-highlight" href="${internalLink("custom-orders")}">Custom Orders</a>
+    <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a>
   `;
 }
 
@@ -2400,7 +2509,139 @@ function pageHero(eyebrow, heading, body = "", action = "") {
   `;
 }
 
-function setSeo(title, description) {
+function organizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: businessName,
+    url: siteUrl,
+    logo: `${siteUrl}/don-logo.jpg`,
+    email: contactEmail,
+    telephone: phoneDisplay,
+    sameAs: ["https://www.instagram.com/los_thejeweler/"],
+  };
+}
+
+function localBusinessSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "JewelryStore"],
+    "@id": `${siteUrl}/#jewelry-store`,
+    name: businessName,
+    url: siteUrl,
+    image: `${siteUrl}/don-logo.jpg`,
+    logo: `${siteUrl}/don-logo.jpg`,
+    email: contactEmail,
+    telephone: phoneDisplay,
+    priceRange: "$$$",
+    description: "Luxury private jeweler specializing in custom engagement rings, diamond jewelry, tennis chains, tennis bracelets, pendants, watches, CAD jewelry design, diamond sourcing, and jewelry consultation.",
+    areaServed: locationTargets.map((name) => ({ "@type": "Place", name })),
+    openingHoursSpecification: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+    ].map((dayOfWeek) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek,
+      opens: "08:00",
+      closes: "20:00",
+    })),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "New York",
+      addressRegion: "NY",
+      addressCountry: "US",
+    },
+    makesOffer: primaryKeywords.slice(0, 35).map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
+  };
+}
+
+function breadcrumbSchema(items = []) {
+  const list = [["Home", "/"], ...items].map(([name, path], index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name,
+    item: canonicalUrl(path),
+  }));
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: list,
+  };
+}
+
+function faqSchema(faqs = []) {
+  if (!faqs.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer,
+      },
+    })),
+  };
+}
+
+function productSchema(product) {
+  if (!product) return null;
+  const amount = Number(product.price);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: productName(product),
+    image: [product.imageUrl || `${siteUrl}/${product.image || fallbackImage}`],
+    description: product.lede || startingText(product),
+    brand: { "@type": "Brand", name: businessName },
+    category: product.category,
+    sku: product.id,
+    offers: {
+      "@type": "Offer",
+      url: canonicalUrl(productUrl(product.id)),
+      priceCurrency: "USD",
+      price: Number.isFinite(amount) ? amount : undefined,
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+}
+
+function webPageSchema(title, description, path = currentRoutePath()) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonicalUrl(path)}#webpage`,
+    url: canonicalUrl(path),
+    name: title,
+    description,
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    about: primaryKeywords.slice(0, 18).join(", "),
+  };
+}
+
+function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    url: siteUrl,
+    name: businessName,
+    publisher: { "@id": `${siteUrl}/#organization` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/products?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+function setSeo(title, description, options = {}) {
   document.title = title;
   let meta = document.querySelector('meta[name="description"]');
   if (!meta) {
@@ -2409,6 +2650,29 @@ function setSeo(title, description) {
     document.head.appendChild(meta);
   }
   meta.content = description;
+  const path = options.path || currentRoutePath();
+  const canonical = canonicalUrl(path);
+  const image = options.image ? (String(options.image).startsWith("http") ? options.image : `${siteUrl}/${options.image}`) : `${siteUrl}/don-logo.jpg`;
+  upsertLink("canonical", canonical);
+  upsertMeta('meta[property="og:title"]', "property", "og:title", title);
+  upsertMeta('meta[property="og:description"]', "property", "og:description", description);
+  upsertMeta('meta[property="og:url"]', "property", "og:url", canonical);
+  upsertMeta('meta[property="og:type"]', "property", "og:type", options.type || "website");
+  upsertMeta('meta[property="og:image"]', "property", "og:image", image);
+  upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
+  upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
+  upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
+  upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", image);
+  upsertMeta('meta[name="robots"]', "name", "robots", "index,follow,max-image-preview:large");
+  injectJsonLd([
+    organizationSchema(),
+    websiteSchema(),
+    localBusinessSchema(),
+    webPageSchema(title, description, path),
+    breadcrumbSchema(options.breadcrumbs || []),
+    faqSchema(options.faqs || []),
+    ...(options.schema || []),
+  ]);
 }
 
 function policyLinksHtml() {
@@ -2441,6 +2705,182 @@ function aboutUs() {
   `;
 }
 
+function faqSection(faqs = globalFaqs) {
+  return `
+    <section class="seo-section faq-section">
+      <div class="section-heading">
+        <p class="eyebrow">FAQ</p>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-grid">
+        ${faqs.map(([question, answer]) => `
+          <article class="faq-item">
+            <h3>${question}</h3>
+            <p>${answer}</p>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function relatedProductGrid(keyword = "") {
+  const terms = String(keyword).toLowerCase().split(/\s+/).filter(Boolean);
+  const matches = allProducts().filter((product) => {
+    const haystack = `${product.name} ${product.category} ${product.lede} ${product.alt}`.toLowerCase();
+    return terms.some((term) => haystack.includes(term));
+  }).slice(0, 4);
+  const list = matches.length ? matches : allProducts().slice(0, 4);
+  return `
+    <section class="seo-section">
+      <div class="section-heading">
+        <p class="eyebrow">Related Products</p>
+        <h2>Shop related jewelry</h2>
+      </div>
+      <div class="product-grid compact-grid">${list.map(productCard).join("")}</div>
+    </section>
+  `;
+}
+
+function relatedCategoryLinks(slugs = []) {
+  const fallback = ["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"];
+  const items = (slugs.length ? slugs : fallback).map((slug) => servicePages.find(([id]) => id === slug)).filter(Boolean);
+  return `
+    <section class="seo-section related-links-section">
+      <div class="section-heading">
+        <p class="eyebrow">Related Categories</p>
+        <h2>Continue your jewelry research</h2>
+      </div>
+      <div class="policy-link-grid">
+        ${items.map(([slug, title, description]) => `<a href="${internalLink(slug)}"><strong>${title}</strong><span>${description}</span></a>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buyingGuide(page) {
+  const [slug, title, description, image, keywords] = page;
+  return `
+    <section class="seo-section guide-section">
+      <div class="section-heading">
+        <p class="eyebrow">Buying Guide</p>
+        <h2>${title} buying guide</h2>
+      </div>
+      <div class="guide-grid">
+        <article>
+          <h3>Start with purpose and budget</h3>
+          <p>Decide whether the piece is for daily wear, bridal jewelry, a milestone gift, or a statement custom jewelry project. The best budget considers diamond size, gold weight, labor, certification, and whether the piece uses lab grown diamonds or natural diamonds.</p>
+        </article>
+        <article>
+          <h3>Choose diamond and metal details</h3>
+          <p>Compare VVS, VS, color, cut, carat weight, 14K gold, 18K gold, white gold, yellow gold, rose gold, and platinum. For ${title.toLowerCase()}, small changes in stone layout and gold weight can change the final quote.</p>
+        </article>
+        <article>
+          <h3>Use private consultation</h3>
+          <p>A private jeweler can source diamonds, build CAD previews, explain tradeoffs, and make the piece match your style instead of forcing a mass-market design.</p>
+        </article>
+      </div>
+      <p class="seo-copy">${description} Relevant searches include ${keywords.join(", ")} plus ${locationTargets.join(", ")}.</p>
+    </section>
+  `;
+}
+
+function servicePage(slug) {
+  const page = servicePages.find(([id]) => id === slug);
+  if (!page) return home();
+  const [id, title, description, image, keywords, related] = page;
+  const faqs = [
+    [`Can The Don Jewelers & Jewelry help with ${title.toLowerCase()}?`, `Yes. The Don Jewelers & Jewelry helps clients with ${title.toLowerCase()}, private jeweler consultation, diamond sourcing, custom CAD design, and quote guidance.`],
+    [`Do you offer lab grown and natural diamond options?`, "Yes. Lab grown diamonds and natural diamonds can be sourced by shape, carat weight, color, clarity, certification, and budget."],
+    [`Do you serve New York and Pennsylvania clients?`, `Yes. The service area includes ${locationTargets.join(", ")}.`],
+    [`Can I request financing?`, "Jewelry financing may be available through third-party providers, subject to approval and provider terms."],
+  ];
+  setSeo(`${title} | The Don Jewelers & Jewelry`, description, {
+    path: id,
+    image,
+    faqs,
+    breadcrumbs: [[title, id]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Luxury Private Jeweler", title, description, `<div class="hero-actions"><a class="button button-gold" href="${internalLink("custom-orders")}">Request a Quote</a><a class="button button-light" href="${internalLink("select-diamond")}">Browse Diamonds</a></div>`)}
+      <section class="seo-section split-seo">
+        <img src="${asset(image)}" alt="${title} by The Don Jewelers & Jewelry in NYC and Pennsylvania" ${imageSafety}>
+        <div>
+          <p class="eyebrow">SEO Service Page</p>
+          <h2>${title} for NYC, Manhattan, and Lehigh Valley clients</h2>
+          <p>${description}</p>
+          <p>The Don Jewelers & Jewelry works as a custom jeweler and private jeweler for clients comparing engagement rings, diamond jewelry, fine jewelry, gold chains, bridal jewelry, watches, jewelry gifts, anniversary jewelry, birthday jewelry, CAD jewelry design, and diamond consultation.</p>
+          <p>Popular options include 14K gold, 18K gold, white gold, yellow gold, rose gold, lab grown diamonds, natural diamonds, VVS diamonds, VS diamonds, custom diamond pendants, diamond chains, and jewelry financing.</p>
+        </div>
+      </section>
+      ${buyingGuide(page)}
+      ${relatedProductGrid(keywords.join(" "))}
+      ${relatedCategoryLinks(related)}
+      ${faqSection(faqs)}
+      ${aboutUs()}
+    </main>
+  `);
+}
+
+function blogIndex() {
+  setSeo("Jewelry Blog | Diamond Education & Buying Guides", "Read 50 jewelry buying guides from The Don Jewelers & Jewelry covering engagement rings, lab diamonds, natural diamonds, tennis chains, gold, CAD design, financing, and care.", {
+    path: "blog",
+    breadcrumbs: [["Blog", "blog"]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Jewelry Blog", "Diamond education and buying guides", "Learn how to buy engagement rings, diamond tennis chains, tennis bracelets, gold jewelry, custom pendants, lab grown diamonds, natural diamonds, watches, and custom jewelry.")}
+      <section class="blog-grid">
+        ${blogArticles.map((article) => `
+          <article class="blog-card">
+            <img src="${asset(article.image)}" alt="${article.title} jewelry guide" ${imageSafety}>
+            <div>
+              <p class="eyebrow">${article.keyword}</p>
+              <h2><a href="${internalLink(`blog/${article.slug}`)}">${article.title}</a></h2>
+              <p>${article.description}</p>
+            </div>
+          </article>
+        `).join("")}
+      </section>
+    </main>
+  `);
+}
+
+function blogArticlePage(slug) {
+  const article = blogArticles.find((item) => item.slug === slug) || blogArticles[0];
+  const faqs = [
+    [`Is ${article.title.toLowerCase()} something a private jeweler can help with?`, `Yes. A private jeweler can explain pricing, diamond options, gold choices, CAD design, sourcing, and financing around ${article.keyword}.`],
+    ["Should I choose lab grown or natural diamonds?", "Choose lab grown diamonds when size and value are priorities, and natural diamonds when origin, rarity, or tradition matters more. Certification and cut quality still matter for both."],
+    ["Can I request a custom quote?", "Yes. The Don Jewelers & Jewelry can prepare a quote after reviewing design goals, diamond specs, gold color, size, and timing."],
+  ];
+  setSeo(`${article.title} | The Don Jewelers & Jewelry Blog`, article.description, {
+    path: `blog/${article.slug}`,
+    image: article.image,
+    faqs,
+    breadcrumbs: [["Blog", "blog"], [article.title, `blog/${article.slug}`]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Jewelry Buying Guide", article.title, article.description, `<a class="button button-gold" href="${internalLink("custom-orders")}">Ask a Private Jeweler</a>`)}
+      <article class="blog-article">
+        <img src="${asset(article.image)}" alt="${article.title} from The Don Jewelers & Jewelry" ${imageSafety}>
+        <p>The right jewelry decision starts with clarity. For ${article.title.toLowerCase()}, compare the finished look, diamond specifications, gold weight, labor, certification, and how the piece will be worn. The Don Jewelers & Jewelry helps buyers who want a custom jeweler, private jeweler, NYC jeweler, Manhattan jeweler, Diamond District jeweler, Easton jeweler, or Lehigh Valley jeweler.</p>
+        <h2>What affects the final price?</h2>
+        <p>Final pricing depends on diamond type, carat weight, clarity, color, cut, gold karat, gold color, setting complexity, CAD jewelry design, chain or bracelet length, clasp style, and whether the piece is ready-made or fully custom. Lab grown diamonds usually allow a larger look for the budget, while natural diamonds are chosen for rarity and traditional appeal.</p>
+        <h2>What should buyers compare?</h2>
+        <p>Compare VVS and VS clarity, 14K gold and 18K gold, white gold and yellow gold, rose gold and platinum, IGI and GIA paperwork, and the long-term care requirements. For engagement rings, also compare shape, ring size, wedding band fit, and bridal jewelry styling. For diamond tennis chains and bracelets, compare pointer size, flexibility, security, and total carat weight.</p>
+        <h2>Why work with a private jeweler?</h2>
+        <p>A private jeweler can source diamonds around your exact target, explain tradeoffs without a retail showcase script, and build custom jewelry around your lifestyle. This matters for custom engagement rings, diamond pendants, diamond crosses, gold chains, watches, custom grillz, anniversary jewelry, birthday jewelry, and one-of-one pieces.</p>
+        <h2>Next step</h2>
+        <p>Send photos, budget, metal preference, diamond preference, timing, and any inspiration. The Don Jewelers & Jewelry can help with diamond consultation, custom CAD design, diamond sourcing, jewelry financing questions, and a production plan.</p>
+      </article>
+      ${relatedProductGrid(article.keyword)}
+      ${faqSection(faqs)}
+    </main>
+  `);
+}
+
 function customOrderBand() {
   return `
     <section class="custom-order-band">
@@ -2459,6 +2899,11 @@ function customOrderBand() {
 }
 
 function home() {
+  setSeo("Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers", "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, tennis bracelets, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.", {
+    path: "/",
+    image: "diamond-banner.jpg",
+    faqs: globalFaqs,
+  });
   const heroProductIds = [
     "silver-cross-chain",
     "build-your-own-diamond-tennis-chain",
@@ -2483,7 +2928,7 @@ function home() {
       <section class="hero">
         <div class="hero-rotator" aria-label="Featured jewelry pieces">
           ${heroProducts.map((product, index) => `
-            <a class="hero-slide" href="#/product/${product.id}" style="animation-delay: ${index * 3}s">
+            <a class="hero-slide" href="${productUrl(product.id)}" style="animation-delay: ${index * 3}s">
               <img ${index === 0 ? `src="${productImageSrc(product)}" loading="eager" fetchpriority="high"` : `data-deferred-src="${productImageSrc(product)}" loading="lazy" fetchpriority="low"`} decoding="async" alt="${product.alt || productName(product)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
               <span>${productName(product)}</span>
             </a>
@@ -2494,8 +2939,8 @@ function home() {
           <h1>The Don Jewelers & Jewelry</h1>
           <p>Engagement rings, pendants, chains, bracelets, anklets, and custom pieces.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="#/products">Shop Jewelry</a>
-            <a class="button button-ghost" href="#/custom-orders">Custom Design</a>
+            <a class="button button-gold" href="${internalLink("products")}">Shop Jewelry</a>
+            <a class="button button-ghost" href="${internalLink("custom-orders")}">Custom Design</a>
           </div>
         </div>
       </section>
@@ -2505,8 +2950,8 @@ function home() {
           <h2>Start with the ring</h2>
           <p>Select diamond size, stone shape, color, clarity, metal, and exact ring size. Built for serious buyers who want a clear luxury quote before moving forward.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="#/build-engagement-ring">Build Your Engagement Ring</a>
-            <a class="button button-light" href="#/category/engagement-rings">View Engagement Rings</a>
+            <a class="button button-gold" href="${internalLink("build-engagement-ring")}">Build Your Engagement Ring</a>
+            <a class="button button-light" href="${internalLink("custom-engagement-rings")}">View Engagement Rings</a>
           </div>
         </div>
         <div class="ring-showcase" aria-label="Featured engagement rings">
@@ -2520,7 +2965,7 @@ function home() {
         </div>
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
-            <a class="collection-tile" href="#/${["custom-orders", "select-diamond"].includes(slug) ? slug : `category/${slug}`}">
+            <a class="collection-tile" href="${["custom-orders", "select-diamond"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${asset(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
@@ -2528,6 +2973,8 @@ function home() {
         </div>
       </section>
       ${customOrderBand()}
+      ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"])}
+      ${faqSection(globalFaqs)}
       <section class="trust-band" aria-label="Trust badges">
         <div><strong>Secure browsing</strong><span>Checkout handoff ready</span></div>
         <div><strong>Curated luxury pieces</strong><span>Custom options on every item</span></div>
@@ -2538,12 +2985,20 @@ function home() {
   `);
 }
 
-function productGrid(list, title, body = "", action = "", afterGrid = "", gridId = "") {
+function productGrid(list, title, body = "", action = "", afterGrid = "", gridId = "", seoOptions = {}) {
+  const description = body || `${title} from ${businessName}. Shop custom jewelry, diamond jewelry, engagement rings, gold jewelry, and private jeweler services across NYC, Manhattan, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.`;
+  setSeo(`${title} | ${businessName}`, description, {
+    path: seoOptions.path || currentRoutePath(),
+    image: seoOptions.image || list[0]?.image || "diamond-banner.jpg",
+    breadcrumbs: seoOptions.breadcrumbs || [["Jewelry", seoOptions.path || currentRoutePath()]],
+  });
   shell(`
     <main>
       ${pageHero("Jewelry Marketplace", title, body, action)}
       <section class="product-grid" ${gridId ? `id="${gridId}"` : ""}>${list.map(productCard).join("")}</section>
       ${afterGrid}
+      ${relatedCategoryLinks(seoOptions.related || ["custom-jewelry", "jewelry-financing", "diamond-education"])}
+      ${faqSection(globalFaqs)}
       ${aboutUs()}
     </main>
   `);
@@ -2584,6 +3039,13 @@ function savedProductCard(product) {
 
 function databaseCategoryPage(slug, label) {
   const categoryName = slug === "cvd-lab-grown-diamond-jewelry" ? "" : label;
+  const path = slug === "all" ? "products" : categoryUrl(slug);
+  const description = `Shop ${label || "luxury jewelry"} from ${businessName}, a private jeweler for custom jewelry, lab grown diamonds, natural diamonds, engagement rings, wedding bands, chains, pendants, bracelets, and watches.`;
+  setSeo(`Shop ${label || "Jewelry"} | ${businessName}`, description, {
+    path,
+    image: "diamond-banner.jpg",
+    breadcrumbs: [["Jewelry", path]],
+  });
   shell(`
     <main>
       ${pageHero("Jewelry Marketplace", `Shop ${htmlSafe(label || "Jewelry")} with The Don`)}
@@ -2599,6 +3061,8 @@ function databaseCategoryPage(slug, label) {
         ${Array.from({ length: 8 }, () => `<div class="product-card product-skeleton" aria-hidden="true"></div>`).join("")}
       </section>
       <div class="inventory-pagination" id="database-product-pagination"></div>
+      ${relatedCategoryLinks(["custom-jewelry", "custom-engagement-rings", "jewelry-financing"])}
+      ${faqSection(globalFaqs)}
       ${aboutUs()}
     </main>
   `);
@@ -2736,6 +3200,7 @@ function category(slug) {
     action,
     catalogControls,
     liveCategory ? "category-product-grid" : "",
+    { path: categoryUrl(slug), related: ["custom-jewelry", "jewelry-financing", "diamond-education"] },
   );
   if (liveCategory) wireCatalogFeed(liveCategory);
 }
@@ -3140,6 +3605,12 @@ function wireMatchingPairs(initialParams = new URLSearchParams()) {
 }
 
 function diamondInventoryPage(initialParams = new URLSearchParams()) {
+  setSeo("Live Diamond Selection | Lab Grown Diamonds & Diamond Sourcing", "Browse live diamond inventory and request private diamond sourcing for lab grown diamonds, certified diamonds, matching diamond pairs, engagement rings, and custom jewelry with The Don Jewelers & Jewelry.", {
+    path: "select-diamond",
+    image: "diamond-banner.jpg",
+    breadcrumbs: [["Diamond Education", "diamond-education"], ["Live Diamond Selection", "select-diamond"]],
+    faqs: globalFaqs,
+  });
   const selectedShape = initialParams.get("shape") || "all";
   const selectedColor = initialParams.get("color") || "all";
   const selectedClarity = initialParams.get("clarity") || "all";
@@ -3409,6 +3880,13 @@ function manualProductInformation(product) {
 function productDetail(id) {
   const product = allProducts().find((p) => p.id === id) || products[0];
   if (product.imported) return importedProductDetail(product);
+  setSeo(`${productName(product)} | ${businessName}`, `${startingText(product)} from ${businessName}. Configure custom jewelry details, diamond options, metal, sizing, and private jeweler consultation.`, {
+    path: productUrl(product.id),
+    image: product.image || fallbackImage,
+    type: "product",
+    breadcrumbs: [["Jewelry", "products"], [productName(product), productUrl(product.id)]],
+    schema: [productSchema(product)],
+  });
   selections = Object.fromEntries(productFields(product).map(([label, values]) => {
     if (label === "Diamond Type") return [label, "Lab-Grown Diamond"];
     return [label, Array.isArray(values[0]) ? values[0][0] : values[0]];
@@ -4867,12 +5345,16 @@ function policyPage(path) {
 }
 
 function router() {
-  const hash = location.hash || "#/";
-  const cleanHash = hash.slice(2);
-  const [path, query = ""] = cleanHash.split("?");
+  const hashPath = location.hash && location.hash.startsWith("#/") ? location.hash.slice(2) : "";
+  const browserPath = `${location.pathname.replace(/^\/+/, "")}${location.search || ""}`;
+  const routeSource = hashPath || browserPath || "";
+  const [path, query = ""] = routeSource.split("?");
   const parts = path.split("/");
   const params = new URLSearchParams(query);
-  if (hash === "#/" || hash === "") return home();
+  if (path === "" || path === "/" || path === "index.html") return home();
+  if (path === "blog") return blogIndex();
+  if (parts[0] === "blog") return blogArticlePage(parts[1]);
+  if (servicePages.some(([slug]) => slug === path)) return servicePage(path);
   if (path === "build-engagement-ring") return engagementRingBuilder();
   if (path === "select-diamond") return diamondInventoryPage(params);
   if (path === "products") return databaseCategoryPage("all", "All Luxury Jewelry");
@@ -4900,6 +5382,18 @@ function navigate() {
 }
 
 window.addEventListener("hashchange", navigate);
+window.addEventListener("popstate", navigate);
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) return;
+  const href = link.getAttribute("href") || "";
+  if (!href.startsWith("/") || link.target || link.hasAttribute("download")) return;
+  const url = new URL(href, location.origin);
+  if (url.origin !== location.origin) return;
+  event.preventDefault();
+  history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+  navigate();
+});
 loadApprovedProducts().finally(() => {
   navigate();
   hideSplashScreen();
