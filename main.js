@@ -1169,7 +1169,7 @@ const products = [
     name: "10-Pointer Diamond Tennis Chain",
     price: 3600,
     estimate: 3600,
-    image: "yellow-gold-cuban-chain-display.jpeg",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
     alt: "10 pointer diamond tennis chain",
     lede: "Build a 10-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1184,7 +1184,7 @@ const products = [
     name: "Build Your Own Diamond Tennis Chain",
     price: 3600,
     estimate: 3600,
-    image: "yellow-gold-cuban-link-chain.jpeg",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
     alt: "Build your own diamond tennis chain",
     lede: "Build a custom diamond tennis chain by selecting diamond pointer size, chain length, metal type, gold color, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1199,7 +1199,7 @@ const products = [
     name: "15-Pointer Diamond Tennis Chain",
     price: 5200,
     estimate: 5200,
-    image: "yellow-gold-rope-chain-triple.jpeg",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
     alt: "15 pointer diamond tennis chain",
     lede: "Build a 15-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1214,7 +1214,7 @@ const products = [
     name: "20-Pointer Diamond Tennis Chain",
     price: 6600,
     estimate: 6600,
-    image: "yellow-gold-layered-figaro-chain.jpeg",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
     alt: "20 pointer diamond tennis chain",
     lede: "Build a 20-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -1229,7 +1229,7 @@ const products = [
     name: "25-Pointer Diamond Tennis Chain",
     price: 7800,
     estimate: 7800,
-    image: "yellow-gold-rope-chain-flat.jpeg",
+    image: "triple-row-diamond-tennis-bracelet.jpeg",
     alt: "25 pointer diamond tennis chain",
     lede: "Build a 25-pointer diamond tennis chain with your selected length, metal, diamond type, and clasp style.",
     cta: "Build Your Chain",
@@ -2180,6 +2180,8 @@ const categories = [
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "diamond-bracelet.png"],
   ["engagement-rings", "Engagement Rings", "pink-oval-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-round-diamond-filigree-wedding-band.jpg"],
+  ["diamond-tennis-chains", "Diamond Tennis Chains", "triple-row-diamond-tennis-bracelet.jpeg"],
+  ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "triple-row-diamond-tennis-bracelet.jpeg"],
   ["mens-rings", "Men's Rings", "ring-product-black-07.png"],
   ["womens-rings", "Women's Rings", "ring-product-black-02.png"],
   ["mens-earrings", "Men's Earrings", "round-diamond-studs.jpeg"],
@@ -2207,7 +2209,7 @@ const servicePages = [
   ["custom-engagement-rings", "Custom Engagement Rings", "Custom engagement rings in NYC, Manhattan, the Diamond District, and Lehigh Valley PA with lab grown or natural diamonds, CAD design, and private jeweler guidance.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings NYC", "custom engagement rings", "diamond engagement rings", "bridal jewelry"], ["custom-jewelry", "lab-diamond-rings", "natural-diamond-rings"]],
   ["lab-diamond-rings", "Lab Diamond Rings", "Lab diamond rings with IGI certified stones, VVS and VS options, 14K or 18K gold, platinum settings, and custom CAD ring design.", "queen-aurelia-oval-marquise-ring.jpeg", ["lab diamond rings", "lab grown diamonds", "diamond engagement rings"], ["custom-engagement-rings", "lab-diamonds-vs-natural-diamonds", "diamond-education"]],
   ["natural-diamond-rings", "Natural Diamond Rings", "Natural diamond rings sourced for clients who want GIA or IGI paperwork, investment-quality details, and private jeweler consultation.", "classic-marquise-engagement-ring.jpeg", ["natural diamonds", "diamond dealer", "private jeweler"], ["custom-engagement-rings", "diamond-education", "lab-diamonds-vs-natural-diamonds"]],
-  ["diamond-tennis-chains", "Diamond Tennis Chains", "Diamond tennis chains in 14K and 18K yellow gold, white gold, and rose gold with lab grown or natural diamond options.", "yellow-gold-cuban-chain-display.jpeg", ["diamond tennis chain", "tennis chains NYC", "diamond chains"], ["diamond-tennis-bracelets", "custom-jewelry", "jewelry-financing"]],
+  ["diamond-tennis-chains", "Diamond Tennis Chains", "Diamond tennis chains in 14K and 18K yellow gold, white gold, and rose gold with lab grown or natural diamond options.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond tennis chain", "tennis chains NYC", "diamond chains"], ["diamond-tennis-bracelets", "custom-jewelry", "jewelry-financing"]],
   ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "Diamond tennis bracelets with custom carat weight, pointer size, gold color, clasp style, and financing support.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond tennis bracelet", "diamond jewelry", "luxury jewelry"], ["diamond-tennis-chains", "jewelry-care", "jewelry-financing"]],
   ["diamond-pendants", "Diamond Pendants", "Custom diamond pendants, initials, name pendants, religious pendants, anniversary jewelry, birthday jewelry, and custom diamond pendant design.", "saint-michael-diamond-angel-pendant.jpeg", ["diamond pendant", "custom diamond pendant", "jewelry gifts"], ["diamond-crosses", "custom-cad-design", "custom-jewelry"]],
   ["diamond-crosses", "Diamond Crosses", "Diamond cross pendants and crucifix pendants in yellow gold, white gold, rose gold, 14K gold, 18K gold, lab diamonds, and natural diamonds.", "large-round-diamond-cross-pendant.jpeg", ["diamond cross", "cross pendants", "diamond pendant"], ["diamond-pendants", "custom-jewelry", "jewelry-financing"]],
@@ -2381,15 +2383,15 @@ function hideSplashScreen() {
 function navLinks() {
   return `
     <a href="${internalLink("/")}">Home</a>
-    <a href="${internalLink("custom-engagement-rings")}">Engagement Rings</a>
+    <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
     <a href="${internalLink("select-diamond")}">Live Diamond Selection</a>
     <a href="${categoryUrl("cvd-lab-grown-diamond-jewelry")}">CVD Lab-Grown Diamond Jewelry</a>
     <a href="${categoryUrl("wedding-bands")}">Wedding Bands</a>
-    <a href="${internalLink("diamond-tennis-chains")}">Tennis Chains</a>
-    <a href="${internalLink("diamond-tennis-bracelets")}">Tennis Bracelets</a>
+    <a href="${categoryUrl("diamond-tennis-chains")}">Tennis Chains</a>
+    <a href="${categoryUrl("diamond-tennis-bracelets")}">Tennis Bracelets</a>
     <a href="${categoryUrl("chains")}">Gold Chains</a>
     <a href="${categoryUrl("pendants-charms")}">Pendants / Charms</a>
-    <a href="${internalLink("custom-jewelry")}">Custom Jewelry</a>
+    <a href="${categoryUrl("custom-jewelry")}">Custom Jewelry</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
     <a href="${internalLink("blog")}">Blog</a>
     <a class="nav-highlight" href="${internalLink("custom-orders")}">Custom Orders</a>
@@ -2758,6 +2760,20 @@ function relatedProductGrid(keyword = "") {
   `;
 }
 
+function categoryRelatedGrid(products = [], title = "Related Jewelry") {
+  const list = products.filter(Boolean).slice(0, 4);
+  if (!list.length) return "";
+  return `
+    <section class="seo-section">
+      <div class="section-heading">
+        <p class="eyebrow">Related Products</p>
+        <h2>${title}</h2>
+      </div>
+      <div class="product-grid compact-grid">${list.map(productCard).join("")}</div>
+    </section>
+  `;
+}
+
 function relatedCategoryLinks(slugs = []) {
   const fallback = ["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"];
   const items = (slugs.length ? slugs : fallback).map((slug) => servicePages.find(([id]) => id === slug)).filter(Boolean);
@@ -2833,7 +2849,7 @@ function servicePage(slug) {
           </ul>
         </div>
       </section>
-      ${relatedProductGrid(keywords.join(" "))}
+      ${id === "nyc-diamond-district-jeweler" ? "" : relatedProductGrid(keywords.join(" "))}
       ${relatedCategoryLinks(related)}
       ${faqSection(faqs)}
     </main>
@@ -3148,6 +3164,8 @@ function wireDatabaseCategory({ category, source, featured }) {
 function category(slug) {
   if (slug === "select-diamond") return diamondInventoryPage();
   const categoryLabels = {
+    "diamond-tennis-chains": "Diamond Tennis Chains",
+    "diamond-tennis-bracelets": "Diamond Tennis Bracelets",
     "tennis-bracelets": "Tennis Bracelets",
     "mens-rings": "Men's Rings",
     "womens-rings": "Women's Rings",
@@ -3177,7 +3195,9 @@ function category(slug) {
     return 0;
   });
   const names = {
-    "engagement-rings": "Build your engagement ring with The Don",
+    "engagement-rings": "Shop Engagement Rings with The Don",
+    "diamond-tennis-chains": "Shop Diamond Tennis Chains with The Don",
+    "diamond-tennis-bracelets": "Shop Diamond Tennis Bracelets with The Don",
     "select-diamond": "Live Diamond Selection",
     "wedding-bands": "Shop Wedding Bands with The Don",
     "mens-rings": "Shop Men's Rings with The Don",
@@ -3191,18 +3211,40 @@ function category(slug) {
     "pendants-charms": "Shop Pendants / Charms with The Don",
   };
   const label = categories.find(([id]) => id === slug)?.[1] || categoryLabels[slug];
-  if (slug !== "engagement-rings") return databaseCategoryPage(slug, label);
-  const list = slug === "pendants-charms"
-    ? allProducts().filter((p) => ["Pendants / Charms", "Pendants"].includes(p.category) || ["silver-cross-chain", "marquise-arc"].includes(p.id))
-    : slug === "bracelets"
-      ? allProducts().filter((p) => ["Bracelets", "Tennis Bracelets"].includes(p.category))
-      : allProducts().filter((p) => productMatchesCategory(p, label));
+  const manualCategorySlugs = ["engagement-rings", "diamond-tennis-chains", "diamond-tennis-bracelets", "chains", "custom-jewelry"];
+  if (!manualCategorySlugs.includes(slug)) return databaseCategoryPage(slug, label);
+  const list = slug === "engagement-rings"
+    ? allProducts().filter((p) => p.category === "Engagement Rings")
+    : slug === "diamond-tennis-chains"
+      ? allProducts().filter((p) => /tennis chain/i.test(`${p.name} ${p.lede || ""}`))
+      : slug === "diamond-tennis-bracelets"
+        ? allProducts().filter((p) => p.category === "Tennis Bracelets" || /tennis bracelet/i.test(`${p.name} ${p.lede || ""}`))
+        : slug === "chains"
+          ? allProducts().filter((p) => p.category === "Chains" && !/tennis chain/i.test(`${p.name} ${p.lede || ""}`))
+          : allProducts().filter((p) => productMatchesCategory(p, label) || /^custom-/i.test(p.id) || /custom/i.test(p.name || ""));
+  const relatedProducts = slug === "engagement-rings"
+    ? allProducts().filter((p) => ["Wedding Bands", "Earrings", "Womens Rings"].includes(p.category) || /wedding band|stud/i.test(p.name))
+    : slug === "diamond-tennis-chains"
+      ? allProducts().filter((p) => p.category === "Chains" && !/tennis chain/i.test(`${p.name} ${p.lede || ""}`))
+      : slug === "diamond-tennis-bracelets"
+        ? allProducts().filter((p) => p.category === "Bracelets" && !/tennis bracelet/i.test(`${p.name} ${p.lede || ""}`))
+        : slug === "chains"
+          ? allProducts().filter((p) => /tennis chain/i.test(`${p.name} ${p.lede || ""}`))
+          : allProducts().filter((p) => ["Pendants / Charms", "Chains", "Bracelets"].includes(p.category));
   const action = slug === "engagement-rings"
     ? `<a class="button button-gold" href="#/build-engagement-ring">Build Your Engagement Ring</a>`
-    : slug === "chains"
+    : slug === "diamond-tennis-chains"
       ? `<a class="button button-gold" href="#/product/build-your-own-diamond-tennis-chain">Build Your Tennis Chain</a>`
       : "";
-  const body = slug === "engagement-rings" ? "All engagement rings include IGI or GIA certified diamond paperwork and an appraisal for the ring itself." : "";
+  const body = slug === "engagement-rings"
+    ? "Shop engagement ring styles and build a custom ring with your preferred diamond, metal, and ring size."
+    : slug === "diamond-tennis-chains"
+      ? "Shop diamond tennis chain options and build a chain by pointer size, length, metal, diamond type, and clasp style."
+      : slug === "diamond-tennis-bracelets"
+        ? "Shop diamond tennis bracelet styles with custom carat weight, gold color, clasp style, and diamond options."
+        : slug === "chains"
+          ? "Shop gold chains and chain styles separate from diamond tennis chain builds."
+          : "Shop custom jewelry pieces and start a one-of-one design request.";
   const liveCategory = {
     "wedding-bands": "Wedding Bands",
     "mens-rings": "Men's Rings",
@@ -3226,7 +3268,7 @@ function category(slug) {
     names[slug] || `Shop ${label || "All Luxury Jewelry"} with The Don`,
     body,
     action,
-    catalogControls,
+    `${catalogControls}${categoryRelatedGrid(relatedProducts, "More jewelry you may like")}`,
     liveCategory ? "category-product-grid" : "",
     { path: categoryUrl(slug), related: ["custom-jewelry", "jewelry-financing", "diamond-education"] },
   );
