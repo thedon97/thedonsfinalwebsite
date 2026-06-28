@@ -2219,9 +2219,9 @@ const servicePages = [
   ["lab-diamonds-vs-natural-diamonds", "Lab Diamonds vs Natural Diamonds", "Compare lab diamonds vs natural diamonds by origin, price, certification, appearance, resale considerations, and custom jewelry use.", "yellow-gold-oval-pave-engagement-ring.jpeg", ["lab diamonds vs natural diamonds", "lab grown diamonds", "natural diamonds"], ["diamond-education", "lab-diamond-rings", "natural-diamond-rings"]],
   ["jewelry-care", "Jewelry Care", "Jewelry care guidance for engagement rings, diamond chains, tennis bracelets, gold jewelry, watches, pendants, and custom pieces.", "yellow-gold-rope-chain-flat.jpeg", ["how to clean jewelry", "jewelry repair", "fine jewelry"], ["diamond-tennis-bracelets", "diamond-pendants", "custom-jewelry"]],
   ["custom-cad-design", "Custom CAD Design", "Custom CAD design for rings, pendants, initials, nameplates, grillz, chains, bracelets, and one-of-one diamond jewelry.", "custom-st-diamond-initial-pendant-front.jpeg", ["CAD jewelry design", "custom jewelry", "custom jeweler"], ["custom-jewelry", "custom-engagement-rings", "diamond-pendants"]],
-  ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "NYC Diamond District jeweler serving Manhattan and New York City clients seeking private custom jewelry, engagement rings, and diamond sourcing.", "queen-aurelia-oval-marquise-ring.jpeg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
-  ["private-jeweler", "Private Jeweler", "Private jeweler for luxury custom jewelry, diamond consultation, engagement rings, tennis chains, pendants, watches, and gift jewelry.", "medusa-diamond-signet-ring.jpeg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
-  ["appointment-only-jeweler", "Appointment Only Jeweler", "Appointment-only jeweler for serious buyers who want private guidance on diamonds, engagement rings, custom CAD design, and luxury jewelry.", "two-tone-rolex-datejust-diamond-dial.jpeg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
+  ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "A private jewelry experience for clients who want Diamond District access with a calmer, more personal way to design, source, and buy fine jewelry.", "queen-aurelia-oval-marquise-ring.jpeg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
+  ["private-jeweler", "Private Jeweler", "Work one-on-one with a private jeweler for custom pieces, diamond sourcing, engagement rings, tennis chains, pendants, watches, and meaningful gifts.", "medusa-diamond-signet-ring.jpeg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
+  ["appointment-only-jeweler", "Appointment Only Jeweler", "Book a relaxed private appointment where your questions, budget, style, timeline, and inspiration can be reviewed without pressure or a rushed showroom setting.", "two-tone-rolex-datejust-diamond-dial.jpeg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
 ];
 
 const blogTopics = [
@@ -2774,17 +2774,44 @@ function categoryRelatedGrid(products = [], title = "Related Jewelry") {
   `;
 }
 
-function relatedCategoryLinks(slugs = []) {
+function relatedCategoryLinks(slugs = [], options = {}) {
   const fallback = ["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"];
   const items = (slugs.length ? slugs : fallback).map((slug) => servicePages.find(([id]) => id === slug)).filter(Boolean);
   return `
     <section class="seo-section related-links-section">
       <div class="section-heading">
-        <p class="eyebrow">Related Categories</p>
-        <h2>Continue your jewelry research</h2>
+        <p class="eyebrow">${options.eyebrow || "Related Categories"}</p>
+        <h2>${options.heading || "Continue your jewelry research"}</h2>
+        ${options.body ? `<p>${options.body}</p>` : ""}
       </div>
       <div class="policy-link-grid">
         ${items.map(([slug, title, description]) => `<a href="${internalLink(slug)}"><strong>${title}</strong><span>${description}</span></a>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function nycJewelerStorySection() {
+  return `
+    <section class="seo-section service-story">
+      <div class="section-heading">
+        <p class="eyebrow">Private Jewelry Guidance</p>
+        <h2>A calmer way to buy in the Diamond District</h2>
+        <p>The goal is simple: make custom jewelry feel clear, personal, and comfortable. You can bring an idea, a photo, a budget, a diamond question, or just a feeling for the piece you want. From there, the conversation is organized step by step.</p>
+      </div>
+      <div class="story-grid">
+        <article>
+          <h3>Start with the idea</h3>
+          <p>We talk through the piece, who it is for, when it is needed, how it will be worn, and what details matter most. That can include diamond size, metal color, setting style, CAD design, or a fully custom concept.</p>
+        </article>
+        <article>
+          <h3>Review real options</h3>
+          <p>You can compare lab grown diamonds, natural diamonds, 14K gold, 18K gold, platinum, and design approaches in a practical way. The point is to understand the tradeoffs before you spend.</p>
+        </article>
+        <article>
+          <h3>Work locally or nationwide</h3>
+          <p>Clients in New York, New Jersey, Pennsylvania, and the tri-state area can work locally. Nationwide clients can use Zoom, FaceTime, or video chat, with insured shipping available across the United States.</p>
+        </article>
       </div>
     </section>
   `;
@@ -2821,12 +2848,26 @@ function servicePage(slug) {
   const page = servicePages.find(([id]) => id === slug);
   if (!page) return home();
   const [id, title, description, image, keywords, related] = page;
-  const faqs = [
+  const defaultFaqs = [
     [`Can The Don Jewelers & Jewelry help with ${title.toLowerCase()}?`, `Yes. The Don Jewelers & Jewelry helps clients with ${title.toLowerCase()}, private jeweler consultation, diamond sourcing, custom CAD design, and quote guidance.`],
     [`Do you offer lab grown and natural diamond options?`, "Yes. Lab grown diamonds and natural diamonds can be sourced by shape, carat weight, color, clarity, certification, and budget."],
     [`Do you serve New York and Pennsylvania clients?`, `Yes. The service area includes ${locationTargets.join(", ")}.`],
     [`Can I request financing?`, "Jewelry financing may be available through third-party providers, subject to approval and provider terms."],
   ];
+  const nycFaqs = [
+    ["Can The Don Jewelers & Jewelry help with New York's NYC Diamond District jewelry?", "Yes. The Don Jewelers & Jewelry helps clients who want access to NYC Diamond District jewelry, custom engagement rings, diamond sourcing, CAD design, and private jeweler guidance in a more personal setting."],
+    ["Do you offer lab grown and natural diamond options?", "Yes. Lab grown diamonds and natural diamonds can be sourced by shape, carat weight, color, clarity, certification, and budget."],
+    ["Do you serve New York, Pennsylvania, and nationwide clients?", "Yes. The Don Jewelers & Jewelry primarily serves the tri-state area, including New York, New Jersey, and Pennsylvania, and also works with clients across the United States. Clients outside the area can use Zoom, FaceTime, or video chat, with insured nationwide shipping available."],
+    ["Can I request financing?", "Jewelry financing may be available through third-party providers, subject to approval and provider terms."],
+  ];
+  const faqs = id === "nyc-diamond-district-jeweler" ? nycFaqs : defaultFaqs;
+  const relatedOptions = id === "nyc-diamond-district-jeweler"
+    ? {
+        eyebrow: "Plan Your Jewelry Experience",
+        heading: "Choose the next step that fits you",
+        body: "Each path is meant to help you feel oriented before you buy, whether you are planning an engagement ring, comparing custom design, or booking a private appointment.",
+      }
+    : {};
   setSeo(`${title} | The Don Jewelers & Jewelry`, description, {
     path: id,
     image,
@@ -2849,8 +2890,9 @@ function servicePage(slug) {
           </ul>
         </div>
       </section>
+      ${id === "nyc-diamond-district-jeweler" ? nycJewelerStorySection() : ""}
       ${id === "nyc-diamond-district-jeweler" ? "" : relatedProductGrid(keywords.join(" "))}
-      ${relatedCategoryLinks(related)}
+      ${relatedCategoryLinks(related, relatedOptions)}
       ${faqSection(faqs)}
     </main>
   `);

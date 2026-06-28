@@ -570,6 +570,7 @@ h3 {
 }
 .split-seo p:not(.eyebrow),
 .faq-item p,
+.story-grid p,
 .blog-article p {
   max-width: 760px;
   color: #4f473d;
@@ -588,6 +589,37 @@ h3 {
   background: var(--soft);
   color: #332a1f;
   font-weight: 750;
+}
+.service-story {
+  background: #fbfaf7;
+}
+.service-story .section-heading {
+  max-width: 860px;
+}
+.service-story .section-heading p:not(.eyebrow),
+.related-links-section .section-heading p {
+  max-width: 820px;
+  color: #4f473d;
+  line-height: 1.72;
+}
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+.story-grid article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid rgba(190, 154, 85, .34);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(8,7,6,.06);
+}
+.story-grid h3 {
+  font-size: 1.18rem;
 }
 .related-links-section .policy-link-grid,
 .faq-grid {
