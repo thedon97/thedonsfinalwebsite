@@ -3361,16 +3361,16 @@ function nycJewelerStorySection() {
       <div class="section-heading">
         <p class="eyebrow">Private Jewelry Guidance</p>
         <h2>A calmer way to buy in the Diamond District</h2>
-        <p>The goal is simple: make custom jewelry feel clear, personal, and comfortable. You can bring an idea, a photo, a budget, a diamond question, or just a feeling for the piece you want. From there, the conversation is organized step by step.</p>
+        <p>Buying fine jewelry should feel thoughtful, not rushed. Bring an idea, a photo, a budget, a diamond question, or even just the feeling you want the piece to carry. From there, each option is organized clearly so you can make a confident decision.</p>
       </div>
       <div class="story-grid">
         <article>
           <h3>Start with the idea</h3>
-          <p>We talk through the piece, who it is for, when it is needed, how it will be worn, and what details matter most. That can include diamond size, metal color, setting style, CAD design, or a fully custom concept.</p>
+          <p>We begin with the person, the occasion, the timeline, and the way the jewelry will be worn. Then we refine the important details: diamond size, metal color, setting style, CAD design, or a fully custom concept.</p>
         </article>
         <article>
           <h3>Review real options</h3>
-          <p>You can compare lab grown diamonds, natural diamonds, 14K gold, 18K gold, platinum, and design approaches in a practical way. The point is to understand the tradeoffs before you spend.</p>
+          <p>You can compare lab grown diamonds, natural diamonds, 14K gold, 18K gold, platinum, and design directions side by side. The goal is to understand the tradeoffs before you spend.</p>
         </article>
         <article>
           <h3>Work locally or nationwide</h3>

@@ -612,6 +612,7 @@ h3 {
   display: grid;
   align-content: start;
   gap: 10px;
+  min-width: 0;
   padding: clamp(18px, 3vw, 24px);
   border: 1px solid rgba(190, 154, 85, .34);
   border-radius: 8px;
@@ -620,6 +621,7 @@ h3 {
 }
 .story-grid h3 {
   font-size: 1.18rem;
+  overflow-wrap: anywhere;
 }
 .related-links-section .policy-link-grid,
 .faq-grid {
@@ -1851,6 +1853,18 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
     letter-spacing: .08em;
   }
   .collection-grid, .product-grid, .blog-grid, .article-card-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .story-grid article {
+    padding: 20px 18px;
+  }
+  .story-grid p,
+  .service-story .section-heading p:not(.eyebrow) {
+    max-width: none;
+  }
   .import-fields, .admin-product-fields { grid-template-columns: 1fr; }
   .ring-showcase {
     display: flex;
