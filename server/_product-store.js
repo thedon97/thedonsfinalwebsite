@@ -82,6 +82,9 @@ function rowToProduct(row) {
     madeToOrder: row.made_to_order,
     metadata: row.metadata || {},
     availability: row.available ? (row.made_to_order ? "Made to order" : "Available") : "Unavailable",
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    sourceUpdatedAt: row.source_updated_at,
   };
 }
 
@@ -222,6 +225,30 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   };
 }
 
+async function listVisibleProducts({ source = "" } = {}) {
+  if (!databaseConfigured()) {
+    let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
+    if (source) items = items.filter((item) => item.source === source);
+    return items.map((item) => ({
+      ...item,
+      updatedAt: item.updatedAt || item.metadata?.updatedAt || item.metadata?.lastUpdated || null,
+    }));
+  }
+  const values = [];
+  const where = ["available=TRUE", "hidden=FALSE"];
+  if (source) {
+    values.push(source);
+    where.push(`source=$${values.length}`);
+  }
+  const result = await query(`
+    SELECT *
+    FROM products
+    WHERE ${where.join(" AND ")}
+    ORDER BY updated_at DESC NULLS LAST, name ASC
+  `, values);
+  return result.rows.map(rowToProduct);
+}
+
 async function getProduct(id) {
   const clean = String(id || "").trim();
   if (!clean) return null;
@@ -232,14 +259,46 @@ async function getProduct(id) {
   return result.rows[0] ? rowToProduct(result.rows[0]) : null;
 }
 
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 90);
+}
+
+function productSlug(product) {
+  const id = slugify(product?.externalId || product?.id || "");
+  const name = slugify(product?.name || "jewelry");
+  if (!name) return id;
+  if (!id || id === name) return name;
+  return `${name}-${id}`;
+}
+
+async function getProductBySlug(slug) {
+  const clean = String(slug || "").trim();
+  if (!clean) return null;
+  const direct = await getProduct(clean);
+  if (direct) return direct;
+  const products = await listVisibleProducts();
+  return products.find((product) => productSlug(product) === clean
+    || slugify(product.id) === clean
+    || slugify(product.externalId) === clean) || null;
+}
+
 module.exports = {
   databaseConfigured,
   getProduct,
+  getProductBySlug,
   listProducts,
+  listVisibleProducts,
   manualProducts,
   normalizeCategory,
+  productSlug,
   rowToProduct,
   seedManualProducts,
   seedSnapshotProducts,
+  slugify,
   snapshotProducts,
 };

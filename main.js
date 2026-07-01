@@ -2696,8 +2696,31 @@ function categoryUrl(slug) {
   return routePath(`category/${slug}`);
 }
 
+function productSlug(productOrId) {
+  const product = typeof productOrId === "object" && productOrId ? productOrId : allProducts().find((item) => item.id === productOrId) || { id: productOrId, name: productOrId };
+  const id = slugify(product.externalId || product.stockNumber || product.id || "");
+  const name = slugify(productName(product) || product.name || "jewelry");
+  if (!name) return id;
+  if (!id || id === name) return name;
+  return `${name}-${id}`;
+}
+
 function productUrl(id) {
+  const product = typeof id === "object" ? id : allProducts().find((item) => item.id === id);
+  return routePath(`products/${productSlug(product || id)}`);
+}
+
+function legacyProductUrl(id) {
   return routePath(`product/${id}`);
+}
+
+function catalogProductUrl(product) {
+  return routePath(`products/${productSlug(product)}`);
+}
+
+function liveDiamondUrl(diamond) {
+  const id = diamond.reportNumber || diamond.certificate || diamond.stockNumber || diamond.id;
+  return routePath(`diamonds/${encodeURIComponent(id)}`);
 }
 
 function canonicalUrl(path = currentRoutePath()) {
@@ -2884,9 +2907,10 @@ function wireSidebar() {
 
 function productCard(product) {
   const priced = Number.isFinite(Number(product.price)) && product.price !== "Request Pricing" && product.estimate !== null;
+  const href = productUrl(product);
   return `
     <article class="product-card">
-      <a href="#/product/${product.id}" class="product-image-link" aria-label="Customize ${productName(product)}">
+      <a href="${href}" class="product-image-link" aria-label="Customize ${productName(product)}">
         <img src="${productImageSrc(product)}" alt="${product.alt || productName(product)}" ${imageSafety}>
       </a>
       <div class="product-card-body">
@@ -2895,7 +2919,7 @@ function productCard(product) {
         <p class="muted">${startingText(product)}</p>
         ${productBadges(product)}
         <div class="card-actions">
-          <a class="button button-dark" href="#/product/${product.id}">View Details</a>
+          <a class="button button-dark" href="${href}">View Details</a>
           ${priced ? productCheckoutButton(product, numericPrice(product.price), "Buy Now") : requestPriceButton(product)}
         </div>
       </div>
@@ -3675,7 +3699,7 @@ function savedProductImage(product, index = 0) {
 
 function savedProductCard(product, index = 0) {
   const price = Number(product.price ?? (product.priceCents ? product.priceCents / 100 : 0));
-  const href = product.source === "manual" ? `#/product/${product.id}` : `#/catalog-jewelry/${product.id}`;
+  const href = catalogProductUrl(product);
   const imageSource = savedProductImage(product, index);
   return `
     <article class="product-card">
@@ -3889,9 +3913,10 @@ function category(slug) {
 function catalogFeedProductCard(product) {
   const imageUrl = safeExternalUrl(product.imageUrl);
   const price = Number(product.price);
+  const href = catalogProductUrl({ ...product, id: `lgd-jewelry-${product.stockNumber}`, externalId: product.stockNumber });
   return `
     <article class="product-card" data-catalog-feed-product>
-      <a href="#/catalog-jewelry/${encodeURIComponent(product.stockNumber)}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}">
+      <a href="${href}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}">
         ${imageUrl ? `<img src="${htmlSafe(imageUrl)}" alt="${htmlSafe(product.name)}" loading="lazy">` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
       </a>
       <div class="product-card-body">
@@ -3900,7 +3925,7 @@ function catalogFeedProductCard(product) {
         <p class="muted">${htmlSafe(product.metal || "")}${product.diamondWeight ? ` · ${htmlSafe(product.diamondWeight)} ct total diamond weight` : ""}</p>
         <p class="muted">${price > 0 ? money.format(price) : "Request Pricing"}</p>
         <div class="card-actions">
-          <a class="button button-dark" href="#/catalog-jewelry/${encodeURIComponent(product.stockNumber)}">View Details</a>
+          <a class="button button-dark" href="${href}">View Details</a>
           <a class="button button-gold" href="#/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}&intent=product-inquiry">Request Purchase</a>
         </div>
       </div>
@@ -4038,6 +4063,14 @@ async function catalogJewelryDetail(productId) {
   }
 }
 
+function productDetailFromCleanSlug(slug) {
+  const clean = decodeURIComponent(String(slug || ""));
+  const manual = allProducts().find((product) => productSlug(product) === clean || slugify(product.id) === clean);
+  if (manual) return productDetail(manual.id);
+  const stock = clean.split("-").filter(Boolean).pop() || clean;
+  return catalogJewelryDetail(stock.toUpperCase());
+}
+
 function diamondSpecs(diamond) {
   return [
     diamond.stockNumber ? `Stock ${diamond.stockNumber}` : "",
@@ -4110,18 +4143,20 @@ function showDiamondMediaModal({ url, type = "media", label = "Diamond media" })
 
 function diamondInventoryCard(diamond) {
   const imageUrl = safeExternalUrl(diamond.imageUrl || diamond.mediaUrl);
+  const href = liveDiamondUrl(diamond);
   return `
     <article class="diamond-inventory-card" data-diamond-id="${htmlSafe(diamond.id)}" data-stock-number="${htmlSafe(diamond.stockNumber || diamond.id || "")}" data-shape="${htmlSafe(diamond.shape)}" data-carat="${htmlSafe(diamond.carat || "")}" data-color="${htmlSafe(diamond.color)}" data-clarity="${htmlSafe(diamond.clarity)}" data-certificate="${htmlSafe(diamond.certificate)}" data-report-number="${htmlSafe(diamond.reportNumber || "")}" data-price="${htmlSafe(diamond.price || "")}" data-diamond-type="${htmlSafe(diamond.diamondType || "")}" data-growth-method="${htmlSafe(diamond.growthMethod || "CVD")}">
-      ${imageUrl ? `<img class="diamond-inventory-image" src="${htmlSafe(imageUrl)}" alt="${htmlSafe(`${diamond.shape || "Lab-grown"} diamond`)}">` : ""}
+      ${imageUrl ? `<a href="${href}" aria-label="View ${htmlSafe(`${diamond.shape || "Lab-grown"} diamond ${diamond.reportNumber || diamond.stockNumber || ""}`)}"><img class="diamond-inventory-image" src="${htmlSafe(imageUrl)}" alt="${htmlSafe(`${diamond.shape || "Lab-grown"} diamond ${diamond.carat ? `${diamond.carat} carat` : ""} ${diamond.color || ""} ${diamond.clarity || ""}`)}"></a>` : ""}
       <div>
         <p class="eyebrow">${htmlSafe(diamond.diamondType || "Lab-Grown Diamond")}</p>
-        <h3>${htmlSafe(diamond.shape)} ${diamond.carat ? `${diamond.carat}ct` : ""} Diamond</h3>
+        <h3><a href="${href}">${htmlSafe(diamond.shape)} ${diamond.carat ? `${diamond.carat}ct` : ""} Diamond</a></h3>
         <p class="muted">${htmlSafe(diamondSpecs(diamond))}</p>
         ${diamond.stockNumber ? `<p class="diamond-report-pill">Stock # ${htmlSafe(diamond.stockNumber)}</p>` : ""}
         ${diamond.reportNumber ? `<p class="diamond-report-pill">IGI Report # ${htmlSafe(diamond.reportNumber)}</p>` : ""}
       </div>
       ${diamondMediaLinks(diamond)}
       <div class="builder-actions">
+        <a class="button button-light" href="${href}">View Details</a>
         <button class="button button-gold" type="button" data-select-diamond="${diamond.id}">Select Diamond</button>
         ${numericPrice(String(diamond.price || "").replace(/[^0-9.]/g, "")) > 0
           ? `<button class="button button-dark" type="button" data-buy-live-diamond="${htmlSafe(diamond.id)}" data-stock-number="${htmlSafe(diamond.stockNumber)}" data-diamond-type="${htmlSafe(diamond.diamondType)}" data-live-page="${htmlSafe(diamond._page || 1)}">Buy Now / Stripe Checkout</button>`
@@ -6042,6 +6077,10 @@ function router() {
   if (path === "build-engagement-ring") return engagementRingBuilder();
   if (path === "select-diamond") return diamondInventoryPage(params);
   if (path === "products") return databaseCategoryPage("all", "All Luxury Jewelry");
+  if (parts[0] === "products" && parts[1]) return productDetailFromCleanSlug(parts[1]);
+  if (parts[0] === "engagement-rings" && parts[1]) return productDetailFromCleanSlug(parts[1]);
+  if (parts[0] === "diamonds" && parts[1] === "lab-grown" && parts[2]) return productDetailFromCleanSlug(parts[2]);
+  if (parts[0] === "diamonds" && parts[1]) return diamondInventoryPage(new URLSearchParams({ search: decodeURIComponent(parts[1]) }));
   if (path === "admin") return adminDashboard();
   if (parts[0] === "request") return customRequestPage(parts[1], params);
   if (parts[0] === "category") return category(parts[1]);

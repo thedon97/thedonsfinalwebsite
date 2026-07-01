@@ -27,6 +27,44 @@ function send(res, status, body, type = "text/plain; charset=utf-8") {
   res.end(body);
 }
 
+function routeApi(pathname, req, res) {
+  if (pathname === "/sitemap.xml") {
+    req.url = "/api/seo?action=sitemap";
+    apiRouter(req, res);
+    return true;
+  }
+  if (pathname === "/robots.txt") {
+    req.url = "/api/seo?action=robots";
+    apiRouter(req, res);
+    return true;
+  }
+  const productMatch = pathname.match(/^\/products\/([^/]+)$/);
+  if (productMatch) {
+    req.url = `/api/seo?action=product&slug=${encodeURIComponent(productMatch[1])}`;
+    apiRouter(req, res);
+    return true;
+  }
+  const engagementMatch = pathname.match(/^\/engagement-rings\/([^/]+)$/);
+  if (engagementMatch) {
+    req.url = `/api/seo?action=product&slug=${encodeURIComponent(engagementMatch[1])}`;
+    apiRouter(req, res);
+    return true;
+  }
+  const labProductMatch = pathname.match(/^\/diamonds\/lab-grown\/([^/]+)$/);
+  if (labProductMatch) {
+    req.url = `/api/seo?action=product&slug=${encodeURIComponent(labProductMatch[1])}`;
+    apiRouter(req, res);
+    return true;
+  }
+  const diamondMatch = pathname.match(/^\/diamonds\/([^/]+)$/);
+  if (diamondMatch) {
+    req.url = `/api/seo?action=diamond&cert=${encodeURIComponent(diamondMatch[1])}`;
+    apiRouter(req, res);
+    return true;
+  }
+  return false;
+}
+
 function resolveFile(req) {
   let pathname = decodeURIComponent(req.url.split("?")[0]);
   if (pathname === "/") pathname = "/index.html";
@@ -36,6 +74,8 @@ function resolveFile(req) {
 }
 
 const server = http.createServer((req, res) => {
+  const pathname = decodeURIComponent(req.url.split("?")[0]);
+  if (routeApi(pathname, req, res)) return;
   if (req.url.startsWith("/api/")) {
     apiRouter(req, res);
     return;

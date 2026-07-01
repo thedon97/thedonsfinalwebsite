@@ -6,6 +6,7 @@ const checkout = require("../server/create-checkout-session");
 const sendRequest = require("../server/send-request");
 const adminJewelrySync = require("../server/admin/jewelry-sync");
 const cronJewelrySync = require("../server/cron/jewelry-sync");
+const seoPages = require("../server/seo-pages");
 
 const certified = routeFeed("certified");
 const certifiedColor = routeFeed("certified-color");
@@ -41,6 +42,7 @@ module.exports = async function handler(req, res) {
     "system-status": systemStatus,
     "create-checkout-session": checkout,
     "send-request": sendRequest,
+    "seo": seoPages,
     "admin/jewelry-sync": adminJewelrySync,
     "cron/jewelry-sync": cronJewelrySync,
     "test-diamond-api": testDiamondApi,

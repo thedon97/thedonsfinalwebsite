@@ -2,5 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
+Disallow: /checkout
+Disallow: /checkout-success
+Disallow: /checkout-cancel
+Disallow: /account
+Disallow: /cart?*
 
 Sitemap: https://www.thedonjewelersandjewelrynyc.com/sitemap.xml

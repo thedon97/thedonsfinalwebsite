@@ -31,6 +31,30 @@
   ],
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "/api/index?route=seo&action=sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/api/index?route=seo&action=robots"
+    },
+    {
+      "source": "/products/:slug",
+      "destination": "/api/index?route=seo&action=product&slug=:slug"
+    },
+    {
+      "source": "/engagement-rings/:slug",
+      "destination": "/api/index?route=seo&action=product&slug=:slug"
+    },
+    {
+      "source": "/diamonds/lab-grown/:slug",
+      "destination": "/api/index?route=seo&action=product&slug=:slug"
+    },
+    {
+      "source": "/diamonds/:cert",
+      "destination": "/api/index?route=seo&action=diamond&cert=:cert"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/index?route=:path*"
     },
