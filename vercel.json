@@ -39,6 +39,90 @@
       "destination": "/api/index?route=seo&action=robots"
     },
     {
+      "source": "/products",
+      "destination": "/api/index?route=seo&action=page&path=products"
+    },
+    {
+      "source": "/select-diamond",
+      "destination": "/api/index?route=seo&action=page&path=select-diamond"
+    },
+    {
+      "source": "/custom-orders",
+      "destination": "/api/index?route=seo&action=page&path=custom-orders"
+    },
+    {
+      "source": "/category/:slug",
+      "destination": "/api/index?route=seo&action=page&path=category/:slug"
+    },
+    {
+      "source": "/custom-engagement-rings",
+      "destination": "/api/index?route=seo&action=page&path=custom-engagement-rings"
+    },
+    {
+      "source": "/lab-diamond-rings",
+      "destination": "/api/index?route=seo&action=page&path=lab-diamond-rings"
+    },
+    {
+      "source": "/natural-diamond-rings",
+      "destination": "/api/index?route=seo&action=page&path=natural-diamond-rings"
+    },
+    {
+      "source": "/diamond-tennis-chains",
+      "destination": "/api/index?route=seo&action=page&path=diamond-tennis-chains"
+    },
+    {
+      "source": "/diamond-tennis-bracelets",
+      "destination": "/api/index?route=seo&action=page&path=diamond-tennis-bracelets"
+    },
+    {
+      "source": "/diamond-pendants",
+      "destination": "/api/index?route=seo&action=page&path=diamond-pendants"
+    },
+    {
+      "source": "/diamond-crosses",
+      "destination": "/api/index?route=seo&action=page&path=diamond-crosses"
+    },
+    {
+      "source": "/custom-jewelry",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry"
+    },
+    {
+      "source": "/jewelry-financing",
+      "destination": "/api/index?route=seo&action=page&path=jewelry-financing"
+    },
+    {
+      "source": "/diamond-education",
+      "destination": "/api/index?route=seo&action=page&path=diamond-education"
+    },
+    {
+      "source": "/lab-diamonds-vs-natural-diamonds",
+      "destination": "/api/index?route=seo&action=page&path=lab-diamonds-vs-natural-diamonds"
+    },
+    {
+      "source": "/jewelry-care",
+      "destination": "/api/index?route=seo&action=page&path=jewelry-care"
+    },
+    {
+      "source": "/custom-cad-design",
+      "destination": "/api/index?route=seo&action=page&path=custom-cad-design"
+    },
+    {
+      "source": "/nyc-diamond-district-jeweler",
+      "destination": "/api/index?route=seo&action=page&path=nyc-diamond-district-jeweler"
+    },
+    {
+      "source": "/private-jeweler",
+      "destination": "/api/index?route=seo&action=page&path=private-jeweler"
+    },
+    {
+      "source": "/appointment-only-jeweler",
+      "destination": "/api/index?route=seo&action=page&path=appointment-only-jeweler"
+    },
+    {
+      "source": "/blog",
+      "destination": "/api/index?route=seo&action=page&path=blog"
+    },
+    {
       "source": "/products/:slug",
       "destination": "/api/index?route=seo&action=product&slug=:slug"
     },

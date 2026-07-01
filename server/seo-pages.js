@@ -78,6 +78,154 @@ function categorySlug(category = "") {
   return map[normalized] || slugify(normalized || "products");
 }
 
+const staticPageMeta = {
+  "/": {
+    title: "Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers",
+    description: "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, and Allentown.",
+    label: "Home",
+    priority: "1.0",
+  },
+  "/products": {
+    title: "Diamond Jewelry Products | The Don Jewelers",
+    description: "Shop diamond jewelry, engagement rings, wedding bands, tennis chains, tennis bracelets, pendants, earrings, watches, and custom jewelry from The Don Jewelers.",
+    label: "Products",
+    priority: "0.9",
+  },
+  "/select-diamond": {
+    title: "Live Diamond Selection | Lab Grown & Certified Diamonds | The Don Jewelers",
+    description: "Browse certified lab grown diamonds and diamond options by shape, carat, color, clarity, certificate, and price with private jeweler guidance from The Don Jewelers.",
+    label: "Live Diamond Selection",
+    priority: "0.8",
+  },
+  "/custom-orders": {
+    title: "Start a Custom Jewelry Order | The Don Jewelers",
+    description: "Start a custom jewelry project for engagement rings, diamond pendants, tennis chains, bracelets, wedding bands, grillz, and one-of-one luxury jewelry.",
+    label: "Custom Orders",
+    priority: "0.8",
+  },
+  "/custom-engagement-rings": {
+    title: "Custom Engagement Rings NYC | Private Jeweler | The Don Jewelers",
+    description: "Design a custom engagement ring with The Don Jewelers, serving NYC, Manhattan, the Diamond District, Lehigh Valley, and nationwide clients with lab grown or natural diamonds.",
+    label: "Custom Engagement Rings",
+    priority: "0.9",
+  },
+  "/lab-diamond-rings": {
+    title: "Lab Diamond Rings | Certified Lab Grown Diamond Rings | The Don Jewelers",
+    description: "Shop and design lab diamond rings with certified stones, custom settings, CAD design, and private jeweler guidance from The Don Jewelers.",
+    label: "Lab Diamond Rings",
+    priority: "0.85",
+  },
+  "/natural-diamond-rings": {
+    title: "Natural Diamond Rings | Private Diamond Jeweler | The Don Jewelers",
+    description: "Source natural diamond rings with private jeweler guidance, certified diamonds, custom settings, and luxury engagement ring consultation.",
+    label: "Natural Diamond Rings",
+    priority: "0.85",
+  },
+  "/diamond-tennis-chains": {
+    title: "Diamond Tennis Chains | Custom Tennis Chains | The Don Jewelers",
+    description: "Shop diamond tennis chains and custom tennis chain options in lab grown or natural diamonds with luxury private jeweler guidance.",
+    label: "Diamond Tennis Chains",
+    priority: "0.85",
+  },
+  "/diamond-tennis-bracelets": {
+    title: "Diamond Tennis Bracelets | Lab & Natural Diamond Bracelets | The Don Jewelers",
+    description: "Shop diamond tennis bracelets, custom bracelet builds, and fine diamond jewelry with The Don Jewelers.",
+    label: "Diamond Tennis Bracelets",
+    priority: "0.85",
+  },
+  "/diamond-pendants": {
+    title: "Diamond Pendants & Custom Diamond Charms | The Don Jewelers",
+    description: "Design or shop diamond pendants, custom charms, initials, crosses, and one-of-one fine jewelry with The Don Jewelers.",
+    label: "Diamond Pendants",
+    priority: "0.85",
+  },
+  "/diamond-crosses": {
+    title: "Diamond Cross Pendants | Custom Diamond Crosses | The Don Jewelers",
+    description: "Shop and design diamond cross pendants in gold and diamond settings with private jeweler guidance from The Don Jewelers.",
+    label: "Diamond Crosses",
+    priority: "0.8",
+  },
+  "/custom-jewelry": {
+    title: "Custom Jewelry NYC | Private Custom Jeweler | The Don Jewelers",
+    description: "Create custom jewelry with a private jeweler, including engagement rings, pendants, tennis chains, bracelets, wedding bands, earrings, grillz, and CAD-designed pieces.",
+    label: "Custom Jewelry",
+    priority: "0.9",
+  },
+  "/jewelry-financing": {
+    title: "Jewelry Financing | Engagement Ring & Diamond Jewelry Financing | The Don Jewelers",
+    description: "Learn about jewelry financing options for engagement rings, diamond jewelry, custom pieces, tennis chains, pendants, watches, and luxury gifts.",
+    label: "Jewelry Financing",
+    priority: "0.8",
+  },
+  "/diamond-education": {
+    title: "Diamond Education | Diamond Buying Guide | The Don Jewelers",
+    description: "Learn diamond basics including cut, color, clarity, carat weight, lab diamonds, natural diamonds, certificates, and how to buy confidently.",
+    label: "Diamond Education",
+    priority: "0.8",
+  },
+  "/lab-diamonds-vs-natural-diamonds": {
+    title: "Lab Diamonds vs Natural Diamonds | The Don Jewelers",
+    description: "Compare lab grown diamonds and natural diamonds by appearance, price, origin, certification, value, and buying considerations.",
+    label: "Lab Diamonds vs Natural Diamonds",
+    priority: "0.8",
+  },
+  "/jewelry-care": {
+    title: "Jewelry Care Guide | Clean & Protect Fine Jewelry | The Don Jewelers",
+    description: "Learn how to care for diamond jewelry, gold jewelry, engagement rings, tennis bracelets, pendants, earrings, and custom pieces.",
+    label: "Jewelry Care",
+    priority: "0.75",
+  },
+  "/custom-cad-design": {
+    title: "Custom CAD Jewelry Design | The Don Jewelers",
+    description: "Use custom CAD jewelry design to plan engagement rings, pendants, initials, nameplates, grillz, chains, bracelets, and one-of-one diamond jewelry.",
+    label: "Custom CAD Design",
+    priority: "0.85",
+  },
+  "/nyc-diamond-district-jeweler": {
+    title: "NYC Diamond District Jeweler | Private Jeweler | The Don Jewelers",
+    description: "Work with The Don Jewelers for a calmer NYC Diamond District jewelry experience, including diamond sourcing, custom engagement rings, CAD design, and luxury private jeweler guidance.",
+    label: "NYC Diamond District Jeweler",
+    priority: "0.95",
+  },
+  "/private-jeweler": {
+    title: "Private Jeweler NYC & Nationwide | The Don Jewelers",
+    description: "Work one-on-one with a private jeweler for custom jewelry, engagement rings, diamond sourcing, tennis chains, pendants, watches, and luxury jewelry consultation.",
+    label: "Private Jeweler",
+    priority: "0.9",
+  },
+  "/appointment-only-jeweler": {
+    title: "Appointment Only Jeweler | Private Jewelry Consultation | The Don Jewelers",
+    description: "Schedule an appointment-only jewelry consultation for diamonds, engagement rings, custom jewelry, CAD design, tennis chains, pendants, and luxury gifts.",
+    label: "Appointment Only Jeweler",
+    priority: "0.85",
+  },
+  "/blog": {
+    title: "Jewelry Education Blog | The Don Jewelers",
+    description: "Read diamond education, engagement ring guides, jewelry care tips, custom jewelry advice, and luxury buying guides from The Don Jewelers.",
+    label: "Blog",
+    priority: "0.7",
+  },
+};
+
+const categoryPageMeta = {
+  "engagement-rings": ["Engagement Rings | Custom Diamond Engagement Rings | The Don Jewelers", "Shop engagement rings and custom diamond engagement rings with lab grown or natural diamond options from The Don Jewelers.", "Engagement Rings", "0.9"],
+  "wedding-bands": ["Wedding Bands | Diamond Wedding Rings | The Don Jewelers", "Shop wedding bands, diamond wedding rings, and custom bands for men and women from The Don Jewelers.", "Wedding Bands", "0.8"],
+  chains: ["Gold Chains & Diamond Chains | The Don Jewelers", "Shop gold chains, diamond chains, Cuban chains, and tennis chains from The Don Jewelers.", "Chains", "0.8"],
+  bracelets: ["Diamond Bracelets & Tennis Bracelets | The Don Jewelers", "Shop diamond bracelets, tennis bracelets, gold bracelets, and custom bracelet designs from The Don Jewelers.", "Bracelets", "0.8"],
+  "pendants-charms": ["Diamond Pendants & Charms | The Don Jewelers", "Shop diamond pendants, custom charms, cross pendants, initials, and luxury pendant designs from The Don Jewelers.", "Pendants & Charms", "0.8"],
+};
+
+function pageMetaForPath(pathname) {
+  const clean = `/${String(pathname || "").replace(/^\/+|\/+$/g, "")}`.replace(/\/$/, "") || "/";
+  if (staticPageMeta[clean]) return { path: clean, ...staticPageMeta[clean] };
+  const categoryMatch = clean.match(/^\/category\/([^/]+)$/);
+  if (categoryMatch && categoryPageMeta[categoryMatch[1]]) {
+    const [title, description, label, priority] = categoryPageMeta[categoryMatch[1]];
+    return { path: clean, title, description, label, priority };
+  }
+  return null;
+}
+
 function categoryPath(category) {
   return `/category/${categorySlug(category)}`;
 }
@@ -448,6 +596,75 @@ async function diamondPage(req, res, certNumber) {
   res.end(page);
 }
 
+function pageMain(meta) {
+  return `
+    <main>
+      <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero">
+        <div>
+          <p class="eyebrow">${escapeHtml(BUSINESS_NAME)}</p>
+          <h1>${escapeHtml(meta.label)}</h1>
+          <p>${escapeHtml(meta.description)}</p>
+          <div class="builder-actions">
+            <a class="button button-gold" href="/request">Schedule an Appointment</a>
+            <a class="button button-dark" href="/products">Browse Jewelry</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  `;
+}
+
+function pageJsonLd(meta, url) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: meta.label,
+    headline: meta.title.replace(" | The Don Jewelers", ""),
+    description: meta.description,
+    url,
+    isPartOf: {
+      "@type": "WebSite",
+      name: BUSINESS_NAME,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: BUSINESS_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/don-logo.jpg`,
+    },
+  };
+}
+
+function staticPage(req, res, pathname) {
+  const meta = pageMetaForPath(pathname);
+  if (!meta) {
+    res.statusCode = 404;
+    res.end("Page not found");
+    return;
+  }
+  const url = `${SITE_URL}${meta.path === "/" ? "/" : meta.path}`;
+  const jsonLd = [
+    pageJsonLd(meta, url),
+    breadcrumbJsonLd([
+      ["Home", "/"],
+      ...(meta.path === "/" ? [] : [[meta.label, meta.path]]),
+    ]),
+  ];
+  const template = fs.readFileSync(INDEX_HTML, "utf8");
+  const page = injectHead(template, {
+    title: meta.title,
+    description: meta.description,
+    url,
+    image: DEFAULT_IMAGE,
+    jsonLd,
+  }).replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(pageMain(meta), meta.path)}</div>`);
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
+  res.end(page);
+}
+
 function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {
   return `  <url><loc>${escapeXml(loc)}</loc>${lastmod ? `<lastmod>${escapeXml(new Date(lastmod).toISOString())}</lastmod>` : ""}<changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
 }
@@ -521,6 +738,7 @@ module.exports = async function handler(req, res) {
   const action = url.searchParams.get("action") || "";
   if (action === "product") return productPage(req, res, url.searchParams.get("slug") || "");
   if (action === "diamond") return diamondPage(req, res, url.searchParams.get("cert") || "");
+  if (action === "page") return staticPage(req, res, url.searchParams.get("path") || "/");
   if (action === "sitemap") return sitemap(req, res);
   if (action === "robots") return robots(req, res);
   res.statusCode = 404;

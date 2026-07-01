@@ -38,6 +38,34 @@ function routeApi(pathname, req, res) {
     apiRouter(req, res);
     return true;
   }
+  const seoPagePaths = new Set([
+    "/",
+    "/products",
+    "/select-diamond",
+    "/custom-orders",
+    "/custom-engagement-rings",
+    "/lab-diamond-rings",
+    "/natural-diamond-rings",
+    "/diamond-tennis-chains",
+    "/diamond-tennis-bracelets",
+    "/diamond-pendants",
+    "/diamond-crosses",
+    "/custom-jewelry",
+    "/jewelry-financing",
+    "/diamond-education",
+    "/lab-diamonds-vs-natural-diamonds",
+    "/jewelry-care",
+    "/custom-cad-design",
+    "/nyc-diamond-district-jeweler",
+    "/private-jeweler",
+    "/appointment-only-jeweler",
+    "/blog",
+  ]);
+  if (seoPagePaths.has(pathname) || /^\/category\/[^/]+$/.test(pathname)) {
+    req.url = `/api/seo?action=page&path=${encodeURIComponent(pathname.replace(/^\/+/, "") || "/")}`;
+    apiRouter(req, res);
+    return true;
+  }
   const productMatch = pathname.match(/^\/products\/([^/]+)$/);
   if (productMatch) {
     req.url = `/api/seo?action=product&slug=${encodeURIComponent(productMatch[1])}`;
