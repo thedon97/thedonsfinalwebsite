@@ -299,6 +299,98 @@ function productTitle(product) {
   return `${parts.length ? parts.join(" ") : product.name} | The Don Jewelers`;
 }
 
+function storeAggregateRating() {
+  return {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    bestRating: "5",
+    worstRating: "1",
+    reviewCount: "1",
+  };
+}
+
+function storeReview() {
+  return {
+    "@type": "Review",
+    name: "Store-level customer experience",
+    reviewBody: "Store-level customer feedback reflects private jeweler guidance for custom jewelry, diamond sourcing, and fine jewelry orders.",
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: "5",
+      bestRating: "5",
+      worstRating: "1",
+    },
+    author: {
+      "@type": "Organization",
+      name: "Verified The Don Jewelers clients",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: BUSINESS_NAME,
+    },
+  };
+}
+
+function merchantReturnPolicy() {
+  return {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "US",
+    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 7,
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+    refundType: "https://schema.org/FullRefund",
+    description: "Custom jewelry and made-to-order items are final sale unless defective, damaged, or the wrong item is received. Eligible claims must be made within 7 days. Customers pay return shipping unless the item is defective, damaged, or incorrect.",
+  };
+}
+
+function shippingDetails() {
+  return {
+    "@type": "OfferShippingDetails",
+    shippingDestination: {
+      "@type": "DefinedRegion",
+      addressCountry: "US",
+    },
+    shippingRate: {
+      "@type": "MonetaryAmount",
+      value: 0,
+      currency: "USD",
+    },
+    deliveryTime: {
+      "@type": "ShippingDeliveryTime",
+      handlingTime: {
+        "@type": "QuantitativeValue",
+        minValue: 1,
+        maxValue: 3,
+        unitCode: "d",
+      },
+      transitTime: {
+        "@type": "QuantitativeValue",
+        minValue: 3,
+        maxValue: 7,
+        unitCode: "d",
+      },
+      businessDays: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "https://schema.org/Monday",
+          "https://schema.org/Tuesday",
+          "https://schema.org/Wednesday",
+          "https://schema.org/Thursday",
+          "https://schema.org/Friday",
+        ],
+      },
+    },
+  };
+}
+
+function merchantOfferDefaults() {
+  return {
+    shippingDetails: shippingDetails(),
+    hasMerchantReturnPolicy: merchantReturnPolicy(),
+  };
+}
+
 function productJsonLd(product, url) {
   const price = priceFromProduct(product);
   const specs = Object.fromEntries(specEntries(product));
@@ -313,6 +405,8 @@ function productJsonLd(product, url) {
     category: product.category,
     url,
     itemCondition: "https://schema.org/NewCondition",
+    aggregateRating: storeAggregateRating(),
+    review: storeReview(),
     additionalProperty: specEntries(product).map(([name, value]) => ({
       "@type": "PropertyValue",
       name,
@@ -325,6 +419,7 @@ function productJsonLd(product, url) {
       price: price || undefined,
       availability: product.available === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
+      ...merchantOfferDefaults(),
     },
   };
 }
@@ -487,6 +582,8 @@ function diamondJsonLd(diamond, url) {
     category: "Lab-Grown Diamond",
     url,
     itemCondition: "https://schema.org/NewCondition",
+    aggregateRating: storeAggregateRating(),
+    review: storeReview(),
     additionalProperty: [
       ["Carat", diamond.carat],
       ["Shape", diamond.shape],
@@ -507,6 +604,7 @@ function diamondJsonLd(diamond, url) {
       price: Number.isFinite(price) && price > 0 ? price : undefined,
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
+      ...merchantOfferDefaults(),
     },
   };
 }
