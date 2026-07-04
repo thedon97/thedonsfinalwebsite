@@ -27,7 +27,7 @@ const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror
 const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://www.google.com/maps?cid=15202389021162830944";
 const secondaryGoogleBusinessProfileUrl = "https://www.google.com/maps?cid=1237300766605729326";
-const googleReviewUrl = "https://www.google.com/maps?cid=15202389021162830944";
+const googleReviewUrl = "https://g.page/r/CR1K7TTlATuXEBM/review?utm_source=gbp&utm_medium=reviews&utm_campaign=qr";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",

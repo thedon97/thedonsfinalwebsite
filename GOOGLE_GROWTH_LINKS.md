@@ -14,7 +14,10 @@ https://www.google.com/maps?cid=1237300766605729326
 
 Review request message:
 Thank you for choosing The Don Jewelers & Jewelry. Reviews help new clients find us when they search for engagement rings, custom jewelry, diamond pendants, tennis bracelets, and private jeweler service. If you had a good experience, please leave a Google review here:
-https://www.google.com/maps?cid=15202389021162830944
+https://g.page/r/CR1K7TTlATuXEBM/review?utm_source=gbp&utm_medium=reviews&utm_campaign=qr
+
+Direct Google review link:
+https://g.page/r/CR1K7TTlATuXEBM/review?utm_source=gbp&utm_medium=reviews&utm_campaign=qr
 
 ## Best Landing Pages To Share
 
@@ -47,4 +50,3 @@ https://www.thedonjewelersandjewelrynyc.com/diamond-rings-near-me
 - Private Jeweler Consultation
 - CAD Jewelry Design
 - Jewelry Financing
-
