@@ -2196,6 +2196,7 @@ function startingText(product) {
 }
 
 const categories = [
+  ["build-engagement-ring", "Build Your Engagement Ring", "engagement-ring-feature.jpg"],
   ["select-diamond", "Live Diamond Selection", "live-diamond-selection.jpeg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "https://dna3.dnalinks.in/TJ4594NCW/1.jpg"],
   ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
@@ -2213,7 +2214,6 @@ const categories = [
   ["anklets", "Anklets", "bracelet-05.png"],
   ["watches", "Watches", "iced-cartier-santos-watch.jpeg"],
   ["custom-jewelry", "Custom Jewelry", "custom-dejaun-diamond-name-pendant.jpeg"],
-  ["build-engagement-ring", "Build Your Engagement Ring", "engagement-ring-feature.jpg"],
   ["custom-orders", "Custom Orders", "don-logo.jpg"],
 ];
 
@@ -4824,6 +4824,7 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
   const form = document.getElementById("diamond-filter-form");
   const requestForm = document.getElementById("diamond-inventory-form");
   const returnProduct = initialParams.get("returnProduct") || "";
+  const returnTarget = initialParams.get("return") || "";
   const filterParams = () => {
     const params = new URLSearchParams();
     ["diamondType", "shape", "minCarat", "maxCarat", "color", "clarity", "maxPrice", "certificateNumber", "page"].forEach((name) => {
@@ -4831,6 +4832,7 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
       if (value) params.set(name, value);
     });
     if (returnProduct) params.set("returnProduct", returnProduct);
+    if (returnTarget) params.set("return", returnTarget);
     return params;
   };
   form?.addEventListener("submit", (event) => {
@@ -4910,6 +4912,11 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
     if (returnProduct) {
       localStorage.setItem(`donLiveDiamond:${returnProduct}`, JSON.stringify(diamond));
       location.hash = `#/product/${returnProduct}`;
+      return;
+    }
+    if (returnTarget === "engagement-ring-builder") {
+      localStorage.setItem("donEngagementBuilderDiamond", JSON.stringify(diamond));
+      location.hash = "#/build-engagement-ring?selectedDiamond=1";
       return;
     }
     if (!requestForm) return;
@@ -5661,22 +5668,32 @@ async function requestPayloadFromForm(form) {
       requestType,
       productCategory,
       productName: form.dataset.productName || selectedFormValue(form, "productName"),
+      settingPath: selectedFormValue(form, "settingPath"),
+      settingStyle: selectedFormValue(form, "settingStyle"),
       metalType: selectedFormValue(form, "metalType") || selectedFormValue(form, "metal"),
       diamondType: selectedFormValue(form, "diamondType"),
       diamondShape: selectedFormValue(form, "diamondShape"),
+      selectedLiveDiamond: selectedFormValue(form, "selectedLiveDiamond"),
+      selectedLiveDiamondStock: selectedFormValue(form, "selectedLiveDiamondStock"),
       stoneType: selectedFormValue(form, "stoneType") || selectedFormValue(form, "gemstones"),
       caratWeight: selectedFormValue(form, "caratWeight") || selectedFormValue(form, "caratSize"),
       bandStyle: selectedFormValue(form, "bandStyle"),
+      bandWidth: selectedFormValue(form, "bandWidth"),
       prongs: selectedFormValue(form, "prongs"),
       basketSetting: selectedFormValue(form, "basket"),
       sideStonesOrGemstones: selectedFormValue(form, "gemstones"),
+      finishDetails: selectedFormValue(form, "finishDetails"),
+      weddingBandPairing: selectedFormValue(form, "weddingBandPairing"),
       ringSize: selectedFormValue(form, "ringSize"),
       braceletSize: selectedFormValue(form, "braceletSize"),
       chainLength: selectedFormValue(form, "chainLength"),
       diamondQuality: selectedFormValue(form, "diamondQuality") || selectedFormValue(form, "diamondType"),
-      budget: selectedFormValue(form, "budget"),
+      idealBudget: selectedFormValue(form, "idealBudget"),
+      maximumBudget: selectedFormValue(form, "maximumBudget"),
+      budget: selectedFormValue(form, "budget") || [selectedFormValue(form, "idealBudget") && `Ideal: ${selectedFormValue(form, "idealBudget")}`, selectedFormValue(form, "maximumBudget") && `Max: ${selectedFormValue(form, "maximumBudget")}`].filter(Boolean).join(" | "),
       timeline: selectedFormValue(form, "timeline"),
       notes: [
+        selectedFormValue(form, "buildSummary") ? `Engagement ring build summary:\n${selectedFormValue(form, "buildSummary")}` : "",
         selectedFormValue(form, "description"),
         selectedFormValue(form, "customDesignRequest") ? `Unique custom design request: ${selectedFormValue(form, "customDesignRequest")}` : "",
         selectedFormValue(form, "notes"),
@@ -5800,6 +5817,83 @@ function choiceGroup(label, name, options, wide = false) {
   `;
 }
 
+function visualChoiceGroup(label, name, options, wide = true) {
+  return `
+    <fieldset class="visual-choice-group ${wide ? "form-wide" : ""}">
+      <legend>${label}</legend>
+      <div class="visual-choice-grid">
+        ${options.map((option, index) => {
+          const value = option.value || option.label;
+          const image = option.image || fallbackImage;
+          return `
+            <label class="visual-choice-card">
+              <input type="radio" name="${name}" value="${htmlSafe(value)}" ${index === 0 ? "checked" : ""}>
+              <span class="visual-choice-media">
+                <img src="${mediaSrc(image)}" alt="${htmlSafe(option.label)}" ${imageSafety}>
+              </span>
+              <span class="visual-choice-copy">
+                <strong>${htmlSafe(option.label)}</strong>
+                <small>${htmlSafe(option.text || "")}</small>
+              </span>
+            </label>
+          `;
+        }).join("")}
+      </div>
+    </fieldset>
+  `;
+}
+
+const builderStartOptions = [
+  { value: "Start with setting", label: "Start with setting", text: "Pick the ring style first, then match the diamond.", image: "engagement-ring-feature.jpg" },
+  { value: "Start with live diamond", label: "Start with live diamond", text: "Choose a real inventory stone and build around it.", image: "live-diamond-selection.jpeg" },
+  { value: "Start with budget", label: "Start with budget", text: "Send your ideal and max spend for a guided quote.", image: "diamond-banner.jpg" },
+  { value: "One-of-one custom design", label: "One-of-one custom", text: "Upload inspiration for a design outside the presets.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+];
+
+const builderSettingOptions = [
+  { label: "Solitaire", text: "Clean center-stone focus with a timeless band.", image: "radiant-solitaire-engagement-ring.jpeg" },
+  { label: "Pave", text: "Small diamonds down the band for extra shine.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
+  { label: "Hidden halo", text: "Sparkle tucked below the center stone.", image: "engagement-ring-feature.jpg" },
+  { label: "Halo", text: "Diamond frame around the center stone.", image: "gold-halo-engagement-ring.jpeg" },
+  { label: "Three stone", text: "Center diamond with two accent stones.", image: "rose-gold-pear-pave-engagement-ring.jpeg" },
+  { label: "Cathedral", text: "Raised shoulders that lift and support the stone.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
+  { label: "Bezel", text: "Sleek metal rim around the diamond.", image: "emerald-accent-engagement-ring.jpeg" },
+  { label: "Vintage inspired", text: "Milgrain, engraving, and heirloom details.", image: "imperial-bloom-engagement-ring.jpeg" },
+  { label: "Split shank", text: "Band separates near the center stone.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+];
+
+const builderBasketOptions = [
+  { label: "Low basket", text: "Lower profile, easier everyday wear.", image: "classic-marquise-engagement-ring.jpeg" },
+  { label: "Medium basket", text: "Balanced height and presence.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
+  { label: "High cathedral", text: "Lifted profile with a stronger showpiece look.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
+  { label: "Hidden halo basket", text: "Accent diamonds beneath the center stone.", image: "engagement-ring-feature.jpg" },
+  { label: "Tulip basket", text: "Petal-like prong architecture.", image: "imperial-bloom-engagement-ring.jpeg" },
+  { label: "Bezel head", text: "Smooth rim for modern protection.", image: "emerald-accent-engagement-ring.jpeg" },
+  { label: "Compass prongs", text: "North, south, east, west prong orientation.", image: "radiant-solitaire-engagement-ring.jpeg" },
+  { label: "Custom basket", text: "CAD-designed around your exact stone.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+];
+
+const builderBandOptions = [
+  { label: "Plain comfort band", text: "Smooth classic band in 14K, 18K, or platinum.", image: "ring-product-black-01.png" },
+  { label: "Pave diamond band", text: "Diamonds set along the shank.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
+  { label: "Knife edge", text: "Crisp ridge profile for a sharper silhouette.", image: "classic-marquise-engagement-ring.jpeg" },
+  { label: "Tapered baguette", text: "Long side stones taper toward the center.", image: "emerald-accent-engagement-ring.jpeg" },
+  { label: "Twisted vine", text: "Interwoven band for a softer custom look.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+  { label: "Split shank", text: "Two rails frame the center stone.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
+];
+
+const builderShapeOptions = [
+  { label: "Round", text: "Maximum brilliance and classic demand.", image: "round-diamond-studs.jpeg" },
+  { label: "Oval", text: "Elongated coverage with bright sparkle.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+  { label: "Emerald", text: "Step-cut elegance where clarity matters.", image: "emerald-accent-engagement-ring.jpeg" },
+  { label: "Radiant", text: "Brilliant sparkle in a square or rectangle.", image: "radiant-solitaire-engagement-ring.jpeg" },
+  { label: "Marquise", text: "Long dramatic shape with strong finger presence.", image: "classic-marquise-engagement-ring.jpeg" },
+  { label: "Pear", text: "Teardrop shape for modern or classic styling.", image: "rose-gold-pear-pave-engagement-ring.jpeg" },
+  { label: "Cushion", text: "Soft square with romantic brilliance.", image: "gold-halo-engagement-ring.jpeg" },
+  { label: "Asscher", text: "Architectural step-cut square.", image: "imperial-bloom-engagement-ring.jpeg" },
+  { label: "Princess", text: "Sharp square brilliant cut.", image: "ring-product-black-02.png" },
+];
+
 function engagementRingBuilder() {
   setSeo("Build Your Own Engagement Ring | Live Diamonds & Custom Settings", "Build your own engagement ring with The Don Jewelers & Jewelry. Start with a setting, lab diamond, natural diamond, diamond shape, metal, budget, or choose from live diamond selection.", {
     path: "build-engagement-ring",
@@ -5871,19 +5965,43 @@ function engagementRingBuilder() {
           <label>Full Name<input name="fullName" autocomplete="name" required></label>
           <label>Email<input name="email" type="email" autocomplete="email" required></label>
           <label>Phone number<input name="phone" type="tel" autocomplete="tel" required></label>
-          ${choiceGroup("Diamond type", "diamondType", ["Natural Diamond", "Lab-Grown Diamond", "Not sure yet"])}
+          <input type="hidden" name="selectedLiveDiamond">
+          <input type="hidden" name="selectedLiveDiamondStock">
+          <textarea name="buildSummary" hidden></textarea>
+          <section class="builder-workbench form-wide" aria-label="Engagement ring build summary">
+            <div class="builder-summary-panel">
+              <p class="eyebrow">Your Build</p>
+              <h3>Request pricing on this exact ring</h3>
+              <dl id="engagement-build-summary" class="builder-summary-list"></dl>
+              <p class="quote-note">No automatic price is shown here. The Don Jewelers & Jewelry will quote the exact setting, metal, labor, diamond, certification, and timeline after reviewing your build.</p>
+            </div>
+            <div class="builder-live-diamond-panel" id="builder-live-diamond-panel">
+              <p class="eyebrow">Live Diamond</p>
+              <h3>No live diamond selected yet</h3>
+              <p>Choose a current inventory diamond and it will attach to this build request.</p>
+              <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose From Live Diamond Selection</a>
+            </div>
+          </section>
+          ${visualChoiceGroup("Start point", "settingPath", builderStartOptions)}
+          ${visualChoiceGroup("Setting style", "settingStyle", builderSettingOptions)}
+          ${visualChoiceGroup("Basket / head style", "basket", builderBasketOptions)}
+          ${visualChoiceGroup("Band profile", "bandStyle", builderBandOptions)}
+          ${visualChoiceGroup("Diamond shape", "diamondShape", builderShapeOptions)}
+          ${choiceGroup("Diamond type", "diamondType", ["Lab-Grown Diamond", "Natural Diamond", "Not sure yet"])}
           ${choiceGroup("Desired center stone size", "caratSize", ["1 carat", "1.5 carat", "2 carat", "2.5 carat", "3 carat", "3.5 carat", "4 carat", "4.5 carat", "5 carat", "5.5 carat", "6 carat", "Custom carat size"], true)}
-          ${choiceGroup("Metal", "metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Silver", "Platinum"], true)}
-          ${choiceGroup("Band style", "bandStyle", ["Classic Solitaire", "Pave Diamond Band", "Hidden Halo Band", "Tapered Baguette Band", "Cathedral Band", "Split Shank Band", "Custom one-on-one design"], true)}
-          ${choiceGroup("Diamond shape", "diamondShape", ["Round", "Oval", "Emerald", "Radiant", "Marquise", "Pear", "Cushion", "Asscher", "Princess", "Custom shape"], true)}
+          ${choiceGroup("Metal", "metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum", "Sterling Silver quote only"], true)}
+          ${choiceGroup("Band width", "bandWidth", ["1.5mm delicate", "1.8mm classic", "2.0mm balanced", "2.5mm bold", "3.0mm statement", "Match my wedding band", "Not sure yet"], true)}
           ${choiceGroup("Prongs", "prongs", ["4-prong", "6-prong", "Double claw prongs", "Compass prongs", "Bezel setting", "Custom prong design"], true)}
-          ${choiceGroup("Basket / setting", "basket", ["Low basket", "Medium basket", "High basket", "Cathedral basket", "Hidden halo basket", "Custom basket"], true)}
           ${choiceGroup("Side stones or gemstones", "gemstones", ["Diamonds only", "Add sapphires", "Add rubies", "Add emeralds", "Add pink stones", "Add yellow stones", "Other gemstone request"], true)}
+          ${choiceGroup("Finish and details", "finishDetails", ["High polish", "Matte/satin", "Milgrain", "Hand engraving", "Hidden birthstone", "Hidden initials", "Custom finish"], true)}
+          ${choiceGroup("Wedding band plan", "weddingBandPairing", ["Engagement ring only", "Design matching wedding band too", "Leave room for future band", "Flush-fit bridal set", "Not sure yet"], true)}
           ${choiceGroup("Diamond quality selection", "diamondQuality", quoteQualityOptions, true)}
           <label>Stone Type<input name="stoneType" placeholder="Diamond, sapphire, ruby, emerald, custom gemstone"></label>
           <label>Ring size<input name="ringSize" placeholder="Example: 6.5, 7, custom"></label>
           <label>Timeline Needed<input name="timeline" placeholder="Example: 2 weeks, 30 days, proposal date"></label>
-          <label>Budget range<input name="budget" placeholder="Example: $2,500 - $5,000"></label>
+          <label>Ideal budget<input name="idealBudget" placeholder="Example: $3,500"></label>
+          <label>Maximum budget<input name="maximumBudget" placeholder="Example: $5,000 max"></label>
+          <label class="form-wide">Budget range notes<input name="budget" placeholder="Example: best value under $5,000, flexible for bigger diamond, strict max"></label>
           <label class="form-wide">Describe exactly what you are looking to get<textarea name="description" rows="6" placeholder="Tell us about the look, stone size, setting, inspiration, timeline, and any one-on-one custom design details."></textarea></label>
           <label class="form-wide">Unique custom design request<textarea name="customDesignRequest" rows="5" placeholder="If the builder cannot create your exact design, describe the unique custom ring here. Add links, sketches, celebrity inspiration, engraving, hidden details, special stones, or anything you want copied or redesigned."></textarea></label>
           <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
@@ -5900,7 +6018,97 @@ function engagementRingBuilder() {
       ${aboutUs()}
     </main>
   `);
+  wireEngagementRingBuilder();
   wireRequestForm("engagement-build-form", "Thank you for your submission. Your request has been received and is currently under review. We will contact you regarding pricing, design details, and next steps.");
+}
+
+function selectedDiamondSummary(diamond) {
+  if (!diamond) return "";
+  return [
+    diamond.shape && `${diamond.shape} shape`,
+    diamond.carat && `${diamond.carat}ct`,
+    diamond.color && `${diamond.color} color`,
+    diamond.clarity,
+    diamond.certificate && `${diamond.certificate} certified`,
+    diamond.reportNumber && `Report ${diamond.reportNumber}`,
+    diamond.stockNumber && `Stock ${diamond.stockNumber}`,
+  ].filter(Boolean).join(" | ");
+}
+
+function wireEngagementRingBuilder() {
+  const form = document.getElementById("engagement-build-form");
+  if (!form) return;
+  const summary = document.getElementById("engagement-build-summary");
+  const livePanel = document.getElementById("builder-live-diamond-panel");
+  let selectedDiamond = null;
+  try {
+    selectedDiamond = JSON.parse(localStorage.getItem("donEngagementBuilderDiamond") || "null");
+  } catch {
+    selectedDiamond = null;
+  }
+  if (selectedDiamond) {
+    form.elements.selectedLiveDiamond.value = selectedDiamondSummary(selectedDiamond);
+    form.elements.selectedLiveDiamondStock.value = selectedDiamond.stockNumber || selectedDiamond.id || "";
+    if (livePanel) {
+      livePanel.innerHTML = `
+        <p class="eyebrow">Live Diamond Attached</p>
+        <h3>${htmlSafe(selectedDiamond.shape || "Selected")} ${htmlSafe(selectedDiamond.carat || "")}ct Diamond</h3>
+        <p>${htmlSafe(selectedDiamondSummary(selectedDiamond))}</p>
+        <div class="builder-actions">
+          <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Change Diamond</a>
+          <button class="button button-dark" type="button" data-clear-builder-diamond>Remove Diamond</button>
+        </div>
+      `;
+    }
+  }
+  const watchedFields = [
+    ["settingPath", "Start"],
+    ["settingStyle", "Setting"],
+    ["basket", "Basket"],
+    ["bandStyle", "Band"],
+    ["diamondShape", "Shape"],
+    ["diamondType", "Diamond"],
+    ["caratSize", "Size"],
+    ["metal", "Metal"],
+    ["bandWidth", "Band width"],
+    ["prongs", "Prongs"],
+    ["gemstones", "Side stones"],
+    ["finishDetails", "Finish"],
+    ["weddingBandPairing", "Wedding band"],
+    ["diamondQuality", "Quality"],
+    ["ringSize", "Ring size"],
+    ["timeline", "Timeline"],
+    ["idealBudget", "Ideal budget"],
+    ["maximumBudget", "Max budget"],
+    ["selectedLiveDiamond", "Live diamond"],
+  ];
+  const updateSummary = () => {
+    const rows = watchedFields
+      .map(([name, label]) => [label, selectedFormValue(form, name)])
+      .filter(([, value]) => value);
+    if (summary) {
+      summary.innerHTML = rows.map(([label, value]) => `<div><dt>${htmlSafe(label)}</dt><dd>${htmlSafe(value)}</dd></div>`).join("");
+    }
+    const summaryText = rows.map(([label, value]) => `${label}: ${value}`).join("\n");
+    if (form.elements.buildSummary) form.elements.buildSummary.value = summaryText;
+  };
+  form.addEventListener("change", updateSummary);
+  form.addEventListener("input", updateSummary);
+  livePanel?.addEventListener("click", (event) => {
+    const clear = event.target.closest("[data-clear-builder-diamond]");
+    if (!clear) return;
+    localStorage.removeItem("donEngagementBuilderDiamond");
+    form.elements.selectedLiveDiamond.value = "";
+    form.elements.selectedLiveDiamondStock.value = "";
+    livePanel.innerHTML = `
+      <p class="eyebrow">Live Diamond</p>
+      <h3>No live diamond selected yet</h3>
+      <p>Choose a current inventory diamond and it will attach to this build request.</p>
+      <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose From Live Diamond Selection</a>
+    `;
+    updateSummary();
+  });
+  updateSummary();
 }
 
 function requestTypeToCategory(requestType) {

@@ -1249,6 +1249,129 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   color: var(--gold);
   box-shadow: inset 0 0 0 1px var(--gold);
 }
+.builder-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.builder-summary-panel,
+.builder-live-diamond-panel {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 18px;
+  border: 1px solid rgba(200, 162, 74, .46);
+  border-radius: 8px;
+  background: #14110d;
+  color: #fffdfa;
+}
+.builder-live-diamond-panel {
+  background: #fff8e6;
+  color: var(--ink);
+}
+.builder-summary-panel h3,
+.builder-live-diamond-panel h3 { margin: 0; }
+.builder-summary-panel p,
+.builder-live-diamond-panel p { margin: 0; line-height: 1.55; }
+.builder-summary-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+.builder-summary-list div {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(241,215,129,.18);
+}
+.builder-summary-list dt {
+  color: var(--gold);
+  font-size: .78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+.builder-summary-list dd {
+  margin: 0;
+  color: #fffdfa;
+  font-weight: 850;
+}
+.visual-choice-group {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.visual-choice-group legend {
+  color: #4f473d;
+  font-weight: 900;
+}
+.visual-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.visual-choice-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 132px 1fr;
+  gap: 0;
+  min-height: 238px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdfa;
+  cursor: pointer;
+}
+.visual-choice-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.visual-choice-media {
+  display: block;
+  width: 100%;
+  height: 132px;
+  background: #17130e;
+}
+.visual-choice-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.visual-choice-copy {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-height: 104px;
+  padding: 12px;
+}
+.visual-choice-copy strong {
+  color: var(--ink);
+  font-size: .98rem;
+  line-height: 1.2;
+}
+.visual-choice-copy small {
+  color: #5c5146;
+  font-size: .82rem;
+  line-height: 1.45;
+}
+.visual-choice-card:has(input:checked) {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(200,162,74,.32), var(--shadow);
+}
+.visual-choice-card:has(input:checked) .visual-choice-copy {
+  background: #14110d;
+}
+.visual-choice-card:has(input:checked) .visual-choice-copy strong {
+  color: var(--gold);
+}
+.visual-choice-card:has(input:checked) .visual-choice-copy small {
+  color: rgba(255,253,250,.76);
+}
 .deposit-note {
   display: grid;
   gap: 8px;
@@ -1960,7 +2083,8 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   }
   .import-tool, .import-draft, .admin-product-card, .diamond-filter-bar, .diamond-inventory-grid, .sourcing-choice-grid,
   .trust-block-section, .engagement-funnel-steps, .builder-choice-grid, .builder-choice-grid.compact, .shape-guide-grid, .guide-table,
-  .product-filter-panel { grid-template-columns: 1fr; }
+  .product-filter-panel, .builder-workbench { grid-template-columns: 1fr; }
+  .visual-choice-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .comparison-row { grid-template-columns: 1fr; }
   .summary-panel { position: static; }
   .custom-order-actions { justify-content: flex-start; }
@@ -1999,6 +2123,10 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
     letter-spacing: .08em;
   }
   .collection-grid, .product-grid, .blog-grid, .article-card-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
+  .visual-choice-grid { grid-template-columns: 1fr; }
+  .visual-choice-card { grid-template-rows: 118px 1fr; min-height: 218px; }
+  .visual-choice-media { height: 118px; }
+  .builder-summary-list div { grid-template-columns: 1fr; gap: 4px; }
   .sticky-appointment-cta {
     left: 14px;
     right: 14px;
