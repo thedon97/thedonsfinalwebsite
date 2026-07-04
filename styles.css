@@ -1206,6 +1206,9 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .engagement-build-form {
   max-width: 1120px;
 }
+.engagement-builder-section {
+  padding-top: clamp(28px,4vw,52px);
+}
 .request-choice-group {
   display: grid;
   gap: 10px;
@@ -1311,15 +1314,15 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 }
 .visual-choice-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 .visual-choice-card {
   position: relative;
   display: grid;
-  grid-template-rows: 132px 1fr;
+  grid-template-rows: 150px 1fr;
   gap: 0;
-  min-height: 238px;
+  min-height: 232px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -1334,7 +1337,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .visual-choice-media {
   display: block;
   width: 100%;
-  height: 132px;
+  height: 150px;
   background: #17130e;
 }
 .visual-choice-media img {
@@ -1346,7 +1349,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   display: grid;
   gap: 6px;
   align-content: start;
-  min-height: 104px;
+  min-height: 82px;
   padding: 12px;
 }
 .visual-choice-copy strong {

@@ -5549,6 +5549,7 @@ function wireRequestForm(formId, successText) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const button = form.querySelector("button[type='submit']");
+    const originalButtonText = button?.textContent || "Submit";
     const success = form.querySelector(".form-success");
     const error = form.querySelector(".form-error");
     if (button) {
@@ -5590,7 +5591,7 @@ function wireRequestForm(formId, successText) {
     } finally {
       if (button) {
         button.disabled = false;
-        button.textContent = "Submit Custom Request";
+        button.textContent = originalButtonText;
       }
     }
   });
@@ -5843,55 +5844,42 @@ function visualChoiceGroup(label, name, options, wide = true) {
   `;
 }
 
-const builderStartOptions = [
-  { value: "Start with setting", label: "Start with setting", text: "Pick the ring style first, then match the diamond.", image: "engagement-ring-feature.jpg" },
-  { value: "Start with live diamond", label: "Start with live diamond", text: "Choose a real inventory stone and build around it.", image: "live-diamond-selection.jpeg" },
-  { value: "Start with budget", label: "Start with budget", text: "Send your ideal and max spend for a guided quote.", image: "diamond-banner.jpg" },
-  { value: "One-of-one custom design", label: "One-of-one custom", text: "Upload inspiration for a design outside the presets.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
-];
-
 const builderSettingOptions = [
-  { label: "Solitaire", text: "Clean center-stone focus with a timeless band.", image: "radiant-solitaire-engagement-ring.jpeg" },
-  { label: "Pave", text: "Small diamonds down the band for extra shine.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
-  { label: "Hidden halo", text: "Sparkle tucked below the center stone.", image: "engagement-ring-feature.jpg" },
-  { label: "Halo", text: "Diamond frame around the center stone.", image: "gold-halo-engagement-ring.jpeg" },
-  { label: "Three stone", text: "Center diamond with two accent stones.", image: "rose-gold-pear-pave-engagement-ring.jpeg" },
-  { label: "Cathedral", text: "Raised shoulders that lift and support the stone.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
-  { label: "Bezel", text: "Sleek metal rim around the diamond.", image: "emerald-accent-engagement-ring.jpeg" },
-  { label: "Vintage inspired", text: "Milgrain, engraving, and heirloom details.", image: "imperial-bloom-engagement-ring.jpeg" },
-  { label: "Split shank", text: "Band separates near the center stone.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+  { label: "Solitaire", text: "Clean center-stone focus.", image: "builder-solitaire.png" },
+  { label: "Pave", text: "Diamond band sparkle.", image: "builder-pave.png" },
+  { label: "Hidden halo", text: "Sparkle under the center.", image: "builder-hidden-halo.png" },
+  { label: "Halo", text: "Diamond frame around center.", image: "builder-halo.png" },
+  { label: "Three stone", text: "Center stone with two accents.", image: "builder-three-stone.png" },
+  { label: "Bezel", text: "Smooth modern rim.", image: "builder-bezel.png" },
 ];
 
 const builderBasketOptions = [
-  { label: "Low basket", text: "Lower profile, easier everyday wear.", image: "classic-marquise-engagement-ring.jpeg" },
-  { label: "Medium basket", text: "Balanced height and presence.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
-  { label: "High cathedral", text: "Lifted profile with a stronger showpiece look.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
-  { label: "Hidden halo basket", text: "Accent diamonds beneath the center stone.", image: "engagement-ring-feature.jpg" },
-  { label: "Tulip basket", text: "Petal-like prong architecture.", image: "imperial-bloom-engagement-ring.jpeg" },
-  { label: "Bezel head", text: "Smooth rim for modern protection.", image: "emerald-accent-engagement-ring.jpeg" },
-  { label: "Compass prongs", text: "North, south, east, west prong orientation.", image: "radiant-solitaire-engagement-ring.jpeg" },
-  { label: "Custom basket", text: "CAD-designed around your exact stone.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+  { label: "Low basket", text: "Lower everyday profile.", image: "builder-low-basket.png" },
+  { label: "High cathedral", text: "Raised showpiece profile.", image: "builder-high-cathedral.png" },
+  { label: "Hidden halo basket", text: "Diamonds below the stone.", image: "builder-hidden-halo-basket.png" },
+  { label: "Tulip basket", text: "Petal-style support.", image: "builder-tulip-basket.png" },
+  { label: "Bezel head", text: "Modern protective rim.", image: "builder-bezel-head.png" },
+  { label: "Compass prongs", text: "North/south/east/west prongs.", image: "builder-compass-prong.png" },
 ];
 
 const builderBandOptions = [
-  { label: "Plain comfort band", text: "Smooth classic band in 14K, 18K, or platinum.", image: "ring-product-black-01.png" },
-  { label: "Pave diamond band", text: "Diamonds set along the shank.", image: "yellow-gold-oval-pave-engagement-ring.jpeg" },
-  { label: "Knife edge", text: "Crisp ridge profile for a sharper silhouette.", image: "classic-marquise-engagement-ring.jpeg" },
-  { label: "Tapered baguette", text: "Long side stones taper toward the center.", image: "emerald-accent-engagement-ring.jpeg" },
-  { label: "Twisted vine", text: "Interwoven band for a softer custom look.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
-  { label: "Split shank", text: "Two rails frame the center stone.", image: "white-gold-marquise-pave-engagement-ring.jpeg" },
+  { label: "Plain comfort shank", text: "Smooth classic band.", image: "builder-comfort-shank.png" },
+  { label: "Pave shank", text: "Diamonds down the band.", image: "builder-pave.png" },
+  { label: "Knife-edge shank", text: "Crisp modern ridge.", image: "builder-knife-edge-shank.png" },
+  { label: "Cathedral shank", text: "Shoulders lift the head.", image: "builder-cathedral.png" },
+  { label: "Twisted shank", text: "Interwoven custom look.", image: "builder-twisted-shank.png" },
+  { label: "Split shank", text: "Two rails frame the center.", image: "builder-split-shank.png" },
 ];
 
 const builderShapeOptions = [
-  { label: "Round", text: "Maximum brilliance and classic demand.", image: "round-diamond-studs.jpeg" },
-  { label: "Oval", text: "Elongated coverage with bright sparkle.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
-  { label: "Emerald", text: "Step-cut elegance where clarity matters.", image: "emerald-accent-engagement-ring.jpeg" },
-  { label: "Radiant", text: "Brilliant sparkle in a square or rectangle.", image: "radiant-solitaire-engagement-ring.jpeg" },
-  { label: "Marquise", text: "Long dramatic shape with strong finger presence.", image: "classic-marquise-engagement-ring.jpeg" },
-  { label: "Pear", text: "Teardrop shape for modern or classic styling.", image: "rose-gold-pear-pave-engagement-ring.jpeg" },
-  { label: "Cushion", text: "Soft square with romantic brilliance.", image: "gold-halo-engagement-ring.jpeg" },
-  { label: "Asscher", text: "Architectural step-cut square.", image: "imperial-bloom-engagement-ring.jpeg" },
-  { label: "Princess", text: "Sharp square brilliant cut.", image: "ring-product-black-02.png" },
+  { label: "Round", text: "Classic brilliant sparkle.", image: "builder-solitaire.png" },
+  { label: "Oval", text: "Elongated finger coverage.", image: "queen-aurelia-oval-marquise-ring.jpeg" },
+  { label: "Emerald", text: "Clean step-cut look.", image: "emerald-accent-engagement-ring.jpeg" },
+  { label: "Radiant", text: "Brilliant square or rectangle.", image: "radiant-solitaire-engagement-ring.jpeg" },
+  { label: "Marquise", text: "Long dramatic shape.", image: "classic-marquise-engagement-ring.jpeg" },
+  { label: "Pear", text: "Teardrop silhouette.", image: "rose-gold-pear-pave-engagement-ring.jpeg" },
+  { label: "Cushion", text: "Soft square brilliance.", image: "builder-halo.png" },
+  { label: "Princess", text: "Sharp square brilliant.", image: "ring-product-black-02.png" },
 ];
 
 function engagementRingBuilder() {
@@ -5907,64 +5895,18 @@ function engagementRingBuilder() {
   });
   shell(`
     <main>
-      ${pageHero("Engagement Ring Builder", "Build your own engagement ring", "Start with a setting, a lab diamond, a natural diamond, a shape, or your budget. Choose from live diamonds or send the details for The Don Jewelers & Jewelry to source and build your custom ring.", `
+      ${pageHero("Engagement Ring Builder", "Build your own engagement ring", "Pick the diamond shape, setting, basket, shank, metal, and budget. Submit the build and The Don Jewelers & Jewelry will send pricing for that exact ring.", `
         <div class="hero-actions">
-          <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose Live Diamond</a>
-          <a class="button button-light" href="#/category/engagement-rings">Browse Ring Settings</a>
-          <a class="button button-dark" href="${appointmentUrl}">Book Appointment</a>
+          <a class="button button-gold" href="#engagement-build-form">Start Building</a>
+          <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Choose Live Diamond</a>
         </div>
       `)}
-      <section class="engagement-funnel-steps" aria-label="Engagement ring builder paths">
-        ${[
-          ["1", "Start with a Setting", "Choose solitaire, pave, hidden halo, cathedral, three-stone, bezel, vintage, or a one-of-one CAD setting.", "#/category/engagement-rings"],
-          ["2", "Start with a Lab Diamond", "Use the live diamond selection to compare size, shape, color, clarity, and budget with stronger visual value.", "#/select-diamond?type=lab&return=engagement-ring-builder"],
-          ["3", "Start with a Natural Diamond", "Request a natural diamond search by GIA/IGI specs, shape, budget, and timeline.", "#/request/contact?intent=natural-diamond-engagement-ring"],
-          ["4", "Ready-To-Ship / Faster Timeline", "View available engagement rings and submit your date so timing can be confirmed before purchase.", "#/category/engagement-rings"],
-        ].map(([step, title, text, href]) => `
-          <a class="engagement-step-card" href="${href}">
-            <span>${step}</span>
-            <strong>${title}</strong>
-            <p>${text}</p>
-          </a>
-        `).join("")}
-      </section>
-      <section class="builder-choice-section">
-        <div class="section-heading">
-          <p class="eyebrow">Shop Like The Big Jewelers</p>
-          <h2>Choose by shape, style, metal, or diamond type</h2>
-        </div>
-        <div class="builder-choice-grid">
-          ${[
-            ["Round", "Classic sparkle; easiest to compare by cut grade.", "#/select-diamond?shape=Round&return=engagement-ring-builder"],
-            ["Oval", "Elongated look with strong finger coverage.", "#/select-diamond?shape=Oval&return=engagement-ring-builder"],
-            ["Emerald", "Step-cut, clean, elegant; clarity matters more.", "#/select-diamond?shape=Emerald&return=engagement-ring-builder"],
-            ["Radiant", "Brilliant sparkle with a rectangular or square outline.", "#/select-diamond?shape=Radiant&return=engagement-ring-builder"],
-            ["Marquise", "Long, dramatic shape with maximum finger presence.", "#/select-diamond?shape=Marquise&return=engagement-ring-builder"],
-            ["Pear", "Teardrop silhouette for classic or modern settings.", "#/select-diamond?shape=Pear&return=engagement-ring-builder"],
-          ].map(([title, text, href]) => `<a class="builder-choice-card" href="${href}"><strong>${title}</strong><p>${text}</p></a>`).join("")}
-        </div>
-      </section>
-      <section class="builder-choice-section">
-        <div class="section-heading">
-          <p class="eyebrow">Decision Helpers</p>
-          <h2>Use the guides before you submit</h2>
-        </div>
-        <div class="builder-choice-grid compact">
-          <a class="builder-choice-card" href="#/ring-size-guide"><strong>Ring Size Guide</strong><p>Measure, compare, and confirm sizing before CAD approval or final order.</p></a>
-          <a class="builder-choice-card" href="#/diamond-shape-guide"><strong>Diamond Shape Guide</strong><p>Compare round, oval, emerald, radiant, marquise, pear, cushion, princess, and Asscher.</p></a>
-          <a class="builder-choice-card" href="#/lab-diamonds-vs-natural-diamonds"><strong>Lab vs Natural</strong><p>Understand visual appearance, origin, budget, certification, and resale considerations.</p></a>
-          <a class="builder-choice-card" href="#/free-engagement-ring-consultation"><strong>Free Consultation</strong><p>Send your goal and budget before you commit to a stone or setting.</p></a>
-        </div>
-      </section>
-      <section class="custom-form-section">
+      <section class="custom-form-section engagement-builder-section">
         <div class="section-heading">
           <p class="eyebrow">Build Request</p>
-          <h2>Submit your ring plan</h2>
+          <h2>Build it, then submit for pricing</h2>
         </div>
         <form class="custom-order-form engagement-build-form" id="engagement-build-form" data-request-type="Custom Engagement Ring Request" data-product-category="Engagement Rings">
-          <label>Full Name<input name="fullName" autocomplete="name" required></label>
-          <label>Email<input name="email" type="email" autocomplete="email" required></label>
-          <label>Phone number<input name="phone" type="tel" autocomplete="tel" required></label>
           <input type="hidden" name="selectedLiveDiamond">
           <input type="hidden" name="selectedLiveDiamondStock">
           <textarea name="buildSummary" hidden></textarea>
@@ -5982,11 +5924,10 @@ function engagementRingBuilder() {
               <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose From Live Diamond Selection</a>
             </div>
           </section>
-          ${visualChoiceGroup("Start point", "settingPath", builderStartOptions)}
-          ${visualChoiceGroup("Setting style", "settingStyle", builderSettingOptions)}
-          ${visualChoiceGroup("Basket / head style", "basket", builderBasketOptions)}
-          ${visualChoiceGroup("Band profile", "bandStyle", builderBandOptions)}
-          ${visualChoiceGroup("Diamond shape", "diamondShape", builderShapeOptions)}
+          ${visualChoiceGroup("1. Diamond shape", "diamondShape", builderShapeOptions)}
+          ${visualChoiceGroup("2. Setting style", "settingStyle", builderSettingOptions)}
+          ${visualChoiceGroup("3. Basket / head", "basket", builderBasketOptions)}
+          ${visualChoiceGroup("4. Shank / band", "bandStyle", builderBandOptions)}
           ${choiceGroup("Diamond type", "diamondType", ["Lab-Grown Diamond", "Natural Diamond", "Not sure yet"])}
           ${choiceGroup("Desired center stone size", "caratSize", ["1 carat", "1.5 carat", "2 carat", "2.5 carat", "3 carat", "3.5 carat", "4 carat", "4.5 carat", "5 carat", "5.5 carat", "6 carat", "Custom carat size"], true)}
           ${choiceGroup("Metal", "metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum", "Sterling Silver quote only"], true)}
@@ -5996,20 +5937,20 @@ function engagementRingBuilder() {
           ${choiceGroup("Finish and details", "finishDetails", ["High polish", "Matte/satin", "Milgrain", "Hand engraving", "Hidden birthstone", "Hidden initials", "Custom finish"], true)}
           ${choiceGroup("Wedding band plan", "weddingBandPairing", ["Engagement ring only", "Design matching wedding band too", "Leave room for future band", "Flush-fit bridal set", "Not sure yet"], true)}
           ${choiceGroup("Diamond quality selection", "diamondQuality", quoteQualityOptions, true)}
-          <label>Stone Type<input name="stoneType" placeholder="Diamond, sapphire, ruby, emerald, custom gemstone"></label>
           <label>Ring size<input name="ringSize" placeholder="Example: 6.5, 7, custom"></label>
           <label>Timeline Needed<input name="timeline" placeholder="Example: 2 weeks, 30 days, proposal date"></label>
           <label>Ideal budget<input name="idealBudget" placeholder="Example: $3,500"></label>
           <label>Maximum budget<input name="maximumBudget" placeholder="Example: $5,000 max"></label>
-          <label class="form-wide">Budget range notes<input name="budget" placeholder="Example: best value under $5,000, flexible for bigger diamond, strict max"></label>
-          <label class="form-wide">Describe exactly what you are looking to get<textarea name="description" rows="6" placeholder="Tell us about the look, stone size, setting, inspiration, timeline, and any one-on-one custom design details."></textarea></label>
-          <label class="form-wide">Unique custom design request<textarea name="customDesignRequest" rows="5" placeholder="If the builder cannot create your exact design, describe the unique custom ring here. Add links, sketches, celebrity inspiration, engraving, hidden details, special stones, or anything you want copied or redesigned."></textarea></label>
+          <label class="form-wide">Anything custom? <textarea name="customDesignRequest" rows="4" placeholder="If you want something not shown above, describe it here. Add links, sketches, celebrity inspiration, engraving, hidden details, or special stones."></textarea></label>
           <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
+          <label>Full Name<input name="fullName" autocomplete="name" required></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required></label>
+          <label>Phone number<input name="phone" type="tel" autocomplete="tel" required></label>
           <div class="deposit-note form-wide">
             <strong>$500 design deposit</strong>
             <span>The deposit starts the custom engagement ring design process and secures consultation time for design work, CAD planning, stone sourcing, and follow-up direction.</span>
           </div>
-          <button class="button button-gold form-wide" type="submit">Submit Custom Request</button>
+          <button class="button button-gold form-wide" type="submit">Request My Ring Quote</button>
           <p class="form-success" hidden></p>
           <p class="form-error" hidden></p>
         </form>
@@ -6062,7 +6003,6 @@ function wireEngagementRingBuilder() {
     }
   }
   const watchedFields = [
-    ["settingPath", "Start"],
     ["settingStyle", "Setting"],
     ["basket", "Basket"],
     ["bandStyle", "Band"],
