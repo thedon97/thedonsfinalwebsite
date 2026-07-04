@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <circle cx="230" cy="398" r="3" fill="#fff7db"/><circle cx="239.6" cy="401.81561105194857" r="3" fill="#fff7db"/><circle cx="249.2" cy="405.5254780263115" r="3" fill="#fff7db"/><circle cx="258.8" cy="409.02678738789666" r="3" fill="#fff7db"/><circle cx="268.4" cy="412.22250547060395" r="3" fill="#fff7db"/><circle cx="278" cy="415.02406762350887" r="3" fill="#fff7db"/><circle cx="287.6" cy="417.35383265058164" r="3" fill="#fff7db"/><circle cx="297.2" cy="419.14723452283636" r="3" fill="#fff7db"/><circle cx="306.8" cy="420.3545717313562" r="3" fill="#fff7db"/><circle cx="316.4" cy="420.94238469189327" r="3" fill="#fff7db"/><circle cx="326" cy="420.8943830282906" r="3" fill="#fff7db"/><circle cx="335.6" cy="420.2118970364225" r="3" fill="#fff7db"/><circle cx="345.2" cy="418.91384081699067" r="3" fill="#fff7db"/><circle cx="354.8" cy="417.03618809889707" r="3" fill="#fff7db"/><circle cx="364.4" cy="414.63097527998144" r="3" fill="#fff7db"/><circle cx="374" cy="411.764859314391" r="3" fill="#fff7db"/><circle cx="383.6" cy="408.5172704126237" r="3" fill="#fff7db"/><circle cx="393.2" cy="404.9782107494607" r="3" fill="#fff7db"/><circle cx="402.79999999999995" cy="401.2457601853769" r="3" fill="#fff7db"/><circle cx="412.4" cy="397.4233581267111" r="3" fill="#fff7db"/><circle cx="422" cy="393.6169368538638" r="3" fill="#fff7db"/><circle cx="431.6" cy="389.93198576313875" r="3" fill="#fff7db"/><circle cx="441.2" cy="386.4706278824681" r="3" fill="#fff7db"/><circle cx="450.79999999999995" cy="383.3287896811124" r="3" fill="#fff7db"/><circle cx="460.4" cy="380.59354260791764" r="3" fill="#fff7db"/><circle cx="470" cy="378.3406900335067" r="3" fill="#fff7db"/><circle cx="479.6" cy="376.6326664707725" r="3" fill="#fff7db"/><circle cx="489.2" cy="375.51680729370275" r="3" fill="#fff7db"/><circle cx="498.8" cy="375.02403690674765" r="3" fill="#fff7db"/><circle cx="508.4" cy="375.1680117201965" r="3" fill="#fff7db"/><circle cx="518" cy="375.9447416827478" r="3" fill="#fff7db"/><circle cx="527.5999999999999" cy="377.3327008599432" r="3" fill="#fff7db"/><circle cx="537.2" cy="379.2934239939457" r="3" fill="#fff7db"/><circle cx="546.8" cy="381.772572511881" r="3" fill="#fff7db"/><circle cx="556.4" cy="384.7014404398809" r="3" fill="#fff7db"/><circle cx="566" cy="387.9988584886232" r="3" fill="#fff7db"/><circle cx="575.5999999999999" cy="391.5734435414247" r="3" fill="#fff7db"/><circle cx="585.2" cy="395.3261312036147" r="3" fill="#fff7db"/><circle cx="594.8" cy="399.15292122729" r="3" fill="#fff7db"/><circle cx="604.4" cy="402.94775972601974" r="3" fill="#fff7db"/><circle cx="614" cy="406.60547830313806" r="3" fill="#fff7db"/><circle cx="623.5999999999999" cy="410.02470863998263" r="3" fill="#fff7db"/><circle cx="633.2" cy="413.1106917705321" r="3" fill="#fff7db"/><circle cx="642.8" cy="415.7779041875051" r="3" fill="#fff7db"/><circle cx="652.4" cy="417.95242800123253" r="3" fill="#fff7db"/><circle cx="662" cy="419.573999465819" r="3" fill="#fff7db"/><path d="M310 380 C345 360, 375 360, 410 383 M490 383 C525 360,555 360,590 380" stroke="#fff7db" stroke-width="4" fill="none"/>
+  </g>
+</svg>

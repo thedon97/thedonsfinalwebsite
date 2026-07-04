@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <path d="M230 398 C315 330, 385 470, 450 398 C515 326, 585 470, 670 398" stroke="#d6aa4f" stroke-width="20" fill="none" stroke-linecap="round"/><path d="M230 398 C315 470, 385 326, 450 398 C515 470, 585 326, 670 398" stroke="#f8df9c" stroke-width="12" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

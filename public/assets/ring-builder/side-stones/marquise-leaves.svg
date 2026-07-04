@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g fill="url(#diamond)" stroke="#fff" stroke-width="2"><ellipse cx="320" cy="370" rx="17" ry="7" transform="rotate(25 320 370)"/><ellipse cx="358" cy="378.62965969487567" rx="17" ry="7" transform="rotate(-25 358 378.62965969487567)"/><ellipse cx="396" cy="385.1464777265421" rx="17" ry="7" transform="rotate(25 396 385.1464777265421)"/><ellipse cx="434" cy="387.954909758873" rx="17" ry="7" transform="rotate(-25 434 387.954909758873)"/><ellipse cx="472" cy="386.36735368286224" rx="17" ry="7" transform="rotate(25 472 386.36735368286224)"/><ellipse cx="510" cy="380.7724985938712" rx="17" ry="7" transform="rotate(-25 510 380.7724985938712)"/><ellipse cx="548" cy="372.5401601450776" rx="17" ry="7" transform="rotate(25 548 372.5401601450776)"/><ellipse cx="586" cy="363.6859019015868" rx="17" ry="7" transform="rotate(-25 586 363.6859019015868)"/></g>
+</svg>

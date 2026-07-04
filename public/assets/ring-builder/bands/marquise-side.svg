@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <ellipse cx="303" cy="395" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(18 303 395)"/><ellipse cx="335" cy="403.62965969487567" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(-18 335 403.62965969487567)"/><ellipse cx="367" cy="410.1464777265421" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(18 367 410.1464777265421)"/><ellipse cx="399" cy="412.954909758873" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(-18 399 412.954909758873)"/><ellipse cx="431" cy="411.36735368286224" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(18 431 411.36735368286224)"/><ellipse cx="463" cy="405.7724985938712" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(-18 463 405.7724985938712)"/><ellipse cx="495" cy="397.5401601450776" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(18 495 397.5401601450776)"/><ellipse cx="527" cy="388.6859019015868" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(-18 527 388.6859019015868)"/><ellipse cx="559" cy="381.3775550844573" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(18 559 381.3775550844573)"/><ellipse cx="591" cy="377.4044578820283" rx="16" ry="7" fill="url(#diamond)" stroke="#fff" stroke-width="2" transform="rotate(-18 591 377.4044578820283)"/>
+  </g>
+</svg>

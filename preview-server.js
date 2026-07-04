@@ -96,6 +96,10 @@ function routeApi(pathname, req, res) {
 function resolveFile(req) {
   let pathname = decodeURIComponent(req.url.split("?")[0]);
   if (pathname === "/") pathname = "/index.html";
+  if (pathname.startsWith("/assets/")) {
+    const publicFile = path.resolve(path.join(root, "public", pathname));
+    if (publicFile.startsWith(path.join(root, "public") + path.sep)) return { file: publicFile };
+  }
   const file = path.resolve(path.join(root, pathname));
   if (!file.startsWith(root + path.sep) && file !== root) return { forbidden: true };
   return { file };
