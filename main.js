@@ -8,16 +8,32 @@ const contactEmail = "thedonjewelersandjewelry@gmail.com";
 const phoneDisplay = "(484) 761-2008";
 const phoneHref = "tel:+14847612008";
 const businessName = "The Don Jewelers & Jewelry";
-const serviceArea = "NYC, Manhattan, the Diamond District, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, and Northampton County PA";
+const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, Northampton County PA, Pennsylvania, and clients nationwide by shipping and private consultation";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 const asset = (name) => `/${name}`;
 const mediaSrc = (name) => /^https?:\/\//i.test(String(name || "")) ? name : asset(name);
 const fallbackImage = "don-logo.jpg";
 const defaultSeoImage = "queen-aurelia-oval-marquise-ring.jpeg";
+const primarySeoImage = "yellow-gold-diamond-cuban-link-bracelet.jpeg";
+const featuredSeoImages = [
+  primarySeoImage,
+  "queen-aurelia-oval-marquise-ring.jpeg",
+  "engagement-ring-feature.jpg",
+  "triple-row-diamond-tennis-bracelet.jpeg",
+  "diamond-banner.jpg",
+];
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
-const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania"];
+const googleBusinessProfileUrl = "https://www.google.com/maps?cid=15202389021162830944";
+const secondaryGoogleBusinessProfileUrl = "https://www.google.com/maps?cid=1237300766605729326";
+const officialSocialLinks = [
+  "https://www.instagram.com/los_thejeweler/",
+  "https://www.facebook.com/TheDonJewelers",
+  googleBusinessProfileUrl,
+  secondaryGoogleBusinessProfileUrl,
+];
+const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
 
 const baseCarats = [
@@ -2223,6 +2239,13 @@ const servicePages = [
   ["nyc-diamond-district-jeweler", "NYC Diamond District Jeweler", "A private jewelry experience for clients who want Diamond District access with a calmer, more personal way to design, source, and buy fine jewelry.", "queen-aurelia-oval-marquise-ring.jpeg", ["NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "custom jewelry NYC"], ["private-jeweler", "appointment-only-jeweler", "custom-engagement-rings"]],
   ["private-jeweler", "Private Jeweler", "Work one-on-one with a private jeweler for custom pieces, diamond sourcing, engagement rings, tennis chains, pendants, watches, and meaningful gifts.", "medusa-diamond-signet-ring.jpeg", ["private jeweler", "luxury jewelry", "diamond consultation"], ["appointment-only-jeweler", "custom-jewelry", "nyc-diamond-district-jeweler"]],
   ["appointment-only-jeweler", "Appointment Only Jeweler", "Book a relaxed private appointment where your questions, budget, style, timeline, and inspiration can be reviewed without pressure or a rushed showroom setting.", "two-tone-rolex-datejust-diamond-dial.jpeg", ["appointment only jeweler", "private jeweler", "jewelry consultation"], ["private-jeweler", "custom-cad-design", "jewelry-financing"]],
+  ["engagement-rings-allentown-pa", "Engagement Rings Allentown PA", "Custom engagement rings for Allentown PA clients with lab grown diamonds, natural diamonds, CAD previews, private consultation, and nationwide shipping.", "engagement-ring-feature.jpg", ["engagement rings Allentown PA", "custom engagement rings Allentown", "diamond rings Allentown"], ["custom-engagement-rings", "lab-diamond-rings", "jewelry-financing"], "Allentown PA clients"],
+  ["engagement-rings-lehigh-valley", "Engagement Rings Lehigh Valley", "Engagement rings for Lehigh Valley clients comparing custom settings, lab diamonds, natural diamonds, wedding bands, financing, and private jeweler guidance.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings Lehigh Valley", "Lehigh Valley jeweler", "custom engagement rings PA"], ["engagement-rings-allentown-pa", "custom-engagement-rings", "natural-diamond-rings"], "Lehigh Valley clients"],
+  ["custom-jewelry-nyc", "Custom Jewelry NYC", "Custom jewelry in NYC for engagement rings, pendants, tennis chains, Cuban links, watches, CAD design, diamond sourcing, and private jeweler appointments.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry NYC", "custom jeweler NYC", "diamond jeweler NYC"], ["nyc-diamond-district-jeweler", "private-jeweler", "custom-cad-design"], "NYC and Manhattan clients"],
+  ["custom-jeweler-new-jersey", "Custom Jeweler New Jersey", "Custom jeweler serving New Jersey clients with engagement rings, diamond pendants, tennis bracelets, lab diamonds, natural diamonds, and shipped private orders.", "yellow-gold-diamond-cuban-link-bracelet.jpeg", ["custom jeweler New Jersey", "engagement rings New Jersey", "diamond jeweler NJ"], ["custom-engagement-rings", "custom-jewelry", "diamond-tennis-bracelets"], "New Jersey clients"],
+  ["diamond-jeweler-connecticut", "Diamond Jeweler Connecticut", "Diamond jeweler serving Connecticut clients with custom engagement rings, diamond sourcing, tennis bracelets, pendants, CAD design, and insured shipping.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond jeweler Connecticut", "engagement rings Connecticut", "custom jeweler CT"], ["custom-engagement-rings", "diamond-pendants", "lab-diamond-rings"], "Connecticut clients"],
+  ["tri-state-custom-jeweler", "Tri-State Custom Jeweler", "Tri-State custom jeweler serving New York, New Jersey, Connecticut, Pennsylvania, and nationwide clients with custom diamond jewelry and private consultation.", "diamond-banner.jpg", ["Tri-State custom jeweler", "engagement rings Tri-State area", "diamond jeweler near me"], ["custom-jewelry-nyc", "custom-jeweler-new-jersey", "diamond-jeweler-connecticut"], "Tri-State area clients"],
+  ["diamond-jeweler-pennsylvania", "Diamond Jeweler Pennsylvania", "Diamond jeweler serving Pennsylvania clients with engagement rings, lab diamonds, natural diamonds, custom pendants, tennis bracelets, and private jewelry quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond jeweler Pennsylvania", "custom jeweler PA", "engagement rings Pennsylvania"], ["engagement-rings-allentown-pa", "engagement-rings-lehigh-valley", "custom-jewelry"], "Pennsylvania clients"],
 ];
 
 const blogTopics = [
@@ -2805,6 +2828,8 @@ function navLinks() {
     <a href="${internalLink("/")}">Home</a>
     ${categoryLinks}
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
+    <a href="${internalLink("engagement-rings-allentown-pa")}">Allentown Rings</a>
+    <a href="${internalLink("tri-state-custom-jeweler")}">Tri-State Jeweler</a>
     <a href="${internalLink("blog")}">Blog</a>
     <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a>
   `;
@@ -2877,6 +2902,12 @@ function footer() {
         <a href="#/products">Shop Now</a>
         <a href="#/request/contact">General Contact</a>
         <a href="#/checkout">Checkout</a>
+        <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
+        <a href="#/engagement-rings-lehigh-valley">Engagement Rings Lehigh Valley</a>
+        <a href="#/custom-jewelry-nyc">Custom Jewelry NYC</a>
+        <a href="#/custom-jeweler-new-jersey">Custom Jeweler New Jersey</a>
+        <a href="#/diamond-jeweler-connecticut">Diamond Jeweler Connecticut</a>
+        <a href="#/tri-state-custom-jeweler">Tri-State Custom Jeweler</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         <span class="site-version">Customer policies and checkout support</span>
       </div>
@@ -2947,9 +2978,10 @@ function organizationSchema() {
     name: businessName,
     url: siteUrl,
     logo: `${siteUrl}/don-logo.jpg`,
+    image: featuredSeoImages.map((name) => `${siteUrl}/${name}`),
     email: contactEmail,
     telephone: phoneDisplay,
-    sameAs: ["https://www.instagram.com/los_thejeweler/"],
+    sameAs: officialSocialLinks,
   };
 }
 
@@ -2960,13 +2992,22 @@ function localBusinessSchema() {
     "@id": `${siteUrl}/#jewelry-store`,
     name: businessName,
     url: siteUrl,
-    image: `${siteUrl}/don-logo.jpg`,
+    image: featuredSeoImages.map((name) => `${siteUrl}/${name}`),
     logo: `${siteUrl}/don-logo.jpg`,
     email: contactEmail,
     telephone: phoneDisplay,
     priceRange: "$$$",
-    description: "Luxury private jeweler specializing in custom engagement rings, diamond jewelry, tennis chains, tennis bracelets, pendants, watches, CAD jewelry design, diamond sourcing, and jewelry consultation.",
+    description: "Luxury private jeweler specializing in custom engagement rings, diamond jewelry, tennis chains, tennis bracelets, pendants, watches, CAD jewelry design, diamond sourcing, and jewelry consultation for NYC, the Tri-State area, Allentown, Pennsylvania, and clients nationwide by shipping and private consultation.",
     areaServed: locationTargets.map((name) => ({ "@type": "Place", name })),
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: phoneDisplay,
+        contactType: "customer service",
+        areaServed: "US",
+        availableLanguage: ["en"],
+      },
+    ],
     openingHoursSpecification: [
       "Monday",
       "Tuesday",
@@ -3169,6 +3210,26 @@ function webPageSchema(title, description, path = currentRoutePath()) {
   };
 }
 
+function serviceSchema({ id, title, description, image, keywords }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${siteUrl}/${id}#service`,
+    name: title,
+    description,
+    image: `${siteUrl}/${image}`,
+    provider: { "@id": `${siteUrl}/#jewelry-store` },
+    areaServed: locationTargets.map((name) => ({ "@type": "Place", name })),
+    serviceType: keywords.join(", "),
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "USD",
+      url: `${siteUrl}/${id}`,
+    },
+  };
+}
+
 function websiteSchema() {
   return {
     "@context": "https://schema.org",
@@ -3196,7 +3257,7 @@ function setSeo(title, description, options = {}) {
   meta.content = description;
   const path = options.path || currentRoutePath();
   const canonical = canonicalUrl(path);
-  const image = options.image ? (String(options.image).startsWith("http") ? options.image : `${siteUrl}/${options.image}`) : `${siteUrl}/don-logo.jpg`;
+  const image = options.image ? (String(options.image).startsWith("http") ? options.image : `${siteUrl}/${options.image}`) : `${siteUrl}/${primarySeoImage}`;
   upsertLink("canonical", canonical);
   upsertMeta('meta[property="og:title"]', "property", "og:title", title);
   upsertMeta('meta[property="og:description"]', "property", "og:description", description);
@@ -3530,11 +3591,11 @@ function buyingGuide(page) {
 function servicePage(slug) {
   const page = servicePages.find(([id]) => id === slug);
   if (!page) return home();
-  const [id, title, description, image, keywords, related] = page;
+  const [id, title, description, image, keywords, related, regionLabel = "NYC, Manhattan, and Lehigh Valley clients"] = page;
   const defaultFaqs = [
     [`Can The Don Jewelers & Jewelry help with ${title.toLowerCase()}?`, `Yes. The Don Jewelers & Jewelry helps clients with ${title.toLowerCase()}, private jeweler consultation, diamond sourcing, custom CAD design, and quote guidance.`],
     [`Do you offer lab grown and natural diamond options?`, "Yes. Lab grown diamonds and natural diamonds can be sourced by shape, carat weight, color, clarity, certification, and budget."],
-    [`Do you serve New York and Pennsylvania clients?`, `Yes. The service area includes ${locationTargets.join(", ")}.`],
+    [`Do you serve ${regionLabel}?`, `Yes. The service area includes ${locationTargets.join(", ")}.`],
     [`Can I request financing?`, "Jewelry financing may be available through third-party providers, subject to approval and provider terms."],
   ];
   const nycFaqs = [
@@ -3556,15 +3617,16 @@ function servicePage(slug) {
     image,
     faqs,
     breadcrumbs: [[title, id]],
+    schema: [serviceSchema({ id, title, description, image, keywords })],
   });
   shell(`
     <main>
       ${pageHero("Luxury Private Jeweler", title, description, `<div class="hero-actions"><a class="button button-gold" href="${internalLink("custom-orders")}">Request a Quote</a><a class="button button-light" href="${internalLink("select-diamond")}">Browse Diamonds</a></div>`)}
       <section class="seo-section split-seo">
-        <img src="${asset(image)}" alt="${title} by The Don Jewelers & Jewelry in NYC and Pennsylvania" ${imageSafety}>
+        <img src="${asset(image)}" alt="${title} by The Don Jewelers & Jewelry for ${regionLabel}" ${imageSafety}>
         <div>
           <p class="eyebrow">Private Jewelry Service</p>
-          <h2>${title}</h2>
+          <h2>${title} for ${regionLabel}</h2>
           <p>${description}</p>
           <ul class="service-bullets">
             <li>Private consultation before design or sourcing starts.</li>
