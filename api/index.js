@@ -4,6 +4,7 @@ const products = require("../server/products");
 const systemStatus = require("../server/system-status");
 const checkout = require("../server/create-checkout-session");
 const sendRequest = require("../server/send-request");
+const merchantFeed = require("../server/merchant-feed");
 const adminJewelrySync = require("../server/admin/jewelry-sync");
 const cronJewelrySync = require("../server/cron/jewelry-sync");
 const seoPages = require("../server/seo-pages");
@@ -42,6 +43,7 @@ module.exports = async function handler(req, res) {
     "system-status": systemStatus,
     "create-checkout-session": checkout,
     "send-request": sendRequest,
+    "merchant-feed": merchantFeed,
     "seo": seoPages,
     "admin/jewelry-sync": adminJewelrySync,
     "cron/jewelry-sync": cronJewelrySync,

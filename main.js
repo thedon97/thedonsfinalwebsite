@@ -29,6 +29,7 @@ const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://www.google.com/maps?cid=15202389021162830944";
 const secondaryGoogleBusinessProfileUrl = "https://www.google.com/maps?cid=1237300766605729326";
 const googleReviewUrl = "https://g.page/r/CR1K7TTlATuXEBM/review?utm_source=gbp&utm_medium=reviews&utm_campaign=qr";
+const appointmentUrl = "#/request/contact?intent=book-private-jewelry-appointment";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
@@ -2212,6 +2213,7 @@ const categories = [
   ["anklets", "Anklets", "bracelet-05.png"],
   ["watches", "Watches", "iced-cartier-santos-watch.jpeg"],
   ["custom-jewelry", "Custom Jewelry", "custom-dejaun-diamond-name-pendant.jpeg"],
+  ["build-engagement-ring", "Build Your Engagement Ring", "engagement-ring-feature.jpg"],
   ["custom-orders", "Custom Orders", "don-logo.jpg"],
 ];
 
@@ -2833,7 +2835,7 @@ function hideSplashScreen() {
 
 function navLinks() {
   const categoryLinks = categories.map(([slug, name]) => {
-    const href = ["custom-orders", "select-diamond"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
+    const href = ["custom-orders", "select-diamond", "build-engagement-ring"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
     const className = slug === "custom-orders" ? ` class="nav-highlight"` : "";
     return `<a${className} href="${href}">${name}</a>`;
   }).join("");
@@ -2841,6 +2843,7 @@ function navLinks() {
     <a href="${internalLink("/")}">Home</a>
     ${categoryLinks}
     <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
+    <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
     <a href="${internalLink("engagement-rings-allentown-pa")}">Allentown Rings</a>
     <a href="${internalLink("tri-state-custom-jeweler")}">Tri-State Jeweler</a>
@@ -2867,6 +2870,7 @@ function shell(main) {
       <nav class="sidebar-links" aria-label="Sidebar navigation">${navLinks()}</nav>
     </aside>
     ${main}
+    ${stickyAppointmentCta()}
     ${footer()}
   `;
   wireSidebar();
@@ -2887,6 +2891,15 @@ function hydrateDeferredImages() {
   } else {
     window.setTimeout(loadNext, 300);
   }
+}
+
+function stickyAppointmentCta() {
+  return `
+    <a class="sticky-appointment-cta" href="${appointmentUrl}" aria-label="Book a private jewelry appointment">
+      <span>Book Appointment</span>
+      <small>Private jeweler consultation</small>
+    </a>
+  `;
 }
 
 function footer() {
@@ -2915,6 +2928,11 @@ function footer() {
       <div class="footer-links">
         <a href="#/products">Shop Now</a>
         <a href="#/free-engagement-ring-consultation">Free Engagement Ring Consultation</a>
+        <a href="${appointmentUrl}">Book Appointment</a>
+        <a href="#/build-engagement-ring">Engagement Ring Funnel</a>
+        <a href="#/ring-size-guide">Ring Size Guide</a>
+        <a href="#/diamond-shape-guide">Diamond Shape Guide</a>
+        <a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a>
         <a href="#/request/contact">General Contact</a>
         <a href="#/checkout">Checkout</a>
         <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
@@ -2929,10 +2947,46 @@ function footer() {
         <a href="#/the-don-jewelers">The Don Jewelers</a>
         <a href="#/the-don-jewelers-and-jewelry">The Don Jewelers & Jewelry</a>
         <a href="#/don-jewelers-nyc">Don Jewelers NYC</a>
+        <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a>
+        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Leave a Google Review</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         <span class="site-version">Customer policies and checkout support</span>
       </div>
     </footer>
+  `;
+}
+
+function trustBlockSection() {
+  return `
+    <section class="trust-block-section" aria-label="Customer protection and buying trust">
+      <article>
+        <strong>Warranty Review</strong>
+        <p>Manufacturing-defect warranty review is available, with paid repair support when wear, impact, sizing, or outside work is involved.</p>
+        <a href="#/warranty-policy">Warranty Policy</a>
+      </article>
+      <article>
+        <strong>Insured Shipping</strong>
+        <p>Orders ship only after details and payment are confirmed. Timing, carrier, and delivery needs are reviewed before fulfillment.</p>
+        <a href="#/shipping-policy">Shipping Policy</a>
+      </article>
+      <article>
+        <strong>Return Clarity</strong>
+        <p>Ready-made and custom pieces have different rules. Review approval, sizing, and final-sale details before moving forward.</p>
+        <a href="#/refund-return-policy">Return Policy</a>
+      </article>
+      <article>
+        <strong>Secure Payment</strong>
+        <p>Payments run through secure third-party processors with fraud checks, billing verification, and cleared-payment review.</p>
+        <a href="#/payment-policy">Payment Policy</a>
+      </article>
+      <article>
+        <strong>Private Jeweler Process</strong>
+        <p>Consultation, diamond sourcing, CAD review, approval, production, final balance, and insured delivery are handled step by step.</p>
+        <a href="#/custom-order-policy">Custom Order Policy</a>
+      </article>
+    </section>
   `;
 }
 
@@ -3840,7 +3894,7 @@ function home() {
         </div>
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
-            <a class="collection-tile" href="${["custom-orders", "select-diamond"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
+            <a class="collection-tile" href="${["custom-orders", "select-diamond", "build-engagement-ring"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
@@ -3848,6 +3902,7 @@ function home() {
         </div>
       </section>
       ${customOrderBand()}
+      ${trustBlockSection()}
       ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"])}
       ${faqSection(globalFaqs)}
       <section class="trust-band" aria-label="Trust badges">
@@ -3870,10 +3925,86 @@ function productGrid(list, title, body = "", action = "", afterGrid = "", gridId
   shell(`
     <main>
       ${pageHero("Jewelry Marketplace", title, body, action)}
+      ${productFilterPanel()}
       <section class="product-grid" ${gridId ? `id="${gridId}"` : ""}>${list.map(productCard).join("")}</section>
+      ${trustBlockSection()}
       ${afterGrid}
     </main>
   `);
+  wireProductFilterPanel();
+}
+
+function productFilterPanel() {
+  return `
+    <section class="product-filter-panel" aria-label="Product filters">
+      <label>Search
+        <input id="product-filter-search" type="search" placeholder="Oval ring, Cuban chain, pendant">
+      </label>
+      <label>Max price
+        <select id="product-filter-price">
+          <option value="">Any price</option>
+          <option value="1000">Under $1,000</option>
+          <option value="2500">Under $2,500</option>
+          <option value="5000">Under $5,000</option>
+          <option value="10000">Under $10,000</option>
+        </select>
+      </label>
+      <label>Metal / color
+        <select id="product-filter-metal">
+          <option value="">Any metal</option>
+          <option>Yellow Gold</option>
+          <option>White Gold</option>
+          <option>Rose Gold</option>
+          <option>Platinum</option>
+          <option>Silver</option>
+        </select>
+      </label>
+      <label>Diamond type
+        <select id="product-filter-diamond">
+          <option value="">Any diamond</option>
+          <option>Lab</option>
+          <option>Natural</option>
+          <option>VVS</option>
+          <option>VS</option>
+        </select>
+      </label>
+      <button class="button button-light" type="button" id="product-filter-reset">Reset</button>
+    </section>
+  `;
+}
+
+function wireProductFilterPanel() {
+  const cards = [...document.querySelectorAll(".product-grid .product-card")];
+  if (!cards.length) return;
+  const search = document.getElementById("product-filter-search");
+  const price = document.getElementById("product-filter-price");
+  const metal = document.getElementById("product-filter-metal");
+  const diamond = document.getElementById("product-filter-diamond");
+  const reset = document.getElementById("product-filter-reset");
+  const apply = () => {
+    const q = String(search?.value || "").trim().toLowerCase();
+    const max = Number(price?.value || 0);
+    const metalValue = String(metal?.value || "").toLowerCase();
+    const diamondValue = String(diamond?.value || "").toLowerCase();
+    cards.forEach((card) => {
+      const text = card.textContent.toLowerCase();
+      const priceMatch = text.match(/\$([0-9,]+)/);
+      const cardPrice = priceMatch ? Number(priceMatch[1].replace(/,/g, "")) : 0;
+      const visible = (!q || text.includes(q))
+        && (!max || !cardPrice || cardPrice <= max)
+        && (!metalValue || text.includes(metalValue))
+        && (!diamondValue || text.includes(diamondValue));
+      card.hidden = !visible;
+    });
+  };
+  [search, price, metal, diamond].forEach((control) => control?.addEventListener("input", apply));
+  reset?.addEventListener("click", () => {
+    if (search) search.value = "";
+    if (price) price.value = "";
+    if (metal) metal.value = "";
+    if (diamond) diamond.value = "";
+    apply();
+  });
 }
 
 function productMatchesCategory(product, label) {
@@ -5531,9 +5662,14 @@ async function requestPayloadFromForm(form) {
       productCategory,
       productName: form.dataset.productName || selectedFormValue(form, "productName"),
       metalType: selectedFormValue(form, "metalType") || selectedFormValue(form, "metal"),
+      diamondType: selectedFormValue(form, "diamondType"),
       diamondShape: selectedFormValue(form, "diamondShape"),
       stoneType: selectedFormValue(form, "stoneType") || selectedFormValue(form, "gemstones"),
       caratWeight: selectedFormValue(form, "caratWeight") || selectedFormValue(form, "caratSize"),
+      bandStyle: selectedFormValue(form, "bandStyle"),
+      prongs: selectedFormValue(form, "prongs"),
+      basketSetting: selectedFormValue(form, "basket"),
+      sideStonesOrGemstones: selectedFormValue(form, "gemstones"),
       ringSize: selectedFormValue(form, "ringSize"),
       braceletSize: selectedFormValue(form, "braceletSize"),
       chainLength: selectedFormValue(form, "chainLength"),
@@ -5542,11 +5678,9 @@ async function requestPayloadFromForm(form) {
       timeline: selectedFormValue(form, "timeline"),
       notes: [
         selectedFormValue(form, "description"),
+        selectedFormValue(form, "customDesignRequest") ? `Unique custom design request: ${selectedFormValue(form, "customDesignRequest")}` : "",
         selectedFormValue(form, "notes"),
         form.dataset.cartSummary ? `Cart summary: ${form.dataset.cartSummary}` : "",
-        selectedFormValue(form, "bandStyle") ? `Band style: ${selectedFormValue(form, "bandStyle")}` : "",
-        selectedFormValue(form, "prongs") ? `Prongs: ${selectedFormValue(form, "prongs")}` : "",
-        selectedFormValue(form, "basket") ? `Basket / setting: ${selectedFormValue(form, "basket")}` : "",
         Object.keys(selections).length ? `Selected website options: ${Object.entries(selections).map(([key, value]) => `${key}: ${value}`).join(" | ")}` : "",
       ].filter(Boolean).join("\n"),
     },
@@ -5667,10 +5801,72 @@ function choiceGroup(label, name, options, wide = false) {
 }
 
 function engagementRingBuilder() {
+  setSeo("Build Your Own Engagement Ring | Live Diamonds & Custom Settings", "Build your own engagement ring with The Don Jewelers & Jewelry. Start with a setting, lab diamond, natural diamond, diamond shape, metal, budget, or choose from live diamond selection.", {
+    path: "build-engagement-ring",
+    image: "engagement-ring-feature.jpg",
+    breadcrumbs: [["Engagement Rings", "category/engagement-rings"], ["Build Your Engagement Ring", "build-engagement-ring"]],
+    faqs: [
+      ["Can I choose my own diamond?", "Yes. You can start with the live diamond selection, choose a lab-grown or natural diamond direction, or submit the exact stone specifications you want sourced."],
+      ["Can The Don Jewelers make a custom setting?", "Yes. The process can include a private consultation, CAD design, stone sourcing, approval, production, and insured delivery."],
+      ["Do I need my ring size before starting?", "No. You can submit an estimated size and confirm exact sizing before final approval."],
+    ],
+  });
   shell(`
     <main>
-      ${pageHero("Engagement Ring Builder", "Build your custom engagement ring", "Choose the diamond, metal, band, setting, gemstone ideas, and design notes. A $500 deposit starts the design process and secures your consultation for further custom design work.")}
+      ${pageHero("Engagement Ring Builder", "Build your own engagement ring", "Start with a setting, a lab diamond, a natural diamond, a shape, or your budget. Choose from live diamonds or send the details for The Don Jewelers & Jewelry to source and build your custom ring.", `
+        <div class="hero-actions">
+          <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose Live Diamond</a>
+          <a class="button button-light" href="#/category/engagement-rings">Browse Ring Settings</a>
+          <a class="button button-dark" href="${appointmentUrl}">Book Appointment</a>
+        </div>
+      `)}
+      <section class="engagement-funnel-steps" aria-label="Engagement ring builder paths">
+        ${[
+          ["1", "Start with a Setting", "Choose solitaire, pave, hidden halo, cathedral, three-stone, bezel, vintage, or a one-of-one CAD setting.", "#/category/engagement-rings"],
+          ["2", "Start with a Lab Diamond", "Use the live diamond selection to compare size, shape, color, clarity, and budget with stronger visual value.", "#/select-diamond?type=lab&return=engagement-ring-builder"],
+          ["3", "Start with a Natural Diamond", "Request a natural diamond search by GIA/IGI specs, shape, budget, and timeline.", "#/request/contact?intent=natural-diamond-engagement-ring"],
+          ["4", "Ready-To-Ship / Faster Timeline", "View available engagement rings and submit your date so timing can be confirmed before purchase.", "#/category/engagement-rings"],
+        ].map(([step, title, text, href]) => `
+          <a class="engagement-step-card" href="${href}">
+            <span>${step}</span>
+            <strong>${title}</strong>
+            <p>${text}</p>
+          </a>
+        `).join("")}
+      </section>
+      <section class="builder-choice-section">
+        <div class="section-heading">
+          <p class="eyebrow">Shop Like The Big Jewelers</p>
+          <h2>Choose by shape, style, metal, or diamond type</h2>
+        </div>
+        <div class="builder-choice-grid">
+          ${[
+            ["Round", "Classic sparkle; easiest to compare by cut grade.", "#/select-diamond?shape=Round&return=engagement-ring-builder"],
+            ["Oval", "Elongated look with strong finger coverage.", "#/select-diamond?shape=Oval&return=engagement-ring-builder"],
+            ["Emerald", "Step-cut, clean, elegant; clarity matters more.", "#/select-diamond?shape=Emerald&return=engagement-ring-builder"],
+            ["Radiant", "Brilliant sparkle with a rectangular or square outline.", "#/select-diamond?shape=Radiant&return=engagement-ring-builder"],
+            ["Marquise", "Long, dramatic shape with maximum finger presence.", "#/select-diamond?shape=Marquise&return=engagement-ring-builder"],
+            ["Pear", "Teardrop silhouette for classic or modern settings.", "#/select-diamond?shape=Pear&return=engagement-ring-builder"],
+          ].map(([title, text, href]) => `<a class="builder-choice-card" href="${href}"><strong>${title}</strong><p>${text}</p></a>`).join("")}
+        </div>
+      </section>
+      <section class="builder-choice-section">
+        <div class="section-heading">
+          <p class="eyebrow">Decision Helpers</p>
+          <h2>Use the guides before you submit</h2>
+        </div>
+        <div class="builder-choice-grid compact">
+          <a class="builder-choice-card" href="#/ring-size-guide"><strong>Ring Size Guide</strong><p>Measure, compare, and confirm sizing before CAD approval or final order.</p></a>
+          <a class="builder-choice-card" href="#/diamond-shape-guide"><strong>Diamond Shape Guide</strong><p>Compare round, oval, emerald, radiant, marquise, pear, cushion, princess, and Asscher.</p></a>
+          <a class="builder-choice-card" href="#/lab-diamonds-vs-natural-diamonds"><strong>Lab vs Natural</strong><p>Understand visual appearance, origin, budget, certification, and resale considerations.</p></a>
+          <a class="builder-choice-card" href="#/free-engagement-ring-consultation"><strong>Free Consultation</strong><p>Send your goal and budget before you commit to a stone or setting.</p></a>
+        </div>
+      </section>
       <section class="custom-form-section">
+        <div class="section-heading">
+          <p class="eyebrow">Build Request</p>
+          <h2>Submit your ring plan</h2>
+        </div>
         <form class="custom-order-form engagement-build-form" id="engagement-build-form" data-request-type="Custom Engagement Ring Request" data-product-category="Engagement Rings">
           <label>Full Name<input name="fullName" autocomplete="name" required></label>
           <label>Email<input name="email" type="email" autocomplete="email" required></label>
@@ -5689,6 +5885,7 @@ function engagementRingBuilder() {
           <label>Timeline Needed<input name="timeline" placeholder="Example: 2 weeks, 30 days, proposal date"></label>
           <label>Budget range<input name="budget" placeholder="Example: $2,500 - $5,000"></label>
           <label class="form-wide">Describe exactly what you are looking to get<textarea name="description" rows="6" placeholder="Tell us about the look, stone size, setting, inspiration, timeline, and any one-on-one custom design details."></textarea></label>
+          <label class="form-wide">Unique custom design request<textarea name="customDesignRequest" rows="5" placeholder="If the builder cannot create your exact design, describe the unique custom ring here. Add links, sketches, celebrity inspiration, engraving, hidden details, special stones, or anything you want copied or redesigned."></textarea></label>
           <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
           <div class="deposit-note form-wide">
             <strong>$500 design deposit</strong>
@@ -5699,6 +5896,7 @@ function engagementRingBuilder() {
           <p class="form-error" hidden></p>
         </form>
       </section>
+      ${trustBlockSection()}
       ${aboutUs()}
     </main>
   `);
@@ -5748,6 +5946,7 @@ function customRequestForm({ formId, requestType = "Request Custom Design Form",
       <label>Budget<input name="budget" placeholder="Example: $1,500 - $5,000"></label>
       <label>Timeline Needed<input name="timeline" placeholder="Example: 2 weeks, 30 days, event date"></label>
       <label class="form-wide">Notes / Custom Details<textarea name="notes" rows="6" placeholder="Describe the piece, design details, sizing, stones, inspiration, and any custom CAD direction."></textarea></label>
+      <label class="form-wide">Unique custom design request<textarea name="customDesignRequest" rows="5" placeholder="Use this if the normal options do not cover the design. Add links, sketches, inspiration, engraving, special stones, or exact custom details."></textarea></label>
       <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
       <button class="button button-gold form-wide" type="submit">Submit Custom Request</button>
       <p class="form-success" hidden></p>
@@ -5767,6 +5966,128 @@ function customOrders() {
     </main>
   `);
   wireRequestForm("custom-form", "Thank you for your submission. Your request has been received and is currently under review. We will contact you regarding pricing, design details, and next steps.");
+}
+
+function ringSizeGuidePage() {
+  setSeo("Ring Size Guide | Engagement Ring Sizing | The Don Jewelers", "Use The Don Jewelers ring size guide to plan engagement ring sizing, comfort fit, resizing questions, measuring tips, and final approval before custom ring production.", {
+    path: "ring-size-guide",
+    image: "engagement-ring-feature.jpg",
+    breadcrumbs: [["Guides", "diamond-education"], ["Ring Size Guide", "ring-size-guide"]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Ring Size Guide", "Measure before you build", "Use this as a planning guide before your final consultation. Exact ring size should be confirmed before CAD approval, casting, setting, or shipment.", `
+        <div class="hero-actions">
+          <a class="button button-gold" href="#/build-engagement-ring">Build Engagement Ring</a>
+          <a class="button button-light" href="${appointmentUrl}">Book Appointment</a>
+        </div>
+      `)}
+      <section class="guide-table-section">
+        <div class="section-heading">
+          <p class="eyebrow">Quick Sizing</p>
+          <h2>Common US ring size reference</h2>
+        </div>
+        <div class="guide-table">
+          ${[
+            ["US 4", "46.8 mm", "Small finger / pinky range"],
+            ["US 5", "49.3 mm", "Common smaller engagement size"],
+            ["US 6", "51.9 mm", "Common engagement ring range"],
+            ["US 7", "54.4 mm", "Common engagement ring range"],
+            ["US 8", "57.0 mm", "Larger engagement / smaller men's range"],
+            ["US 9", "59.5 mm", "Common men's ring range"],
+            ["US 10", "62.1 mm", "Common men's ring range"],
+            ["US 11", "64.6 mm", "Larger men's ring range"],
+          ].map(([size, circumference, note]) => `<div><strong>${size}</strong><span>${circumference}</span><p>${note}</p></div>`).join("")}
+        </div>
+      </section>
+      <section class="builder-choice-section">
+        <div class="builder-choice-grid">
+          <article class="builder-choice-card"><strong>Best method</strong><p>Have the finger sized professionally, especially for engagement rings, wide bands, eternity bands, and expensive custom settings.</p></article>
+          <article class="builder-choice-card"><strong>Measure at the right time</strong><p>Finger size changes with heat, cold, salt, and time of day. Measure when hands are normal, not swollen or cold.</p></article>
+          <article class="builder-choice-card"><strong>Account for width</strong><p>Wider bands often feel tighter. Thin solitaire bands and wide men's bands may not fit the same at the same size.</p></article>
+          <article class="builder-choice-card"><strong>Confirm before production</strong><p>Custom work should not move to final approval until spelling, stone, metal, and ring size are confirmed.</p></article>
+        </div>
+      </section>
+      ${trustBlockSection()}
+    </main>
+  `);
+}
+
+function diamondShapeGuidePage() {
+  setSeo("Diamond Shape Guide | Oval Round Emerald Radiant Marquise | The Don Jewelers", "Compare diamond shapes for engagement rings including round, oval, emerald, radiant, marquise, pear, cushion, princess, and Asscher diamonds.", {
+    path: "diamond-shape-guide",
+    image: "queen-aurelia-oval-marquise-ring.jpeg",
+    breadcrumbs: [["Guides", "diamond-education"], ["Diamond Shape Guide", "diamond-shape-guide"]],
+  });
+  const shapes = [
+    ["Round", "Maximum classic sparkle; easiest shape for strict cut-grade comparison.", "Best for timeless solitaires, pave bands, and buyers who want the brightest traditional look."],
+    ["Oval", "Elongated shape that looks large for its carat weight.", "Best for finger coverage, modern bridal looks, hidden halos, and yellow gold settings."],
+    ["Emerald", "Step-cut shape with clean flashes instead of crushed sparkle.", "Best for elegant, quiet luxury settings; clarity should be higher because inclusions show more."],
+    ["Radiant", "Brilliant faceting with rectangular or square outline.", "Best for buyers who like emerald shape but want more sparkle."],
+    ["Marquise", "Long pointed shape with dramatic finger presence.", "Best for statement rings, vintage influence, and maximum visual size."],
+    ["Pear", "Teardrop shape that can face up large and feel romantic.", "Best for solitaire, halo, and east-west custom designs."],
+    ["Cushion", "Soft square/rectangular shape with romantic corners.", "Best for vintage, halo, and soft modern settings."],
+    ["Princess", "Square brilliant style with sharp corners.", "Best for clean geometric settings and modern solitaire designs."],
+    ["Asscher", "Square step-cut with a hall-of-mirrors look.", "Best for Art Deco, vintage, and high-clarity stones."],
+  ];
+  shell(`
+    <main>
+      ${pageHero("Diamond Shape Guide", "Choose the shape before the setting", "Shape controls the personality of the ring. Use this guide to narrow the look, then choose from live diamonds or request sourcing.", `
+        <div class="hero-actions">
+          <a class="button button-gold" href="#/select-diamond?return=shape-guide">Choose Live Diamond</a>
+          <a class="button button-light" href="#/build-engagement-ring">Build Ring</a>
+        </div>
+      `)}
+      <section class="shape-guide-grid">
+        ${shapes.map(([shape, summary, best]) => `
+          <article>
+            <strong>${shape}</strong>
+            <p>${summary}</p>
+            <span>${best}</span>
+            <a href="#/select-diamond?shape=${encodeURIComponent(shape)}&return=shape-guide">Shop ${shape} Diamonds</a>
+          </article>
+        `).join("")}
+      </section>
+      ${trustBlockSection()}
+    </main>
+  `);
+}
+
+function labNaturalComparisonPage() {
+  setSeo("Lab Diamonds vs Natural Diamonds | Engagement Ring Comparison", "Compare lab grown diamonds and natural diamonds by appearance, origin, budget, certification, resale considerations, and engagement ring use.", {
+    path: "lab-diamonds-vs-natural-diamonds",
+    image: "yellow-gold-oval-pave-engagement-ring.jpeg",
+    breadcrumbs: [["Guides", "diamond-education"], ["Lab Diamonds vs Natural Diamonds", "lab-diamonds-vs-natural-diamonds"]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Diamond Comparison", "Lab diamonds vs natural diamonds", "Both can look beautiful in an engagement ring. The right choice depends on budget, origin preference, size goals, certification, and the story you want behind the piece.", `
+        <div class="hero-actions">
+          <a class="button button-gold" href="#/select-diamond?type=lab&return=lab-natural-guide">Shop Lab Diamonds</a>
+          <a class="button button-light" href="#/request/contact?intent=natural-diamond-search">Request Natural Diamond Search</a>
+        </div>
+      `)}
+      <section class="comparison-table-section">
+        <div class="comparison-table">
+          ${[
+            ["Origin", "Grown in a controlled lab environment", "Formed naturally underground"],
+            ["Appearance", "Can look identical to natural at comparable quality", "Can look identical to lab at comparable quality"],
+            ["Budget", "Usually allows larger size, color, or clarity for the money", "Usually costs more at the same specs"],
+            ["Certification", "Often IGI; some GIA options available", "Often GIA or IGI"],
+            ["Best For", "Maximum size, modern value, visual impact", "Natural rarity, tradition, origin story"],
+            ["Resale", "Typically weaker resale market", "Typically stronger but still not guaranteed"],
+          ].map(([factor, lab, natural]) => `
+            <div class="comparison-row">
+              <strong>${factor}</strong>
+              <p><b>Lab:</b> ${lab}</p>
+              <p><b>Natural:</b> ${natural}</p>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+      ${trustBlockSection()}
+    </main>
+  `);
 }
 
 const requestPageTypes = {
@@ -6279,6 +6600,9 @@ function router() {
   if (path === "" || path === "/" || path === "index.html") return home();
   if (path === "blog") return blogIndex();
   if (parts[0] === "blog") return blogArticlePage(parts[1]);
+  if (path === "ring-size-guide") return ringSizeGuidePage();
+  if (path === "diamond-shape-guide") return diamondShapeGuidePage();
+  if (path === "lab-diamonds-vs-natural-diamonds") return labNaturalComparisonPage();
   if (path === "diamond-education") return educationResourcePage("diamond-education", "diamond-education");
   if (parts[0] === "education") return educationResourcePage(parts[1]);
   if (parts[0] === "faq") return faqDetailPage(parts[1]);

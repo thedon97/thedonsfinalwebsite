@@ -1800,6 +1800,149 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .footer-contact a { overflow-wrap: anywhere; font-size: 1rem; font-weight: 900; }
 .footer-contact span { color: rgba(255,255,255,.62); line-height: 1.5; }
 
+.sticky-appointment-cta {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 18;
+  display: grid;
+  gap: 2px;
+  min-width: 184px;
+  padding: 12px 16px;
+  border: 1px solid rgba(241,215,129,.78);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1a1510, #080706);
+  color: #fff7df;
+  box-shadow: 0 18px 48px rgba(0,0,0,.34);
+}
+.sticky-appointment-cta span { font-weight: 950; }
+.sticky-appointment-cta small { color: rgba(241,215,129,.78); font-size: .72rem; font-weight: 800; }
+.trust-block-section,
+.engagement-funnel-steps,
+.builder-choice-grid,
+.shape-guide-grid,
+.guide-table,
+.comparison-table {
+  display: grid;
+  gap: 14px;
+}
+.trust-block-section {
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  padding: clamp(28px,4vw,54px) clamp(18px,5vw,72px);
+  background: #14110d;
+  color: #fffdfa;
+  border-top: 1px solid rgba(241,215,129,.2);
+}
+.trust-block-section article,
+.engagement-step-card,
+.builder-choice-card,
+.shape-guide-grid article,
+.guide-table div,
+.comparison-row {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdfa;
+  color: var(--ink);
+}
+.trust-block-section strong,
+.engagement-step-card strong,
+.builder-choice-card strong,
+.shape-guide-grid strong,
+.guide-table strong { display: block; margin-bottom: 8px; font-size: 1rem; }
+.trust-block-section p,
+.engagement-step-card p,
+.builder-choice-card p,
+.shape-guide-grid p,
+.shape-guide-grid span,
+.guide-table p,
+.comparison-row p { margin: 0; color: #4f473d; line-height: 1.55; }
+.trust-block-section a,
+.shape-guide-grid a {
+  display: inline-flex;
+  margin-top: 12px;
+  color: var(--gold-dark);
+  font-weight: 900;
+}
+.engagement-funnel-steps {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  padding: clamp(28px,4vw,54px) clamp(18px,5vw,72px);
+  background: var(--soft);
+}
+.engagement-step-card span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--gold);
+  font-weight: 950;
+}
+.builder-choice-section,
+.guide-table-section,
+.comparison-table-section {
+  padding: clamp(32px,5vw,66px) clamp(18px,5vw,72px);
+}
+.builder-choice-grid {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.builder-choice-grid.compact {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+.product-filter-panel {
+  display: grid;
+  grid-template-columns: 1.3fr repeat(3, minmax(150px, .8fr)) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 18px clamp(18px,5vw,72px);
+  background: #fff8ec;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.product-filter-panel label {
+  display: grid;
+  gap: 6px;
+  color: #4f473d;
+  font-size: .82rem;
+  font-weight: 850;
+}
+.product-filter-panel input,
+.product-filter-panel select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+.shape-guide-grid {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  padding: clamp(32px,5vw,66px) clamp(18px,5vw,72px);
+}
+.guide-table {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+.guide-table span {
+  display: block;
+  color: var(--gold-dark);
+  font-weight: 900;
+}
+.comparison-table {
+  max-width: 980px;
+}
+.comparison-row {
+  display: grid;
+  grid-template-columns: .6fr 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.comparison-row strong { color: var(--gold-dark); }
+
 @media (max-width: 980px) {
   .supplier-product-information { grid-template-columns: 1fr; }
   .product-information-section { grid-template-columns: 1fr; }
@@ -1815,7 +1958,10 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .customizer-layout, .preview-layout, .cart-layout, .product-detail-hero, .split-section, .engagement-feature, .custom-order-band, .site-footer {
     grid-template-columns: 1fr;
   }
-  .import-tool, .import-draft, .admin-product-card, .diamond-filter-bar, .diamond-inventory-grid, .sourcing-choice-grid { grid-template-columns: 1fr; }
+  .import-tool, .import-draft, .admin-product-card, .diamond-filter-bar, .diamond-inventory-grid, .sourcing-choice-grid,
+  .trust-block-section, .engagement-funnel-steps, .builder-choice-grid, .builder-choice-grid.compact, .shape-guide-grid, .guide-table,
+  .product-filter-panel { grid-template-columns: 1fr; }
+  .comparison-row { grid-template-columns: 1fr; }
   .summary-panel { position: static; }
   .custom-order-actions { justify-content: flex-start; }
 }
@@ -1853,6 +1999,14 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
     letter-spacing: .08em;
   }
   .collection-grid, .product-grid, .blog-grid, .article-card-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
+  .sticky-appointment-cta {
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    min-width: 0;
+    text-align: center;
+  }
+  .site-footer { padding-bottom: 96px; }
   .story-grid {
     grid-template-columns: 1fr;
     gap: 12px;

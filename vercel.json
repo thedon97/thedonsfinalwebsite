@@ -39,6 +39,10 @@
       "destination": "/api/index?route=seo&action=robots"
     },
     {
+      "source": "/merchant-feed.xml",
+      "destination": "/api/index?route=merchant-feed"
+    },
+    {
       "source": "/products",
       "destination": "/api/index?route=seo&action=page&path=products"
     },
@@ -49,6 +53,18 @@
     {
       "source": "/custom-orders",
       "destination": "/api/index?route=seo&action=page&path=custom-orders"
+    },
+    {
+      "source": "/build-engagement-ring",
+      "destination": "/api/index?route=seo&action=page&path=build-engagement-ring"
+    },
+    {
+      "source": "/ring-size-guide",
+      "destination": "/api/index?route=seo&action=page&path=ring-size-guide"
+    },
+    {
+      "source": "/diamond-shape-guide",
+      "destination": "/api/index?route=seo&action=page&path=diamond-shape-guide"
     },
     {
       "source": "/category/:slug",
