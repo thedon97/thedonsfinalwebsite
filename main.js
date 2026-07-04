@@ -27,6 +27,7 @@ const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror
 const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://www.google.com/maps?cid=15202389021162830944";
 const secondaryGoogleBusinessProfileUrl = "https://www.google.com/maps?cid=1237300766605729326";
+const googleReviewUrl = "https://www.google.com/maps?cid=15202389021162830944";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
@@ -2246,6 +2247,13 @@ const servicePages = [
   ["diamond-jeweler-connecticut", "Diamond Jeweler Connecticut", "Diamond jeweler serving Connecticut clients with custom engagement rings, diamond sourcing, tennis bracelets, pendants, CAD design, and insured shipping.", "triple-row-diamond-tennis-bracelet.jpeg", ["diamond jeweler Connecticut", "engagement rings Connecticut", "custom jeweler CT"], ["custom-engagement-rings", "diamond-pendants", "lab-diamond-rings"], "Connecticut clients"],
   ["tri-state-custom-jeweler", "Tri-State Custom Jeweler", "Tri-State custom jeweler serving New York, New Jersey, Connecticut, Pennsylvania, and nationwide clients with custom diamond jewelry and private consultation.", "diamond-banner.jpg", ["Tri-State custom jeweler", "engagement rings Tri-State area", "diamond jeweler near me"], ["custom-jewelry-nyc", "custom-jeweler-new-jersey", "diamond-jeweler-connecticut"], "Tri-State area clients"],
   ["diamond-jeweler-pennsylvania", "Diamond Jeweler Pennsylvania", "Diamond jeweler serving Pennsylvania clients with engagement rings, lab diamonds, natural diamonds, custom pendants, tennis bracelets, and private jewelry quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond jeweler Pennsylvania", "custom jeweler PA", "engagement rings Pennsylvania"], ["engagement-rings-allentown-pa", "engagement-rings-lehigh-valley", "custom-jewelry"], "Pennsylvania clients"],
+  ["free-engagement-ring-consultation", "Free Engagement Ring Consultation", "Free engagement ring consultation for clients comparing lab diamonds, natural diamonds, custom settings, budget, financing, CAD design, and private jeweler guidance.", "queen-aurelia-oval-marquise-ring.jpeg", ["free engagement ring consultation", "engagement ring consultation", "custom engagement ring quote"], ["custom-engagement-rings", "lab-diamond-rings", "engagement-rings-allentown-pa"], "serious engagement ring buyers"],
+  ["lab-diamond-engagement-rings-allentown", "Lab Diamond Engagement Rings Allentown", "Lab diamond engagement rings for Allentown clients who want size, sparkle, certification, custom CAD settings, and private jeweler quote guidance.", "yellow-gold-oval-pave-engagement-ring.jpeg", ["lab diamond engagement rings Allentown", "lab diamond rings Allentown PA", "engagement rings Allentown"], ["free-engagement-ring-consultation", "engagement-rings-allentown-pa", "lab-diamond-rings"], "Allentown lab diamond clients"],
+  ["private-jeweler-allentown", "Private Jeweler Allentown", "Private jeweler serving Allentown clients with engagement rings, diamond sourcing, custom pendants, tennis bracelets, CAD design, and appointment-based consultation.", "medusa-diamond-signet-ring.jpeg", ["private jeweler Allentown", "custom jeweler Allentown", "diamond jeweler Allentown"], ["engagement-rings-allentown-pa", "diamond-jeweler-pennsylvania", "custom-jewelry"], "Allentown private jewelry clients"],
+  ["custom-engagement-rings-nyc", "Custom Engagement Rings NYC", "Custom engagement rings in NYC with lab grown diamonds, natural diamonds, CAD design, private diamond sourcing, and appointment-only jeweler guidance.", "engagement-ring-feature.jpg", ["custom engagement rings NYC", "engagement rings NYC", "NYC engagement ring jeweler"], ["custom-jewelry-nyc", "nyc-diamond-district-jeweler", "free-engagement-ring-consultation"], "NYC engagement ring clients"],
+  ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
+  ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
+  ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
 ];
 
 const blogTopics = [
@@ -2827,6 +2835,7 @@ function navLinks() {
   return `
     <a href="${internalLink("/")}">Home</a>
     ${categoryLinks}
+    <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
     <a href="${internalLink("engagement-rings-allentown-pa")}">Allentown Rings</a>
     <a href="${internalLink("tri-state-custom-jeweler")}">Tri-State Jeweler</a>
@@ -2900,6 +2909,7 @@ function footer() {
       </div>
       <div class="footer-links">
         <a href="#/products">Shop Now</a>
+        <a href="#/free-engagement-ring-consultation">Free Engagement Ring Consultation</a>
         <a href="#/request/contact">General Contact</a>
         <a href="#/checkout">Checkout</a>
         <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
@@ -2908,6 +2918,9 @@ function footer() {
         <a href="#/custom-jeweler-new-jersey">Custom Jeweler New Jersey</a>
         <a href="#/diamond-jeweler-connecticut">Diamond Jeweler Connecticut</a>
         <a href="#/tri-state-custom-jeweler">Tri-State Custom Jeweler</a>
+        <a href="#/lab-diamond-engagement-rings-allentown">Lab Diamond Rings Allentown</a>
+        <a href="#/custom-engagement-rings-nyc">Custom Engagement Rings NYC</a>
+        <a href="#/diamond-rings-near-me">Diamond Rings Near Me</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         <span class="site-version">Customer policies and checkout support</span>
       </div>
@@ -3622,6 +3635,7 @@ function servicePage(slug) {
   shell(`
     <main>
       ${pageHero("Luxury Private Jeweler", title, description, `<div class="hero-actions"><a class="button button-gold" href="${internalLink("custom-orders")}">Request a Quote</a><a class="button button-light" href="${internalLink("select-diamond")}">Browse Diamonds</a></div>`)}
+      ${id === "free-engagement-ring-consultation" ? consultationOfferSection() : ""}
       <section class="seo-section split-seo">
         <img src="${asset(image)}" alt="${title} by The Don Jewelers & Jewelry for ${regionLabel}" ${imageSafety}>
         <div>
@@ -3641,6 +3655,33 @@ function servicePage(slug) {
       ${faqSection(faqs)}
     </main>
   `);
+}
+
+function consultationOfferSection() {
+  return `
+    <section class="seo-section">
+      <p class="eyebrow">Free Buyer Help</p>
+      <h2>Get clear on diamond size, budget, setting style, and next steps before you spend.</h2>
+      <div class="guide-grid">
+        <article>
+          <h3>Compare lab vs natural diamonds</h3>
+          <p>Review size, certification, color, clarity, cut, and price tradeoffs before choosing a center stone.</p>
+        </article>
+        <article>
+          <h3>Plan a realistic ring budget</h3>
+          <p>Talk through metal, carat size, diamond quality, financing, and timeline so the quote matches the goal.</p>
+        </article>
+        <article>
+          <h3>Start a custom CAD direction</h3>
+          <p>Bring inspiration photos and get guidance on what can be built, changed, upgraded, or simplified.</p>
+        </article>
+      </div>
+      <div class="hero-actions">
+        <a class="button button-gold" href="${internalLink("request/contact?intent=free-engagement-ring-consultation")}">Request Free Consultation</a>
+        <a class="button button-light" href="${phoneHref}">Call or Text ${phoneDisplay}</a>
+      </div>
+    </section>
+  `;
 }
 
 function blogIndex() {
