@@ -119,6 +119,78 @@
       "destination": "/api/index?route=seo&action=page&path=appointment-only-jeweler"
     },
     {
+      "source": "/engagement-rings-allentown-pa",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-allentown-pa"
+    },
+    {
+      "source": "/engagement-rings-lehigh-valley",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-lehigh-valley"
+    },
+    {
+      "source": "/custom-jewelry-nyc",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry-nyc"
+    },
+    {
+      "source": "/custom-jeweler-new-jersey",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-new-jersey"
+    },
+    {
+      "source": "/diamond-jeweler-connecticut",
+      "destination": "/api/index?route=seo&action=page&path=diamond-jeweler-connecticut"
+    },
+    {
+      "source": "/tri-state-custom-jeweler",
+      "destination": "/api/index?route=seo&action=page&path=tri-state-custom-jeweler"
+    },
+    {
+      "source": "/diamond-jeweler-pennsylvania",
+      "destination": "/api/index?route=seo&action=page&path=diamond-jeweler-pennsylvania"
+    },
+    {
+      "source": "/free-engagement-ring-consultation",
+      "destination": "/api/index?route=seo&action=page&path=free-engagement-ring-consultation"
+    },
+    {
+      "source": "/lab-diamond-engagement-rings-allentown",
+      "destination": "/api/index?route=seo&action=page&path=lab-diamond-engagement-rings-allentown"
+    },
+    {
+      "source": "/private-jeweler-allentown",
+      "destination": "/api/index?route=seo&action=page&path=private-jeweler-allentown"
+    },
+    {
+      "source": "/custom-engagement-rings-nyc",
+      "destination": "/api/index?route=seo&action=page&path=custom-engagement-rings-nyc"
+    },
+    {
+      "source": "/diamond-rings-near-me",
+      "destination": "/api/index?route=seo&action=page&path=diamond-rings-near-me"
+    },
+    {
+      "source": "/engagement-rings-new-jersey",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-new-jersey"
+    },
+    {
+      "source": "/engagement-rings-connecticut",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-connecticut"
+    },
+    {
+      "source": "/the-don-jewelers",
+      "destination": "/api/index?route=seo&action=page&path=the-don-jewelers"
+    },
+    {
+      "source": "/the-don-jewelers-and-jewelry",
+      "destination": "/api/index?route=seo&action=page&path=the-don-jewelers-and-jewelry"
+    },
+    {
+      "source": "/don-jewelers-nyc",
+      "destination": "/api/index?route=seo&action=page&path=don-jewelers-nyc"
+    },
+    {
+      "source": "/the-don-jewelers-engagement-rings",
+      "destination": "/api/index?route=seo&action=page&path=the-don-jewelers-engagement-rings"
+    },
+    {
       "source": "/blog",
       "destination": "/api/index?route=seo&action=page&path=blog"
     },
