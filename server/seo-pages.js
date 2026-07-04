@@ -14,6 +14,7 @@ const {
 
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
+const BRAND_ALIASES = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don Jewelers", "The Don Jewelers NYC", "The Don Jewelers & Jewelry NYC", "Don Jewelers NYC"];
 const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
 const ROOT = path.resolve(__dirname, "..");
 const INDEX_HTML = path.join(ROOT, "index.html");
@@ -198,6 +199,30 @@ const staticPageMeta = {
     description: "Schedule an appointment-only jewelry consultation for diamonds, engagement rings, custom jewelry, CAD design, tennis chains, pendants, and luxury gifts.",
     label: "Appointment Only Jeweler",
     priority: "0.85",
+  },
+  "/the-don-jewelers": {
+    title: "The Don Jewelers | Official Custom Jeweler & Engagement Rings",
+    description: "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.",
+    label: "The Don Jewelers",
+    priority: "0.95",
+  },
+  "/the-don-jewelers-and-jewelry": {
+    title: "The Don Jewelers & Jewelry | Official Business Profile",
+    description: "Official business page for The Don Jewelers & Jewelry with verified contact details, Google Business Profile, private jeweler service areas, and custom jewelry consultation.",
+    label: "The Don Jewelers & Jewelry",
+    priority: "0.95",
+  },
+  "/don-jewelers-nyc": {
+    title: "Don Jewelers NYC | The Don Jewelers & Jewelry",
+    description: "Don Jewelers NYC search page for clients looking for The Don Jewelers & Jewelry, custom engagement rings, diamond sourcing, and private jewelry consultation.",
+    label: "Don Jewelers NYC",
+    priority: "0.9",
+  },
+  "/the-don-jewelers-engagement-rings": {
+    title: "The Don Jewelers Engagement Rings | Custom Diamond Rings",
+    description: "Engagement ring page for The Don Jewelers with lab diamonds, natural diamonds, custom settings, CAD design, private consultation, and proposal jewelry guidance.",
+    label: "The Don Jewelers Engagement Rings",
+    priority: "0.92",
   },
   "/blog": {
     title: "Jewelry Education Blog | The Don Jewelers",
@@ -728,6 +753,7 @@ function pageJsonLd(meta, url) {
     publisher: {
       "@type": "Organization",
       name: BUSINESS_NAME,
+      alternateName: BRAND_ALIASES,
       url: SITE_URL,
       logo: `${SITE_URL}/don-logo.jpg`,
     },
@@ -797,6 +823,24 @@ async function sitemap(req, res) {
     ["/nyc-diamond-district-jeweler", "monthly", "0.95"],
     ["/private-jeweler", "monthly", "0.9"],
     ["/appointment-only-jeweler", "monthly", "0.85"],
+    ["/engagement-rings-allentown-pa", "monthly", "0.9"],
+    ["/engagement-rings-lehigh-valley", "monthly", "0.9"],
+    ["/custom-jewelry-nyc", "monthly", "0.9"],
+    ["/custom-jeweler-new-jersey", "monthly", "0.88"],
+    ["/diamond-jeweler-connecticut", "monthly", "0.88"],
+    ["/tri-state-custom-jeweler", "monthly", "0.9"],
+    ["/diamond-jeweler-pennsylvania", "monthly", "0.88"],
+    ["/free-engagement-ring-consultation", "monthly", "0.9"],
+    ["/lab-diamond-engagement-rings-allentown", "monthly", "0.88"],
+    ["/private-jeweler-allentown", "monthly", "0.86"],
+    ["/custom-engagement-rings-nyc", "monthly", "0.9"],
+    ["/diamond-rings-near-me", "monthly", "0.88"],
+    ["/engagement-rings-new-jersey", "monthly", "0.88"],
+    ["/engagement-rings-connecticut", "monthly", "0.88"],
+    ["/the-don-jewelers", "monthly", "0.95"],
+    ["/the-don-jewelers-and-jewelry", "monthly", "0.95"],
+    ["/don-jewelers-nyc", "monthly", "0.9"],
+    ["/the-don-jewelers-engagement-rings", "monthly", "0.92"],
     ["/blog", "weekly", "0.7"],
   ];
   const urls = [

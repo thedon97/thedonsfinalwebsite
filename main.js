@@ -8,6 +8,7 @@ const contactEmail = "thedonjewelersandjewelry@gmail.com";
 const phoneDisplay = "(484) 761-2008";
 const phoneHref = "tel:+14847612008";
 const businessName = "The Don Jewelers & Jewelry";
+const brandAliases = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don Jewelers", "The Don Jewelers NYC", "The Don Jewelers & Jewelry NYC", "Don Jewelers NYC"];
 const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, Northampton County PA, Pennsylvania, and clients nationwide by shipping and private consultation";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
@@ -2254,6 +2255,10 @@ const servicePages = [
   ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
   ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
   ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
+  ["the-don-jewelers", "The Don Jewelers", "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.", "don-logo.jpg", ["The Don Jewelers", "Don Jewelers", "The Don Jewelers jewelry"], ["the-don-jewelers-and-jewelry", "custom-engagement-rings", "free-engagement-ring-consultation"], "clients searching The Don Jewelers"],
+  ["the-don-jewelers-and-jewelry", "The Don Jewelers & Jewelry", "Official business page for The Don Jewelers & Jewelry with verified contact details, Google Business Profile, private jeweler service areas, and custom jewelry consultation.", "yellow-gold-diamond-cuban-link-bracelet.jpeg", ["The Don Jewelers and Jewelry", "The Don Jewelers & Jewelry", "Don Jewelers and Jewelry"], ["the-don-jewelers", "tri-state-custom-jeweler", "custom-jewelry"], "clients searching the official business name"],
+  ["don-jewelers-nyc", "Don Jewelers NYC", "Don Jewelers NYC search page for clients looking for The Don Jewelers & Jewelry, custom engagement rings, diamond sourcing, and private jewelry consultation.", "diamond-banner.jpg", ["Don Jewelers NYC", "The Don Jewelers NYC", "NYC Don Jewelers"], ["custom-jewelry-nyc", "nyc-diamond-district-jeweler", "custom-engagement-rings-nyc"], "NYC brand search clients"],
+  ["the-don-jewelers-engagement-rings", "The Don Jewelers Engagement Rings", "Engagement ring page for The Don Jewelers with lab diamonds, natural diamonds, custom settings, CAD design, private consultation, and proposal jewelry guidance.", "engagement-ring-feature.jpg", ["The Don Jewelers engagement rings", "Don Jewelers engagement ring", "The Don Jewelers rings"], ["custom-engagement-rings", "free-engagement-ring-consultation", "diamond-rings-near-me"], "engagement ring clients searching the brand"],
 ];
 
 const blogTopics = [
@@ -2921,6 +2926,9 @@ function footer() {
         <a href="#/lab-diamond-engagement-rings-allentown">Lab Diamond Rings Allentown</a>
         <a href="#/custom-engagement-rings-nyc">Custom Engagement Rings NYC</a>
         <a href="#/diamond-rings-near-me">Diamond Rings Near Me</a>
+        <a href="#/the-don-jewelers">The Don Jewelers</a>
+        <a href="#/the-don-jewelers-and-jewelry">The Don Jewelers & Jewelry</a>
+        <a href="#/don-jewelers-nyc">Don Jewelers NYC</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         <span class="site-version">Customer policies and checkout support</span>
       </div>
@@ -2989,6 +2997,7 @@ function organizationSchema() {
     "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
     name: businessName,
+    alternateName: brandAliases,
     url: siteUrl,
     logo: `${siteUrl}/don-logo.jpg`,
     image: featuredSeoImages.map((name) => `${siteUrl}/${name}`),
@@ -3004,6 +3013,7 @@ function localBusinessSchema() {
     "@type": ["LocalBusiness", "JewelryStore"],
     "@id": `${siteUrl}/#jewelry-store`,
     name: businessName,
+    alternateName: brandAliases,
     url: siteUrl,
     image: featuredSeoImages.map((name) => `${siteUrl}/${name}`),
     logo: `${siteUrl}/don-logo.jpg`,
@@ -3250,6 +3260,7 @@ function websiteSchema() {
     "@id": `${siteUrl}/#website`,
     url: siteUrl,
     name: businessName,
+    alternateName: brandAliases,
     publisher: { "@id": `${siteUrl}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
