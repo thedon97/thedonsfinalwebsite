@@ -5860,7 +5860,8 @@ function choiceGroup(label, name, options, wide = false) {
 
 const allRingShapes = ["round", "oval", "emerald", "radiant", "cushion", "pear", "marquise", "princess", "asscher", "heart"];
 const allRingMetals = ["14k-white", "14k-yellow", "14k-rose", "18k-white", "18k-yellow", "platinum"];
-const ringAssetSlot = (category, id) => `/assets/ring-builder/${category}/${id}.webp`;
+const ringThumbnailSlot = (category, id) => `/assets/ring-builder/thumbnails/${category}/${id}.webp`;
+const ringPreviewSlot = (...parts) => `/assets/ring-builder/previews/${parts.filter(Boolean).join("--")}.webp`;
 const ringOption = ({ id, name, category, description, internalPriceAdjustment = 0, compatibleDiamondShapes = allRingShapes, compatibleMetals = allRingMetals, previewImagePath = "" }) => ({
   id,
   name,
@@ -5871,7 +5872,7 @@ const ringOption = ({ id, name, category, description, internalPriceAdjustment =
   priceModifier: internalPriceAdjustment,
   compatibleDiamondShapes,
   compatibleMetals,
-  previewImagePath: previewImagePath || ringAssetSlot(category, id),
+  previewImagePath: previewImagePath || ringThumbnailSlot(category, id),
 });
 
 const ringBuilderOptions = {
@@ -6050,6 +6051,66 @@ function ringPreviewSvg(selection = {}, mode = "large") {
   `;
 }
 
+function ringPreviewCandidatePaths(selection = {}) {
+  const shape = selection.centerStoneShape || "round";
+  const setting = selection.settingStyle || "solitaire";
+  const metal = selection.metal || "14k-yellow";
+  const head = selection.headStyle || "four-prong";
+  const band = selection.bandStyle || "plain";
+  return [
+    ringPreviewSlot(shape, setting, metal, head, band),
+    ringPreviewSlot(shape, setting, metal),
+    ringPreviewSlot(shape, setting),
+    ringPreviewSlot(shape),
+    "/assets/ring-builder/previews/default-luxury-ring.svg",
+  ];
+}
+
+function advanceRingBuilderImage(image, fallbackId) {
+  let candidates = [];
+  try {
+    candidates = JSON.parse(image.dataset.ringPreviewCandidates || "[]");
+  } catch {
+    candidates = [];
+  }
+  const next = candidates.shift();
+  image.dataset.ringPreviewCandidates = JSON.stringify(candidates);
+  if (next) {
+    image.src = next;
+    return;
+  }
+  image.hidden = true;
+  const fallback = document.getElementById(fallbackId);
+  if (fallback) fallback.hidden = false;
+}
+window.advanceRingBuilderImage = advanceRingBuilderImage;
+
+function ringImageFallbackAttrs(fallbackId) {
+  return `onerror="advanceRingBuilderImage(this,'${fallbackId}')"`;
+}
+
+function ringImagePreview(selection = {}, mode = "large", fallbackId = "") {
+  const candidates = ringPreviewCandidatePaths(selection);
+  const fallback = fallbackId || `ring-fallback-${mode}-${Math.random().toString(36).slice(2)}`;
+  return `
+    <div class="ring-image-preview-shell">
+      <img class="ring-preview-photo" src="${candidates[0]}" alt="Custom engagement ring render" data-ring-preview-candidates="${htmlSafe(JSON.stringify(candidates.slice(1)))}" ${ringImageFallbackAttrs(fallback)}>
+      <div class="ring-preview-svg-fallback" id="${fallback}" hidden>${ringPreviewSvg(selection, mode)}</div>
+    </div>
+  `;
+}
+
+function ringOptionThumbnail(option, name) {
+  const fallbackSelection = { [name]: option.id };
+  const fallbackId = `ring-thumb-fallback-${name}-${option.id}`.replace(/[^a-z0-9-]/gi, "-");
+  return `
+    <span class="ring-option-media">
+      <img src="${htmlSafe(option.previewImagePath)}" alt="${htmlSafe(option.name)}" data-ring-preview-candidates="[]" ${ringImageFallbackAttrs(fallbackId)}>
+      <span class="ring-preview-svg-fallback" id="${fallbackId}" hidden>${ringPreviewSvg(fallbackSelection, "thumb")}</span>
+    </span>
+  `;
+}
+
 function currentBuilderSelection(form) {
   const selected = {};
   Object.keys(ringBuilderOptions).forEach((name) => {
@@ -6078,7 +6139,7 @@ function RingPreview() {
         <h3 id="ring-preview-title">Your custom engagement ring</h3>
       </div>
       <div class="ring-preview-stage" id="ring-preview-stage">
-        <div id="ring-preview-render">${ringPreviewSvg({}, "large")}</div>
+        <div id="ring-preview-render">${ringImagePreview({}, "large", "ring-main-preview-fallback")}</div>
       </div>
       <div class="ring-preview-actions">
         <button class="button button-gold" type="button" data-save-ring-design>Save Design</button>
@@ -6097,7 +6158,7 @@ function OptionSelector({ label, name, options, compact = false, stepIndex = 0 }
         ${options.map((option, index) => `
           <label class="ring-option-card" data-option-card="${name}" data-option-id="${htmlSafe(option.id)}">
             <input type="radio" name="${name}" value="${htmlSafe(option.id)}" ${index === 0 ? "checked" : ""}>
-            <span class="ring-option-media">${ringPreviewSvg({ [name]: option.id }, "thumb")}</span>
+            ${ringOptionThumbnail(option, name)}
             <span class="ring-option-copy">
               <strong>${htmlSafe(option.name)}</strong>
               <small>${htmlSafe(option.description)}</small>
@@ -6324,14 +6385,15 @@ function wireEngagementRingBuilder() {
   const updatePreview = () => {
     const selection = currentBuilderSelection(form);
     const renderHost = document.getElementById("ring-preview-render");
-    if (renderHost) renderHost.innerHTML = ringPreviewSvg(selection, "large");
-    if (form.elements.renderReference) form.elements.renderReference.value = JSON.stringify(selection);
+    const previewCandidates = ringPreviewCandidatePaths(selection);
+    if (renderHost) renderHost.innerHTML = ringImagePreview(selection, "large", "ring-main-preview-fallback");
+    if (form.elements.renderReference) form.elements.renderReference.value = JSON.stringify({ selection, previewCandidates });
     if (form.elements.priceEstimate) form.elements.priceEstimate.value = "Personal quote requested";
     const internalTotal = configFields.reduce((sum, name) => sum + Number(selectedOption(name).internalPriceAdjustment || 0), 0);
     if (form.elements.internalAdjustmentTotal) form.elements.internalAdjustmentTotal.value = String(internalTotal);
     const title = document.getElementById("ring-preview-title");
     if (title) title.textContent = `${selectedOption("centerStoneShape").name || "Center"} ${selectedOption("settingStyle").name || "Custom"} in ${selectedOption("metal").name || "gold"}`;
-    return selection;
+    return { selection, previewCandidates };
   };
   const updateUrl = () => {
     const params = new URLSearchParams();
@@ -6346,7 +6408,7 @@ function wireEngagementRingBuilder() {
   };
   const updateSummary = () => {
     enforceCompatibility();
-    const selection = updatePreview();
+    const renderReference = updatePreview();
     updateUrl();
     const rows = watchedFields
       .map(([name, label]) => {
@@ -6361,7 +6423,7 @@ function wireEngagementRingBuilder() {
       const option = selectedOption(name);
       return `${label}: ${option.name} | id=${option.id} | category=${option.category} | preview=${option.previewImagePath} | internalAdjustment=${option.internalPriceAdjustment}`;
     });
-    const summaryText = [...rows, ["Quote status", "Personal quote requested"], ["Admin option model", adminOptions.join("\n")], ["Render reference", JSON.stringify(selection)]].map(([label, value]) => `${label}: ${value}`).join("\n");
+    const summaryText = [...rows, ["Quote status", "Personal quote requested"], ["Admin option model", adminOptions.join("\n")], ["Render reference", JSON.stringify(renderReference)]].map(([label, value]) => `${label}: ${value}`).join("\n");
     if (form.elements.buildSummary) form.elements.buildSummary.value = summaryText;
   };
   let activeStep = 0;
