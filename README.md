@@ -19,7 +19,7 @@ Production-ready website for a private jeweler specializing in custom jewelry, e
 
 ## Environment Variables
 
-For the live Labgrown Diamond inventory and request emails, add this in Project Settings > Environment Variables:
+For the live Labgrown Diamond inventory, request emails, lead recovery, and Stripe checkout notifications, add this in Project Settings > Environment Variables:
 
 ```text
 LGD_API_KEY=your_private_lgd_api_key
@@ -28,6 +28,11 @@ LGD_CERTIFIED_COLOR_URL=https://lgdusallc.com/developer-api/diamond?type=certifi
 RESEND_API_KEY=your_private_resend_api_key
 RESEND_TO_EMAIL=thedonjewelersandjewelry@gmail.com
 RESEND_FROM_EMAIL=The Don Jewelers & Jewelry <onboarding@resend.dev>
+DATABASE_URL=your_postgres_database_url
+STRIPE_SECRET_KEY=your_private_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_signing_secret
+ADMIN_SYNC_SECRET=your_private_admin_key
+SITE_URL=https://www.thedonjewelersandjewelrynyc.com
 ```
 
 Do not commit real `.env` files or private API keys.
@@ -41,7 +46,21 @@ The website frontend calls only these server-side routes. The server-side routes
 - `/api/test-diamond-api`
 - `/api/send-request`
 
-Website quote forms, product inquiry forms, checkout inquiry forms, and Stripe payment-link click alerts send notifications through `/api/send-request`. Stripe payment-link click alerts confirm that a customer started checkout. Confirm completed payments inside Stripe, or add a Stripe webhook later for automatic paid-order confirmation emails.
+Website quote forms, product inquiry forms, checkout inquiry forms, appointment requests, engagement ring builder requests, and Stripe payment-link click alerts send lead records through `/api/send-request`. The server saves the lead to PostgreSQL, sends the business email through Resend, sends a customer confirmation email when a customer email is present, and logs every sent/failed attempt for admin retry.
+
+Stripe Checkout session creation is logged as a lead. Stripe webhook events should be pointed to:
+
+```text
+https://www.thedonjewelersandjewelrynyc.com/api/stripe-webhook
+```
+
+Recommended Stripe events:
+
+- `checkout.session.completed`
+- `checkout.session.async_payment_failed`
+- `checkout.session.expired`
+
+Lead recovery is available at `/admin` through the Lead Recovery section. Use `ADMIN_SYNC_SECRET` as the admin recovery key.
 
 ## Production catalog, sync, and checkout
 
@@ -54,6 +73,7 @@ Required private Vercel environment variables:
 
 - `DATABASE_URL`
 - `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
 - `ADMIN_SYNC_SECRET`
 - `CRON_SECRET`
 - `SITE_URL`

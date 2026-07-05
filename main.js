@@ -6510,6 +6510,20 @@ function adminDashboard() {
       </section>
       <section class="admin-dashboard-section">
         <div class="admin-toolbar">
+          <strong>Lead Recovery</strong>
+          <div class="builder-actions">
+            <button class="button button-dark" id="refresh-lead-recovery" type="button">Refresh Leads</button>
+          </div>
+        </div>
+        <label class="admin-secret-field">Admin recovery key
+          <input id="admin-lead-key" type="password" autocomplete="current-password" placeholder="Enter ADMIN_SYNC_SECRET or CRON_SECRET">
+        </label>
+        <div id="admin-lead-recovery-list" class="admin-request-list">
+          <div class="empty-state">Enter admin key, then refresh lead recovery.</div>
+        </div>
+      </section>
+      <section class="admin-dashboard-section">
+        <div class="admin-toolbar">
           <strong>Diamond API readiness</strong>
           <button class="button button-dark" id="refresh-diamond-api-status" type="button">Check Diamond API</button>
         </div>
@@ -6593,6 +6607,53 @@ function adminDashboard() {
         </article>
       `).join("") : `<div class="empty-state">No customer requests saved yet.</div>`;
   };
+  const adminLeadKey = () => {
+    const input = document.getElementById("admin-lead-key");
+    const value = input?.value.trim() || sessionStorage.getItem("donAdminLeadKey") || "";
+    if (value) sessionStorage.setItem("donAdminLeadKey", value);
+    return value;
+  };
+  const renderLeadRecovery = async () => {
+    const host = document.getElementById("admin-lead-recovery-list");
+    const key = adminLeadKey();
+    if (!key) {
+      host.innerHTML = `<div class="empty-state">Enter the admin recovery key to view saved leads and retry failed emails.</div>`;
+      return;
+    }
+    host.innerHTML = `<div class="empty-state">Loading saved leads...</div>`;
+    try {
+      const response = await fetchWithTimeout("/api/admin/lead-recovery?limit=75", {
+        headers: { "x-admin-key": key },
+      }, 20000);
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.message || "Could not load lead recovery.");
+      host.innerHTML = payload.leads.length ? payload.leads.map((lead) => `
+        <article class="admin-request-card" data-lead-id="${htmlSafe(lead.publicId)}">
+          <div>
+            <p class="eyebrow">${htmlSafe(lead.type || "Website Lead")}</p>
+            <h2>${htmlSafe(lead.customer?.fullName || lead.customer?.name || "Unknown customer")}</h2>
+            <p class="lede">${htmlSafe(lead.source || lead.jewelry?.productCategory || "Website submission")}</p>
+          </div>
+          <dl class="summary-list">
+            <div><dt>Submitted</dt><dd>${new Date(lead.createdAt).toLocaleString()}</dd></div>
+            <div><dt>Email</dt><dd>${htmlSafe(lead.customer?.email || "Not provided")}</dd></div>
+            <div><dt>Phone</dt><dd>${htmlSafe(lead.customer?.phone || "Not provided")}</dd></div>
+            <div><dt>Business email</dt><dd>${htmlSafe(lead.businessEmailStatus)}</dd></div>
+            <div><dt>Customer email</dt><dd>${htmlSafe(lead.customerEmailStatus)}</dd></div>
+            <div><dt>Status</dt><dd>${htmlSafe(lead.status)}</dd></div>
+            <div><dt>Stripe</dt><dd>${htmlSafe(lead.stripeStatus || lead.checkout?.status || "N/A")}</dd></div>
+          </dl>
+          ${lead.lastError ? `<p class="form-error">${htmlSafe(lead.lastError)}</p>` : ""}
+          <p class="quote-note">${htmlSafe(lead.jewelry?.notes || lead.jewelry?.productName || "No notes provided.")}</p>
+          <div class="builder-actions">
+            <button class="button button-gold" type="button" data-retry-lead="${htmlSafe(lead.publicId)}">Retry Email</button>
+          </div>
+        </article>
+      `).join("") : `<div class="empty-state">No saved leads found.</div>`;
+    } catch (error) {
+      host.innerHTML = `<div class="empty-state">${htmlSafe(error.message || "Could not load lead recovery.")}</div>`;
+    }
+  };
   const productFromCard = (card) => {
     const product = { id: card.dataset.id };
     card.querySelectorAll("[data-field]").forEach((field) => {
@@ -6654,6 +6715,33 @@ function adminDashboard() {
     }
   };
   document.getElementById("refresh-admin-requests").addEventListener("click", render);
+  document.getElementById("refresh-lead-recovery").addEventListener("click", renderLeadRecovery);
+  document.getElementById("admin-lead-recovery-list").addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-retry-lead]");
+    if (!button) return;
+    const key = adminLeadKey();
+    if (!key) {
+      window.alert("Enter the admin recovery key first.");
+      return;
+    }
+    button.disabled = true;
+    button.textContent = "Retrying...";
+    try {
+      const response = await fetchWithTimeout("/api/admin/lead-recovery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-key": key },
+        body: JSON.stringify({ leadId: button.dataset.retryLead }),
+      }, 30000);
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.message || "Retry failed.");
+      await renderLeadRecovery();
+    } catch (error) {
+      window.alert(error.message || "Retry failed.");
+    } finally {
+      button.disabled = false;
+      button.textContent = "Retry Email";
+    }
+  });
   document.getElementById("refresh-diamond-api-status").addEventListener("click", renderDiamondApiStatus);
   document.getElementById("run-jewelry-sync").addEventListener("click", async (event) => {
     const button = event.currentTarget;
@@ -6717,6 +6805,7 @@ function adminDashboard() {
     }
   });
   render();
+  renderLeadRecovery();
   renderDiamondApiStatus();
   renderJewelrySyncStatus();
   renderDrafts();

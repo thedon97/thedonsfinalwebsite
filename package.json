@@ -7,7 +7,7 @@
     "build": "echo Build complete",
     "dev": "node preview-server.js",
     "start": "node preview-server.js",
-    "check": "node --check main.js && node --check preview-server.js && node --check api/index.js && node --check server/_db.js && node --check server/_http.js && node --check server/_product-store.js && node --check server/_inventory-cache.js && node --check server/_jewelry-sync.js && node --check server/seo-pages.js && node --check server/products.js && node --check server/system-status.js && node --check server/create-checkout-session.js && node --check server/admin/jewelry-sync.js && node --check server/cron/jewelry-sync.js && node --check server/_diamond-utils.js && node --check server/_live-inventory-utils.js && node --check server/send-request.js",
+    "check": "node --check main.js && node --check preview-server.js && node --check api/index.js && node --check server/_db.js && node --check server/_http.js && node --check server/_email-service.js && node --check server/_lead-store.js && node --check server/_product-store.js && node --check server/_inventory-cache.js && node --check server/_jewelry-sync.js && node --check server/seo-pages.js && node --check server/products.js && node --check server/system-status.js && node --check server/create-checkout-session.js && node --check server/stripe-webhook.js && node --check server/admin/jewelry-sync.js && node --check server/admin/lead-recovery.js && node --check server/cron/jewelry-sync.js && node --check server/_diamond-utils.js && node --check server/_live-inventory-utils.js && node --check server/send-request.js",
     "validate": "echo Validation skipped"
   },
   "dependencies": {

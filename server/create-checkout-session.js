@@ -4,6 +4,8 @@ const { getProduct } = require("./_product-store");
 const { fetchFeed } = require("./_diamond-utils");
 const { fetchVendor } = require("./_live-inventory-utils");
 const { getInventoryCache, setInventoryCache } = require("./_inventory-cache");
+const { configured: leadDatabaseConfigured, createLead, updateLeadCheckout } = require("./_lead-store");
+const { processLeadEmails } = require("./send-request")._test;
 
 function stripeClient() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Missing server environment variable: STRIPE_SECRET_KEY");
@@ -99,6 +101,32 @@ async function liveDiamondLine(body) {
   };
 }
 
+function checkoutLeadPayload({ body, line, session, origin }) {
+  const hasSession = Boolean(session?.id);
+  return {
+    type: hasSession ? "Stripe checkout session created" : "Stripe checkout session starting",
+    source: `${origin}/api/create-checkout-session`,
+    customer: {},
+    jewelry: {
+      requestType: "Stripe checkout started",
+      productName: line.name,
+      productCategory: line.metadata?.category || line.metadata?.product_source || "Checkout",
+      budget: `$${Math.round(line.unitAmount / 100).toLocaleString("en-US")}`,
+      notes: `Customer opened a Stripe Checkout session. Kind: ${body.kind || "saved-product"}.`,
+    },
+    checkout: {
+      event: hasSession ? "checkout.session.created" : "checkout.session.starting",
+      status: hasSession ? "created" : "starting",
+      provider: "Stripe Checkout",
+      sessionId: session?.id || "",
+      url: session?.url || "",
+      amountTotal: line.unitAmount,
+      currency: "usd",
+      metadata: line.metadata,
+    },
+  };
+}
+
 module.exports = async function handler(req, res) {
   try {
     if (req.method !== "POST") {
@@ -106,8 +134,17 @@ module.exports = async function handler(req, res) {
       return;
     }
     const body = await readJson(req);
+    if (!leadDatabaseConfigured()) {
+      sendJson(res, 503, {
+        ok: false,
+        message: "Lead database is not configured. Checkout is paused until DATABASE_URL is set so payment attempts cannot disappear.",
+      });
+      return;
+    }
     const line = body.kind === "live-diamond" ? await liveDiamondLine(body) : await savedProductLine(body);
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
+    const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
+    const lead = await createLead(startingPayload);
     const session = await stripeClient().checkout.sessions.create({
       mode: "payment",
       line_items: [{
@@ -130,7 +167,13 @@ module.exports = async function handler(req, res) {
       success_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/#/checkout-cancel`,
     });
-    sendJson(res, 200, { ok: true, url: session.url });
+    const payload = checkoutLeadPayload({ body, line, session, origin });
+    const updatedLead = await updateLeadCheckout(lead.id, payload.checkout, {
+      checkout: payload.checkout,
+      checkoutSessionCreatedAt: new Date().toISOString(),
+    });
+    await processLeadEmails(updatedLead, payload);
+    sendJson(res, 200, { ok: true, url: session.url, leadId: updatedLead.publicId });
   } catch (error) {
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });
   }
