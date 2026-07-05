@@ -7,6 +7,8 @@ const { getInventoryCache, setInventoryCache } = require("./_inventory-cache");
 const { configured: leadDatabaseConfigured, createLead, updateLeadCheckout } = require("./_lead-store");
 const { processFallbackEmails, processLeadEmails } = require("./send-request")._test;
 
+const STRIPE_PAYMENT_LINK = process.env.STRIPE_PAYMENT_LINK || "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
+
 function stripeClient() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Missing server environment variable: STRIPE_SECRET_KEY");
   return new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -138,6 +140,34 @@ module.exports = async function handler(req, res) {
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
     const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
+    if (!process.env.STRIPE_SECRET_KEY) {
+      const fallbackPayload = {
+        ...startingPayload,
+        checkout: {
+          ...startingPayload.checkout,
+          event: "stripe.payment_link_fallback",
+          status: "payment_link_opened",
+          url: STRIPE_PAYMENT_LINK,
+        },
+      };
+      if (lead) {
+        const updatedLead = await updateLeadCheckout(lead.id, fallbackPayload.checkout, {
+          checkout: fallbackPayload.checkout,
+          checkoutSessionCreatedAt: new Date().toISOString(),
+        });
+        await processLeadEmails(updatedLead, fallbackPayload);
+        sendJson(res, 200, { ok: true, url: STRIPE_PAYMENT_LINK, leadId: updatedLead.publicId, fallback: true });
+        return;
+      }
+      await processFallbackEmails(fallbackPayload);
+      sendJson(res, 200, {
+        ok: true,
+        url: STRIPE_PAYMENT_LINK,
+        fallback: true,
+        leadWarning: "Stripe secret is not configured; opened payment link and sent checkout email notification.",
+      });
+      return;
+    }
     const session = await stripeClient().checkout.sessions.create({
       mode: "payment",
       line_items: [{
