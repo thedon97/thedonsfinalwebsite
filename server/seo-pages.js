@@ -113,10 +113,10 @@ const staticPageMeta = {
     label: "Custom Orders",
     priority: "0.8",
   },
-  "/build-engagement-ring": {
-    title: "Build Your Own Engagement Ring | Live Diamonds & Custom Settings",
-    description: "Build your own engagement ring with The Don Jewelers & Jewelry. Start with a setting, lab diamond, natural diamond, diamond shape, metal, budget, or choose from live diamond selection.",
-    label: "Build Your Engagement Ring",
+  "/start-custom-ring-design": {
+    title: "Start Your Custom Ring Design | The Don Jewelers",
+    description: "Request a custom engagement ring or custom ring design with stone shape, metal, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
+    label: "Start Your Custom Ring Design",
     priority: "0.95",
   },
   "/ring-size-guide": {
@@ -948,7 +948,7 @@ async function sitemap(req, res) {
     ["/products", "daily", "0.9"],
     ["/select-diamond", "daily", "0.8"],
     ["/custom-orders", "monthly", "0.8"],
-    ["/build-engagement-ring", "monthly", "0.95"],
+    ["/start-custom-ring-design", "monthly", "0.95"],
     ["/ring-size-guide", "monthly", "0.82"],
     ["/diamond-shape-guide", "monthly", "0.84"],
     ["/category/engagement-rings", "weekly", "0.9"],

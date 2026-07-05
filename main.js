@@ -2194,7 +2194,7 @@ function startingText(product) {
 }
 
 const categories = [
-  ["build-engagement-ring", "Build Your Engagement Ring", "engagement-ring-feature.jpg"],
+  ["start-custom-ring-design", "Start Your Custom Ring Design", "engagement-ring-feature.jpg"],
   ["select-diamond", "Live Diamond Selection", "live-diamond-selection.jpeg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "https://dna3.dnalinks.in/TJ4594NCW/1.jpg"],
   ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
@@ -2833,8 +2833,8 @@ function hideSplashScreen() {
 
 function navLinks() {
   const categoryLinks = categories.map(([slug, name]) => {
-    const href = ["custom-orders", "select-diamond", "build-engagement-ring"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
-    const className = slug === "custom-orders" ? ` class="nav-highlight"` : "";
+    const href = ["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
+    const className = ["custom-orders", "start-custom-ring-design"].includes(slug) ? ` class="nav-highlight"` : "";
     return `<a${className} href="${href}">${name}</a>`;
   }).join("");
   return `
@@ -2843,8 +2843,6 @@ function navLinks() {
     <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
     <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
-    <a href="${internalLink("engagement-rings-allentown-pa")}">Allentown Rings</a>
-    <a href="${internalLink("tri-state-custom-jeweler")}">Tri-State Jeweler</a>
     <a href="${internalLink("blog")}">Blog</a>
     <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a>
   `;
@@ -2927,7 +2925,7 @@ function footer() {
         <a href="#/products">Shop Now</a>
         <a href="#/free-engagement-ring-consultation">Free Engagement Ring Consultation</a>
         <a href="${appointmentUrl}">Book Appointment</a>
-        <a href="#/build-engagement-ring">Engagement Ring Funnel</a>
+        <a href="#/start-custom-ring-design">Start Custom Ring Design</a>
         <a href="#/ring-size-guide">Ring Size Guide</a>
         <a href="#/diamond-shape-guide">Diamond Shape Guide</a>
         <a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a>
@@ -3905,7 +3903,7 @@ function home() {
           <h2>Start with the ring</h2>
           <p>Select diamond size, stone shape, color, clarity, metal, and exact ring size. Built for serious buyers who want a clear luxury quote before moving forward.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="${internalLink("build-engagement-ring")}">Build Your Engagement Ring</a>
+            <a class="button button-gold" href="${internalLink("start-custom-ring-design")}">Start Your Custom Ring Design</a>
             <a class="button button-light" href="${internalLink("custom-engagement-rings")}">View Engagement Rings</a>
           </div>
         </div>
@@ -3920,7 +3918,7 @@ function home() {
         </div>
         <div class="collection-grid">
           ${categories.map(([slug, name, image]) => `
-            <a class="collection-tile" href="${["custom-orders", "select-diamond", "build-engagement-ring"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
+            <a class="collection-tile" href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
@@ -4233,12 +4231,12 @@ function category(slug) {
           ? allProducts().filter((p) => /tennis chain/i.test(`${p.name} ${p.lede || ""}`))
           : allProducts().filter((p) => ["Pendants / Charms", "Chains", "Bracelets"].includes(p.category));
   const action = slug === "engagement-rings"
-    ? `<a class="button button-gold" href="#/build-engagement-ring">Build Your Engagement Ring</a>`
+    ? `<a class="button button-gold" href="#/start-custom-ring-design">Start Your Custom Ring Design</a>`
     : slug === "diamond-tennis-chains"
       ? `<a class="button button-gold" href="#/product/build-your-own-diamond-tennis-chain">Build Your Tennis Chain</a>`
       : "";
   const body = slug === "engagement-rings"
-    ? "Shop engagement ring styles and build a custom ring with your preferred diamond, metal, and ring size."
+    ? "Shop engagement ring styles and request a custom ring with your preferred diamond, metal, ring size, budget, and design notes."
     : slug === "diamond-tennis-chains"
       ? "Shop diamond tennis chain options and build a chain by pointer size, length, metal, diamond type, and clasp style."
       : slug === "diamond-tennis-bracelets"
@@ -4942,7 +4940,7 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
     }
     if (returnTarget === "engagement-ring-builder") {
       localStorage.setItem("donEngagementBuilderDiamond", JSON.stringify(diamond));
-      location.hash = "#/build-engagement-ring?selectedDiamond=1";
+      location.hash = "#/start-custom-ring-design?selectedDiamond=1";
       return;
     }
     if (!requestForm) return;
@@ -6224,10 +6222,10 @@ function CustomQuoteForm() {
 }
 
 function RingBuilderPage() {
-  setSeo("Build Your Own Engagement Ring | Live Diamonds & Custom Settings", "Build your own engagement ring with The Don Jewelers & Jewelry. Start with a setting, lab diamond, natural diamond, diamond shape, metal, budget, or choose from live diamond selection.", {
-    path: "build-engagement-ring",
+  setSeo("Start Your Custom Ring Design | The Don Jewelers", "Request a custom engagement ring with The Don Jewelers & Jewelry. Share diamond direction, metal, ring size, budget, timeline, and inspiration photos for a private quote.", {
+    path: "start-custom-ring-design",
     image: "engagement-ring-feature.jpg",
-    breadcrumbs: [["Engagement Rings", "category/engagement-rings"], ["Build Your Engagement Ring", "build-engagement-ring"]],
+    breadcrumbs: [["Engagement Rings", "category/engagement-rings"], ["Start Your Custom Ring Design", "start-custom-ring-design"]],
     faqs: [
       ["Can I choose my own diamond?", "Yes. You can start with the live diamond selection, choose a lab-grown or natural diamond direction, or submit the exact stone specifications you want sourced."],
       ["Can The Don Jewelers make a custom setting?", "Yes. The process can include a private consultation, CAD design, stone sourcing, approval, production, and insured delivery."],
@@ -6384,7 +6382,7 @@ function wireEngagementRingBuilder() {
       if (value) params.set(name, value);
     });
     const queryString = params.toString();
-    const nextHash = `#/build-engagement-ring${queryString ? `?${queryString}` : ""}`;
+    const nextHash = `#/start-custom-ring-design${queryString ? `?${queryString}` : ""}`;
     if (location.hash !== nextHash) history.replaceState(null, "", `${location.pathname}${location.search}${nextHash}`);
     if (form.elements.builderUrl) form.elements.builderUrl.value = `${siteUrl}/${nextHash}`;
   };
@@ -6471,6 +6469,8 @@ function customRequestForm({ formId, requestType = "Request Custom Design Form",
       <label>Full Name<input name="fullName" autocomplete="name" required></label>
       <label>Email Address<input name="email" type="email" autocomplete="email" required></label>
       <label>Phone Number<input name="phone" type="tel" autocomplete="tel" required></label>
+      <input type="hidden" name="selectedLiveDiamond">
+      <input type="hidden" name="selectedLiveDiamondStock">
       ${productName ? `<label class="form-wide">Product<input name="productName" value="${htmlSafe(productName)}" readonly></label>` : ""}
       <label>Product Category
         <select name="productCategory">
@@ -6518,6 +6518,58 @@ function customOrders() {
   wireRequestForm("custom-form", "Thank you for your submission. Your request has been received and is currently under review. We will contact you regarding pricing, design details, and next steps.");
 }
 
+function customRingDesignPage() {
+  setSeo("Start Your Custom Ring Design | The Don Jewelers", "Request a custom engagement ring or custom ring design with The Don Jewelers & Jewelry. Send stone shape, metal, ring size, budget, timeline, and inspiration photos for a private quote.", {
+    path: "start-custom-ring-design",
+    image: "engagement-ring-feature.jpg",
+    breadcrumbs: [["Engagement Rings", "category/engagement-rings"], ["Start Your Custom Ring Design", "start-custom-ring-design"]],
+    faqs: [
+      ["Can I request a custom ring without using the builder?", "Yes. Submit your contact information, design notes, budget, stone direction, metal, ring size, and inspiration photos for personal follow-up."],
+      ["Can I still use live diamond selection?", "Yes. You can browse live diamonds separately and include the stock number or diamond details in your custom ring request."],
+      ["Will I receive a quote immediately?", "The Don Jewelers & Jewelry reviews the details personally and follows up with a custom quote, sourcing options, and next steps."],
+    ],
+  });
+  shell(`
+    <main>
+      ${pageHero("Start Your Custom Ring Design", "Send the design. We will quote it personally.", "Tell us the ring style, diamond direction, metal, ring size, budget, timeline, and any inspiration. Your request goes directly to The Don Jewelers & Jewelry for follow-up.", `
+        <div class="hero-actions">
+          <a class="button button-gold" href="#custom-ring-request-form">Request Custom Ring</a>
+          <a class="button button-light" href="${internalLink("select-diamond")}">Start With Live Diamond</a>
+        </div>
+      `)}
+      <section class="builder-choice-section">
+        <div class="builder-choice-grid">
+          <article class="builder-choice-card"><strong>Custom ring details</strong><p>Share the shape, setting style, metal, ring size, engraving, hidden details, and matching band ideas.</p></article>
+          <article class="builder-choice-card"><strong>Diamond direction</strong><p>Request lab-grown, natural, a specific carat range, or paste a live diamond stock number from the diamond page.</p></article>
+          <article class="builder-choice-card"><strong>Budget and timeline</strong><p>Add your ideal spend, maximum budget, event date, and urgency so the quote is realistic from the start.</p></article>
+        </div>
+      </section>
+      <section class="custom-form-section">
+        ${customRequestForm({ formId: "custom-ring-request-form", requestType: "Custom Engagement Ring Request", productCategory: "Engagement Rings", productName: "Custom ring design request" })}
+      </section>
+      ${trustBlockSection()}
+      ${officialGoogleProfileSection()}
+      ${aboutUs()}
+    </main>
+  `);
+  const notes = document.querySelector("#custom-ring-request-form textarea[name='notes']");
+  if (notes) notes.placeholder = "Example: oval lab diamond, yellow gold hidden halo, thin pave band, size 6.5, matching wedding band, $4,000-$7,000 budget, needed in 4-6 weeks.";
+  let selectedDiamond = null;
+  try {
+    selectedDiamond = JSON.parse(localStorage.getItem("donEngagementBuilderDiamond") || "null");
+  } catch {
+    selectedDiamond = null;
+  }
+  const form = document.getElementById("custom-ring-request-form");
+  if (selectedDiamond && form) {
+    const summary = selectedDiamondSummary(selectedDiamond);
+    if (form.elements.selectedLiveDiamond) form.elements.selectedLiveDiamond.value = summary;
+    if (form.elements.selectedLiveDiamondStock) form.elements.selectedLiveDiamondStock.value = selectedDiamond.stockNumber || selectedDiamond.id || "";
+    if (notes && !notes.value) notes.value = `Selected live inventory diamond: ${summary}`;
+  }
+  wireRequestForm("custom-ring-request-form", "Thank you. Your custom ring request was received and sent to The Don Jewelers & Jewelry for personal review.");
+}
+
 function ringSizeGuidePage() {
   setSeo("Ring Size Guide | Engagement Ring Sizing | The Don Jewelers", "Use The Don Jewelers ring size guide to plan engagement ring sizing, comfort fit, resizing questions, measuring tips, and final approval before custom ring production.", {
     path: "ring-size-guide",
@@ -6528,7 +6580,7 @@ function ringSizeGuidePage() {
     <main>
       ${pageHero("Ring Size Guide", "Measure before you build", "Use this as a planning guide before your final consultation. Exact ring size should be confirmed before CAD approval, casting, setting, or shipment.", `
         <div class="hero-actions">
-          <a class="button button-gold" href="#/build-engagement-ring">Build Engagement Ring</a>
+          <a class="button button-gold" href="#/start-custom-ring-design">Start Custom Ring Design</a>
           <a class="button button-light" href="${appointmentUrl}">Book Appointment</a>
         </div>
       `)}
@@ -6585,7 +6637,7 @@ function diamondShapeGuidePage() {
       ${pageHero("Diamond Shape Guide", "Choose the shape before the setting", "Shape controls the personality of the ring. Use this guide to narrow the look, then choose from live diamonds or request sourcing.", `
         <div class="hero-actions">
           <a class="button button-gold" href="#/select-diamond?return=shape-guide">Choose Live Diamond</a>
-          <a class="button button-light" href="#/build-engagement-ring">Build Ring</a>
+          <a class="button button-light" href="#/start-custom-ring-design">Start Custom Ring Design</a>
         </div>
       `)}
       <section class="shape-guide-grid">
@@ -6649,6 +6701,8 @@ const requestPageTypes = {
   contact: "General Contact Form",
   product: "Product Inquiry Form",
   design: "Request Custom Design Form",
+  ring: "Custom Engagement Ring Request",
+  engagement: "Custom Engagement Ring Request",
 };
 
 function customRequestPage(slug, params = new URLSearchParams()) {
@@ -7305,7 +7359,8 @@ function router() {
   if (parts[0] === "education") return educationResourcePage(parts[1]);
   if (parts[0] === "faq") return faqDetailPage(parts[1]);
   if (servicePages.some(([slug]) => slug === path)) return servicePage(path);
-  if (path === "build-engagement-ring") return engagementRingBuilder();
+  if (path === "build-engagement-ring") return customRingDesignPage();
+  if (path === "start-custom-ring-design") return customRingDesignPage();
   if (path === "select-diamond") return diamondInventoryPage(params);
   if (path === "products") return databaseCategoryPage("all", "All Luxury Jewelry");
   if (parts[0] === "products" && parts[1]) return productDetailFromCleanSlug(parts[1]);
