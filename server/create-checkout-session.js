@@ -5,7 +5,7 @@ const { fetchFeed } = require("./_diamond-utils");
 const { fetchVendor } = require("./_live-inventory-utils");
 const { getInventoryCache, setInventoryCache } = require("./_inventory-cache");
 const { configured: leadDatabaseConfigured, createLead, updateLeadCheckout } = require("./_lead-store");
-const { processLeadEmails } = require("./send-request")._test;
+const { processFallbackEmails, processLeadEmails } = require("./send-request")._test;
 
 function stripeClient() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Missing server environment variable: STRIPE_SECRET_KEY");
@@ -134,17 +134,10 @@ module.exports = async function handler(req, res) {
       return;
     }
     const body = await readJson(req);
-    if (!leadDatabaseConfigured()) {
-      sendJson(res, 503, {
-        ok: false,
-        message: "Lead database is not configured. Checkout is paused until DATABASE_URL is set so payment attempts cannot disappear.",
-      });
-      return;
-    }
     const line = body.kind === "live-diamond" ? await liveDiamondLine(body) : await savedProductLine(body);
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
-    const lead = await createLead(startingPayload);
+    const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
     const session = await stripeClient().checkout.sessions.create({
       mode: "payment",
       line_items: [{
@@ -168,12 +161,21 @@ module.exports = async function handler(req, res) {
       cancel_url: `${origin}/#/checkout-cancel`,
     });
     const payload = checkoutLeadPayload({ body, line, session, origin });
-    const updatedLead = await updateLeadCheckout(lead.id, payload.checkout, {
-      checkout: payload.checkout,
-      checkoutSessionCreatedAt: new Date().toISOString(),
+    if (lead) {
+      const updatedLead = await updateLeadCheckout(lead.id, payload.checkout, {
+        checkout: payload.checkout,
+        checkoutSessionCreatedAt: new Date().toISOString(),
+      });
+      await processLeadEmails(updatedLead, payload);
+      sendJson(res, 200, { ok: true, url: session.url, leadId: updatedLead.publicId });
+      return;
+    }
+    await processFallbackEmails(payload);
+    sendJson(res, 200, {
+      ok: true,
+      url: session.url,
+      leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
     });
-    await processLeadEmails(updatedLead, payload);
-    sendJson(res, 200, { ok: true, url: session.url, leadId: updatedLead.publicId });
   } catch (error) {
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });
   }

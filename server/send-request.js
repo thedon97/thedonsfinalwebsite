@@ -72,24 +72,40 @@ async function processLeadEmails(lead, payload) {
   return { lead: updated, businessResult, customerResult };
 }
 
+async function processFallbackEmails(payload) {
+  const businessResult = await sendBusinessEmail(payload);
+  const customerResult = await sendCustomerConfirmation(payload);
+  return { businessResult, customerResult };
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     sendJson(res, 405, { ok: false, message: "Method not allowed." });
     return;
   }
 
-  if (!leadDatabaseConfigured()) {
-    sendJson(res, 503, {
-      ok: false,
-      message: "Lead database is not configured. Add DATABASE_URL before accepting website inquiries.",
-      databaseConfigured: false,
-      emailConfigured: resendConfigured(),
-    });
-    return;
-  }
-
   try {
     const payload = await readJson(req);
+    if (!leadDatabaseConfigured()) {
+      const result = await processFallbackEmails(payload);
+      const ok = result.businessResult?.ok && result.customerResult?.ok;
+      sendJson(res, ok ? 200 : 202, {
+        ok,
+        message: ok
+          ? "Request email notifications sent. Database lead recovery is not configured yet."
+          : "Request email attempted, but one or more emails failed.",
+        emailConfigured: resendConfigured(),
+        databaseConfigured: false,
+        businessEmailStatus: result.businessResult?.ok ? "sent" : "failed",
+        customerEmailStatus: result.customerResult?.ok ? (result.customerResult?.skipped ? "skipped" : "sent") : "failed",
+        lastError: [
+          result.businessResult?.ok ? "" : result.businessResult?.message,
+          result.customerResult?.ok ? "" : result.customerResult?.message,
+        ].filter(Boolean).join(" | "),
+      });
+      return;
+    }
+
     const lead = await createLead(payload);
     const result = await processLeadEmails(lead, payload);
     const ok = result.businessResult?.ok && result.customerResult?.ok;
@@ -115,4 +131,4 @@ module.exports = async function handler(req, res) {
   }
 };
 
-module.exports._test = { processLeadEmails };
+module.exports._test = { processFallbackEmails, processLeadEmails };
