@@ -5726,11 +5726,13 @@ async function requestPayloadFromForm(form, submitter = null) {
       budget: selectedFormValue(form, "budget") || [selectedFormValue(form, "idealBudget") && `Ideal: ${selectedFormValue(form, "idealBudget")}`, selectedFormValue(form, "maximumBudget") && `Max: ${selectedFormValue(form, "maximumBudget")}`].filter(Boolean).join(" | "),
       priceEstimate: selectedFormValue(form, "priceEstimate"),
       builderUrl: selectedFormValue(form, "builderUrl"),
+      renderReference: selectedFormValue(form, "renderReference"),
       timeline: selectedFormValue(form, "timeline"),
       notes: [
         selectedFormValue(form, "buildSummary") ? `Engagement ring build summary:\n${selectedFormValue(form, "buildSummary")}` : "",
         selectedFormValue(form, "builderUrl") ? `Saved builder URL: ${selectedFormValue(form, "builderUrl")}` : "",
-        selectedFormValue(form, "priceEstimate") ? `Live estimate shown: ${selectedFormValue(form, "priceEstimate")}` : "",
+        selectedFormValue(form, "renderReference") ? `Builder render reference: ${selectedFormValue(form, "renderReference")}` : "",
+        selectedFormValue(form, "priceEstimate") ? `Quote display: ${selectedFormValue(form, "priceEstimate")}` : "",
         selectedFormValue(form, "description"),
         selectedFormValue(form, "customDesignRequest") ? `Unique custom design request: ${selectedFormValue(form, "customDesignRequest")}` : "",
         selectedFormValue(form, "notes"),
@@ -5854,92 +5856,95 @@ function choiceGroup(label, name, options, wide = false) {
   `;
 }
 
-const ringBuilderAssetBase = "/assets/ring-builder";
-const ringBuilderFallbackAsset = `${ringBuilderAssetBase}/fallbacks/missing.svg`;
-
 const ringBuilderOptions = {
   centerStoneShape: [
-    ["round", "Round", "Classic brilliant sparkle.", 0, `${ringBuilderAssetBase}/stones/round.svg`, "centerStone"],
-    ["oval", "Oval", "Elongated finger coverage.", 150, `${ringBuilderAssetBase}/stones/oval.svg`, "centerStone"],
-    ["emerald", "Emerald", "Clean step-cut look.", 150, `${ringBuilderAssetBase}/stones/emerald.svg`, "centerStone"],
-    ["radiant", "Radiant", "Brilliant square or rectangle.", 150, `${ringBuilderAssetBase}/stones/radiant.svg`, "centerStone"],
-    ["marquise", "Marquise", "Long dramatic shape.", 250, `${ringBuilderAssetBase}/stones/marquise.svg`, "centerStone"],
-    ["pear", "Pear", "Teardrop silhouette.", 250, `${ringBuilderAssetBase}/stones/pear.svg`, "centerStone"],
-    ["cushion", "Cushion", "Soft square brilliance.", 150, `${ringBuilderAssetBase}/stones/cushion.svg`, "centerStone"],
-    ["princess", "Princess", "Sharp square brilliant.", 150, `${ringBuilderAssetBase}/stones/princess.svg`, "centerStone"],
+    ["round", "Round", "Balanced brilliance with a classic outline.", 0, "", "centerStone"],
+    ["oval", "Oval", "Elongated brilliance with soft finger coverage.", 0, "", "centerStone"],
+    ["emerald", "Emerald", "Step-cut flashes with a refined architectural look.", 0, "", "centerStone"],
+    ["radiant", "Radiant", "Crisp rectangular shape with bright faceting.", 0, "", "centerStone"],
+    ["marquise", "Marquise", "Long dramatic points with a lengthening effect.", 0, "", "centerStone"],
+    ["pear", "Pear", "Teardrop silhouette with elegant movement.", 0, "", "centerStone"],
+    ["cushion", "Cushion", "Soft square shape with pillowed corners.", 0, "", "centerStone"],
+    ["princess", "Princess", "Clean square brilliance with sharp geometry.", 0, "", "centerStone"],
   ].map(optionFromTuple),
   settingStyle: [
-    ["solitaire", "Solitaire", "Clean center-stone focus.", 0, `${ringBuilderAssetBase}/settings/solitaire.svg`, "detail"],
-    ["halo", "Halo", "Diamond frame around center.", 750, `${ringBuilderAssetBase}/settings/halo.svg`, "detail"],
-    ["three-stone", "Three Stone", "Center stone with two accents.", 1050, `${ringBuilderAssetBase}/settings/three-stone.svg`, "sideStone"],
-    ["floral-garden", "Floral Garden", "Original floral-inspired setting detail.", 950, `${ringBuilderAssetBase}/settings/floral-garden.svg`, "detail"],
-    ["hidden-halo", "Hidden Halo", "Sparkle tucked under the center.", 650, `${ringBuilderAssetBase}/heads/hidden-halo.svg`, "head"],
-    ["bezel", "Bezel", "Smooth modern rim.", 520, `${ringBuilderAssetBase}/heads/bezel-head.svg`, "head"],
+    ["solitaire", "Solitaire", "A clean custom setting built around the center diamond.", 0, "", "detail"],
+    ["halo", "Halo", "A refined diamond frame to amplify face-up presence.", 0, "", "detail"],
+    ["three-stone", "Three Stone", "Side stones balance the center with heirloom structure.", 0, "", "sideStone"],
+    ["floral-garden", "Floral Garden", "Organic petal-inspired details around the head.", 0, "", "detail"],
+    ["hidden-halo", "Hidden Halo", "Diamonds tucked below the crown for side-view sparkle.", 0, "", "head"],
+    ["bezel", "Bezel", "A smooth rim around the center for a modern profile.", 0, "", "head"],
   ].map(optionFromTuple),
   headStyle: [
-    ["four-prong", "Four Prong", "Clean everyday head.", 0, `${ringBuilderAssetBase}/heads/four-prong.svg`, "head"],
-    ["six-prong", "Six Prong", "Classic secure look.", 120, `${ringBuilderAssetBase}/heads/six-prong.svg`, "head"],
-    ["hidden-halo", "Hidden Halo Head", "Accent diamonds below the stone.", 650, `${ringBuilderAssetBase}/heads/hidden-halo.svg`, "head"],
-    ["cathedral-head", "Cathedral Head", "Raised architectural profile.", 420, `${ringBuilderAssetBase}/heads/cathedral-head.svg`, "head"],
-    ["bezel-head", "Bezel Head", "Modern protective rim.", 520, `${ringBuilderAssetBase}/heads/bezel-head.svg`, "head"],
-    ["tulip-head", "Tulip Head", "Petal-inspired basket.", 520, `${ringBuilderAssetBase}/heads/tulip-head.svg`, "head"],
+    ["four-prong", "Four Prong", "Open profile with visible diamond corners.", 0, "", "head"],
+    ["six-prong", "Six Prong", "Classic rounder crown with extra prong security.", 0, "", "head"],
+    ["hidden-halo", "Hidden Halo Head", "A bright under-gallery beneath the center.", 0, "", "head"],
+    ["cathedral-head", "Cathedral Head", "Raised shoulders lift the center diamond.", 0, "", "head"],
+    ["bezel-head", "Bezel Head", "Smooth protective rim with modern polish.", 0, "", "head"],
+    ["tulip-head", "Tulip Head", "Petal-shaped basket under the center stone.", 0, "", "head"],
+  ].map(optionFromTuple),
+  prongStyle: [
+    ["claw-prongs", "Claw Prongs", "Fine tapered tips for a delicate couture finish.", 0, "", "head"],
+    ["rounded-prongs", "Rounded Prongs", "Soft rounded tips for a classic look.", 0, "", "head"],
+    ["compass-prongs", "Compass Prongs", "North-south-east-west orientation for symmetry.", 0, "", "head"],
+    ["double-claw", "Double Claw", "Paired prongs for a more detailed crown.", 0, "", "head"],
   ].map(optionFromTuple),
   metal: [
-    ["14k-yellow", "14K Yellow Gold", "Warm classic gold.", 0, `${ringBuilderAssetBase}/metals/14k-yellow.svg`, "metal"],
-    ["14k-white", "14K White Gold", "Bright white-gold finish.", 120, `${ringBuilderAssetBase}/metals/14k-white.svg`, "metal"],
-    ["14k-rose", "14K Rose Gold", "Soft rose-gold tone.", 120, `${ringBuilderAssetBase}/metals/14k-rose.svg`, "metal"],
-    ["18k-yellow", "18K Yellow Gold", "Richer yellow gold.", 420, `${ringBuilderAssetBase}/metals/18k-yellow.svg`, "metal"],
-    ["18k-white", "18K White Gold", "Premium white-gold finish.", 520, `${ringBuilderAssetBase}/metals/18k-white.svg`, "metal"],
-    ["18k-rose", "18K Rose Gold", "Premium rose-gold finish.", 520, `${ringBuilderAssetBase}/metals/18k-rose.svg`, "metal"],
-    ["platinum", "Platinum", "Dense bright platinum.", 950, `${ringBuilderAssetBase}/metals/platinum.svg`, "metal"],
+    ["14k-yellow", "14K Yellow Gold", "Warm gold with classic bridal tone.", 0, "", "metal"],
+    ["14k-white", "14K White Gold", "Bright white finish with rhodium polish.", 0, "", "metal"],
+    ["14k-rose", "14K Rose Gold", "Soft blush tone with romantic warmth.", 0, "", "metal"],
+    ["18k-yellow", "18K Yellow Gold", "Richer yellow gold color and weight.", 0, "", "metal"],
+    ["18k-white", "18K White Gold", "Premium white gold with a refined finish.", 0, "", "metal"],
+    ["18k-rose", "18K Rose Gold", "Deeper rose tone with premium gold content.", 0, "", "metal"],
+    ["platinum", "Platinum", "Dense, bright, heirloom-grade platinum.", 0, "", "metal"],
   ].map(optionFromTuple),
   bandStyle: [
-    ["classic-plain", "Classic plain band", "Smooth timeless shank.", 0, `${ringBuilderAssetBase}/bands/classic-plain.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "bezel-head", "tulip-head"]],
-    ["thin-pave", "Thin pave band", "Fine diamond sparkle on a slim shank.", 550, `${ringBuilderAssetBase}/bands/thin-pave.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "tulip-head"]],
-    ["french-pave", "French pave band", "V-shaped pave detail for extra light.", 750, `${ringBuilderAssetBase}/bands/french-pave.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
-    ["marquise-side", "Marquise side-stone band", "Marquise accents along the shank.", 980, `${ringBuilderAssetBase}/bands/marquise-side.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "tulip-head"]],
-    ["leaf-inspired", "Leaf-inspired band", "Organic leaf-like accents.", 850, `${ringBuilderAssetBase}/bands/leaf-inspired.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose"], ["four-prong", "six-prong", "tulip-head", "hidden-halo"]],
-    ["floral-engraved", "Floral-inspired engraved band", "Original floral engraving detail.", 950, `${ringBuilderAssetBase}/bands/floral-engraved.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose", "platinum"], ["four-prong", "six-prong", "tulip-head", "hidden-halo"]],
-    ["criss-cross", "Criss-cross band", "Crossing shank movement.", 780, `${ringBuilderAssetBase}/bands/criss-cross.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo"]],
-    ["split-shank", "Split shank band", "Two rails frame the center stone.", 880, `${ringBuilderAssetBase}/bands/split-shank.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
-    ["cathedral", "Cathedral band", "Raised shoulders leading into the head.", 620, `${ringBuilderAssetBase}/bands/cathedral.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["cathedral-head", "four-prong", "six-prong", "hidden-halo"]],
-    ["milgrain-vintage", "Milgrain vintage band", "Beaded vintage edge detail.", 720, `${ringBuilderAssetBase}/bands/milgrain-vintage.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "bezel-head"]],
-    ["twisted-infinity", "Twisted infinity band", "Interwoven infinity-inspired shank.", 780, `${ringBuilderAssetBase}/bands/twisted-infinity.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "tulip-head"]],
-    ["wedding-set-band", "Matching wedding set band", "Built around a paired wedding band look.", 1250, `${ringBuilderAssetBase}/bands/wedding-set-band.svg`, "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
+    ["classic-plain", "Classic Plain", "Smooth timeless shank.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "bezel-head", "tulip-head"]],
+    ["thin-pave", "Thin Pave", "Fine diamond sparkle on a slim shank.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "tulip-head"]],
+    ["french-pave", "French Pave", "V-shaped pave detail for extra light.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
+    ["marquise-side", "Marquise Side Stones", "Marquise accents along the shank.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head", "tulip-head"]],
+    ["leaf-inspired", "Leaf Inspired", "Organic leaf-like accents.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose"], ["four-prong", "six-prong", "tulip-head", "hidden-halo"]],
+    ["floral-engraved", "Floral Engraved", "Original floral engraving detail.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose", "platinum"], ["four-prong", "six-prong", "tulip-head", "hidden-halo"]],
+    ["criss-cross", "Criss Cross", "Crossing shank movement.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo"]],
+    ["split-shank", "Split Shank", "Two rails frame the center stone.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
+    ["cathedral", "Cathedral", "Raised shoulders leading into the head.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["cathedral-head", "four-prong", "six-prong", "hidden-halo"]],
+    ["milgrain-vintage", "Milgrain Vintage", "Beaded vintage edge detail.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "bezel-head"]],
+    ["twisted-infinity", "Twisted Infinity", "Interwoven infinity-inspired shank.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "tulip-head"]],
+    ["wedding-set-band", "Wedding Set Shank", "Built around a paired wedding band look.", 0, "", "band", ["14k-yellow", "14k-white", "14k-rose", "18k-yellow", "18k-white", "18k-rose", "platinum"], ["four-prong", "six-prong", "hidden-halo", "cathedral-head"]],
   ].map(optionFromTuple),
   bandProfile: [
     ["comfort", "Comfort Round", "Soft rounded profile.", 0],
-    ["knife-edge", "Knife Edge", "Crisp center ridge.", 180],
-    ["flat-modern", "Flat Modern", "Clean flat surface.", 120],
-    ["soft-square", "Soft Square", "Squared profile with comfort edges.", 160],
+    ["knife-edge", "Knife Edge", "Crisp center ridge.", 0],
+    ["flat-modern", "Flat Modern", "Clean flat surface.", 0],
+    ["soft-square", "Soft Square", "Squared profile with comfort edges.", 0],
   ].map(optionFromTuple),
   bandWidth: [
     ["1-5mm", "1.5mm delicate", "Slim delicate band.", 0],
-    ["1-8mm", "1.8mm classic", "Balanced classic width.", 80],
-    ["2-0mm", "2.0mm balanced", "Everyday sturdy width.", 120],
-    ["2-5mm", "2.5mm bold", "More gold presence.", 220],
-    ["3-0mm", "3.0mm statement", "Bold custom shank.", 360],
+    ["1-8mm", "1.8mm classic", "Balanced classic width.", 0],
+    ["2-0mm", "2.0mm balanced", "Everyday sturdy width.", 0],
+    ["2-5mm", "2.5mm bold", "More gold presence.", 0],
+    ["3-0mm", "3.0mm statement", "Bold custom shank.", 0],
   ].map(optionFromTuple),
   sideStoneStyle: [
-    ["none", "No side stones", "Keep the center stone clean.", 0, `${ringBuilderAssetBase}/side-stones/none.svg`, "sideStone"],
-    ["pave-shoulders", "Pave shoulders", "Small diamonds along the shoulders.", 450, `${ringBuilderAssetBase}/side-stones/pave-shoulders.svg`, "sideStone"],
-    ["marquise-leaves", "Marquise leaf accents", "Leaf-inspired marquise accents.", 750, `${ringBuilderAssetBase}/side-stones/marquise-leaves.svg`, "sideStone"],
-    ["round-cluster", "Round cluster accents", "Small clustered side stones.", 650, `${ringBuilderAssetBase}/side-stones/round-cluster.svg`, "sideStone"],
-    ["tapered-baguette", "Tapered baguettes", "Tapered side-stone look.", 950, `${ringBuilderAssetBase}/side-stones/tapered-baguette.svg`, "sideStone"],
+    ["none", "No Side Stones", "Keep the center stone clean.", 0, "", "sideStone"],
+    ["pave-shoulders", "Pave Shoulders", "Small diamonds along the shoulders.", 0, "", "sideStone"],
+    ["marquise-leaves", "Marquise Leaves", "Leaf-inspired marquise accents.", 0, "", "sideStone"],
+    ["round-cluster", "Round Clusters", "Small clustered side stones.", 0, "", "sideStone"],
+    ["tapered-baguette", "Tapered Baguettes", "Tapered side-stone look.", 0, "", "sideStone"],
   ].map(optionFromTuple),
   engraving: [
-    ["none", "No engraving", "Clean polished finish.", 0, `${ringBuilderAssetBase}/details/none.svg`, "detail"],
-    ["script-engraving", "Script engraving", "Inside or shoulder engraving.", 120, `${ringBuilderAssetBase}/details/script-engraving.svg`, "detail"],
-    ["floral-engraving", "Floral engraving", "Original floral-inspired detail.", 260, `${ringBuilderAssetBase}/details/floral-engraving.svg`, "detail"],
+    ["none", "No Engraving", "Clean polished finish.", 0, "", "detail"],
+    ["script-engraving", "Script Engraving", "Inside or shoulder engraving.", 0, "", "detail"],
+    ["floral-engraving", "Floral Engraving", "Original floral-inspired detail.", 0, "", "detail"],
   ].map(optionFromTuple),
   hiddenBirthstone: [
-    ["none", "No hidden birthstone", "No hidden stone.", 0, `${ringBuilderAssetBase}/details/none.svg`, "detail"],
-    ["hidden-birthstone", "Hidden birthstone", "Small hidden stone inside the design.", 180, `${ringBuilderAssetBase}/details/hidden-birthstone.svg`, "detail"],
+    ["none", "No Hidden Birthstone", "No hidden stone.", 0, "", "detail"],
+    ["hidden-birthstone", "Hidden Birthstone", "Small hidden stone inside the design.", 0, "", "detail"],
   ].map(optionFromTuple),
   matchingWeddingBand: [
-    ["none", "No matching band", "Engagement ring only.", 0, `${ringBuilderAssetBase}/wedding-bands/none.svg`, "weddingBand"],
-    ["plain-contour", "Plain contour band", "Matching plain wedding band.", 850, `${ringBuilderAssetBase}/wedding-bands/plain-contour.svg`, "weddingBand"],
-    ["pave-contour", "Pave contour band", "Matching diamond wedding band.", 1450, `${ringBuilderAssetBase}/wedding-bands/pave-contour.svg`, "weddingBand"],
+    ["none", "No Matching Band", "Engagement ring only.", 0, "", "weddingBand"],
+    ["plain-contour", "Plain Contour Band", "Matching plain wedding band.", 0, "", "weddingBand"],
+    ["pave-contour", "Pave Contour Band", "Matching diamond wedding band.", 0, "", "weddingBand"],
   ].map(optionFromTuple),
 };
 
@@ -5957,22 +5962,127 @@ function getRingBuilderQuery() {
   return new URLSearchParams(source || "");
 }
 
+function metalPalette(metal = "14k-yellow") {
+  const palettes = {
+    "14k-yellow": ["#fff0b7", "#d8a93e", "#7a4d11"],
+    "18k-yellow": ["#fff2aa", "#e2b43b", "#8a5a0d"],
+    "14k-white": ["#ffffff", "#cfd5dc", "#737d88"],
+    "18k-white": ["#ffffff", "#dbe2ea", "#87919c"],
+    "14k-rose": ["#ffe0d4", "#c98468", "#7c3b2f"],
+    "18k-rose": ["#ffd7c9", "#d08b72", "#834231"],
+    platinum: ["#ffffff", "#d6dce2", "#6f7780"],
+  };
+  return palettes[metal] || palettes["14k-yellow"];
+}
+
+function ringDiamondShape(shape, cx, cy, scale = 1) {
+  const rx = 34 * scale;
+  const ry = 34 * scale;
+  const map = {
+    round: `<circle cx="${cx}" cy="${cy}" r="${rx}" />`,
+    oval: `<ellipse cx="${cx}" cy="${cy}" rx="${rx * .78}" ry="${ry * 1.08}" />`,
+    emerald: `<rect x="${cx - rx * .78}" y="${cy - ry}" width="${rx * 1.56}" height="${ry * 2}" rx="${8 * scale}" />`,
+    radiant: `<polygon points="${cx},${cy - ry} ${cx + rx * .76},${cy - ry * .56} ${cx + rx * .86},${cy + ry * .66} ${cx},${cy + ry} ${cx - rx * .86},${cy + ry * .66} ${cx - rx * .76},${cy - ry * .56}" />`,
+    marquise: `<path d="M${cx - rx * 1.15} ${cy} C${cx - rx * .48} ${cy - ry * 1.2} ${cx + rx * .48} ${cy - ry * 1.2} ${cx + rx * 1.15} ${cy} C${cx + rx * .48} ${cy + ry * 1.2} ${cx - rx * .48} ${cy + ry * 1.2} ${cx - rx * 1.15} ${cy}Z" />`,
+    pear: `<path d="M${cx} ${cy - ry * 1.2} C${cx + rx} ${cy - ry * .38} ${cx + rx * .76} ${cy + ry * .92} ${cx} ${cy + ry * 1.08} C${cx - rx * .76} ${cy + ry * .92} ${cx - rx} ${cy - ry * .38} ${cx} ${cy - ry * 1.2}Z" />`,
+    cushion: `<rect x="${cx - rx}" y="${cy - ry}" width="${rx * 2}" height="${ry * 2}" rx="${18 * scale}" />`,
+    princess: `<rect x="${cx - rx * .88}" y="${cy - ry * .88}" width="${rx * 1.76}" height="${ry * 1.76}" rx="${4 * scale}" transform="rotate(45 ${cx} ${cy})" />`,
+  };
+  return map[shape] || map.round;
+}
+
+function ringPreviewSvg(selection = {}, mode = "large") {
+  const metal = selection.metal || "14k-yellow";
+  const shape = selection.centerStoneShape || "round";
+  const band = selection.bandStyle || "classic-plain";
+  const setting = selection.settingStyle || "solitaire";
+  const head = selection.headStyle || "four-prong";
+  const prongs = selection.prongStyle || "claw-prongs";
+  const side = selection.sideStoneStyle || "none";
+  const wedding = selection.matchingWeddingBand || "none";
+  const engraving = selection.engraving || "none";
+  const birthstone = selection.hiddenBirthstone || "none";
+  const width = mode === "thumb" ? 360 : 760;
+  const height = mode === "thumb" ? 220 : 520;
+  const [light, mid, dark] = metalPalette(metal);
+  const svgKey = `${mode}-${Object.entries(selection).map(([key, value]) => `${key}-${value}`).join("-") || "default"}`.replace(/[^a-z0-9-]/gi, "-");
+  const bandStroke = /3-0/.test(selection.bandWidth || "") ? 22 : /2-5/.test(selection.bandWidth || "") ? 18 : /1-5/.test(selection.bandWidth || "") ? 11 : 15;
+  const centerX = width / 2;
+  const centerY = mode === "thumb" ? 94 : 210;
+  const scale = mode === "thumb" ? .72 : 1.24;
+  const lift = /cathedral|split-shank|wedding-set/.test(`${band} ${head}`) ? 16 * scale : 0;
+  const accentDiamond = (x, y, r = 7 * scale) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#diamond-${svgKey})" stroke="rgba(150,160,170,.55)" stroke-width="${Math.max(1, scale)}" />`;
+  const sideDiamonds = side === "none" ? "" : [
+    accentDiamond(centerX - 58 * scale, centerY + 13 * scale, side === "tapered-baguette" ? 8 * scale : 6 * scale),
+    accentDiamond(centerX + 58 * scale, centerY + 13 * scale, side === "tapered-baguette" ? 8 * scale : 6 * scale),
+    side === "marquise-leaves" ? `<ellipse cx="${centerX - 83 * scale}" cy="${centerY + 28 * scale}" rx="${12 * scale}" ry="${5 * scale}" fill="url(#diamond-${svgKey})" transform="rotate(-24 ${centerX - 83 * scale} ${centerY + 28 * scale})" /><ellipse cx="${centerX + 83 * scale}" cy="${centerY + 28 * scale}" rx="${12 * scale}" ry="${5 * scale}" fill="url(#diamond-${svgKey})" transform="rotate(24 ${centerX + 83 * scale} ${centerY + 28 * scale})" />` : "",
+  ].join("");
+  const pave = /pave|marquise|leaf|floral|milgrain|wedding-set|twisted/.test(band)
+    ? Array.from({ length: mode === "thumb" ? 14 : 24 }, (_, index) => {
+      const offset = (index - (mode === "thumb" ? 6.5 : 11.5)) * 14 * scale;
+      if (Math.abs(offset) < 54 * scale) return "";
+      return accentDiamond(centerX + offset, centerY + 77 * scale + Math.abs(offset) * .02, 3.2 * scale);
+    }).join("")
+    : "";
+  const weddingBand = wedding === "none" ? "" : `<path d="M${centerX - 178 * scale} ${centerY + 122 * scale} C${centerX - 64 * scale} ${centerY + 164 * scale} ${centerX + 64 * scale} ${centerY + 164 * scale} ${centerX + 178 * scale} ${centerY + 122 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke * .78}" stroke-linecap="round" />${wedding === "pave-contour" ? Array.from({ length: 18 }, (_, i) => accentDiamond(centerX - 105 * scale + i * 12 * scale, centerY + 137 * scale, 2.8 * scale)).join("") : ""}`;
+  const bandPath = band === "split-shank"
+    ? `<path d="M${centerX - 224 * scale} ${centerY + 96 * scale} C${centerX - 116 * scale} ${centerY + 52 * scale} ${centerX - 54 * scale} ${centerY + 50 * scale} ${centerX - 21 * scale} ${centerY + 34 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke * .68}" stroke-linecap="round" /><path d="M${centerX + 224 * scale} ${centerY + 96 * scale} C${centerX + 116 * scale} ${centerY + 52 * scale} ${centerX + 54 * scale} ${centerY + 50 * scale} ${centerX + 21 * scale} ${centerY + 34 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke * .68}" stroke-linecap="round" />`
+    : band === "criss-cross" || band === "twisted-infinity"
+      ? `<path d="M${centerX - 224 * scale} ${centerY + 97 * scale} C${centerX - 98 * scale} ${centerY + 42 * scale} ${centerX + 98 * scale} ${centerY + 150 * scale} ${centerX + 224 * scale} ${centerY + 97 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke * .75}" stroke-linecap="round" /><path d="M${centerX - 224 * scale} ${centerY + 118 * scale} C${centerX - 98 * scale} ${centerY + 166 * scale} ${centerX + 98 * scale} ${centerY + 46 * scale} ${centerX + 224 * scale} ${centerY + 118 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke * .58}" stroke-linecap="round" />`
+      : `<path d="M${centerX - 232 * scale} ${centerY + 106 * scale} C${centerX - 116 * scale} ${centerY + 144 * scale} ${centerX + 116 * scale} ${centerY + 144 * scale} ${centerX + 232 * scale} ${centerY + 106 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${bandStroke}" stroke-linecap="round" />`;
+  const halo = setting === "halo" ? Array.from({ length: 18 }, (_, index) => {
+    const angle = (index / 18) * Math.PI * 2;
+    return accentDiamond(centerX + Math.cos(angle) * 42 * scale, centerY - lift + Math.sin(angle) * 39 * scale, 3.4 * scale);
+  }).join("") : "";
+  const hiddenHalo = /hidden-halo/.test(`${setting} ${head}`) ? Array.from({ length: 11 }, (_, i) => accentDiamond(centerX - 34 * scale + i * 6.8 * scale, centerY + 43 * scale, 2.6 * scale)).join("") : "";
+  const prongCount = /six/.test(head) ? 6 : /double/.test(prongs) ? 8 : 4;
+  const prongMarks = Array.from({ length: prongCount }, (_, index) => {
+    const angle = (index / prongCount) * Math.PI * 2 - Math.PI / 2;
+    const x = centerX + Math.cos(angle) * 38 * scale;
+    const y = centerY - lift + Math.sin(angle) * 36 * scale;
+    return `<circle cx="${x}" cy="${y}" r="${/claw|double/.test(prongs) ? 3.5 * scale : 4.6 * scale}" fill="${light}" stroke="${dark}" stroke-width="${1.2 * scale}" />`;
+  }).join("");
+  const detail = engraving === "floral-engraving" || band === "floral-engraved" ? `<path d="M${centerX - 154 * scale} ${centerY + 87 * scale} q${16 * scale} -${18 * scale} ${32 * scale} 0 q-${16 * scale} ${18 * scale} -${32 * scale} 0Z M${centerX + 122 * scale} ${centerY + 87 * scale} q${16 * scale} -${18 * scale} ${32 * scale} 0 q-${16 * scale} ${18 * scale} -${32 * scale} 0Z" fill="rgba(255,255,255,.3)" stroke="${light}" stroke-width="${1.1 * scale}" />` : "";
+  const birth = birthstone === "hidden-birthstone" ? `<circle cx="${centerX}" cy="${centerY + 72 * scale}" r="${5.5 * scale}" fill="#84b7ff" stroke="#dcefff" stroke-width="${1.5 * scale}" />` : "";
+  return `
+    <svg class="ring-render-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Custom engagement ring preview" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="metal-${svgKey}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${light}"/><stop offset=".45" stop-color="${mid}"/><stop offset=".72" stop-color="${light}"/><stop offset="1" stop-color="${dark}"/></linearGradient>
+        <radialGradient id="diamond-${svgKey}" cx=".35" cy=".25" r=".78"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#f4fbff"/><stop offset=".72" stop-color="#b9d1e5"/><stop offset="1" stop-color="#7893aa"/></radialGradient>
+        <filter id="soft-shadow-${svgKey}" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="${8 * scale}" stdDeviation="${8 * scale}" flood-color="#000" flood-opacity=".28"/></filter>
+      </defs>
+      <g filter="url(#soft-shadow-${svgKey})">
+        ${weddingBand}
+        ${bandPath}
+        ${pave}
+        ${sideDiamonds}
+        ${detail}
+        <path d="M${centerX - 32 * scale} ${centerY + 45 * scale} C${centerX - 22 * scale} ${centerY + 18 * scale} ${centerX + 22 * scale} ${centerY + 18 * scale} ${centerX + 32 * scale} ${centerY + 45 * scale}" fill="none" stroke="url(#metal-${svgKey})" stroke-width="${8 * scale}" stroke-linecap="round" />
+        ${hiddenHalo}
+        <g fill="url(#diamond-${svgKey})" stroke="#edf7ff" stroke-width="${2 * scale}">${ringDiamondShape(shape, centerX, centerY - lift, scale)}</g>
+        <path d="M${centerX - 20 * scale} ${centerY - lift - 18 * scale} L${centerX} ${centerY - lift + 26 * scale} L${centerX + 21 * scale} ${centerY - lift - 18 * scale}" fill="none" stroke="rgba(255,255,255,.62)" stroke-width="${1.5 * scale}" />
+        ${prongMarks}
+        ${birth}
+      </g>
+    </svg>
+  `;
+}
+
+function currentBuilderSelection(form) {
+  const selected = {};
+  Object.keys(ringBuilderOptions).forEach((name) => {
+    selected[name] = form ? selectedFormValue(form, name) : optionById(name).id;
+  });
+  selected.diamondType = form ? selectedFormValue(form, "diamondType") : "Lab-Grown Diamond";
+  selected.caratSize = form ? selectedFormValue(form, "caratSize") : "1 carat";
+  return selected;
+}
+
 function RingPreview() {
-  const layers = [
-    ["base", `${ringBuilderAssetBase}/fallbacks/base-ring.svg`],
-    ["metal", optionById("metal", "14k-yellow").assetPath],
-    ["band", optionById("bandStyle", "classic-plain").assetPath],
-    ["head", optionById("headStyle", "four-prong").assetPath],
-    ["centerStone", optionById("centerStoneShape", "round").assetPath],
-    ["sideStone", optionById("sideStoneStyle", "none").assetPath],
-    ["detail", optionById("engraving", "none").assetPath],
-    ["birthstone", optionById("hiddenBirthstone", "none").assetPath],
-    ["weddingBand", optionById("matchingWeddingBand", "none").assetPath],
-  ];
   return `
     <section class="ring-preview-panel" aria-label="Live engagement ring preview">
       <div class="ring-preview-stage" id="ring-preview-stage">
-        ${layers.map(([layer, src]) => `<img class="ring-preview-layer" data-preview-layer="${layer}" src="${src}" alt="" onerror="this.onerror=null;this.src='${ringBuilderFallbackAsset}';">`).join("")}
+        <div id="ring-preview-render">${ringPreviewSvg({}, "large")}</div>
       </div>
       <div class="ring-preview-actions">
         <button class="button button-gold" type="button" data-save-ring-design>Save Design</button>
@@ -5991,11 +6101,11 @@ function OptionSelector({ label, name, options, compact = false }) {
         ${options.map((option, index) => `
           <label class="ring-option-card" data-option-card="${name}" data-option-id="${htmlSafe(option.id)}">
             <input type="radio" name="${name}" value="${htmlSafe(option.id)}" ${index === 0 ? "checked" : ""}>
-            ${option.assetPath ? `<span class="ring-option-media"><img src="${htmlSafe(option.assetPath)}" alt="${htmlSafe(option.label)}" onerror="this.onerror=null;this.src='${ringBuilderFallbackAsset}';"></span>` : ""}
+            <span class="ring-option-media">${ringPreviewSvg({ [name]: option.id }, "thumb")}</span>
             <span class="ring-option-copy">
               <strong>${htmlSafe(option.label)}</strong>
               <small>${htmlSafe(option.description)}</small>
-              ${option.priceModifier ? `<em>+${money.format(option.priceModifier)}</em>` : `<em>Included</em>`}
+              <em>Personal quote</em>
             </span>
           </label>
         `).join("")}
@@ -6005,11 +6115,11 @@ function OptionSelector({ label, name, options, compact = false }) {
 }
 
 function BandSelector() {
-  return OptionSelector({ label: "5. Band style", name: "bandStyle", options: ringBuilderOptions.bandStyle });
+  return OptionSelector({ label: "6. Shank / band style", name: "bandStyle", options: ringBuilderOptions.bandStyle });
 }
 
 function MetalSelector() {
-  return OptionSelector({ label: "4. Metal", name: "metal", options: ringBuilderOptions.metal, compact: true });
+  return OptionSelector({ label: "5. Metal", name: "metal", options: ringBuilderOptions.metal, compact: true });
 }
 
 function StoneShapeSelector() {
@@ -6021,15 +6131,15 @@ function HeadSelector() {
 }
 
 function WeddingBandSelector() {
-  return OptionSelector({ label: "11. Matching wedding band", name: "matchingWeddingBand", options: ringBuilderOptions.matchingWeddingBand, compact: true });
+  return OptionSelector({ label: "12. Matching wedding band", name: "matchingWeddingBand", options: ringBuilderOptions.matchingWeddingBand, compact: true });
 }
 
 function BuilderSummary() {
-  return `<section class="builder-summary-panel"><p class="eyebrow">Your Build</p><h3>Specs summary</h3><dl id="engagement-build-summary" class="builder-summary-list"></dl></section>`;
+  return `<section class="builder-summary-panel"><p class="eyebrow">Review Build</p><h3>Your selected design</h3><dl id="engagement-build-summary" class="builder-summary-list"></dl></section>`;
 }
 
-function PriceEstimate() {
-  return `<section class="ring-price-panel"><p class="eyebrow">Live Estimate</p><strong id="ring-price-estimate">${money.format(1800)}</strong><span>Estimated setting build before center diamond, tax, shipping, and final sourcing.</span><input type="hidden" name="priceEstimate"></section>`;
+function QuotePlanPanel() {
+  return `<section class="ring-price-panel"><p class="eyebrow">Private Quote</p><strong>Built for review</strong><span>No instant pricing is shown while you build. Submit the finished design and The Don Jewelers & Jewelry will personally prepare a quote based on your diamond, metal, setting, labor, and availability.</span><input type="hidden" name="priceEstimate" value="Personal quote requested"><input type="hidden" name="renderReference"></section>`;
 }
 
 function CustomQuoteForm() {
@@ -6046,11 +6156,11 @@ function CustomQuoteForm() {
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Phone number<input name="phone" type="tel" autocomplete="tel" required></label>
       <div class="deposit-note form-wide">
-        <strong>$500 design deposit</strong>
-        <span>The deposit starts custom engagement ring design, CAD planning, stone sourcing, and follow-up direction after your quote is reviewed.</span>
+        <strong>Quote-first custom review</strong>
+        <span>Your completed build goes directly to The Don Jewelers & Jewelry for a personalized quote, stone review, and next-step consultation.</span>
       </div>
       <div class="ring-submit-actions form-wide">
-        <button class="button button-gold" type="submit" name="requestIntent" value="quote">Request Custom Quote</button>
+        <button class="button button-gold" type="submit" name="requestIntent" value="quote">Request Personalized Quote</button>
         <button class="button button-dark" type="submit" name="requestIntent" value="custom-design">Submit Custom Design Request</button>
       </div>
       <p class="form-success" hidden></p>
@@ -6072,7 +6182,7 @@ function RingBuilderPage() {
   });
   shell(`
     <main>
-      ${pageHero("Engagement Ring Builder", "Build your own engagement ring", "Pick the diamond shape, setting, basket, shank, metal, and budget. Submit the build and The Don Jewelers & Jewelry will send pricing for that exact ring.", `
+      ${pageHero("Engagement Ring Builder", "Build your own engagement ring", "Start with a diamond or setting, customize every detail, then submit the finished design for a personalized quote from The Don Jewelers & Jewelry.", `
         <div class="hero-actions">
           <a class="button button-gold" href="#engagement-build-form">Start Building</a>
           <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Choose Live Diamond</a>
@@ -6087,7 +6197,7 @@ function RingBuilderPage() {
           <div class="ring-builder-shell form-wide">
             <div class="ring-builder-left">
               ${RingPreview()}
-              ${PriceEstimate()}
+              ${QuotePlanPanel()}
               ${BuilderSummary()}
               <div class="builder-live-diamond-panel" id="builder-live-diamond-panel">
                 <p class="eyebrow">Live Diamond</p>
@@ -6097,16 +6207,21 @@ function RingBuilderPage() {
               </div>
             </div>
             <div class="ring-builder-controls">
+              <div class="ring-builder-start">
+                <a href="#/select-diamond?return=engagement-ring-builder"><strong>Start with diamond</strong><span>Choose a live diamond first, then complete the setting around it.</span></a>
+                <a href="#engagement-build-form"><strong>Start with setting</strong><span>Build the ring design first and attach a diamond later.</span></a>
+              </div>
               ${StoneShapeSelector()}
               ${OptionSelector({ label: "2. Setting style", name: "settingStyle", options: ringBuilderOptions.settingStyle })}
               ${HeadSelector()}
+              ${OptionSelector({ label: "4. Prong style", name: "prongStyle", options: ringBuilderOptions.prongStyle, compact: true })}
               ${MetalSelector()}
               ${BandSelector()}
-              ${OptionSelector({ label: "6. Band profile", name: "bandProfile", options: ringBuilderOptions.bandProfile, compact: true })}
-              ${OptionSelector({ label: "7. Band width", name: "bandWidth", options: ringBuilderOptions.bandWidth, compact: true })}
-              ${OptionSelector({ label: "8. Side stone style", name: "sideStoneStyle", options: ringBuilderOptions.sideStoneStyle, compact: true })}
-              ${OptionSelector({ label: "9. Engraving", name: "engraving", options: ringBuilderOptions.engraving, compact: true })}
-              ${OptionSelector({ label: "10. Hidden birthstone", name: "hiddenBirthstone", options: ringBuilderOptions.hiddenBirthstone, compact: true })}
+              ${OptionSelector({ label: "7. Band profile", name: "bandProfile", options: ringBuilderOptions.bandProfile, compact: true })}
+              ${OptionSelector({ label: "8. Band width", name: "bandWidth", options: ringBuilderOptions.bandWidth, compact: true })}
+              ${OptionSelector({ label: "9. Side stone style", name: "sideStoneStyle", options: ringBuilderOptions.sideStoneStyle, compact: true })}
+              ${OptionSelector({ label: "10. Engraving", name: "engraving", options: ringBuilderOptions.engraving, compact: true })}
+              ${OptionSelector({ label: "11. Hidden birthstone", name: "hiddenBirthstone", options: ringBuilderOptions.hiddenBirthstone, compact: true })}
               ${WeddingBandSelector()}
               ${choiceGroup("Diamond type", "diamondType", ["Lab-Grown Diamond", "Natural Diamond", "Not sure yet"], true)}
               ${choiceGroup("Desired center stone size", "caratSize", ["1 carat", "1.5 carat", "2 carat", "2.5 carat", "3 carat", "3.5 carat", "4 carat", "5 carat", "Custom carat size"], true)}
@@ -6177,6 +6292,7 @@ function wireEngagementRingBuilder() {
     ["centerStoneShape", "Center stone"],
     ["settingStyle", "Setting"],
     ["headStyle", "Basket/head"],
+    ["prongStyle", "Prongs"],
     ["metal", "Metal"],
     ["bandStyle", "Band"],
     ["bandProfile", "Band profile"],
@@ -6223,27 +6339,12 @@ function wireEngagementRingBuilder() {
     });
   };
   const updatePreview = () => {
-    const layerMap = {
-      metal: selectedOption("metal").assetPath,
-      band: selectedOption("bandStyle").assetPath,
-      head: selectedOption("headStyle").assetPath,
-      centerStone: selectedOption("centerStoneShape").assetPath,
-      sideStone: selectedOption("sideStoneStyle").assetPath,
-      detail: selectedOption("engraving").assetPath,
-      birthstone: selectedOption("hiddenBirthstone").assetPath,
-      weddingBand: selectedOption("matchingWeddingBand").assetPath,
-    };
-    Object.entries(layerMap).forEach(([layer, src]) => {
-      const image = document.querySelector(`[data-preview-layer="${layer}"]`);
-      if (image && src) image.src = src;
-    });
-  };
-  const estimatePrice = () => {
-    const base = 1800;
-    const optionTotal = configFields.reduce((sum, name) => sum + Number(selectedOption(name).priceModifier || 0), 0);
-    const size = selectedFormValue(form, "caratSize");
-    const sizeModifier = /5 carat/i.test(size) ? 2400 : /4 carat/i.test(size) ? 1800 : /3 carat/i.test(size) ? 1200 : /2.5 carat/i.test(size) ? 850 : /2 carat/i.test(size) ? 650 : /1.5 carat/i.test(size) ? 350 : 0;
-    return base + optionTotal + sizeModifier;
+    const selection = currentBuilderSelection(form);
+    const renderHost = document.getElementById("ring-preview-render");
+    if (renderHost) renderHost.innerHTML = ringPreviewSvg(selection, "large");
+    if (form.elements.renderReference) form.elements.renderReference.value = JSON.stringify(selection);
+    if (form.elements.priceEstimate) form.elements.priceEstimate.value = "Personal quote requested";
+    return selection;
   };
   const updateUrl = () => {
     const params = new URLSearchParams();
@@ -6258,11 +6359,7 @@ function wireEngagementRingBuilder() {
   };
   const updateSummary = () => {
     enforceCompatibility();
-    updatePreview();
-    const price = estimatePrice();
-    const priceNode = document.getElementById("ring-price-estimate");
-    if (priceNode) priceNode.textContent = money.format(price);
-    if (form.elements.priceEstimate) form.elements.priceEstimate.value = money.format(price);
+    const selection = updatePreview();
     updateUrl();
     const rows = watchedFields
       .map(([name, label]) => {
@@ -6273,7 +6370,7 @@ function wireEngagementRingBuilder() {
     if (summary) {
       summary.innerHTML = rows.map(([label, value]) => `<div><dt>${htmlSafe(label)}</dt><dd>${htmlSafe(value)}</dd></div>`).join("");
     }
-    const summaryText = [...rows, ["Estimated setting build", money.format(price)]].map(([label, value]) => `${label}: ${value}`).join("\n");
+    const summaryText = [...rows, ["Quote status", "Personal quote requested"], ["Render reference", JSON.stringify(selection)]].map(([label, value]) => `${label}: ${value}`).join("\n");
     if (form.elements.buildSummary) form.elements.buildSummary.value = summaryText;
   };
   form.addEventListener("change", updateSummary);
