@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <path d="M282 394 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="292" cy="393" r="4" fill="url(#diamond)"/><path d="M310 402.62965969487567 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="320" cy="401.62965969487567" r="4" fill="url(#diamond)"/><path d="M338 409.1464777265421 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="348" cy="408.1464777265421" r="4" fill="url(#diamond)"/><path d="M366 411.954909758873 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="376" cy="410.954909758873" r="4" fill="url(#diamond)"/><path d="M394 410.36735368286224 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="404" cy="409.36735368286224" r="4" fill="url(#diamond)"/><path d="M422 404.7724985938712 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="432" cy="403.7724985938712" r="4" fill="url(#diamond)"/><path d="M450 396.5401601450776 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="460" cy="395.5401601450776" r="4" fill="url(#diamond)"/><path d="M478 387.6859019015868 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="488" cy="386.6859019015868" r="4" fill="url(#diamond)"/><path d="M506 380.3775550844573 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="516" cy="379.3775550844573" r="4" fill="url(#diamond)"/><path d="M534 376.4044578820283 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="544" cy="375.4044578820283" r="4" fill="url(#diamond)"/><path d="M562 376.7393630560635 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="572" cy="375.7393630560635" r="4" fill="url(#diamond)"/><path d="M590 381.30027413973295 c16 -16 30 -10 34 4 c-16 14 -29 11 -34 -4z" fill="none" stroke="#d6aa4f" stroke-width="4"/><circle cx="600" cy="380.30027413973295" r="4" fill="url(#diamond)"/>
+  </g>
+</svg>

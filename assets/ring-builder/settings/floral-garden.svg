@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g stroke="#fff7db" stroke-width="4" fill="none"><path d="M450 238 c35 0, 70 0, 98 0"/><path d="M450 238 c17.500000000000004 30.31088913245535, 35.00000000000001 60.6217782649107, 49.000000000000014 84.87048957087498"/><path d="M450 238 c-17.499999999999993 30.310889132455355, -34.999999999999986 60.62177826491071, -48.99999999999998 84.870489570875"/><path d="M450 238 c-35 4.2862637970157365e-15, -70 8.572527594031473e-15, -98 1.2001538631644062e-14"/><path d="M450 238 c-17.500000000000014 -30.310889132455348, -35.00000000000003 -60.621778264910695, -49.00000000000004 -84.87048957087497"/><path d="M450 238 c17.500000000000004 -30.31088913245535, 35.00000000000001 -60.6217782649107, 49.000000000000014 -84.87048957087498"/></g>
+</svg>

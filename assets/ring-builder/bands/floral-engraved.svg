@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <g transform="translate(310 394)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(342 401.19138307906303)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(374 406.62206477211845)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(406 408.96242479906084)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(438 407.6394614023852)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(470 402.97708216155934)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(502 396.116800120898)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(534 388.7382515846557)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g><g transform="translate(566 382.6479625703811)"><circle r="5" fill="url(#diamond)"/><path d="M0 -15c8 8 8 22 0 30M-15 0c8 -8 22 -8 30 0" stroke="#fff7db" stroke-width="3" fill="none"/></g>
+  </g>
+</svg>

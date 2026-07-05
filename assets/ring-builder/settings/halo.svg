@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <circle cx="450" cy="238" r="122" fill="none" stroke="#d6aa4f" stroke-width="10"/><g fill="url(#diamond)"><circle cx="566" cy="238" r="7"/><circle cx="550.4589468389948" cy="296" r="7"/><circle cx="508" cy="338.45894683899485" r="7"/><circle cx="450" cy="354" r="7"/><circle cx="392" cy="338.4589468389949" r="7"/><circle cx="349.5410531610051" cy="296" r="7"/><circle cx="334" cy="238" r="7"/><circle cx="349.54105316100515" cy="180" r="7"/><circle cx="391.99999999999994" cy="137.54105316100515" r="7"/><circle cx="450" cy="122" r="7"/><circle cx="508" cy="137.54105316100512" r="7"/><circle cx="550.4589468389948" cy="179.99999999999994" r="7"/></g>
+</svg>

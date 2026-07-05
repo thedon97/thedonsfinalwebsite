@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <path d="M270 386 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M294 393.67080861766726 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M318 399.4635357569263 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M342 401.95991978566485 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M366 400.5487588292109 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M390 395.57555430566333 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M414 388.2579201289579 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M438 380.3874683569661 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M462 373.8911600750732 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M486 370.35951811735845 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M510 370.65721160538976 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M534 374.7113547908737 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M558 381.5293520288172 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M582 389.441919809405 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M606 396.5117855795006 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/><path d="M630 401.00799962839585 l9 14 l-18 0z" fill="url(#diamond)" stroke="#fff" stroke-width="1.8"/>
+  </g>
+</svg>

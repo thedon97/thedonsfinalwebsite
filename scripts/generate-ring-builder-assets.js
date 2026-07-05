@@ -1,9 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const root = path.resolve(__dirname, "..", "public", "assets", "ring-builder");
+const roots = [
+  path.resolve(__dirname, "..", "public", "assets", "ring-builder"),
+  path.resolve(__dirname, "..", "assets", "ring-builder"),
+];
 const folders = ["bands", "metals", "heads", "stones", "settings", "side-stones", "wedding-bands", "details", "fallbacks"];
-folders.forEach((folder) => fs.mkdirSync(path.join(root, folder), { recursive: true }));
+roots.forEach((root) => folders.forEach((folder) => fs.mkdirSync(path.join(root, folder), { recursive: true })));
 
 const gold = "#d6aa4f";
 const white = "#f4f4f2";
@@ -39,7 +42,7 @@ function svg(body, defs = "") {
 }
 
 function save(folder, file, body, defs = "") {
-  fs.writeFileSync(path.join(root, folder, file), svg(body, defs));
+  roots.forEach((root) => fs.writeFileSync(path.join(root, folder, file), svg(body, defs)));
 }
 
 function bandPath(y = 398, spread = 220) {
@@ -127,4 +130,4 @@ save("wedding-bands", "none.svg", `<g opacity=".01"><circle cx="1" cy="1" r="1"/
 save("wedding-bands", "plain-contour.svg", `<path d="M232 475 C330 535, 570 535, 668 475" stroke="${gold}" stroke-width="20" fill="none" stroke-linecap="round"/><path d="M315 492 C390 462, 510 462, 585 492" stroke="#fff" stroke-opacity=".28" stroke-width="4" fill="none"/>`);
 save("wedding-bands", "pave-contour.svg", `<path d="M232 475 C330 535, 570 535, 668 475" stroke="${gold}" stroke-width="20" fill="none" stroke-linecap="round"/><g fill="url(#diamond)" stroke="#fff" stroke-width="2">${Array.from({ length: 18 }, (_, i) => `<circle cx="${256 + i * 23}" cy="${474 + Math.sin(i / 2) * 18}" r="6"/>`).join("")}</g>`);
 
-console.log(`Generated ring builder SVG assets in ${root}`);
+console.log(`Generated ring builder SVG assets in ${roots.join(" and ")}`);

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="currentColor" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#7b672e" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".92"/>
+    </linearGradient>
+    <radialGradient id="diamond" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#eaf8ff"/>
+      <stop offset="1" stop-color="#89a9bf"/>
+    </radialGradient>
+    
+  </defs>
+  <rect width="900" height="620" fill="none"/>
+  <g color="#d6aa4f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="url(#shine)" stroke-width="24"/>
+    <path d="M 218 398 C 310 495, 590 495, 682 398" stroke="#fff" stroke-opacity=".35" stroke-width="3.84"/>
+    <circle cx="238" cy="454" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="260" cy="457.2719469679615" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="282" cy="460.18369803069737" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="304" cy="462.414709848079" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="326" cy="463.7193790136331" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="348" cy="463.95407957751763" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="370" cy="463.0929742682568" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="392" cy="461.23085881738325" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="414" cy="458.57272626635813" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="436" cy="455.4112000805987" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="458" cy="452.09432037124515" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="480" cy="448.98722951411656" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="502" cy="446.43197504692074" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="524" cy="444.7098549872924" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="546" cy="444.0104508290207" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="568" cy="444.4107572533686" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="590" cy="445.8667060843242" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="612" cy="448.2180175825569" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="634" cy="451.20584501801073" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><circle cx="656" cy="454.50127009882175" r="6" fill="url(#diamond)" stroke="#fff" stroke-width="2"/><path d="M220 454 C315 505, 585 505, 680 454" stroke="#d6aa4f" stroke-width="20" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
