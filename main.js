@@ -28,7 +28,7 @@ const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror
 const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://share.google/8uvOiIx224kLzQU3Y";
 const googleReviewUrl = googleBusinessProfileUrl;
-const appointmentUrl = "#/request/contact?intent=book-private-jewelry-appointment";
+const appointmentUrl = "#/request/appointment";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
@@ -2848,6 +2848,15 @@ function navLinks() {
   `;
 }
 
+function globalSearchForm(context = "header") {
+  return `
+    <form class="global-search global-search-${context}" role="search" aria-label="Search jewelry, diamonds, and pages">
+      <input name="q" type="search" autocomplete="off" placeholder="Search rings, diamonds, chains..." aria-label="Search the website">
+      <button type="submit">Search</button>
+    </form>
+  `;
+}
+
 function shell(main) {
   document.getElementById("app").innerHTML = `
     <header class="site-header">
@@ -2856,6 +2865,7 @@ function shell(main) {
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
       </button>
       <nav class="nav-links" aria-label="Primary navigation">${navLinks()}</nav>
+      ${globalSearchForm("header")}
     </header>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside class="site-sidebar" id="site-sidebar" aria-label="Site menu" aria-hidden="true">
@@ -2863,6 +2873,7 @@ function shell(main) {
         <span class="sidebar-brand"><span class="brand-mark" aria-hidden="true">TD</span><span><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span></span>
         <button class="sidebar-close" type="button" id="sidebar-close" aria-label="Close site menu">Close</button>
       </div>
+      ${globalSearchForm("sidebar")}
       <nav class="sidebar-links" aria-label="Sidebar navigation">${navLinks()}</nav>
     </aside>
     ${main}
@@ -2870,6 +2881,7 @@ function shell(main) {
     ${footer()}
   `;
   wireSidebar();
+  wireGlobalSearch();
   hydrateDeferredImages();
 }
 
@@ -3022,6 +3034,17 @@ function wireSidebar() {
   document.getElementById("sidebar-close").addEventListener("click", close);
   backdrop.addEventListener("click", close);
   sidebar.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
+}
+
+function wireGlobalSearch() {
+  document.querySelectorAll(".global-search").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const q = String(new FormData(form).get("q") || "").trim();
+      if (!q) return;
+      location.hash = `#/search?q=${encodeURIComponent(q)}`;
+    });
+  });
 }
 
 function productCard(product) {
@@ -3342,7 +3365,7 @@ function websiteSchema() {
     publisher: { "@id": `${siteUrl}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteUrl}/products?q={search_term_string}`,
+      target: `${siteUrl}/#/search?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
@@ -3995,6 +4018,83 @@ function productFilterPanel() {
       <button class="button button-light" type="button" id="product-filter-reset">Reset</button>
     </section>
   `;
+}
+
+function searchText(value) {
+  if (Array.isArray(value)) return value.map(searchText).join(" ");
+  if (value && typeof value === "object") return Object.values(value).map(searchText).join(" ");
+  return String(value || "");
+}
+
+function productSearchHaystack(product) {
+  return [
+    productName(product),
+    product.category,
+    product.priceLabel,
+    product.description,
+    product.lede,
+    product.alt,
+    product.badges,
+    product.fields,
+    product.specs,
+  ].map(searchText).join(" ").toLowerCase();
+}
+
+function serviceSearchHaystack(page) {
+  return [page[1], page[2], page[4], page[6]].map(searchText).join(" ").toLowerCase();
+}
+
+function categorySearchHaystack(category) {
+  return category.map(searchText).join(" ").toLowerCase();
+}
+
+function searchPage(params = new URLSearchParams()) {
+  const q = String(params.get("q") || "").trim();
+  const normalized = q.toLowerCase();
+  const productMatches = normalized
+    ? allProducts().filter((product) => productSearchHaystack(product).includes(normalized)).slice(0, 36)
+    : [];
+  const categoryMatches = normalized
+    ? categories.filter((item) => categorySearchHaystack(item).includes(normalized)).slice(0, 12)
+    : [];
+  const serviceMatches = normalized
+    ? servicePages.filter((item) => serviceSearchHaystack(item).includes(normalized)).slice(0, 12)
+    : [];
+  setSeo(`Search ${q ? q : "Jewelry"} | ${businessName}`, `Search The Don Jewelers & Jewelry for engagement rings, diamonds, custom jewelry, products, guides, and quote request pages.`, {
+    path: `search${q ? `?q=${encodeURIComponent(q)}` : ""}`,
+    image: defaultSeoImage,
+    breadcrumbs: [["Search", "search"]],
+  });
+  shell(`
+    <main>
+      ${pageHero("Search", q ? `Search results for "${htmlSafe(q)}"` : "Search the website", "Find engagement rings, loose diamonds, custom jewelry, product pages, guides, and quote request options.", `
+        <form class="search-page-form global-search" role="search" aria-label="Search the website">
+          <input name="q" type="search" value="${htmlSafe(q)}" placeholder="Search engagement rings, diamond pendants, chains..." aria-label="Search the website">
+          <button class="button button-gold" type="submit">Search</button>
+        </form>
+      `)}
+      <section class="search-results-section">
+        <div class="section-heading">
+          <p class="eyebrow">Product Results</p>
+          <h2>${productMatches.length ? `${productMatches.length} product matches` : "No direct product matches yet"}</h2>
+        </div>
+        <div class="product-grid">${productMatches.length ? productMatches.map(productCard).join("") : `<div class="empty-state">Try a broader term like "oval", "engagement ring", "pendant", "Cuban", or submit a request and we will source it.</div>`}</div>
+      </section>
+      <section class="search-results-section">
+        <div class="section-heading">
+          <p class="eyebrow">Pages & Categories</p>
+          <h2>Related places to continue</h2>
+        </div>
+        <div class="search-link-grid">
+          ${categoryMatches.map(([slug, name, image]) => `<a href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}"><img src="${mediaSrc(image)}" alt="${htmlSafe(name)}" ${imageSafety}><span>${htmlSafe(name)}</span></a>`).join("")}
+          ${serviceMatches.map(([slug, title, description]) => `<a href="${internalLink(slug)}"><strong>${htmlSafe(title)}</strong><small>${htmlSafe(description)}</small></a>`).join("")}
+          <a href="${internalLink("select-diamond")}"><strong>Live Diamond Selection</strong><small>Search certified diamonds and request sourcing.</small></a>
+          <a href="${internalLink("start-custom-ring-design")}"><strong>Start Custom Ring Design</strong><small>Send engagement ring options, budget, and inspiration.</small></a>
+          <a href="${internalLink("request/contact?intent=website-search-help")}"><strong>Request Help Finding It</strong><small>Send us what you are looking for and we will reply.</small></a>
+        </div>
+      </section>
+    </main>
+  `);
 }
 
 function wireProductFilterPanel() {
@@ -6763,13 +6863,64 @@ const requestPageTypes = {
   design: "Request Custom Design Form",
   ring: "Custom Engagement Ring Request",
   engagement: "Custom Engagement Ring Request",
+  appointment: "Appointment Request",
 };
+
+function appointmentRequestForm(formId = "appointment-request-form") {
+  return `
+    <form class="custom-order-form engagement-build-form ring-request-form" id="${formId}" data-request-type="Appointment Request" data-product-category="Appointment" data-product-name="Private jewelry appointment">
+      <input type="hidden" name="productName" value="Private jewelry appointment">
+      <div class="form-wide ring-request-heading">
+        <p class="eyebrow">Private appointment</p>
+        <h2>Book a jewelry consultation</h2>
+        <p>Send your contact information, what you want to discuss, and the best time to reach you.</p>
+      </div>
+      <label>Full Name<input name="fullName" autocomplete="name" required></label>
+      <label>Email Address<input name="email" type="email" autocomplete="email" required></label>
+      <label>Phone Number<input name="phone" type="tel" autocomplete="tel" required></label>
+      <label>Appointment Type
+        <select name="settingStyle" required>
+          <option>Engagement ring consultation</option>
+          <option>Live diamond sourcing</option>
+          <option>Custom jewelry consultation</option>
+          <option>Product or checkout help</option>
+          <option>Repair / sizing question</option>
+        </select>
+      </label>
+      <label>Preferred Day / Time<input name="timeline" placeholder="Example: Saturday afternoon, weekday evening, ASAP"></label>
+      <label>Budget Range<input name="budget" placeholder="Optional: $3,000 - $7,000"></label>
+      <label class="form-wide">Appointment Notes<textarea name="notes" rows="5" placeholder="Tell us what you want to look at or discuss. Add ring style, diamond shape, product names, order questions, or any urgent timing."></textarea></label>
+      <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
+      <button class="button button-gold form-wide" type="submit">Submit Appointment Request</button>
+      <p class="form-success" hidden></p>
+      <p class="form-error" hidden></p>
+    </form>
+  `;
+}
 
 function customRequestPage(slug, params = new URLSearchParams()) {
   const requestType = requestPageTypes[slug] || "General Contact Form";
   const productName = params.get("product") || "";
   const productCategory = params.get("category") || "";
   const intent = params.get("intent") || "";
+  if (slug === "appointment") {
+    setSeo(`Book Appointment | ${businessName}`, "Book a private jewelry appointment for engagement rings, live diamonds, custom jewelry, product questions, checkout help, and private jeweler consultation.", {
+      path: "request/appointment",
+      image: defaultSeoImage,
+      breadcrumbs: [["Appointment", "request/appointment"]],
+    });
+    shell(`
+      <main>
+        ${pageHero("Book Appointment", "Private jewelry appointment", "Send your preferred time and what you want to discuss. Your appointment request is emailed directly to The Don Jewelers & Jewelry.")}
+        <section class="custom-form-section">
+          ${appointmentRequestForm("appointment-request-form")}
+        </section>
+        ${officialGoogleProfileSection()}
+      </main>
+    `);
+    wireRequestForm("appointment-request-form", "Thank you. Your appointment request was received and sent to The Don Jewelers & Jewelry.");
+    return;
+  }
   const detail = productName
     ? `Request for ${productName}${intent ? ` (${intent.replace(/-/g, " ")})` : ""}.`
     : "Submit your details and inspiration photos.";
@@ -7410,6 +7561,7 @@ function router() {
   const parts = path.split("/");
   const params = new URLSearchParams(query);
   if (path === "" || path === "/" || path === "index.html") return home();
+  if (path === "search") return searchPage(params);
   if (path === "blog") return blogIndex();
   if (parts[0] === "blog") return blogArticlePage(parts[1]);
   if (path === "ring-size-guide") return ringSizeGuidePage();
@@ -7422,6 +7574,7 @@ function router() {
   if (path === "build-engagement-ring") return customRingDesignPage();
   if (path === "start-custom-ring-design") return customRingDesignPage();
   if (path === "select-diamond") return diamondInventoryPage(params);
+  if (path === "products" && params.get("q")) return searchPage(params);
   if (path === "products") return databaseCategoryPage("all", "All Luxury Jewelry");
   if (parts[0] === "products" && parts[1]) return productDetailFromCleanSlug(parts[1]);
   if (parts[0] === "engagement-rings" && parts[1]) return productDetailFromCleanSlug(parts[1]);
