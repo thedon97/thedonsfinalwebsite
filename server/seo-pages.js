@@ -15,6 +15,15 @@ const {
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
 const BRAND_ALIASES = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don Jewelers", "The Don Jewelers NYC", "The Don Jewelers & Jewelry NYC", "Don Jewelers NYC"];
+const CONTACT_EMAIL = "thedonjewelersandjewelry@gmail.com";
+const PHONE_DISPLAY = "(484) 761-2008";
+const GOOGLE_BUSINESS_PROFILE_URL = "https://share.google/8uvOiIx224kLzQU3Y";
+const OFFICIAL_SOCIAL_LINKS = [
+  "https://www.instagram.com/los_thejeweler/",
+  "https://www.facebook.com/TheDonJewelers",
+  GOOGLE_BUSINESS_PROFILE_URL,
+];
+const LOCATION_TARGETS = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
 const ROOT = path.resolve(__dirname, "..");
 const INDEX_HTML = path.join(ROOT, "index.html");
@@ -862,6 +871,40 @@ function pageJsonLd(meta, url) {
   };
 }
 
+function localBusinessJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "JewelryStore"],
+    "@id": `${SITE_URL}/#jewelry-store`,
+    name: BUSINESS_NAME,
+    alternateName: BRAND_ALIASES,
+    url: SITE_URL,
+    logo: `${SITE_URL}/don-logo.jpg`,
+    image: DEFAULT_IMAGE,
+    email: CONTACT_EMAIL,
+    telephone: PHONE_DISPLAY,
+    sameAs: OFFICIAL_SOCIAL_LINKS,
+    hasMap: GOOGLE_BUSINESS_PROFILE_URL,
+    priceRange: "$$$",
+    description: "Appointment-only private jeweler for custom engagement rings, diamond jewelry, CAD design, diamond sourcing, and nationwide jewelry consultation.",
+    areaServed: LOCATION_TARGETS.map((name) => ({ "@type": "Place", name })),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "New York",
+      addressRegion: "NY",
+      addressCountry: "US",
+    },
+    contactPoint: [{
+      "@type": "ContactPoint",
+      telephone: PHONE_DISPLAY,
+      email: CONTACT_EMAIL,
+      contactType: "customer service",
+      areaServed: "US",
+      availableLanguage: ["en"],
+    }],
+  };
+}
+
 function staticPage(req, res, pathname) {
   const meta = pageMetaForPath(pathname);
   if (!meta) {
@@ -872,6 +915,7 @@ function staticPage(req, res, pathname) {
   const url = `${SITE_URL}${meta.path === "/" ? "/" : meta.path}`;
   const jsonLd = [
     pageJsonLd(meta, url),
+    localBusinessJsonLd(),
     breadcrumbJsonLd([
       ["Home", "/"],
       ...(meta.path === "/" ? [] : [[meta.label, meta.path]]),

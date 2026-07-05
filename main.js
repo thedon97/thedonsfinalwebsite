@@ -26,15 +26,13 @@ const featuredSeoImages = [
 ];
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
-const googleBusinessProfileUrl = "https://www.google.com/maps?cid=15202389021162830944";
-const secondaryGoogleBusinessProfileUrl = "https://www.google.com/maps?cid=1237300766605729326";
-const googleReviewUrl = "https://g.page/r/CR1K7TTlATuXEBM/review?utm_source=gbp&utm_medium=reviews&utm_campaign=qr";
+const googleBusinessProfileUrl = "https://share.google/8uvOiIx224kLzQU3Y";
+const googleReviewUrl = googleBusinessProfileUrl;
 const appointmentUrl = "#/request/contact?intent=book-private-jewelry-appointment";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
   googleBusinessProfileUrl,
-  secondaryGoogleBusinessProfileUrl,
 ];
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
@@ -2720,7 +2718,7 @@ function stripeCheckoutButton(total) {
 
 function productCheckoutButton(product, total, label = "Buy Now / Checkout with Stripe") {
   if (!product || !Number(total) || product.available === false || product.hidden) {
-    return `<button class="button button-light" type="button" disabled>Checkout unavailable — request pricing</button>`;
+    return `<button class="button button-light" type="button" disabled>Checkout unavailable - request pricing</button>`;
   }
   return `<button class="button button-gold" type="button" data-buy-product="${htmlSafe(product.id)}">${label}${total ? ` - ${money.format(total)}` : ""}</button>`;
 }
@@ -2949,8 +2947,8 @@ function footer() {
         <a href="#/don-jewelers-nyc">Don Jewelers NYC</a>
         <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a>
-        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Leave a Google Review</a>
+        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Find us on Google</a>
+        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Official Google Reviews</a>
         ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         <span class="site-version">Customer policies and checkout support</span>
       </div>
@@ -2985,6 +2983,23 @@ function trustBlockSection() {
         <strong>Private Jeweler Process</strong>
         <p>Consultation, diamond sourcing, CAD review, approval, production, final balance, and insured delivery are handled step by step.</p>
         <a href="#/custom-order-policy">Custom Order Policy</a>
+      </article>
+    </section>
+  `;
+}
+
+function officialGoogleProfileSection() {
+  return `
+    <section class="trust-block-section official-google-profile" aria-label="Official Google Business Profile">
+      <article>
+        <strong>Official Google Business Profile</strong>
+        <p>Use one verified profile for directions, business details, reviews, and Google search trust signals.</p>
+        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Find us on Google</a>
+      </article>
+      <article>
+        <strong>Reviews</strong>
+        <p>Customer reviews and profile references are routed to the official The Don Jewelers & Jewelry Google profile.</p>
+        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Open Google Reviews</a>
       </article>
     </section>
   `;
@@ -3058,6 +3073,14 @@ function organizationSchema() {
     email: contactEmail,
     telephone: phoneDisplay,
     sameAs: officialSocialLinks,
+    contactPoint: [{
+      "@type": "ContactPoint",
+      telephone: phoneDisplay,
+      email: contactEmail,
+      contactType: "customer service",
+      areaServed: "US",
+      availableLanguage: ["en"],
+    }],
   };
 }
 
@@ -3073,6 +3096,8 @@ function localBusinessSchema() {
     logo: `${siteUrl}/don-logo.jpg`,
     email: contactEmail,
     telephone: phoneDisplay,
+    sameAs: officialSocialLinks,
+    hasMap: googleBusinessProfileUrl,
     priceRange: "$$$",
     description: "Luxury private jeweler specializing in custom engagement rings, diamond jewelry, tennis chains, tennis bracelets, pendants, watches, CAD jewelry design, diamond sourcing, and jewelry consultation for NYC, the Tri-State area, Allentown, Pennsylvania, and clients nationwide by shipping and private consultation.",
     areaServed: locationTargets.map((name) => ({ "@type": "Place", name })),
@@ -3080,6 +3105,7 @@ function localBusinessSchema() {
       {
         "@type": "ContactPoint",
         telephone: phoneDisplay,
+        email: contactEmail,
         contactType: "customer service",
         areaServed: "US",
         availableLanguage: ["en"],
@@ -5559,7 +5585,7 @@ function wireRequestForm(formId, successText) {
     if (error) error.hidden = true;
     let payload;
     try {
-      payload = await requestPayloadFromForm(form);
+      payload = await requestPayloadFromForm(form, event.submitter);
       await sendWebsiteRequest(payload);
       savePendingRequest(payload);
       if (success) {
@@ -5654,10 +5680,11 @@ async function requestAttachments(form) {
   return files;
 }
 
-async function requestPayloadFromForm(form) {
+async function requestPayloadFromForm(form, submitter = null) {
   const files = await requestAttachments(form);
   const requestType = form.dataset.requestType || selectedFormValue(form, "requestType") || "General Contact Form";
   const productCategory = form.dataset.productCategory || selectedFormValue(form, "productCategory") || requestType;
+  const submitIntent = submitter?.value || selectedFormValue(form, "requestIntent") || "";
   return {
     source: location.href,
     customer: {
@@ -5667,6 +5694,7 @@ async function requestPayloadFromForm(form) {
     },
     jewelry: {
       requestType,
+      requestIntent: submitIntent,
       productCategory,
       productName: form.dataset.productName || selectedFormValue(form, "productName"),
       settingPath: selectedFormValue(form, "settingPath"),
@@ -6088,6 +6116,7 @@ function RingBuilderPage() {
         </form>
       </section>
       ${trustBlockSection()}
+      ${officialGoogleProfileSection()}
       ${aboutUs()}
     </main>
   `);
@@ -6223,9 +6252,9 @@ function wireEngagementRingBuilder() {
       if (value) params.set(name, value);
     });
     const queryString = params.toString();
-    const nextUrl = `${routePath("build-engagement-ring")}${queryString ? `?${queryString}` : ""}`;
-    if (`${location.pathname}${location.search}` !== nextUrl) history.replaceState(null, "", nextUrl);
-    if (form.elements.builderUrl) form.elements.builderUrl.value = `${siteUrl}${nextUrl}`;
+    const nextHash = `#/build-engagement-ring${queryString ? `?${queryString}` : ""}`;
+    if (location.hash !== nextHash) history.replaceState(null, "", `${location.pathname}${location.search}${nextHash}`);
+    if (form.elements.builderUrl) form.elements.builderUrl.value = `${siteUrl}/${nextHash}`;
   };
   const updateSummary = () => {
     enforceCompatibility();
@@ -6487,6 +6516,7 @@ function customRequestPage(slug, params = new URLSearchParams()) {
       <section class="custom-form-section">
         ${customRequestForm({ formId: "request-form", requestType, productCategory, productName })}
       </section>
+      ${officialGoogleProfileSection()}
       ${aboutUs()}
     </main>
   `);
@@ -6506,6 +6536,29 @@ function adminDashboard() {
         </div>
         <div id="admin-request-list" class="admin-request-list">
           <div class="empty-state">Loading requests...</div>
+        </div>
+      </section>
+      <section class="admin-dashboard-section">
+        <div class="admin-toolbar">
+          <strong>Official profile and conversion settings</strong>
+          <button class="button button-dark" id="refresh-site-system-status" type="button">Check Status</button>
+        </div>
+        <div class="admin-request-list">
+          <article class="admin-request-card">
+            <div>
+              <p class="eyebrow">Google Business Profile</p>
+              <h2>One official profile link</h2>
+              <p class="lede">${googleBusinessProfileUrl}</p>
+            </div>
+            <div class="builder-actions">
+              <a class="button button-gold" href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Find us on Google</a>
+              <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Open Reviews</a>
+              <a class="button button-dark" href="/api/merchant-feed" target="_blank" rel="noopener noreferrer">Merchant Feed</a>
+            </div>
+          </article>
+        </div>
+        <div id="site-system-status" class="admin-request-list">
+          <div class="empty-state">Checking email, checkout, database, and sync readiness...</div>
         </div>
       </section>
       <section class="admin-dashboard-section">
@@ -6606,6 +6659,39 @@ function adminDashboard() {
           <p class="quote-note">${request.jewelry.notes || "No notes provided."}</p>
         </article>
       `).join("") : `<div class="empty-state">No customer requests saved yet.</div>`;
+  };
+  const renderSiteSystemStatus = async () => {
+    const host = document.getElementById("site-system-status");
+    if (!host) return;
+    host.innerHTML = `<div class="empty-state">Checking live system status...</div>`;
+    try {
+      const response = await fetchWithTimeout("/api/system-status", {}, 15000);
+      const status = await response.json();
+      if (!response.ok || !status.ok) throw new Error(status.message || "Could not load system status.");
+      const rows = [
+        ["Resend email", status.resendConfigured ? "Configured" : "Missing RESEND_API_KEY"],
+        ["Business inbox", status.resendBusinessEmail || contactEmail],
+        ["Checkout API", status.stripeConfigured ? "Dynamic Stripe Checkout configured" : "Payment link fallback active"],
+        ["Stripe webhook", status.stripeWebhookConfigured ? "Configured" : "Not configured"],
+        ["Lead recovery database", status.leadRecoveryConfigured ? "Configured" : "Not configured"],
+        ["Admin recovery key", status.adminSyncConfigured || status.cronConfigured ? "Configured" : "Not configured"],
+        ["Live diamond API", status.lgdConfigured ? "Configured" : "Not configured"],
+      ];
+      host.innerHTML = `
+        <article class="admin-request-card">
+          <div>
+            <p class="eyebrow">Production readiness</p>
+            <h2>${status.resendConfigured ? "Email is active" : "Email needs attention"}</h2>
+            <p class="lede">Checkout currently uses ${status.stripeConfigured ? "dynamic Stripe Checkout" : "the Stripe payment-link fallback"}.</p>
+          </div>
+          <dl class="summary-list">
+            ${rows.map(([label, value]) => `<div><dt>${htmlSafe(label)}</dt><dd>${htmlSafe(value)}</dd></div>`).join("")}
+          </dl>
+        </article>
+      `;
+    } catch (error) {
+      host.innerHTML = `<div class="empty-state">${htmlSafe(error.message || "Could not load system status.")}</div>`;
+    }
   };
   const adminLeadKey = () => {
     const input = document.getElementById("admin-lead-key");
@@ -6715,6 +6801,7 @@ function adminDashboard() {
     }
   };
   document.getElementById("refresh-admin-requests").addEventListener("click", render);
+  document.getElementById("refresh-site-system-status").addEventListener("click", renderSiteSystemStatus);
   document.getElementById("refresh-lead-recovery").addEventListener("click", renderLeadRecovery);
   document.getElementById("admin-lead-recovery-list").addEventListener("click", async (event) => {
     const button = event.target.closest("[data-retry-lead]");
@@ -6805,6 +6892,7 @@ function adminDashboard() {
     }
   });
   render();
+  renderSiteSystemStatus();
   renderLeadRecovery();
   renderDiamondApiStatus();
   renderJewelrySyncStatus();

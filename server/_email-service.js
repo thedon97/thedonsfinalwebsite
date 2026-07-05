@@ -109,7 +109,7 @@ function requestHtml(payload) {
         </div>
         <div style="padding:26px">
           <p style="margin:0 0 6px;font-size:18px;font-weight:700">${htmlEscape(payload.type || payload.jewelry?.requestType || "Website Request")}</p>
-          <p style="margin:0 0 24px;color:#766b5a;font-size:13px">Submitted ${htmlEscape(submitted)}${payload.source ? ` · <a href="${htmlEscape(payload.source)}" style="color:#8a6418">View source page</a>` : ""}</p>
+          <p style="margin:0 0 24px;color:#766b5a;font-size:13px">Submitted ${htmlEscape(submitted)}${payload.source ? ` - <a href="${htmlEscape(payload.source)}" style="color:#8a6418">View source page</a>` : ""}</p>
           ${emailSection("Customer Information", detailRows(payload.customer))}
           ${emailSection("Jewelry & Order Details", detailRows(payload.jewelry))}
           ${payload.checkout ? emailSection("Checkout Information", detailRows(payload.checkout)) : ""}
