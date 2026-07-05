@@ -6505,6 +6505,68 @@ function customRequestForm({ formId, requestType = "Request Custom Design Form",
   `;
 }
 
+const customRingSelects = {
+  diamondType: ["Lab-grown diamond", "Natural diamond", "Not sure yet"],
+  diamondShape: ["Round", "Oval", "Emerald", "Radiant", "Cushion", "Pear", "Marquise", "Princess", "Asscher", "Heart", "Not sure yet"],
+  caratWeight: ["0.75 ct", "1 ct", "1.5 ct", "2 ct", "2.5 ct", "3 ct", "4 ct+", "Not sure yet"],
+  settingStyle: ["Solitaire", "Hidden halo", "Halo", "Three-stone", "Pave", "Cathedral", "Vintage-inspired", "Custom"],
+  headStyle: ["4-prong", "6-prong", "Eagle claw", "Bezel", "Hidden halo basket", "Not sure yet"],
+  bandStyle: ["Plain", "Pave", "Cathedral", "Split shank", "Twisted", "Floral-inspired", "Three-stone side accents", "Not sure yet"],
+  bandProfile: ["Thin delicate", "Classic medium", "Wide statement", "Tapered", "Knife edge", "Comfort fit", "Not sure yet"],
+  metalType: ["14K White Gold", "14K Yellow Gold", "14K Rose Gold", "18K White Gold", "18K Yellow Gold", "Platinum", "Not sure yet"],
+  ringSize: ["Not sure yet", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "Custom / needs sizing"],
+  matchingWeddingBand: ["No matching band yet", "Yes, design matching wedding band", "Maybe, show me options"],
+};
+
+function selectField(name, label, options, { required = false } = {}) {
+  return `
+    <label>${label}
+      <select name="${name}" ${required ? "required" : ""}>
+        ${options.map((item) => `<option>${item}</option>`).join("")}
+      </select>
+    </label>
+  `;
+}
+
+function customRingRequestForm(formId = "custom-ring-request-form") {
+  return `
+    <form class="custom-order-form engagement-build-form ring-request-form" id="${formId}" data-request-type="Custom Engagement Ring Request" data-product-category="Engagement Rings" data-product-name="Custom engagement ring design request">
+      <input type="hidden" name="productName" value="Custom engagement ring design request">
+      <input type="hidden" name="selectedLiveDiamond">
+      <input type="hidden" name="selectedLiveDiamondStock">
+
+      <div class="form-wide ring-request-heading">
+        <p class="eyebrow">Custom engagement ring request</p>
+        <h2>Tell us the ring direction</h2>
+        <p>Pick what you know. Leave the rest as "not sure yet" and The Don Jewelers & Jewelry will help refine the design.</p>
+      </div>
+
+      <label>Full Name<input name="fullName" autocomplete="name" required></label>
+      <label>Email Address<input name="email" type="email" autocomplete="email" required></label>
+      <label>Phone Number<input name="phone" type="tel" autocomplete="tel" required></label>
+
+      ${selectField("diamondType", "Diamond Type", customRingSelects.diamondType, { required: true })}
+      ${selectField("diamondShape", "Center Diamond Shape", customRingSelects.diamondShape, { required: true })}
+      ${selectField("caratWeight", "Diamond Size", customRingSelects.caratWeight)}
+      ${selectField("metalType", "Metal", customRingSelects.metalType, { required: true })}
+      ${selectField("settingStyle", "Setting Style", customRingSelects.settingStyle, { required: true })}
+      ${selectField("headStyle", "Basket / Head / Prongs", customRingSelects.headStyle)}
+      ${selectField("bandStyle", "Band / Shank Style", customRingSelects.bandStyle, { required: true })}
+      ${selectField("bandProfile", "Band Profile", customRingSelects.bandProfile)}
+      ${selectField("ringSize", "Ring Size", customRingSelects.ringSize)}
+      ${selectField("matchingWeddingBand", "Matching Wedding Band", customRingSelects.matchingWeddingBand)}
+
+      <label>Budget Range<input name="budget" placeholder="Example: $3,000 - $7,000"></label>
+      <label>Timeline Needed<input name="timeline" placeholder="Example: 4-6 weeks, proposal date, not urgent"></label>
+      <label class="form-wide">Design Notes<textarea name="notes" rows="5" placeholder="Example: oval lab diamond, hidden halo, thin yellow gold pave band, low basket, elegant and simple. Add any inspiration links or special details."></textarea></label>
+      <label class="form-wide">Upload Inspiration Photos<input type="file" name="inspiration" multiple accept="image/*"></label>
+      <button class="button button-gold form-wide" type="submit">Submit Engagement Ring Request</button>
+      <p class="form-success" hidden></p>
+      <p class="form-error" hidden></p>
+    </form>
+  `;
+}
+
 function customOrders() {
   shell(`
     <main>
@@ -6519,41 +6581,39 @@ function customOrders() {
 }
 
 function customRingDesignPage() {
-  setSeo("Start Your Custom Ring Design | The Don Jewelers", "Request a custom engagement ring or custom ring design with The Don Jewelers & Jewelry. Send stone shape, metal, ring size, budget, timeline, and inspiration photos for a private quote.", {
+  setSeo("Start Your Custom Engagement Ring Design | The Don Jewelers", "Request a custom diamond engagement ring with The Don Jewelers & Jewelry. Choose diamond shape, diamond size, setting, basket, prongs, metal, band, shank, ring size, budget, and inspiration photos.", {
     path: "start-custom-ring-design",
     image: "engagement-ring-feature.jpg",
     breadcrumbs: [["Engagement Rings", "category/engagement-rings"], ["Start Your Custom Ring Design", "start-custom-ring-design"]],
     faqs: [
-      ["Can I request a custom ring without using the builder?", "Yes. Submit your contact information, design notes, budget, stone direction, metal, ring size, and inspiration photos for personal follow-up."],
-      ["Can I still use live diamond selection?", "Yes. You can browse live diamonds separately and include the stock number or diamond details in your custom ring request."],
-      ["Will I receive a quote immediately?", "The Don Jewelers & Jewelry reviews the details personally and follows up with a custom quote, sourcing options, and next steps."],
+      ["Can I request a custom engagement ring without using the builder?", "Yes. Select the diamond shape, size, setting, basket, metal, band, shank, ring size, and budget, then submit the request for personal follow-up."],
+      ["Can I still start with a live diamond?", "Yes. You can browse live diamonds separately and include the stock number or diamond details in your engagement ring request."],
+      ["Will I receive a quote immediately?", "The Don Jewelers & Jewelry reviews the engagement ring details personally and follows up with a custom quote, sourcing options, and next steps."],
     ],
   });
   shell(`
     <main>
-      ${pageHero("Start Your Custom Ring Design", "Send the design. We will quote it personally.", "Tell us the ring style, diamond direction, metal, ring size, budget, timeline, and any inspiration. Your request goes directly to The Don Jewelers & Jewelry for follow-up.", `
+      ${pageHero("Start Your Custom Ring Design", "Design a diamond engagement ring", "Choose the diamond shape, size, setting, basket, prongs, metal, band, shank, ring size, budget, and inspiration. Your request goes directly to The Don Jewelers & Jewelry for a personal quote.", `
         <div class="hero-actions">
-          <a class="button button-gold" href="#custom-ring-request-form">Request Custom Ring</a>
+          <a class="button button-gold" href="#custom-ring-request-form">Start Engagement Ring Request</a>
           <a class="button button-light" href="${internalLink("select-diamond")}">Start With Live Diamond</a>
         </div>
       `)}
       <section class="builder-choice-section">
         <div class="builder-choice-grid">
-          <article class="builder-choice-card"><strong>Custom ring details</strong><p>Share the shape, setting style, metal, ring size, engraving, hidden details, and matching band ideas.</p></article>
-          <article class="builder-choice-card"><strong>Diamond direction</strong><p>Request lab-grown, natural, a specific carat range, or paste a live diamond stock number from the diamond page.</p></article>
-          <article class="builder-choice-card"><strong>Budget and timeline</strong><p>Add your ideal spend, maximum budget, event date, and urgency so the quote is realistic from the start.</p></article>
+          <article class="builder-choice-card"><strong>Diamond</strong><p>Choose lab-grown or natural, shape, size, and any live diamond stock number you already like.</p></article>
+          <article class="builder-choice-card"><strong>Ring design</strong><p>Select setting, basket, prongs, metal, band style, shank profile, ring size, and matching band direction.</p></article>
+          <article class="builder-choice-card"><strong>Quote details</strong><p>Add budget, timeline, notes, and inspiration photos so the quote can match the ring you want.</p></article>
         </div>
       </section>
       <section class="custom-form-section">
-        ${customRequestForm({ formId: "custom-ring-request-form", requestType: "Custom Engagement Ring Request", productCategory: "Engagement Rings", productName: "Custom ring design request" })}
+        ${customRingRequestForm("custom-ring-request-form")}
       </section>
-      ${trustBlockSection()}
       ${officialGoogleProfileSection()}
-      ${aboutUs()}
     </main>
   `);
   const notes = document.querySelector("#custom-ring-request-form textarea[name='notes']");
-  if (notes) notes.placeholder = "Example: oval lab diamond, yellow gold hidden halo, thin pave band, size 6.5, matching wedding band, $4,000-$7,000 budget, needed in 4-6 weeks.";
+  if (notes) notes.placeholder = "Example: oval lab diamond, yellow gold hidden halo, thin pave band, low basket, size 6.5, matching wedding band, $4,000-$7,000 budget, needed in 4-6 weeks.";
   let selectedDiamond = null;
   try {
     selectedDiamond = JSON.parse(localStorage.getItem("donEngagementBuilderDiamond") || "null");
