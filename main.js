@@ -5860,8 +5860,8 @@ function choiceGroup(label, name, options, wide = false) {
 
 const allRingShapes = ["round", "oval", "emerald", "radiant", "cushion", "pear", "marquise", "princess", "asscher", "heart"];
 const allRingMetals = ["14k-white", "14k-yellow", "14k-rose", "18k-white", "18k-yellow", "platinum"];
-const ringThumbnailSlot = (category, id) => `/assets/ring-builder/thumbnails/${category}/${id}.webp`;
-const ringPreviewSlot = (...parts) => `/assets/ring-builder/previews/${parts.filter(Boolean).join("--")}.webp`;
+const ringThumbnailSlot = (category, id) => `/assets/ring-builder/thumbnails/${category}/${id}.svg`;
+const ringPreviewSlot = (...parts) => `/assets/ring-builder/previews/${parts.filter(Boolean).join("--")}.svg`;
 const ringOption = ({ id, name, category, description, internalPriceAdjustment = 0, compatibleDiamondShapes = allRingShapes, compatibleMetals = allRingMetals, previewImagePath = "" }) => ({
   id,
   name,
@@ -6062,6 +6062,7 @@ function ringPreviewCandidatePaths(selection = {}) {
     ringPreviewSlot(shape, setting, metal),
     ringPreviewSlot(shape, setting),
     ringPreviewSlot(shape),
+    "/assets/ring-builder/previews/luxury-preview-sheet.png",
     "/assets/ring-builder/previews/default-luxury-ring.svg",
   ];
 }
@@ -6126,7 +6127,7 @@ const ringBuilderSteps = [
   { id: "setting", title: "Setting", name: "settingStyle", kicker: "Setting style", helper: "Pick the overall ring architecture and visual direction." },
   { id: "metal", title: "Metal", name: "metal", kicker: "Precious metal", helper: "Choose the metal color and grade for the final build." },
   { id: "head", title: "Head", name: "headStyle", kicker: "Head / basket", helper: "Select how the diamond is held and shown from the side." },
-  { id: "band", title: "Band", name: "bandStyle", kicker: "Shank / band", helper: "Choose the ring’s band structure and accent style." },
+  { id: "band", title: "Band", name: "bandStyle", kicker: "Shank / band", helper: "Choose the ring's band structure and accent style." },
   { id: "size", title: "Size", name: "ringSize", kicker: "Ring size", helper: "Choose the closest size now. Exact sizing can be confirmed before production." },
   { id: "review", title: "Review", name: "", kicker: "Final review", helper: "Review the finished build and submit it for a personalized quote." },
 ];
@@ -6140,10 +6141,6 @@ function RingPreview() {
       </div>
       <div class="ring-preview-stage" id="ring-preview-stage">
         <div id="ring-preview-render">${ringImagePreview({}, "large", "ring-main-preview-fallback")}</div>
-      </div>
-      <div class="ring-preview-actions">
-        <button class="button button-gold" type="button" data-save-ring-design>Save Design</button>
-        <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Choose Live Diamond</a>
       </div>
       <p class="ring-builder-save-note" id="ring-builder-save-note" hidden></p>
     </section>
@@ -6200,10 +6197,6 @@ function BuilderSummary() {
   return `<section class="builder-summary-panel"><p class="eyebrow">Review Build</p><h3>Your selected design</h3><dl id="engagement-build-summary" class="builder-summary-list"></dl></section>`;
 }
 
-function QuotePlanPanel() {
-  return `<section class="ring-price-panel"><p class="eyebrow">Private Quote</p><strong>Built for review</strong><span>No instant pricing is shown while you build. Submit the finished design and The Don Jewelers & Jewelry will personally prepare a quote based on your diamond, metal, setting, labor, and availability.</span><input type="hidden" name="priceEstimate" value="Personal quote requested"><input type="hidden" name="renderReference"></section>`;
-}
-
 function CustomQuoteForm() {
   return `
     <section class="custom-quote-panel">
@@ -6256,17 +6249,11 @@ function RingBuilderPage() {
           <textarea name="buildSummary" hidden></textarea>
           <input type="hidden" name="builderUrl">
           <input type="hidden" name="internalAdjustmentTotal">
+          <input type="hidden" name="priceEstimate" value="Personal quote requested">
+          <input type="hidden" name="renderReference">
           <div class="ring-builder-shell form-wide">
             <div class="ring-builder-left">
               ${RingPreview()}
-              ${QuotePlanPanel()}
-              ${BuilderSummary()}
-              <div class="builder-live-diamond-panel" id="builder-live-diamond-panel">
-                <p class="eyebrow">Live Diamond</p>
-                <h3>No live diamond selected yet</h3>
-                <p>Choose a current inventory diamond and it will attach to this build request.</p>
-                <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Choose From Live Diamond Selection</a>
-              </div>
             </div>
             <div class="ring-builder-controls">
               ${RingBuilderStepper()}
@@ -6277,6 +6264,13 @@ function RingBuilderPage() {
                   <button class="button button-gold" type="button" data-builder-next>Continue</button>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="ring-builder-bottom form-wide">
+            ${BuilderSummary()}
+            <div class="ring-preview-actions">
+              <button class="button button-gold" type="button" data-save-ring-design>Save Design</button>
+              <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Start With Live Diamond</a>
             </div>
           </div>
         </form>
@@ -6311,7 +6305,6 @@ function wireEngagementRingBuilder() {
   const form = document.getElementById("engagement-build-form");
   if (!form) return;
   const summary = document.getElementById("engagement-build-summary");
-  const livePanel = document.getElementById("builder-live-diamond-panel");
   const query = getRingBuilderQuery();
   let selectedDiamond = null;
   try {
@@ -6322,17 +6315,6 @@ function wireEngagementRingBuilder() {
   if (selectedDiamond) {
     form.elements.selectedLiveDiamond.value = selectedDiamondSummary(selectedDiamond);
     form.elements.selectedLiveDiamondStock.value = selectedDiamond.stockNumber || selectedDiamond.id || "";
-    if (livePanel) {
-      livePanel.innerHTML = `
-        <p class="eyebrow">Live Diamond Attached</p>
-        <h3>${htmlSafe(selectedDiamond.shape || "Selected")} ${htmlSafe(selectedDiamond.carat || "")}ct Diamond</h3>
-        <p>${htmlSafe(selectedDiamondSummary(selectedDiamond))}</p>
-        <div class="builder-actions">
-          <a class="button button-light" href="#/select-diamond?return=engagement-ring-builder">Change Diamond</a>
-          <button class="button button-dark" type="button" data-clear-builder-diamond>Remove Diamond</button>
-        </div>
-      `;
-    }
   }
   [...query.entries()].forEach(([name, value]) => {
     const input = form.querySelector(`[name="${CSS.escape(name)}"][value="${CSS.escape(value)}"]`);
@@ -6450,6 +6432,12 @@ function wireEngagementRingBuilder() {
   form.querySelectorAll("[data-step-jump]").forEach((button) => {
     button.addEventListener("click", () => setStep(Number(button.dataset.stepJump)));
   });
+  form.querySelectorAll('input[name="startPath"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      setStep(input.value === "diamond-first" ? 1 : 3);
+      updateSummary();
+    });
+  });
   form.addEventListener("change", updateSummary);
   form.addEventListener("input", updateSummary);
   form.querySelector("[data-save-ring-design]")?.addEventListener("click", () => {
@@ -6460,20 +6448,6 @@ function wireEngagementRingBuilder() {
       note.hidden = false;
       note.textContent = "Design saved in this browser. You can return to this device and keep building.";
     }
-  });
-  livePanel?.addEventListener("click", (event) => {
-    const clear = event.target.closest("[data-clear-builder-diamond]");
-    if (!clear) return;
-    localStorage.removeItem("donEngagementBuilderDiamond");
-    form.elements.selectedLiveDiamond.value = "";
-    form.elements.selectedLiveDiamondStock.value = "";
-    livePanel.innerHTML = `
-      <p class="eyebrow">Live Diamond</p>
-      <h3>No live diamond selected yet</h3>
-      <p>Choose a current inventory diamond and it will attach to this build request.</p>
-      <a class="button button-gold" href="#/select-diamond?return=engagement-ring-builder">Choose From Live Diamond Selection</a>
-    `;
-    updateSummary();
   });
   updateSummary();
   setStep(0);

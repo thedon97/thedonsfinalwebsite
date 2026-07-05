@@ -1259,8 +1259,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   gap: 16px;
   align-items: stretch;
 }
-.builder-summary-panel,
-.builder-live-diamond-panel {
+.builder-summary-panel {
   display: grid;
   gap: 12px;
   align-content: start;
@@ -1270,14 +1269,8 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   background: #14110d;
   color: #fffdfa;
 }
-.builder-live-diamond-panel {
-  background: #fff8e6;
-  color: var(--ink);
-}
-.builder-summary-panel h3,
-.builder-live-diamond-panel h3 { margin: 0; }
-.builder-summary-panel p,
-.builder-live-diamond-panel p { margin: 0; line-height: 1.55; }
+.builder-summary-panel h3 { margin: 0; }
+.builder-summary-panel p { margin: 0; line-height: 1.55; }
 .builder-summary-list {
   display: grid;
   gap: 8px;
@@ -1378,13 +1371,15 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 }
 .ring-builder-shell {
   display: grid;
-  grid-template-columns: minmax(300px, .82fr) minmax(0, 1.18fr);
+  grid-template-columns: minmax(380px, .9fr) minmax(0, 1.1fr);
   gap: clamp(18px,3vw,32px);
   align-items: start;
 }
 .engagement-build-form {
-  max-width: 1380px;
-  background: #15120e;
+  max-width: 1540px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(241,215,129,.13), transparent 28%),
+    #050504;
   border-color: rgba(241,215,129,.22);
   box-shadow: 0 26px 80px rgba(0,0,0,.32);
 }
@@ -1395,7 +1390,6 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   gap: 14px;
 }
 .ring-preview-panel,
-.ring-price-panel,
 .custom-quote-panel {
   border: 1px solid rgba(241,215,129,.24);
   border-radius: 8px;
@@ -1407,9 +1401,14 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   gap: 14px;
   padding: clamp(14px,2vw,20px);
 }
+.ring-preview-heading h3 {
+  margin: 0;
+  color: #fff7df;
+  font-size: clamp(1.25rem,2.4vw,2rem);
+}
 .ring-preview-stage {
   position: relative;
-  min-height: clamp(300px,38vw,520px);
+  min-height: clamp(360px,42vw,620px);
   overflow: hidden;
   border: 1px solid rgba(241,215,129,.18);
   border-radius: 8px;
@@ -1461,21 +1460,6 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   color: rgba(255,253,250,.76);
   font-size: .86rem;
   font-weight: 800;
-}
-.ring-price-panel {
-  display: grid;
-  gap: 8px;
-  padding: 18px;
-}
-.ring-price-panel strong {
-  color: var(--gold);
-  font-size: clamp(1.35rem,3vw,2rem);
-  font-weight: 950;
-  line-height: 1.1;
-}
-.ring-price-panel span {
-  color: rgba(255,253,250,.68);
-  line-height: 1.45;
 }
 .ring-builder-controls {
   display: grid;
@@ -1532,7 +1516,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .ring-builder-step-card {
   display: grid;
   gap: 18px;
-  min-height: 620px;
+  min-height: 690px;
   padding: clamp(16px,2vw,22px);
   border: 1px solid rgba(241,215,129,.2);
   border-radius: 8px;
@@ -1621,7 +1605,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 }
 .ring-option-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
+  grid-template-columns: repeat(4, minmax(0,1fr));
   gap: 12px;
 }
 .ring-option-group.compact .ring-option-grid {
@@ -1634,8 +1618,10 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   overflow: hidden;
   border: 1px solid rgba(241,215,129,.18);
   border-radius: 8px;
-  background: #fffdfa;
-  color: var(--ink);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(241,215,129,.1), transparent 42%),
+    #090807;
+  color: #fffdfa;
   cursor: pointer;
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
@@ -1647,7 +1633,7 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .ring-option-media {
   display: grid;
   place-items: center;
-  height: 132px;
+  height: 150px;
   background:
     radial-gradient(circle at 50% 42%, rgba(255,255,255,.12), transparent 28%),
     linear-gradient(145deg, #17120c, #050504 70%);
@@ -1675,17 +1661,17 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   padding: 12px;
 }
 .ring-option-copy strong {
-  color: var(--ink);
+  color: #fff7df;
   font-size: .94rem;
   line-height: 1.2;
 }
 .ring-option-copy small {
-  color: #5a5148;
+  color: rgba(255,253,250,.68);
   font-size: .78rem;
   line-height: 1.4;
 }
 .ring-option-copy em {
-  color: var(--gold-dark);
+  color: var(--gold);
   font-style: normal;
   font-size: .78rem;
   font-weight: 950;
@@ -1707,6 +1693,24 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 }
 .ring-option-card:has(input:checked) .ring-option-copy em {
   color: #fff7df;
+}
+.ring-builder-bottom {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+.ring-builder-bottom .builder-summary-panel {
+  border: 1px solid rgba(241,215,129,.24);
+  border-radius: 8px;
+  background: #0a0908;
+  color: #fffdfa;
+}
+.ring-builder-bottom .ring-preview-actions {
+  justify-content: flex-end;
+  padding: 16px;
+  border: 1px solid rgba(241,215,129,.2);
+  border-radius: 8px;
+  background: #0a0908;
 }
 .ring-option-card.is-incompatible {
   opacity: .36;
