@@ -59,6 +59,10 @@ function routeApi(pathname, req, res) {
     "/nyc-diamond-district-jeweler",
     "/private-jeweler",
     "/appointment-only-jeweler",
+    "/lab-diamond-engagement-rings-nyc",
+    "/custom-diamond-pendants-nyc",
+    "/tennis-bracelets-allentown-pa",
+    "/cvd-lab-grown-diamond-jewelry",
     "/blog",
   ]);
   if (seoPagePaths.has(pathname) || /^\/category\/[^/]+$/.test(pathname)) {

@@ -8,7 +8,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; frame-src https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; frame-src https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
         },
         {
           "key": "X-Frame-Options",
@@ -177,6 +177,22 @@
     {
       "source": "/custom-engagement-rings-nyc",
       "destination": "/api/index?route=seo&action=page&path=custom-engagement-rings-nyc"
+    },
+    {
+      "source": "/lab-diamond-engagement-rings-nyc",
+      "destination": "/api/index?route=seo&action=page&path=lab-diamond-engagement-rings-nyc"
+    },
+    {
+      "source": "/custom-diamond-pendants-nyc",
+      "destination": "/api/index?route=seo&action=page&path=custom-diamond-pendants-nyc"
+    },
+    {
+      "source": "/tennis-bracelets-allentown-pa",
+      "destination": "/api/index?route=seo&action=page&path=tennis-bracelets-allentown-pa"
+    },
+    {
+      "source": "/cvd-lab-grown-diamond-jewelry",
+      "destination": "/api/index?route=seo&action=page&path=cvd-lab-grown-diamond-jewelry"
     },
     {
       "source": "/diamond-rings-near-me",

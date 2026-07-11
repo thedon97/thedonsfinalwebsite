@@ -5,6 +5,7 @@ const systemStatus = require("../server/system-status");
 const checkout = require("../server/create-checkout-session");
 const sendRequest = require("../server/send-request");
 const merchantFeed = require("../server/merchant-feed");
+const siteConfig = require("../server/site-config");
 const adminJewelrySync = require("../server/admin/jewelry-sync");
 const adminLeadRecovery = require("../server/admin/lead-recovery");
 const cronJewelrySync = require("../server/cron/jewelry-sync");
@@ -47,6 +48,7 @@ module.exports = async function handler(req, res) {
     "send-request": sendRequest,
     "stripe-webhook": stripeWebhook,
     "merchant-feed": merchantFeed,
+    "site-config": siteConfig,
     "seo": seoPages,
     "admin/jewelry-sync": adminJewelrySync,
     "admin/lead-recovery": adminLeadRecovery,

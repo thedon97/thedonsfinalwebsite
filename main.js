@@ -2252,6 +2252,10 @@ const servicePages = [
   ["lab-diamond-engagement-rings-allentown", "Lab Diamond Engagement Rings Allentown", "Lab diamond engagement rings for Allentown clients who want size, sparkle, certification, custom CAD settings, and private jeweler quote guidance.", "yellow-gold-oval-pave-engagement-ring.jpeg", ["lab diamond engagement rings Allentown", "lab diamond rings Allentown PA", "engagement rings Allentown"], ["free-engagement-ring-consultation", "engagement-rings-allentown-pa", "lab-diamond-rings"], "Allentown lab diamond clients"],
   ["private-jeweler-allentown", "Private Jeweler Allentown", "Private jeweler serving Allentown clients with engagement rings, diamond sourcing, custom pendants, tennis bracelets, CAD design, and appointment-based consultation.", "medusa-diamond-signet-ring.jpeg", ["private jeweler Allentown", "custom jeweler Allentown", "diamond jeweler Allentown"], ["engagement-rings-allentown-pa", "diamond-jeweler-pennsylvania", "custom-jewelry"], "Allentown private jewelry clients"],
   ["custom-engagement-rings-nyc", "Custom Engagement Rings NYC", "Custom engagement rings in NYC with lab grown diamonds, natural diamonds, CAD design, private diamond sourcing, and appointment-only jeweler guidance.", "engagement-ring-feature.jpg", ["custom engagement rings NYC", "engagement rings NYC", "NYC engagement ring jeweler"], ["custom-jewelry-nyc", "nyc-diamond-district-jeweler", "free-engagement-ring-consultation"], "NYC engagement ring clients"],
+  ["lab-diamond-engagement-rings-nyc", "Lab Diamond Engagement Rings NYC", "Lab diamond engagement rings for NYC and Diamond District clients comparing certified CVD diamonds, custom settings, ring size, metal, CAD design, and private jeweler sourcing.", "yellow-gold-oval-pave-engagement-ring.jpeg", ["lab diamond engagement rings NYC", "lab grown diamond rings NYC", "CVD engagement rings NYC"], ["custom-engagement-rings-nyc", "lab-diamond-rings", "select-diamond"], "NYC lab diamond engagement ring clients"],
+  ["custom-diamond-pendants-nyc", "Custom Diamond Pendants NYC", "Custom diamond pendants in NYC including name pendants, initials, crosses, religious pendants, CAD pendant design, and lab or natural diamond options.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom diamond pendants NYC", "diamond pendant NYC", "custom name pendant NYC"], ["diamond-pendants", "custom-jewelry-nyc", "custom-cad-design"], "NYC custom pendant clients"],
+  ["tennis-bracelets-allentown-pa", "Tennis Bracelets Allentown PA", "Diamond tennis bracelets for Allentown PA and Lehigh Valley clients with custom carat weight, lab-grown diamond options, gold color, bracelet length, and private quote support.", "triple-row-diamond-tennis-bracelet.jpeg", ["tennis bracelets Allentown PA", "diamond tennis bracelet Allentown", "lab diamond bracelet Lehigh Valley"], ["diamond-tennis-bracelets", "diamond-jeweler-pennsylvania", "engagement-rings-allentown-pa"], "Allentown tennis bracelet clients"],
+  ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "Shop and request CVD lab-grown diamond jewelry including engagement rings, tennis bracelets, earrings, pendants, and rings from the live supplier catalog.", "live-diamond-selection.jpeg", ["CVD lab grown diamond jewelry", "lab-grown diamond jewelry", "CVD diamond rings"], ["select-diamond", "lab-diamond-rings", "lab-diamonds-vs-natural-diamonds"], "lab-grown diamond jewelry shoppers"],
   ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
   ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
   ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
@@ -2772,6 +2776,64 @@ function internalLink(path) {
   return routePath(path);
 }
 
+function trackEvent(eventName, params = {}) {
+  const cleanName = String(eventName || "").replace(/[^a-zA-Z0-9_]/g, "_").slice(0, 40);
+  if (!cleanName) return;
+  const payload = {
+    business_name: businessName,
+    page_path: currentRoutePath(),
+    page_location: location.href,
+    ...params,
+  };
+  if (typeof window.gtag === "function") {
+    window.gtag("event", cleanName, payload);
+  }
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: cleanName, ...payload });
+}
+
+function trackPageView() {
+  const pagePath = currentRoutePath();
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "page_view", {
+      page_title: document.title,
+      page_location: location.href,
+      page_path: pagePath,
+    });
+  }
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "page_view",
+    page_title: document.title,
+    page_location: location.href,
+    page_path: pagePath,
+  });
+}
+
+function installGa4(measurementId) {
+  const id = String(measurementId || "").trim();
+  if (!/^G-[A-Z0-9]+$/i.test(id) || document.querySelector(`script[data-ga4="${id}"]`)) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+  window.gtag("js", new Date());
+  window.gtag("config", id, { send_page_view: false });
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+  script.dataset.ga4 = id;
+  document.head.appendChild(script);
+}
+
+async function loadAnalyticsConfig() {
+  try {
+    const response = await fetch("/api/site-config", { cache: "force-cache" });
+    const config = await response.json();
+    installGa4(config?.analytics?.gaMeasurementId);
+  } catch {
+    window.dataLayer = window.dataLayer || [];
+  }
+}
+
 function upsertLink(rel, href, attrs = {}) {
   let link = document.querySelector(`link[rel="${rel}"]`);
   if (!link) {
@@ -3042,7 +3104,9 @@ function wireGlobalSearch() {
       event.preventDefault();
       const q = String(new FormData(form).get("q") || "").trim();
       if (!q) return;
-      location.hash = `#/search?q=${encodeURIComponent(q)}`;
+      trackEvent("search", { search_term: q });
+      history.pushState({}, "", `/search?q=${encodeURIComponent(q)}`);
+      navigate();
     });
   });
 }
@@ -3365,7 +3429,7 @@ function websiteSchema() {
     publisher: { "@id": `${siteUrl}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteUrl}/#/search?q={search_term_string}`,
+      target: `${siteUrl}/search?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
@@ -4527,6 +4591,13 @@ async function catalogJewelryDetail(productId) {
     const videoUrl = safeExternalUrl(product.metadata?.videoUrl || product.videoUrl);
     const gallery = (product.gallery || []).map(safeExternalUrl).filter(Boolean);
     const price = Number(product.price ?? (product.priceCents ? product.priceCents / 100 : 0));
+    trackEvent("view_item", {
+      item_id: product.id,
+      item_name: product.name,
+      item_category: product.category,
+      value: price || 0,
+      currency: "USD",
+    });
     container.innerHTML = `
       <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero">
         <div class="product-media-stack">
@@ -5104,6 +5175,13 @@ function manualProductInformation(product) {
 function productDetail(id) {
   const product = allProducts().find((p) => p.id === id) || products[0];
   if (product.imported) return importedProductDetail(product);
+  trackEvent("view_item", {
+    item_id: product.id,
+    item_name: productName(product),
+    item_category: product.category,
+    value: Number(product.price || product.estimate || 0),
+    currency: "USD",
+  });
   setSeo(`${productName(product)} | ${businessName}`, `${startingText(product)} from ${businessName}. Configure custom jewelry details, diamond options, metal, sizing, and private jeweler consultation.`, {
     path: productUrl(product.id),
     image: product.image || fallbackImage,
@@ -5296,6 +5374,13 @@ function renderSummary(product) {
   document.getElementById("add-cart").addEventListener("click", () => {
     cart.push({ id: product.id, name: productName(product), image: product.image, price: price || 0, quantity: 1, pricingNote: naturalDiamond ? "Request pricing" : "", selections: {...selections, "Live Diamond": liveDiamondLabel(liveDiamond)} });
     localStorage.setItem("donCart", JSON.stringify(cart));
+    trackEvent("add_to_cart", {
+      item_id: product.id,
+      item_name: productName(product),
+      item_category: product.category,
+      value: price || 0,
+      currency: "USD",
+    });
     document.getElementById("cart-note").hidden = false;
   });
 }
@@ -5461,6 +5546,13 @@ function renderImportedSummary(product) {
   document.getElementById("imported-add-inquiry")?.addEventListener("click", () => {
     cart.push({ id: product.id, name: productName(product), image: product.imageUrl || product.image, price: 0, quantity: 1, pricingNote: "Request Pricing", selections: { ...selections, Product: productName(product), Category: product.category } });
     localStorage.setItem("donCart", JSON.stringify(cart));
+    trackEvent("add_to_cart", {
+      item_id: product.id,
+      item_name: productName(product),
+      item_category: product.category,
+      value: 0,
+      currency: "USD",
+    });
     document.getElementById("imported-cart-note").hidden = false;
   });
 }
@@ -5489,6 +5581,13 @@ function importedSelectedPrice(product) {
 function importedProductDetail(product) {
   const fields = importedProductFields(product);
   initSelections(fields);
+  trackEvent("view_item", {
+    item_id: product.id,
+    item_name: productName(product),
+    item_category: product.category,
+    value: Number(product.price || product.estimate || 0),
+    currency: "USD",
+  });
   shell(`
     <main>
       <section class="product-detail-hero">
@@ -5901,12 +6000,23 @@ async function sendWebsiteRequest(payload) {
   if (!response.ok || data.ok === false) {
     throw new Error(data.message || "Email notification could not be sent.");
   }
+  trackEvent("generate_lead", {
+    lead_type: payload?.type || payload?.jewelry?.requestType || "Website Request",
+    item_name: payload?.jewelry?.productName || "",
+    item_category: payload?.jewelry?.productCategory || "",
+  });
   return data;
 }
 
 function sendStripeStartAlert(link) {
   const payableItems = payableCartItems();
   const total = Number(link.dataset.stripeTotal || cartTotal(payableItems) || 0);
+  trackEvent("begin_checkout", {
+    checkout_type: "stripe_payment_link",
+    value: total,
+    currency: "USD",
+    items: payableItems.map((item) => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: item.quantity })),
+  });
   const payload = {
     type: "Stripe checkout started",
     source: location.href,
@@ -5948,6 +6058,11 @@ async function startProductCheckout(button) {
   const original = button.textContent;
   button.disabled = true;
   button.textContent = "Opening secure checkout...";
+  trackEvent("begin_checkout", {
+    checkout_type: "product_checkout",
+    item_id: button.dataset.buyProduct || "",
+    currency: "USD",
+  });
   try {
     const response = await fetchWithTimeout("/api/create-checkout-session", {
       method: "POST",
@@ -7637,6 +7752,7 @@ function scrollRouteToTop() {
 
 function navigate() {
   router();
+  trackPageView();
   scrollRouteToTop();
 }
 
@@ -7653,6 +7769,7 @@ document.addEventListener("click", (event) => {
   history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
   navigate();
 });
+loadAnalyticsConfig();
 loadApprovedProducts().finally(() => {
   navigate();
   hideSplashScreen();
