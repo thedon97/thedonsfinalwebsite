@@ -3927,7 +3927,7 @@ function home() {
           <p>Select diamond size, stone shape, color, clarity, metal, and exact ring size. Built for serious buyers who want a clear luxury quote before moving forward.</p>
           <div class="hero-actions">
             <a class="button button-gold" href="${internalLink("start-custom-ring-design")}">Start Your Custom Ring Design</a>
-            <a class="button button-light" href="${internalLink("custom-engagement-rings")}">View Engagement Rings</a>
+            <a class="button button-light" href="${categoryUrl("engagement-rings")}">View Engagement Rings</a>
           </div>
         </div>
         <div class="ring-showcase" aria-label="Featured engagement rings">
@@ -4082,6 +4082,15 @@ function searchPage(params = new URLSearchParams()) {
       </section>
       <section class="search-results-section">
         <div class="section-heading">
+          <p class="eyebrow">Marketplace & Supplier Results</p>
+          <h2>Matching jewelry from the full catalog</h2>
+        </div>
+        <div class="product-grid" id="search-api-results">
+          ${q ? Array.from({ length: 4 }, () => `<div class="product-card product-skeleton" aria-hidden="true"></div>`).join("") : `<div class="empty-state">Search by item type, diamond shape, metal, stock number, or style.</div>`}
+        </div>
+      </section>
+      <section class="search-results-section">
+        <div class="section-heading">
           <p class="eyebrow">Pages & Categories</p>
           <h2>Related places to continue</h2>
         </div>
@@ -4095,6 +4104,25 @@ function searchPage(params = new URLSearchParams()) {
       </section>
     </main>
   `);
+  wireSearchApiResults(q, productMatches.map((product) => product.id));
+}
+
+async function wireSearchApiResults(query, localMatchIds = []) {
+  const grid = document.getElementById("search-api-results");
+  if (!grid || !query) return;
+  try {
+    const params = new URLSearchParams({ search: query, limit: "36", page: "1" });
+    const response = await fetchWithTimeout(`/api/products?${params}`);
+    const payload = await response.json();
+    if (!payload.ok) throw new Error(payload.message || "Product search failed.");
+    const localIds = new Set(localMatchIds);
+    const items = (payload.items || []).filter((item) => !localIds.has(item.id)).slice(0, 24);
+    grid.innerHTML = items.length
+      ? items.map((item, index) => savedProductCard(item, index)).join("")
+      : `<div class="empty-state">No additional catalog items matched. Try "lab diamond", "bracelet", "pendant", "ring", "gold", or request help finding it.</div>`;
+  } catch {
+    grid.innerHTML = `<div class="empty-state">Full catalog search is temporarily unavailable. Local products and request forms are still available.</div>`;
+  }
 }
 
 function wireProductFilterPanel() {
@@ -4186,6 +4214,11 @@ function savedProductCard(product, index = 0) {
 function databaseCategoryPage(slug, label) {
   const categoryName = slug === "cvd-lab-grown-diamond-jewelry" ? "" : label;
   const path = slug === "all" ? "products" : categoryUrl(slug);
+  const fallbackProducts = slug === "all"
+    ? allProducts()
+    : slug === "cvd-lab-grown-diamond-jewelry"
+      ? allProducts().filter((product) => product.source === "lgd-jewelry" || /lab|cvd|grown/i.test(productSearchHaystack(product)))
+      : allProducts().filter((product) => !label || productMatchesCategory(product, label));
   const description = `Shop ${label || "luxury jewelry"} from ${businessName}, a private jeweler for custom jewelry, lab grown diamonds, natural diamonds, engagement rings, wedding bands, chains, pendants, bracelets, and watches.`;
   setSeo(`Shop ${label || "Jewelry"} | ${businessName}`, description, {
     path,
@@ -4213,10 +4246,11 @@ function databaseCategoryPage(slug, label) {
     category: categoryName,
     source: slug === "cvd-lab-grown-diamond-jewelry" ? "lgd-jewelry" : "",
     featured: slug === "bracelets" ? braceletFeaturedIds : [],
+    fallbackProducts,
   });
 }
 
-function wireDatabaseCategory({ category, source, featured }) {
+function wireDatabaseCategory({ category, source, featured, fallbackProducts = [] }) {
   const grid = document.getElementById("database-product-grid");
   const pagination = document.getElementById("database-product-pagination");
   const sort = document.getElementById("category-sort");
@@ -4237,6 +4271,9 @@ function wireDatabaseCategory({ category, source, featured }) {
           const bRank = rank.has(b.id) ? rank.get(b.id) : 999;
           return aRank - bRank;
         });
+      }
+      if (!items.length && fallbackProducts.length) {
+        items = fallbackProducts.slice(0, 24);
       }
       grid.innerHTML = items.length ? items.map((item, index) => savedProductCard(item, index)).join("") : `<div class="empty-state">No available products were found in this category.</div>`;
       pagination.innerHTML = `

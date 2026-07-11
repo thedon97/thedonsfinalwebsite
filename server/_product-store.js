@@ -165,13 +165,34 @@ async function seedSnapshotProducts() {
   return snapshotSeedPromise;
 }
 
-async function listProducts({ category = "", page = 1, limit = 24, sort = "price-asc", source = "" } = {}) {
+function productSearchText(product) {
+  return [
+    product.id,
+    product.externalId,
+    product.name,
+    product.category,
+    product.description,
+    product.lede,
+    product.specs,
+    product.metadata,
+    product.badges,
+    product.fields,
+  ].map((value) => {
+    if (Array.isArray(value)) return value.map((item) => JSON.stringify(item)).join(" ");
+    if (value && typeof value === "object") return JSON.stringify(value);
+    return String(value || "");
+  }).join(" ").toLowerCase();
+}
+
+async function listProducts({ category = "", page = 1, limit = 24, sort = "price-asc", source = "", search = "" } = {}) {
   const safePage = Math.max(1, Number(page) || 1);
   const safeLimit = Math.min(48, Math.max(1, Number(limit) || 24));
+  const cleanSearch = String(search || "").trim().toLowerCase();
   if (!databaseConfigured()) {
     let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
     if (category) items = items.filter((item) => item.category === normalizeCategory(category));
     if (source) items = items.filter((item) => item.source === source);
+    if (cleanSearch) items = items.filter((item) => productSearchText(item).includes(cleanSearch));
     items.sort((a, b) => {
       if (normalizeCategory(category) === "Bracelets") {
         const aRank = BRACELET_FEATURED_IDS.indexOf(a.id);
@@ -202,6 +223,18 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   if (source) {
     values.push(source);
     where.push(`source=$${values.length}`);
+  }
+  if (cleanSearch) {
+    values.push(`%${cleanSearch}%`);
+    where.push(`(
+      LOWER(COALESCE(id, '')) LIKE $${values.length}
+      OR LOWER(COALESCE(external_id, '')) LIKE $${values.length}
+      OR LOWER(COALESCE(name, '')) LIKE $${values.length}
+      OR LOWER(COALESCE(category, '')) LIKE $${values.length}
+      OR LOWER(COALESCE(description, '')) LIKE $${values.length}
+      OR LOWER(specs::text) LIKE $${values.length}
+      OR LOWER(metadata::text) LIKE $${values.length}
+    )`);
   }
   const priceOrder = sort === "price-desc"
     ? "price_cents DESC NULLS LAST, name ASC"

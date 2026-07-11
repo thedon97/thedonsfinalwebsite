@@ -23,6 +23,7 @@ module.exports = async function handler(req, res) {
       limit: params.get("limit") || 24,
       sort: params.get("sort") || "price-asc",
       source: params.get("source") || "",
+      search: params.get("search") || params.get("q") || "",
     });
     sendJson(res, 200, {
       ok: true,
