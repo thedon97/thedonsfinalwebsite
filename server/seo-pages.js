@@ -293,6 +293,18 @@ const staticPageMeta = {
     label: "Custom Engagement Rings NYC",
     priority: "0.9",
   },
+  "/engagement-rings-nyc": {
+    title: "Engagement Rings NYC | Custom Diamond Rings | The Don Jewelers",
+    description: "Engagement rings in NYC with private jeweler support for lab-grown diamonds, natural diamonds, custom settings, CAD design, ring sizing, appointment booking, and personalized quotes.",
+    label: "Engagement Rings NYC",
+    priority: "0.92",
+  },
+  "/engagement-rings-tri-state": {
+    title: "Engagement Rings Tri-State Area | NY NJ CT PA | The Don Jewelers",
+    description: "Custom engagement rings for Tri-State clients across New York, New Jersey, Connecticut, Pennsylvania, Allentown, and Lehigh Valley with diamond sourcing and private quote support.",
+    label: "Engagement Rings Tri-State",
+    priority: "0.9",
+  },
   "/lab-diamond-engagement-rings-nyc": {
     title: "Lab Diamond Engagement Rings NYC | CVD Diamond Rings",
     description: "Lab diamond engagement rings for NYC and Diamond District clients comparing certified CVD diamonds, custom settings, ring size, metal, CAD design, and private jeweler sourcing.",
@@ -304,6 +316,18 @@ const staticPageMeta = {
     description: "Custom diamond pendants in NYC including name pendants, initials, crosses, religious pendants, CAD pendant design, and lab or natural diamond options.",
     label: "Custom Diamond Pendants NYC",
     priority: "0.86",
+  },
+  "/custom-jewelry-allentown-pa": {
+    title: "Custom Jewelry Allentown PA | Engagement Rings & Pendants",
+    description: "Custom jewelry for Allentown PA clients including engagement rings, diamond pendants, tennis bracelets, chains, CAD design, lab diamonds, natural diamonds, and appointment-based quotes.",
+    label: "Custom Jewelry Allentown PA",
+    priority: "0.88",
+  },
+  "/custom-jewelry-lehigh-valley": {
+    title: "Custom Jewelry Lehigh Valley | Private Jeweler | The Don Jewelers",
+    description: "Private custom jeweler serving Lehigh Valley clients with engagement rings, diamond jewelry, pendants, tennis bracelets, CAD design, financing guidance, and insured shipping.",
+    label: "Custom Jewelry Lehigh Valley",
+    priority: "0.88",
   },
   "/tennis-bracelets-allentown-pa": {
     title: "Tennis Bracelets Allentown PA | Lab Diamond Bracelets",
@@ -358,6 +382,12 @@ const staticPageMeta = {
     description: "Engagement ring page for The Don Jewelers with lab diamonds, natural diamonds, custom settings, CAD design, private consultation, and proposal jewelry guidance.",
     label: "The Don Jewelers Engagement Rings",
     priority: "0.92",
+  },
+  "/diamond-pendants-allentown-pa": {
+    title: "Diamond Pendants Allentown PA | Custom Pendants & Charms",
+    description: "Diamond pendants for Allentown PA and Lehigh Valley clients including custom name pendants, initial pendants, cross pendants, religious charms, and CAD-designed pieces.",
+    label: "Diamond Pendants Allentown PA",
+    priority: "0.84",
   },
   "/blog": {
     title: "Jewelry Education Blog | The Don Jewelers",
@@ -443,7 +473,10 @@ function productDescription(product) {
     specs["Stock Number"] && `stock ${specs["Stock Number"]}`,
   ].filter(Boolean);
   const suffix = details.length ? `, ${details.join(", ")}` : "";
-  return `Shop ${product?.name || "this diamond jewelry"}${suffix}, available from ${BUSINESS_NAME}.`;
+  const category = product?.category ? `${product.category} ` : "";
+  const price = priceFromProduct(product);
+  const priceText = price ? ` Pricing starts at ${money(price)} before final sizing, metal, and customization review.` : " Request current pricing, exact specifications, and availability before purchase.";
+  return `Shop ${category}${product?.name || "diamond jewelry"}${suffix}, available from ${BUSINESS_NAME}. Request a private jeweler quote for metal, sizing, diamond quality, insured shipping, and appointment-based purchase support.${priceText}`;
 }
 
 function productTitle(product) {
@@ -456,7 +489,11 @@ function productTitle(product) {
     specs.Clarity,
     specs["Stock Number"],
   ].filter(Boolean);
-  return `${parts.length ? parts.join(" ") : product.name} | The Don Jewelers`;
+  const base = parts.length ? `${product.name} ${parts.join(" ")}` : product.name;
+  const category = product?.category && !String(base).toLowerCase().includes(String(product.category).toLowerCase())
+    ? ` ${product.category}`
+    : "";
+  return `${base}${category} | The Don Jewelers`;
 }
 
 function storeAggregateRating() {
@@ -671,8 +708,14 @@ function productMain(product) {
               ? `<button class="button button-gold" type="button" data-buy-product="${escapeHtml(product.id)}">Buy Now / Checkout with Stripe - ${escapeHtml(money(price))}</button>`
               : `<a class="button button-gold" href="/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Product Inquiry")}">Request Pricing</a>`}
             <a class="button button-dark" href="/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Product Inquiry")}">Ask a Question</a>
+            <a class="button button-light" href="/request/appointment">Book Appointment</a>
           </div>
         </div>
+      </section>
+      <section class="trust-block-section" aria-label="Product purchase trust">
+        <article><strong>Private quote review</strong><p>Every product inquiry can be reviewed for exact diamond weight, gold weight, size, availability, and customization before purchase.</p></article>
+        <article><strong>Secure checkout support</strong><p>Checkout-start and payment events are logged and emailed so customer purchase attempts do not disappear.</p></article>
+        <article><strong>Insured shipping</strong><p>Jewelry orders can be handled with secure payment review, insured shipping, and appointment-based pickup or consultation where applicable.</p></article>
       </section>
     </main>
   `;
@@ -855,6 +898,8 @@ async function diamondPage(req, res, certNumber) {
 }
 
 function pageMain(meta) {
+  const ctas = moneyPageCtas(meta.path);
+  const supporting = moneyPageSupport(meta);
   return `
     <main>
       <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero">
@@ -863,13 +908,63 @@ function pageMain(meta) {
           <h1>${escapeHtml(meta.label)}</h1>
           <p>${escapeHtml(meta.description)}</p>
           <div class="builder-actions">
-            <a class="button button-gold" href="/request">Schedule an Appointment</a>
-            <a class="button button-dark" href="/products">Browse Jewelry</a>
+            ${ctas.map((cta, index) => `<a class="button ${index === 0 ? "button-gold" : index === 1 ? "button-dark" : "button-light"}" href="${escapeHtml(cta.href)}">${escapeHtml(cta.label)}</a>`).join("")}
           </div>
         </div>
       </section>
+      <section class="trust-block-section" aria-label="${escapeHtml(meta.label)} trust and next steps">
+        ${supporting.map((item) => `<article><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></article>`).join("")}
+      </section>
     </main>
   `;
+}
+
+function moneyPageCtas(pathname = "") {
+  const pathText = String(pathname || "");
+  if (/pendant|tennis|bracelet|chain|jewelry|private|appointment|custom|don-jewelers/i.test(pathText)) {
+    return [
+      { href: "/request/appointment", label: "Book Appointment" },
+      { href: "/custom-orders", label: "Request Custom Quote" },
+      { href: "/products", label: "Browse Jewelry" },
+    ];
+  }
+  if (/financing/i.test(pathText)) {
+    return [
+      { href: "/request/appointment", label: "Book Financing Consultation" },
+      { href: "/products", label: "Browse Jewelry" },
+      { href: "/start-custom-ring-design", label: "Start Ring Design" },
+    ];
+  }
+  if (/ring|engagement|diamond/i.test(pathText)) {
+    return [
+      { href: "/start-custom-ring-design", label: "Start Custom Ring Design" },
+      { href: "/request/appointment", label: "Book Appointment" },
+      { href: "/select-diamond", label: "View Live Diamonds" },
+    ];
+  }
+  return [
+    { href: "/request/appointment", label: "Book Appointment" },
+    { href: "/start-custom-ring-design", label: "Start Custom Ring Design" },
+    { href: "/products", label: "Browse Jewelry" },
+  ];
+}
+
+function moneyPageSupport(meta) {
+  const label = meta?.label || "Jewelry";
+  return [
+    {
+      title: "Quote-first buying path",
+      body: `${label} visitors can request a private quote, book an appointment, or send design details before committing to final specs.`,
+    },
+    {
+      title: "Verified local signals",
+      body: "The official Google Business Profile, consistent phone number, service-area schema, and review links reinforce local trust for NYC, Allentown, the Tri-State area, and nationwide clients.",
+    },
+    {
+      title: "Lead-safe forms",
+      body: "Appointment, quote, custom design, product inquiry, and checkout-start requests are routed through the website lead email system for business notification and customer confirmation.",
+    },
+  ];
 }
 
 function pageJsonLd(meta, url) {
@@ -1007,8 +1102,12 @@ async function sitemap(req, res) {
     ["/lab-diamond-engagement-rings-allentown", "monthly", "0.88"],
     ["/private-jeweler-allentown", "monthly", "0.86"],
     ["/custom-engagement-rings-nyc", "monthly", "0.9"],
+    ["/engagement-rings-nyc", "monthly", "0.92"],
+    ["/engagement-rings-tri-state", "monthly", "0.9"],
     ["/lab-diamond-engagement-rings-nyc", "monthly", "0.9"],
     ["/custom-diamond-pendants-nyc", "monthly", "0.86"],
+    ["/custom-jewelry-allentown-pa", "monthly", "0.88"],
+    ["/custom-jewelry-lehigh-valley", "monthly", "0.88"],
     ["/tennis-bracelets-allentown-pa", "monthly", "0.86"],
     ["/cvd-lab-grown-diamond-jewelry", "daily", "0.88"],
     ["/diamond-rings-near-me", "monthly", "0.88"],
@@ -1018,6 +1117,7 @@ async function sitemap(req, res) {
     ["/the-don-jewelers-and-jewelry", "monthly", "0.95"],
     ["/don-jewelers-nyc", "monthly", "0.9"],
     ["/the-don-jewelers-engagement-rings", "monthly", "0.92"],
+    ["/diamond-pendants-allentown-pa", "monthly", "0.84"],
     ["/blog", "weekly", "0.7"],
   ];
   const urls = [

@@ -4157,6 +4157,15 @@ function searchPage(params = new URLSearchParams()) {
       </section>
       <section class="search-results-section">
         <div class="section-heading">
+          <p class="eyebrow">Live Diamond Results</p>
+          <h2>Matching CVD diamond inventory</h2>
+        </div>
+        <div class="diamond-inventory-grid" id="search-diamond-results">
+          ${q ? Array.from({ length: 3 }, () => `<div class="product-card product-skeleton" aria-hidden="true"></div>`).join("") : `<div class="empty-state">Search by diamond shape, carat, color, clarity, stock number, or IGI report.</div>`}
+        </div>
+      </section>
+      <section class="search-results-section">
+        <div class="section-heading">
           <p class="eyebrow">Pages & Categories</p>
           <h2>Related places to continue</h2>
         </div>
@@ -4171,6 +4180,7 @@ function searchPage(params = new URLSearchParams()) {
     </main>
   `);
   wireSearchApiResults(q, productMatches.map((product) => product.id));
+  wireSearchDiamondResults(q);
 }
 
 async function wireSearchApiResults(query, localMatchIds = []) {
@@ -4188,6 +4198,73 @@ async function wireSearchApiResults(query, localMatchIds = []) {
       : `<div class="empty-state">No additional catalog items matched. Try "lab diamond", "bracelet", "pendant", "ring", "gold", or request help finding it.</div>`;
   } catch {
     grid.innerHTML = `<div class="empty-state">Full catalog search is temporarily unavailable. Local products and request forms are still available.</div>`;
+  }
+}
+
+function diamondSearchHaystack(diamond) {
+  return [
+    diamond.id,
+    diamond.stockNumber,
+    diamond.reportNumber,
+    diamond.shape,
+    diamond.carat,
+    diamond.color,
+    diamond.clarity,
+    diamond.cut,
+    diamond.polish,
+    diamond.symmetry,
+    diamond.certificate,
+    diamond.lab,
+    diamond.growthMethod,
+    diamond.diamondType,
+  ].map(searchText).join(" ").toLowerCase();
+}
+
+function searchDiamondResultCard(diamond) {
+  const imageUrl = safeExternalUrl(diamond.imageUrl || diamond.mediaUrl);
+  const href = liveDiamondUrl(diamond);
+  const price = numericPrice(String(diamond.price || "").replace(/[^0-9.]/g, ""));
+  const label = `${diamond.shape || "CVD"} ${diamond.carat ? `${diamond.carat}ct ` : ""}Diamond`;
+  return `
+    <article class="diamond-inventory-card">
+      ${imageUrl ? `<a href="${href}" aria-label="View ${htmlSafe(label)}"><img class="diamond-inventory-image" src="${htmlSafe(imageUrl)}" alt="${htmlSafe(label)}" loading="lazy"></a>` : ""}
+      <div>
+        <p class="eyebrow">${htmlSafe(diamond.diamondType || "Live CVD Diamond")}</p>
+        <h3><a href="${href}">${htmlSafe(label)}</a></h3>
+        <p class="muted">${htmlSafe(diamondSpecs(diamond))}</p>
+        ${diamond.stockNumber ? `<p class="diamond-report-pill">Stock # ${htmlSafe(diamond.stockNumber)}</p>` : ""}
+        ${diamond.reportNumber ? `<p class="diamond-report-pill">IGI Report # ${htmlSafe(diamond.reportNumber)}</p>` : ""}
+        ${price ? `<p class="product-price">${htmlSafe(money.format(price))}</p>` : ""}
+      </div>
+      <div class="builder-actions">
+        <a class="button button-light" href="${href}">View Details</a>
+        <a class="button button-gold" href="#/request/product?product=${encodeURIComponent(label)}&category=Live%20Diamond%20Selection&intent=search-result">Request This Diamond</a>
+      </div>
+    </article>
+  `;
+}
+
+async function wireSearchDiamondResults(query) {
+  const grid = document.getElementById("search-diamond-results");
+  if (!grid || !query) return;
+  try {
+    const endpoints = ["/api/diamonds/certified?page=1", "/api/diamonds/certified-color?page=1"];
+    const results = await Promise.allSettled(endpoints.map(async (endpoint) => {
+      const response = await fetchWithTimeout(endpoint, {}, 20000);
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.message || payload.error || "Diamond inventory unavailable.");
+      return payload.diamonds || [];
+    }));
+    const normalized = query.toLowerCase();
+    const diamonds = results
+      .flatMap((result) => result.status === "fulfilled" ? result.value : [])
+      .filter((diamond) => diamondSearchHaystack(diamond).includes(normalized))
+      .slice(0, 12);
+    grid.innerHTML = diamonds.length
+      ? diamonds.map(searchDiamondResultCard).join("")
+      : `<div class="empty-state">No live diamonds matched that search. Try a shape like "oval" or "round", or request help sourcing a diamond.</div>`;
+  } catch {
+    grid.innerHTML = `<div class="empty-state">Live diamond search is temporarily unavailable. Use Live Diamond Selection or send a product inquiry and we will source options.</div>`;
   }
 }
 
@@ -6828,6 +6905,7 @@ function customOrders() {
       <section class="custom-form-section">
         ${customRequestForm({ formId: "custom-form", requestType: "Request Custom Design Form" })}
       </section>
+      ${trustBlockSection()}
       ${aboutUs()}
     </main>
   `);
@@ -6863,6 +6941,7 @@ function customRingDesignPage() {
       <section class="custom-form-section">
         ${customRingRequestForm("custom-ring-request-form")}
       </section>
+      ${trustBlockSection()}
       ${officialGoogleProfileSection()}
     </main>
   `);

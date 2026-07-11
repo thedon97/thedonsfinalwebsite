@@ -183,12 +183,32 @@
       "destination": "/api/index?route=seo&action=page&path=custom-engagement-rings-nyc"
     },
     {
+      "source": "/engagement-rings-nyc",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-nyc"
+    },
+    {
+      "source": "/engagement-rings-tri-state",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-tri-state"
+    },
+    {
       "source": "/lab-diamond-engagement-rings-nyc",
       "destination": "/api/index?route=seo&action=page&path=lab-diamond-engagement-rings-nyc"
     },
     {
       "source": "/custom-diamond-pendants-nyc",
       "destination": "/api/index?route=seo&action=page&path=custom-diamond-pendants-nyc"
+    },
+    {
+      "source": "/custom-jewelry-allentown-pa",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry-allentown-pa"
+    },
+    {
+      "source": "/custom-jewelry-lehigh-valley",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry-lehigh-valley"
+    },
+    {
+      "source": "/diamond-pendants-allentown-pa",
+      "destination": "/api/index?route=seo&action=page&path=diamond-pendants-allentown-pa"
     },
     {
       "source": "/tennis-bracelets-allentown-pa",
