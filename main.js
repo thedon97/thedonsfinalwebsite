@@ -2781,62 +2781,84 @@ function internalLink(path) {
   return routePath(path);
 }
 
+let analyticsEnabled = false;
+let analyticsDebug = false;
+let lastTrackedPage = "";
+
+function analyticsLocation() {
+  return `${location.origin}${location.pathname}${location.hash ? `#/${currentRoutePath()}` : ""}`;
+}
+
 function trackEvent(eventName, params = {}) {
   const cleanName = String(eventName || "").replace(/[^a-zA-Z0-9_]/g, "_").slice(0, 40);
   if (!cleanName) return;
   const payload = {
     business_name: businessName,
     page_path: currentRoutePath(),
-    page_location: location.href,
+    page_location: analyticsLocation(),
     ...params,
   };
-  if (typeof window.gtag === "function") {
+  if (analyticsEnabled && typeof window.gtag === "function") {
     window.gtag("event", cleanName, payload);
+  } else {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: cleanName, ...payload });
   }
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: cleanName, ...payload });
 }
 
 function trackPageView() {
   const pagePath = currentRoutePath();
-  if (typeof window.gtag === "function") {
+  const pageKey = `${pagePath}|${document.title}`;
+  if (pageKey === lastTrackedPage) return;
+  lastTrackedPage = pageKey;
+  if (analyticsEnabled && typeof window.gtag === "function") {
     window.gtag("event", "page_view", {
       page_title: document.title,
-      page_location: location.href,
+      page_location: analyticsLocation(),
+      page_path: pagePath,
+    });
+  } else {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "page_view",
+      page_title: document.title,
+      page_location: analyticsLocation(),
       page_path: pagePath,
     });
   }
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "page_view",
-    page_title: document.title,
-    page_location: location.href,
-    page_path: pagePath,
-  });
 }
 
-function installGa4(measurementId) {
+function installGa4(measurementId, options = {}) {
   const id = String(measurementId || "").trim();
-  if (!/^G-[A-Z0-9]+$/i.test(id) || document.querySelector(`script[data-ga4="${id}"]`)) return;
+  if (!options.enabled || !/^G-[A-Z0-9]+$/i.test(id) || document.querySelector(`script[data-ga4="${id}"]`)) return;
+  const consentRequired = Boolean(options.consentRequired);
+  const consentGranted = !consentRequired || localStorage.getItem("donAnalyticsConsent") === "granted";
+  if (!consentGranted || navigator.doNotTrack === "1") return;
+  analyticsEnabled = true;
+  analyticsDebug = Boolean(options.debug);
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
   window.gtag("js", new Date());
-  window.gtag("config", id, { send_page_view: false });
+  window.gtag("config", id, { send_page_view: false, debug_mode: analyticsDebug });
   const script = document.createElement("script");
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
   script.dataset.ga4 = id;
   document.head.appendChild(script);
+  lastTrackedPage = "";
+  trackPageView();
 }
 
 async function loadAnalyticsConfig() {
   try {
     const response = await fetch("/api/site-config", { cache: "force-cache" });
     const config = await response.json();
-    installGa4(config?.analytics?.gaMeasurementId || gaMeasurementId);
+    const verification = String(config?.searchConsole?.siteVerification || "").trim();
+    if (verification) upsertMeta('meta[name="google-site-verification"]', "name", "google-site-verification", verification);
+    installGa4(config?.analytics?.gaMeasurementId || gaMeasurementId, config?.analytics || {});
   } catch {
     window.dataLayer = window.dataLayer || [];
-    installGa4(gaMeasurementId);
+    installGa4(gaMeasurementId, { enabled: location.hostname === "www.thedonjewelersandjewelrynyc.com" });
   }
 }
 
@@ -2891,7 +2913,7 @@ function requestHref(product, intent = "product") {
 function hideSplashScreen() {
   const splash = document.getElementById("site-splash");
   if (!splash) return;
-  const minimumVisibleMs = 1800;
+  const minimumVisibleMs = 250;
   const remaining = Math.max(0, minimumVisibleMs - (Date.now() - splashStartedAt));
   window.setTimeout(() => {
     splash.classList.add("is-hiding");
@@ -3202,18 +3224,6 @@ function localBusinessSchema() {
         availableLanguage: ["en"],
       },
     ],
-    openingHoursSpecification: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-    ].map((dayOfWeek) => ({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek,
-      opens: "08:00",
-      closes: "20:00",
-    })),
     address: {
       "@type": "PostalAddress",
       addressLocality: "New York",
@@ -3269,38 +3279,6 @@ function articleSchema(article, path, type = "Article") {
       "@type": "Organization",
       name: businessName,
       logo: { "@type": "ImageObject", url: `${siteUrl}/don-logo.jpg` },
-    },
-  };
-}
-
-function storeAggregateRatingSchema() {
-  return {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    bestRating: "5",
-    worstRating: "1",
-    reviewCount: "1",
-  };
-}
-
-function storeReviewSchema() {
-  return {
-    "@type": "Review",
-    name: "Store-level customer experience",
-    reviewBody: "Store-level customer feedback reflects private jeweler guidance for custom jewelry, diamond sourcing, and fine jewelry orders.",
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: "5",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    author: {
-      "@type": "Organization",
-      name: "Verified The Don Jewelers clients",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: businessName,
     },
   };
 }
@@ -3377,8 +3355,6 @@ function productSchema(product) {
     brand: { "@type": "Brand", name: businessName },
     category: product.category,
     sku: product.id,
-    aggregateRating: storeAggregateRatingSchema(),
-    review: storeReviewSchema(),
     offers: {
       "@type": "Offer",
       url: canonicalUrl(productUrl(product.id)),
@@ -5889,6 +5865,14 @@ function updateDraftFromForm(drafts, card) {
 function wireRequestForm(formId, successText) {
   const form = document.getElementById(formId);
   if (!form) return;
+  form.addEventListener("focusin", () => {
+    if (form.dataset.analyticsStarted) return;
+    form.dataset.analyticsStarted = "true";
+    trackEvent("quote_form_start", {
+      form_id: form.id,
+      lead_type: form.dataset.requestType || "Website Request",
+    });
+  });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const button = form.querySelector("button[type='submit']");
@@ -6086,6 +6070,18 @@ async function sendWebsiteRequest(payload) {
   trackEvent("generate_lead", {
     lead_type: payload?.type || payload?.jewelry?.requestType || "Website Request",
     item_name: payload?.jewelry?.productName || "",
+    item_category: payload?.jewelry?.productCategory || "",
+  });
+  const leadType = String(payload?.type || payload?.jewelry?.requestType || "").toLowerCase();
+  const eventName = /appointment|consult/.test(leadType) ? "appointment_request"
+    : /contact/.test(leadType) ? "contact_form_submit"
+      : /engagement|ring builder/.test(leadType) ? "ring_design_submit"
+        : /custom/.test(leadType) ? "custom_jewelry_submit"
+          : /product/.test(leadType) ? "product_inquiry_submit"
+            : /financ/.test(leadType) ? "financing_request"
+              : "quote_form_submit";
+  trackEvent(eventName, {
+    lead_type: payload?.type || payload?.jewelry?.requestType || "Website Request",
     item_category: payload?.jewelry?.productCategory || "",
   });
   return data;
@@ -7228,6 +7224,15 @@ function adminDashboard() {
       </section>
       <section class="admin-dashboard-section">
         <div class="admin-toolbar">
+          <strong>SEO & Analytics</strong>
+          <button class="button button-dark" id="refresh-seo-dashboard" type="button">Refresh SEO Status</button>
+        </div>
+        <div id="admin-seo-dashboard" class="admin-request-list">
+          <div class="empty-state">Enter the admin recovery key to load secure SEO and conversion status.</div>
+        </div>
+      </section>
+      <section class="admin-dashboard-section">
+        <div class="admin-toolbar">
           <strong>Diamond API readiness</strong>
           <button class="button button-dark" id="refresh-diamond-api-status" type="button">Check Diamond API</button>
         </div>
@@ -7391,6 +7396,38 @@ function adminDashboard() {
       host.innerHTML = `<div class="empty-state">${htmlSafe(error.message || "Could not load lead recovery.")}</div>`;
     }
   };
+  const renderSeoDashboard = async () => {
+    const host = document.getElementById("admin-seo-dashboard");
+    const key = adminLeadKey();
+    if (!key) {
+      host.innerHTML = `<div class="empty-state">Enter the admin recovery key above, then refresh SEO status.</div>`;
+      return;
+    }
+    host.innerHTML = `<div class="empty-state">Loading secure SEO status...</div>`;
+    try {
+      const response = await fetchWithTimeout("/api/admin/seo-dashboard", { headers: { "x-admin-key": key } }, 20000);
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.message || "Could not load SEO status.");
+      const integrations = payload.integrations || {};
+      const conversions = payload.conversions || {};
+      host.innerHTML = `
+        <article class="admin-request-card">
+          <div><p class="eyebrow">Tracking readiness</p><h2>${integrations.ga4Configured ? "GA4 configured" : "GA4 setup required"}</h2><p class="lede">${htmlSafe(payload.googleDataMessage)}</p></div>
+          <dl class="summary-list">
+            <div><dt>Search Console verification</dt><dd>${integrations.searchConsoleVerificationConfigured ? "Configured" : "Use existing verification or add env token"}</dd></div>
+            <div><dt>Google reporting APIs</dt><dd>${integrations.analyticsApiConfigured || integrations.searchConsoleApiConfigured ? "Connected" : "Not connected"}</dd></div>
+            <div><dt>Lead records sampled</dt><dd>${Number(conversions.availableLeadSample || 0)}</dd></div>
+            <div><dt>Quote/custom requests</dt><dd>${Number(conversions.quoteSubmissions || 0)}</dd></div>
+            <div><dt>Appointment requests</dt><dd>${Number(conversions.appointmentRequests || 0)}</dd></div>
+            <div><dt>Checkout starts</dt><dd>${Number(conversions.checkoutStarts || 0)}</dd></div>
+            <div><dt>Completed purchases</dt><dd>${Number(conversions.purchases || 0)}</dd></div>
+          </dl>
+          <div class="builder-actions"><a class="button button-light" href="${payload.sitemapUrl}" target="_blank" rel="noopener">Open Sitemap</a><a class="button button-light" href="${payload.robotsUrl}" target="_blank" rel="noopener">Open Robots</a></div>
+        </article>`;
+    } catch (error) {
+      host.innerHTML = `<div class="empty-state">${htmlSafe(error.message || "Could not load SEO status.")}</div>`;
+    }
+  };
   const productFromCard = (card) => {
     const product = { id: card.dataset.id };
     card.querySelectorAll("[data-field]").forEach((field) => {
@@ -7454,6 +7491,7 @@ function adminDashboard() {
   document.getElementById("refresh-admin-requests").addEventListener("click", render);
   document.getElementById("refresh-site-system-status").addEventListener("click", renderSiteSystemStatus);
   document.getElementById("refresh-lead-recovery").addEventListener("click", renderLeadRecovery);
+  document.getElementById("refresh-seo-dashboard").addEventListener("click", renderSeoDashboard);
   document.getElementById("admin-lead-recovery-list").addEventListener("click", async (event) => {
     const button = event.target.closest("[data-retry-lead]");
     if (!button) return;
@@ -7838,6 +7876,11 @@ function scrollRouteToTop() {
 function navigate() {
   router();
   trackPageView();
+  const path = currentRoutePath();
+  if ((path === "/start-custom-ring-design" || path === "/build-engagement-ring") && sessionStorage.getItem(`tracked:${path}`) !== "1") {
+    sessionStorage.setItem(`tracked:${path}`, "1");
+    trackEvent("ring_builder_start", { builder_path: path });
+  }
   scrollRouteToTop();
 }
 
@@ -7847,6 +7890,10 @@ document.addEventListener("click", (event) => {
   const link = event.target.closest("a[href]");
   if (!link) return;
   const href = link.getAttribute("href") || "";
+  if (href.startsWith("tel:")) trackEvent("phone_click", { link_location: currentRoutePath() });
+  if (href.startsWith("mailto:")) trackEvent("email_click", { link_location: currentRoutePath() });
+  if (/instagram\.com|facebook\.com|share\.google/i.test(href)) trackEvent("social_click", { social_network: /instagram/i.test(href) ? "instagram" : /facebook/i.test(href) ? "facebook" : "google_business_profile" });
+  if (/financ|klarna|affirm|afterpay|acima/i.test(href + " " + (link.textContent || ""))) trackEvent("financing_option_click", { option_name: (link.textContent || "financing").trim().slice(0, 60) });
   if (!href.startsWith("/") || link.target || link.hasAttribute("download")) return;
   const url = new URL(href, location.origin);
   if (url.origin !== location.origin) return;

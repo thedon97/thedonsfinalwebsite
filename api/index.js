@@ -8,6 +8,7 @@ const merchantFeed = require("../server/merchant-feed");
 const siteConfig = require("../server/site-config");
 const adminJewelrySync = require("../server/admin/jewelry-sync");
 const adminLeadRecovery = require("../server/admin/lead-recovery");
+const adminSeoDashboard = require("../server/admin/seo-dashboard");
 const cronJewelrySync = require("../server/cron/jewelry-sync");
 const seoPages = require("../server/seo-pages");
 const stripeWebhook = require("../server/stripe-webhook");
@@ -52,6 +53,7 @@ module.exports = async function handler(req, res) {
     "seo": seoPages,
     "admin/jewelry-sync": adminJewelrySync,
     "admin/lead-recovery": adminLeadRecovery,
+    "admin/seo-dashboard": adminSeoDashboard,
     "cron/jewelry-sync": cronJewelrySync,
     "test-diamond-api": testDiamondApi,
     "diamonds": combinedDiamonds,

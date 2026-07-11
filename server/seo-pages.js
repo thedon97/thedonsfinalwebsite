@@ -540,38 +540,6 @@ function productTitle(product) {
   return `${base}${category} | The Don Jewelers`;
 }
 
-function storeAggregateRating() {
-  return {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    bestRating: "5",
-    worstRating: "1",
-    reviewCount: "1",
-  };
-}
-
-function storeReview() {
-  return {
-    "@type": "Review",
-    name: "Store-level customer experience",
-    reviewBody: "Store-level customer feedback reflects private jeweler guidance for custom jewelry, diamond sourcing, and fine jewelry orders.",
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: "5",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    author: {
-      "@type": "Organization",
-      name: "Verified The Don Jewelers clients",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: BUSINESS_NAME,
-    },
-  };
-}
-
 function merchantReturnPolicy() {
   return {
     "@type": "MerchantReturnPolicy",
@@ -646,8 +614,6 @@ function productJsonLd(product, url) {
     category: product.category,
     url,
     itemCondition: "https://schema.org/NewCondition",
-    aggregateRating: storeAggregateRating(),
-    review: storeReview(),
     additionalProperty: specEntries(product).map(([name, value]) => ({
       "@type": "PropertyValue",
       name,
@@ -697,6 +663,7 @@ function injectHead(template, { title, description, url, image, jsonLd, noindex 
     <meta name="twitter:title" content="${escapeHtml(title)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${escapeHtml(image)}" />
+    ${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${escapeHtml(process.env.GOOGLE_SITE_VERIFICATION)}" />` : ""}
     ${jsonLd.map((item) => `<script type="application/ld+json" data-server-jsonld="true">${JSON.stringify(item).replace(/</g, "\\u003c")}</script>`).join("\n")}
   `;
   return html.replace("</head>", `${meta}\n</head>`);
