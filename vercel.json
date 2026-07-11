@@ -55,6 +55,10 @@
       "destination": "/api/index?route=seo&action=page&path=custom-orders"
     },
     {
+      "source": "/start-custom-ring-design",
+      "destination": "/api/index?route=seo&action=page&path=start-custom-ring-design"
+    },
+    {
       "source": "/build-engagement-ring",
       "destination": "/api/index?route=seo&action=page&path=build-engagement-ring"
     },

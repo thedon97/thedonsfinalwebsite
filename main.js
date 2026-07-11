@@ -12,6 +12,7 @@ const brandAliases = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don J
 const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, Northampton County PA, Pennsylvania, and clients nationwide by shipping and private consultation";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
+const gaMeasurementId = "G-68DJH1C3QF";
 const asset = (name) => `/${name}`;
 const mediaSrc = (name) => /^https?:\/\//i.test(String(name || "")) ? name : asset(name);
 const fallbackImage = "don-logo.jpg";
@@ -2828,9 +2829,10 @@ async function loadAnalyticsConfig() {
   try {
     const response = await fetch("/api/site-config", { cache: "force-cache" });
     const config = await response.json();
-    installGa4(config?.analytics?.gaMeasurementId);
+    installGa4(config?.analytics?.gaMeasurementId || gaMeasurementId);
   } catch {
     window.dataLayer = window.dataLayer || [];
+    installGa4(gaMeasurementId);
   }
 }
 

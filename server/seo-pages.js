@@ -1023,7 +1023,6 @@ async function sitemap(req, res) {
   const urls = [
     ...basePaths.map(([pagePath, changefreq, priority]) => xmlUrl(`${SITE_URL}${pagePath}`, null, changefreq, priority)),
     ...products.slice(0, SITEMAP_LIMIT).map((product) => xmlUrl(`${SITE_URL}${productPath(product)}`, product.updatedAt || product.sourceUpdatedAt, "daily", "0.75")),
-    ...products.filter((product) => categoryProductPath(product) !== productPath(product)).slice(0, SITEMAP_LIMIT).map((product) => xmlUrl(`${SITE_URL}${categoryProductPath(product)}`, product.updatedAt || product.sourceUpdatedAt, "daily", "0.7")),
     ...diamonds.slice(0, 4000).map((diamond) => xmlUrl(`${SITE_URL}${diamondPath(diamond)}`, null, "daily", "0.65")),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
