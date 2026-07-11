@@ -211,6 +211,22 @@
       "destination": "/api/index?route=seo&action=page&path=diamond-pendants-allentown-pa"
     },
     {
+      "source": "/custom-engagement-ring-process",
+      "destination": "/api/index?route=seo&action=page&path=custom-engagement-ring-process"
+    },
+    {
+      "source": "/engagement-ring-cost-guide",
+      "destination": "/api/index?route=seo&action=page&path=engagement-ring-cost-guide"
+    },
+    {
+      "source": "/lab-diamond-buying-guide",
+      "destination": "/api/index?route=seo&action=page&path=lab-diamond-buying-guide"
+    },
+    {
+      "source": "/private-jeweler-vs-retail-store",
+      "destination": "/api/index?route=seo&action=page&path=private-jeweler-vs-retail-store"
+    },
+    {
       "source": "/tennis-bracelets-allentown-pa",
       "destination": "/api/index?route=seo&action=page&path=tennis-bracelets-allentown-pa"
     },

@@ -389,6 +389,50 @@ const staticPageMeta = {
     label: "Diamond Pendants Allentown PA",
     priority: "0.84",
   },
+  "/custom-engagement-ring-process": {
+    title: "Custom Engagement Ring Process | Diamond, CAD, Setting & Quote",
+    description: "Learn the private custom engagement ring process from diamond selection and setting style to CAD design, ring size, basket, prongs, wedding band pairing, quote review, and appointment support.",
+    label: "Custom Engagement Ring Process",
+    priority: "0.9",
+    sections: [
+      ["Start with the right path", "Begin with a center diamond when carat, shape, color, clarity, or certificate matters most. Begin with a setting when the overall ring style, band, basket, metal, and wedding band fit are the priority."],
+      ["Build the design around real constraints", "A strong custom ring plan includes diamond type, shape, carat target, setting style, metal, basket/head, prongs, band profile, ring size, wedding band plan, budget, and timeline."],
+      ["Use CAD and quote review before commitment", "The Don Jewelers & Jewelry reviews the design request, confirms availability, checks fit and durability, and prepares a private quote before final production decisions."],
+    ],
+  },
+  "/engagement-ring-cost-guide": {
+    title: "Engagement Ring Cost Guide | Lab Diamond, Natural Diamond & Custom Rings",
+    description: "Compare what affects engagement ring cost including diamond type, carat size, shape, certification, metal, setting, hidden halo, pave band, side stones, labor, CAD, and wedding band pairing.",
+    label: "Engagement Ring Cost Guide",
+    priority: "0.88",
+    sections: [
+      ["Main cost drivers", "The center diamond usually drives the largest cost difference. Carat size, lab-grown versus natural origin, color, clarity, cut quality, certificate, and shape all affect the final quote."],
+      ["Setting and metal upgrades", "Platinum, 18K gold, hidden halo baskets, pave bands, cathedral shoulders, three-stone accents, engraving, and matching wedding bands can change the quote even when the same diamond is used."],
+      ["Best next step", "Send the design details and ideal budget so the quote can be built around the look, durability, and payment path that make sense for the buyer."],
+    ],
+  },
+  "/lab-diamond-buying-guide": {
+    title: "Lab Diamond Buying Guide | CVD Engagement Rings & Jewelry",
+    description: "Lab diamond buying guide for CVD engagement rings, tennis bracelets, pendants, earrings, certification, shape, carat, color, clarity, cut, budget, and private jeweler quote support.",
+    label: "Lab Diamond Buying Guide",
+    priority: "0.88",
+    sections: [
+      ["Compare by certificate and specs", "A serious lab diamond search should review certificate, growth method, carat, measurements, color, clarity, cut, polish, symmetry, fluorescence, image, video, and price."],
+      ["Match the diamond to the setting", "Oval, round, radiant, emerald, cushion, pear, marquise, princess, Asscher, and heart shapes need different baskets, prong styles, and wedding band planning."],
+      ["Use live inventory with a human review", "The site can surface live CVD inventory, but final purchase decisions should still confirm availability, certificate details, setting compatibility, and insured checkout path."],
+    ],
+  },
+  "/private-jeweler-vs-retail-store": {
+    title: "Private Jeweler vs Retail Jewelry Store | Custom Engagement Rings",
+    description: "Compare a private jeweler with a retail jewelry store for custom engagement rings, diamond sourcing, CAD design, budget control, appointment support, and personalized jewelry quotes.",
+    label: "Private Jeweler vs Retail Store",
+    priority: "0.86",
+    sections: [
+      ["Private jeweler advantage", "A private jeweler can focus on the buyer's budget, exact style, diamond sourcing goals, CAD revisions, timeline, and custom details instead of pushing a limited showcase selection."],
+      ["Retail store advantage", "A retail store can be convenient for quick browsing, standardized warranties, and seeing preset rings in person. The tradeoff is often less flexibility on custom build details."],
+      ["Best fit for custom buyers", "For engagement rings, pendants, tennis bracelets, and one-of-one designs, appointment-based private quote review is usually the better path when the design matters more than buying a preset piece."],
+    ],
+  },
   "/blog": {
     title: "Jewelry Education Blog | The Don Jewelers",
     description: "Read diamond education, engagement ring guides, jewelry care tips, custom jewelry advice, and luxury buying guides from The Don Jewelers.",
@@ -915,6 +959,22 @@ function pageMain(meta) {
       <section class="trust-block-section" aria-label="${escapeHtml(meta.label)} trust and next steps">
         ${supporting.map((item) => `<article><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></article>`).join("")}
       </section>
+      ${Array.isArray(meta.sections) && meta.sections.length ? `
+        <section class="seo-guide-section" aria-label="${escapeHtml(meta.label)} guide">
+          <div class="section-heading">
+            <p class="eyebrow">Buying Guide</p>
+            <h2>${escapeHtml(meta.label)}: what to compare before you buy</h2>
+          </div>
+          <div class="trust-block-section">
+            ${meta.sections.map(([title, body]) => `<article><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></article>`).join("")}
+          </div>
+          <div class="builder-actions">
+            <a class="button button-gold" href="/request/appointment">Book a Private Appointment</a>
+            <a class="button button-dark" href="/start-custom-ring-design">Start Custom Ring Design</a>
+            <a class="button button-light" href="/search?q=engagement%20ring">Search Rings & Diamonds</a>
+          </div>
+        </section>
+      ` : ""}
     </main>
   `;
 }
@@ -963,6 +1023,10 @@ function moneyPageSupport(meta) {
     {
       title: "Lead-safe forms",
       body: "Appointment, quote, custom design, product inquiry, and checkout-start requests are routed through the website lead email system for business notification and customer confirmation.",
+    },
+    {
+      title: "Competitive buying tools",
+      body: "Visitors can compare education pages, live CVD diamond inventory, product search, custom quote forms, Google profile trust signals, and appointment options from one website.",
     },
   ];
 }
@@ -1118,6 +1182,10 @@ async function sitemap(req, res) {
     ["/don-jewelers-nyc", "monthly", "0.9"],
     ["/the-don-jewelers-engagement-rings", "monthly", "0.92"],
     ["/diamond-pendants-allentown-pa", "monthly", "0.84"],
+    ["/custom-engagement-ring-process", "monthly", "0.9"],
+    ["/engagement-ring-cost-guide", "monthly", "0.88"],
+    ["/lab-diamond-buying-guide", "monthly", "0.88"],
+    ["/private-jeweler-vs-retail-store", "monthly", "0.86"],
     ["/blog", "weekly", "0.7"],
   ];
   const urls = [
