@@ -1,5 +1,6 @@
 const { adminAuthorized, sendJson } = require("../_http");
 const { configured, listLeads } = require("../_lead-store");
+const { reportingSnapshot } = require("../_google-reporting");
 
 function countBy(leads, predicate) {
   return leads.filter(predicate).length;
@@ -15,6 +16,7 @@ module.exports = async function handler(req, res) {
     return;
   }
   const leads = configured() ? await listLeads({ limit: 200 }) : [];
+  const google = await reportingSnapshot().catch((error) => ({ configured: true, analytics: null, searchConsole: null, errors: [error.message] }));
   const type = (lead) => `${lead.type || ""} ${lead.jewelry?.requestType || ""}`.toLowerCase();
   sendJson(res, 200, {
     ok: true,
@@ -33,8 +35,10 @@ module.exports = async function handler(req, res) {
       checkoutStarts: countBy(leads, (lead) => /checkout/.test(type(lead))),
       purchases: countBy(leads, (lead) => /completed|payment complete/.test(type(lead))),
     },
-    googleData: null,
-    googleDataMessage: "GA4 and Search Console API metrics appear here only after secure Google API credentials are configured. No sample data is fabricated.",
+    googleData: google,
+    googleDataMessage: google.configured
+      ? "Google reporting is connected. Metrics are read-only and returned only to authenticated administrators."
+      : "GA4 and Search Console API metrics appear here only after secure Google API credentials are configured. No sample data is fabricated.",
     sitemapUrl: "https://www.thedonjewelersandjewelrynyc.com/sitemap.xml",
     robotsUrl: "https://www.thedonjewelersandjewelrynyc.com/robots.txt",
   }, "no-store");

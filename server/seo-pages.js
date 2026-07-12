@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const seoArticles = require("./data/seo-articles");
 const { getInventoryCache } = require("./_inventory-cache");
 const { fetchFeed } = require("./_diamond-utils");
 const {
@@ -926,6 +927,13 @@ function pageMain(meta) {
       <section class="trust-block-section" aria-label="${escapeHtml(meta.label)} trust and next steps">
         ${supporting.map((item) => `<article><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></article>`).join("")}
       </section>
+      ${meta.path === "/blog" ? `
+        <section class="seo-guide-section" aria-label="Jewelry education articles">
+          <div class="section-heading"><p class="eyebrow">Original Buying Guides</p><h2>Plan the ring, diamond, and appointment with confidence</h2></div>
+          <div class="trust-block-section">
+            ${seoArticles.map((article) => `<article><img src="/${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy" decoding="async" width="640" height="420"><strong><a href="/blog/${escapeHtml(article.slug)}">${escapeHtml(article.title)}</a></strong><p>${escapeHtml(article.description)}</p></article>`).join("")}
+          </div>
+        </section>` : ""}
       ${Array.isArray(meta.sections) && meta.sections.length ? `
         <section class="seo-guide-section" aria-label="${escapeHtml(meta.label)} guide">
           <div class="section-heading">
@@ -1019,6 +1027,75 @@ function pageJsonLd(meta, url) {
       logo: `${SITE_URL}/don-logo.jpg`,
     },
   };
+}
+
+function articleJsonLd(article, url) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    image: absoluteUrl(article.image),
+    datePublished: article.published,
+    dateModified: article.updated,
+    mainEntityOfPage: url,
+    author: { "@type": "Organization", name: BUSINESS_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", name: BUSINESS_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/don-logo.jpg` } },
+  };
+}
+
+function articleMain(article) {
+  return `
+    <main>
+      <section class="page-hero">
+        <div class="page-hero-copy"><p class="eyebrow">Jewelry Education</p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p></div>
+      </section>
+      <article class="seo-guide-section resource-article">
+        <img class="resource-feature-image" src="/${escapeHtml(article.image)}" alt="${escapeHtml(article.title)} by The Don Jewelers & Jewelry" loading="eager" decoding="async" fetchpriority="high" width="1200" height="800">
+        ${article.sections.map(([heading, body]) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(body)}</p></section>`).join("")}
+        <div class="builder-actions">
+          <a class="button button-gold" href="/request/appointment">Book a Private Appointment</a>
+          <a class="button button-dark" href="/start-custom-ring-design">Start Custom Ring Design</a>
+          <a class="button button-light" href="/blog">More Jewelry Guides</a>
+        </div>
+      </article>
+    </main>`;
+}
+
+function articlePage(req, res, slug) {
+  const article = seoArticles.find((item) => item.slug === String(slug || ""));
+  if (!article) return notFoundPage(req, res);
+  const pathname = `/blog/${article.slug}`;
+  const url = `${SITE_URL}${pathname}`;
+  const template = fs.readFileSync(INDEX_HTML, "utf8");
+  const page = injectHead(template, {
+    title: `${article.title} | The Don Jewelers`,
+    description: article.description,
+    url,
+    image: absoluteUrl(article.image),
+    jsonLd: [articleJsonLd(article, url), breadcrumbJsonLd([["Home", "/"], ["Blog", "/blog"], [article.title, pathname]])],
+  }).replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(articleMain(article), pathname)}</div>`);
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=86400");
+  res.end(page);
+}
+
+function notFoundPage(req, res) {
+  const template = fs.readFileSync(INDEX_HTML, "utf8");
+  const body = `<main><section class="page-hero"><div class="page-hero-copy"><p class="eyebrow">404</p><h1>Page not found</h1><p>The page may have moved or the address may be incorrect.</p><div class="builder-actions"><a class="button button-gold" href="/products">Browse Jewelry</a><a class="button button-dark" href="/start-custom-ring-design">Start Custom Ring Design</a><a class="button button-light" href="/">Return Home</a></div></div></section></main>`;
+  const page = injectHead(template, {
+    title: `Page Not Found | ${BUSINESS_NAME}`,
+    description: "The requested page could not be found.",
+    url: `${SITE_URL}/404`,
+    image: DEFAULT_IMAGE,
+    jsonLd: [],
+    noindex: true,
+  }).replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(body, "/404")}</div>`);
+  res.statusCode = 404;
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
+  res.end(page);
 }
 
 function localBusinessJsonLd() {
@@ -1159,6 +1236,7 @@ async function sitemap(req, res) {
     ...basePaths.map(([pagePath, changefreq, priority]) => xmlUrl(`${SITE_URL}${pagePath}`, null, changefreq, priority)),
     ...products.slice(0, SITEMAP_LIMIT).map((product) => xmlUrl(`${SITE_URL}${productPath(product)}`, product.updatedAt || product.sourceUpdatedAt, "daily", "0.75")),
     ...diamonds.slice(0, 4000).map((diamond) => xmlUrl(`${SITE_URL}${diamondPath(diamond)}`, null, "daily", "0.65")),
+    ...seoArticles.map((article) => xmlUrl(`${SITE_URL}/blog/${article.slug}`, article.updated, "monthly", "0.78")),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
   res.statusCode = 200;
@@ -1191,6 +1269,8 @@ module.exports = async function handler(req, res) {
   const action = url.searchParams.get("action") || "";
   if (action === "product") return productPage(req, res, url.searchParams.get("slug") || "");
   if (action === "diamond") return diamondPage(req, res, url.searchParams.get("cert") || "");
+  if (action === "article") return articlePage(req, res, url.searchParams.get("slug") || "");
+  if (action === "not-found") return notFoundPage(req, res);
   if (action === "page") return staticPage(req, res, url.searchParams.get("path") || "/");
   if (action === "sitemap") return sitemap(req, res);
   if (action === "robots") return robots(req, res);

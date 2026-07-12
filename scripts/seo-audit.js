@@ -32,6 +32,14 @@ async function request(url) {
   for (const excluded of ["/admin", "/checkout", "/search", "/api/"]) assert(!sitemap.body.includes(`<loc>https://www.thedonjewelersandjewelrynyc.com${excluded}`));
   const robots = await request("/api/index?route=seo&action=robots");
   assert.match(robots.body, /Sitemap: https:\/\/www\.thedonjewelersandjewelrynyc\.com\/sitemap\.xml/);
+  const article = await request("/api/index?route=seo&action=article&slug=custom-engagement-ring-timeline");
+  assert.equal(article.statusCode, 200);
+  assert.match(article.body, /"@type":"Article"/);
+  assert.match(article.body, /datePublished/);
+  assert(sitemap.body.includes("/blog/custom-engagement-ring-timeline"));
+  const missing = await request("/api/index?route=seo&action=not-found");
+  assert.equal(missing.statusCode, 404);
+  assert.match(missing.body, /noindex,follow/);
   const main = fs.readFileSync("main.js", "utf8");
   assert.equal((main.match(/gtag\("config"/g) || []).length, 1, "GA4 must have one config call");
   assert.match(main, /send_page_view: false/);

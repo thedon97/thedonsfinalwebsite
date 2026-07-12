@@ -1,7 +1,7 @@
 const fs = require("fs");
 const vm = require("vm");
 
-const required = ["main.js", "server/seo-pages.js", "server/site-config.js", "server/send-request.js", "server/create-checkout-session.js"];
+const required = ["main.js", "server/seo-pages.js", "server/site-config.js", "server/send-request.js", "server/create-checkout-session.js", "server/_google-reporting.js"];
 for (const file of required) {
   const source = fs.readFileSync(file, "utf8");
   new vm.Script(source, { filename: file });

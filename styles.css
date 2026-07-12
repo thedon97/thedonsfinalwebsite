@@ -2665,3 +2665,18 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
 .cart-item .icon-button, .cart-item strong { grid-column: 2; justify-self: start; }
   .page-hero-logo { position: static; margin-bottom: 18px; }
 }
+/* Keep below-the-fold catalog and editorial sections out of initial rendering work. */
+.blog-grid,
+.seo-guide-section,
+.trust-block-section,
+.product-grid,
+.catalog-grid,
+.shape-guide-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}

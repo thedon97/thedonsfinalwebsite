@@ -4,6 +4,18 @@
   "trailingSlash": false,
   "headers": [
     {
+      "source": "/(.*)\\.(jpg|jpeg|png|webp|avif|svg)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/(main.js|styles.css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
@@ -267,6 +279,58 @@
       "destination": "/api/index?route=seo&action=page&path=blog"
     },
     {
+      "source": "/blog/:slug",
+      "destination": "/api/index?route=seo&action=article&slug=:slug"
+    },
+    {
+      "source": "/search",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/request/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/education/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/faq/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/catalog-jewelry/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cart",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/checkout",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/checkout-success",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/checkout-cancel",
+      "destination": "/index.html"
+    },
+    { "source": "/refund-return-policy", "destination": "/index.html" },
+    { "source": "/payment-policy", "destination": "/index.html" },
+    { "source": "/shipping-policy", "destination": "/index.html" },
+    { "source": "/custom-order-policy", "destination": "/index.html" },
+    { "source": "/warranty-policy", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/privacy-policy", "destination": "/index.html" },
+    { "source": "/financing-policy", "destination": "/index.html" },
+    {
       "source": "/products/:slug",
       "destination": "/api/index?route=seo&action=product&slug=:slug"
     },
@@ -288,7 +352,7 @@
     },
     {
       "source": "/((?!api/|.*\\..*).*)",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=not-found"
     }
   ]
 }

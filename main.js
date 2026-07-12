@@ -2696,6 +2696,15 @@ const blogArticles = blogTopics.map((title, index) => {
   return buildBlogArticle(title, index);
 });
 
+const serverSeoArticles = [
+  ["custom-engagement-ring-timeline", "How Long Does a Custom Engagement Ring Take?", "A practical timeline from consultation and CAD approval through production, inspection, and delivery.", "queen-aurelia-oval-marquise-ring.jpeg"],
+  ["oval-vs-radiant-engagement-ring", "Oval vs Radiant Diamond Engagement Rings", "Compare sparkle, proportions, finger coverage, and setting compatibility.", "yellow-gold-oval-pave-engagement-ring.jpeg"],
+  ["hidden-halo-vs-halo-engagement-ring", "Hidden Halo vs Halo Engagement Rings", "Understand how each halo style changes the face-up view, profile, and wedding-band fit.", "gold-halo-engagement-ring.jpeg"],
+  ["read-igi-lab-diamond-report", "How to Read an IGI Lab Diamond Report", "Review measurements, cut, color, clarity, polish, symmetry, fluorescence, and inscription.", "live-diamond-selection.jpeg"],
+  ["custom-engagement-ring-cost-factors", "What Changes the Cost of a Custom Engagement Ring?", "Learn how diamond, metal, setting, labor, and customization choices affect a quote.", "engagement-ring-feature.jpg"],
+  ["private-jeweler-lehigh-valley-appointment", "Planning a Private Jewelry Appointment in the Lehigh Valley", "Prepare for an engagement-ring, diamond-sourcing, or custom-jewelry consultation.", "don-logo.jpg"],
+].map(([slug, title, description, image]) => ({ slug, title, description, image }));
+
 let cart = JSON.parse(localStorage.getItem("donCart") || "[]");
 let selections = {};
 let approvedPreviewProducts = [];
@@ -3879,6 +3888,12 @@ function blogIndex() {
         </div>
       </section>
       <section class="blog-grid">
+        ${serverSeoArticles.map((article) => `
+          <article class="blog-card">
+            <img src="${asset(article.image)}" alt="${article.title}" ${imageSafety}>
+            <div><p class="eyebrow">Original Buying Guide</p><h2><a href="/blog/${article.slug}" data-hard-navigation="true">${article.title}</a></h2><p>${article.description}</p></div>
+          </article>
+        `).join("")}
         ${blogArticles.map((article) => `
           <article class="blog-card">
             <img src="${asset(article.image)}" alt="${article.title} jewelry guide" ${imageSafety}>
@@ -3895,7 +3910,9 @@ function blogIndex() {
 }
 
 function blogArticlePage(slug) {
-  const article = blogArticles.find((item) => item.slug === slug) || blogArticles[0];
+  const article = blogArticles.find((item) => item.slug === slug);
+  if (!article && serverSeoArticles.some((item) => item.slug === slug) && document.querySelector(".resource-article")) return;
+  if (!article) return blogIndex();
   resourceArticlePage(article, {
     path: `blog/${article.slug}`,
     breadcrumbs: [["Blog", "blog"], [article.title, `blog/${article.slug}`]],
@@ -7410,6 +7427,10 @@ function adminDashboard() {
       if (!response.ok || !payload.ok) throw new Error(payload.message || "Could not load SEO status.");
       const integrations = payload.integrations || {};
       const conversions = payload.conversions || {};
+      const google = payload.googleData || {};
+      const ga = google.analytics || {};
+      const search = google.searchConsole || {};
+      const change = (current, previous) => previous ? `${(((current - previous) / previous) * 100).toFixed(1)}%` : "No prior baseline";
       host.innerHTML = `
         <article class="admin-request-card">
           <div><p class="eyebrow">Tracking readiness</p><h2>${integrations.ga4Configured ? "GA4 configured" : "GA4 setup required"}</h2><p class="lede">${htmlSafe(payload.googleDataMessage)}</p></div>
@@ -7421,7 +7442,14 @@ function adminDashboard() {
             <div><dt>Appointment requests</dt><dd>${Number(conversions.appointmentRequests || 0)}</dd></div>
             <div><dt>Checkout starts</dt><dd>${Number(conversions.checkoutStarts || 0)}</dd></div>
             <div><dt>Completed purchases</dt><dd>${Number(conversions.purchases || 0)}</dd></div>
+            <div><dt>Organic search clicks (28 days)</dt><dd>${search.clicks === undefined ? "API not connected" : Number(search.clicks)}</dd></div>
+            <div><dt>Search impressions (28 days)</dt><dd>${search.impressions === undefined ? "API not connected" : Number(search.impressions)}</dd></div>
+            <div><dt>Average search position</dt><dd>${search.position === undefined ? "API not connected" : Number(search.position).toFixed(1)}</dd></div>
+            <div><dt>GA4 sessions (28 days)</dt><dd>${ga.current ? Number(ga.current.sessions || 0) : "API not connected"}</dd></div>
+            <div><dt>Session change vs prior 28 days</dt><dd>${ga.current ? change(Number(ga.current.sessions || 0), Number(ga.previous?.sessions || 0)) : "API not connected"}</dd></div>
+            <div><dt>GA4 key events (28 days)</dt><dd>${ga.current ? Number(ga.current.keyEvents || 0) : "API not connected"}</dd></div>
           </dl>
+          ${Array.isArray(search.topQueries) && search.topQueries.length ? `<div class="admin-query-list"><strong>Top Search Queries</strong>${search.topQueries.map((row) => `<p>${htmlSafe(row.key)}: ${Number(row.clicks)} clicks, ${Number(row.impressions)} impressions, position ${Number(row.position).toFixed(1)}</p>`).join("")}</div>` : ""}
           <div class="builder-actions"><a class="button button-light" href="${payload.sitemapUrl}" target="_blank" rel="noopener">Open Sitemap</a><a class="button button-light" href="${payload.robotsUrl}" target="_blank" rel="noopener">Open Robots</a></div>
         </article>`;
     } catch (error) {
@@ -7890,6 +7918,7 @@ document.addEventListener("click", (event) => {
   const link = event.target.closest("a[href]");
   if (!link) return;
   const href = link.getAttribute("href") || "";
+  if (link.dataset.hardNavigation === "true") return;
   if (href.startsWith("tel:")) trackEvent("phone_click", { link_location: currentRoutePath() });
   if (href.startsWith("mailto:")) trackEvent("email_click", { link_location: currentRoutePath() });
   if (/instagram\.com|facebook\.com|share\.google/i.test(href)) trackEvent("social_click", { social_network: /instagram/i.test(href) ? "instagram" : /facebook/i.test(href) ? "facebook" : "google_business_profile" });
