@@ -7894,7 +7894,7 @@ function router() {
   if (path === "checkout-success") return paymentStatusPage("success");
   if (path === "checkout-cancel") return paymentStatusPage("cancel");
   if (policyPages[path]) return policyPage(path);
-  home();
+  clientNotFoundPage();
 }
 
 function scrollRouteToTop() {
@@ -7910,6 +7910,18 @@ function navigate() {
     trackEvent("ring_builder_start", { builder_path: path });
   }
   scrollRouteToTop();
+}
+
+function clientNotFoundPage() {
+  const existingRobots = document.querySelector('meta[name="robots"]')?.content || "";
+  if (/noindex/i.test(existingRobots) && document.querySelector("h1")?.textContent === "Page not found") return;
+  setSeo(`Page Not Found | ${businessName}`, "The requested page could not be found.", { path: currentRoutePath() });
+  upsertMeta('meta[name="robots"]', "name", "robots", "noindex,follow");
+  shell(`
+    <main>
+      ${pageHero("404", "Page not found", "The page may have moved or the address may be incorrect.", `<div class="hero-actions"><a class="button button-gold" href="/products">Browse Jewelry</a><a class="button button-dark" href="/start-custom-ring-design">Start Custom Ring Design</a><a class="button button-light" href="/">Return Home</a></div>`)}
+    </main>
+  `);
 }
 
 window.addEventListener("hashchange", navigate);
