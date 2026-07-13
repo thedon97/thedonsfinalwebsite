@@ -2680,3 +2680,27 @@ img {
   height: auto;
   max-width: 100%;
 }
+
+.project-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.project-gallery-grid figure {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(201, 164, 90, 0.35);
+  background: #090909;
+}
+
+.project-gallery-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.project-gallery-grid figcaption {
+  padding: 12px;
+  color: #f5f0e6;
+}

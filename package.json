@@ -11,7 +11,8 @@
     "lint": "npm run check",
     "typecheck": "node scripts/typecheck.js",
     "test:seo": "node scripts/seo-audit.js",
-    "validate": "npm run lint && npm run typecheck && npm run build"
+    "test:notifications": "node scripts/notification-audit.js",
+    "validate": "npm run lint && npm run typecheck && npm run build && npm run test:notifications"
   },
   "dependencies": {
     "pg": "^8.21.0",

@@ -259,6 +259,14 @@
       "destination": "/api/index?route=seo&action=page&path=engagement-rings-connecticut"
     },
     {
+      "source": "/engagement-ring-consultation-easton-bethlehem",
+      "destination": "/api/index?route=seo&action=page&path=engagement-ring-consultation-easton-bethlehem"
+    },
+    {
+      "source": "/custom-jewelry-project-gallery",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry-project-gallery"
+    },
+    {
       "source": "/the-don-jewelers",
       "destination": "/api/index?route=seo&action=page&path=the-don-jewelers"
     },

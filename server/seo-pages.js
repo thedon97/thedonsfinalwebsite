@@ -360,6 +360,28 @@ const staticPageMeta = {
     label: "Engagement Rings Connecticut",
     priority: "0.88",
   },
+  "/engagement-ring-consultation-easton-bethlehem": {
+    title: "Engagement Ring Consultation Easton & Bethlehem PA | The Don Jewelers",
+    description: "Book a private engagement ring consultation for Easton and Bethlehem PA clients comparing lab or natural diamonds, custom settings, CAD design, ring size, wedding-band fit, budget, and proposal timing.",
+    label: "Engagement Ring Consultation Easton & Bethlehem",
+    priority: "0.92",
+    sections: [
+      ["Prepare before the appointment", "Bring your proposal timing, budget range, preferred diamond origin and shape, ring size if known, and a few inspiration photos. You do not need every specification decided before speaking with a jeweler."],
+      ["Compare the full ring, not only the diamond", "Review center-stone proportions, setting height, basket, prongs, band width, metal, wedding-band fit, daily wear, and production timing as one complete design."],
+      ["Appointment-only service", "Easton and Bethlehem clients should confirm the consultation format and appointment details directly before traveling. Remote planning and nationwide service may be available where appropriate."],
+    ],
+  },
+  "/custom-jewelry-project-gallery": {
+    title: "Custom Jewelry Project Gallery | Rings, Pendants & Diamond Pieces",
+    description: "Explore original jewelry work and design inspiration from The Don Jewelers, including engagement rings, custom pendants, diamond initials, bracelets, and one-of-one pieces.",
+    label: "Custom Jewelry Project Gallery",
+    priority: "0.88",
+    sections: [
+      ["Start with owned inspiration", "Use these finished pieces and design directions to explain proportion, stone layout, metal color, engraving, and overall style. Every new commission is reviewed as its own project."],
+      ["From idea to specifications", "A useful custom request includes the jewelry type, metal, diamond or gemstone preference, dimensions, ring size or chain length, budget, timeline, and inspiration files."],
+      ["Review before production", "Custom work should move through specification and approval steps before final production. Exact pricing, availability, CAD needs, and timing are confirmed personally."],
+    ],
+  },
   "/the-don-jewelers": {
     title: "The Don Jewelers | Official Custom Jeweler & Engagement Rings",
     description: "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.",
@@ -934,6 +956,21 @@ function pageMain(meta) {
             ${seoArticles.map((article) => `<article><img src="/${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy" decoding="async" width="640" height="420"><strong><a href="/blog/${escapeHtml(article.slug)}">${escapeHtml(article.title)}</a></strong><p>${escapeHtml(article.description)}</p></article>`).join("")}
           </div>
         </section>` : ""}
+      ${meta.path === "/custom-jewelry-project-gallery" ? `
+        <section class="seo-guide-section" aria-label="Original custom jewelry projects">
+          <div class="section-heading"><p class="eyebrow">Owned Work & Design Inspiration</p><h2>Custom pieces built around personal specifications</h2></div>
+          <div class="project-gallery-grid">
+            ${[
+              ["queen-aurelia-oval-marquise-ring.jpeg", "Oval and marquise custom engagement ring"],
+              ["custom-dejaun-diamond-name-pendant.jpeg", "Custom diamond name pendant"],
+              ["custom-st-diamond-initial-pendant-front.jpeg", "Custom diamond initial pendant"],
+              ["yellow-gold-diamond-cuban-link-bracelet.jpeg", "Yellow gold diamond Cuban link bracelet"],
+              ["gemstone-leaf-wedding-band-set.jpeg", "Gemstone leaf wedding band set"],
+              ["medusa-diamond-signet-ring.jpeg", "Custom diamond signet ring"],
+            ].map(([image, alt]) => `<figure><img src="/${image}" alt="${escapeHtml(alt)} by The Don Jewelers & Jewelry" loading="lazy" decoding="async" width="720" height="720"><figcaption>${escapeHtml(alt)}</figcaption></figure>`).join("")}
+          </div>
+          <div class="builder-actions"><a class="button button-gold" href="/custom-orders">Request a Custom Project</a><a class="button button-dark" href="/request/appointment">Book Appointment</a></div>
+        </section>` : ""}
       ${Array.isArray(meta.sections) && meta.sections.length ? `
         <section class="seo-guide-section" aria-label="${escapeHtml(meta.label)} guide">
           <div class="section-heading">
@@ -1221,6 +1258,8 @@ async function sitemap(req, res) {
     ["/diamond-rings-near-me", "monthly", "0.88"],
     ["/engagement-rings-new-jersey", "monthly", "0.88"],
     ["/engagement-rings-connecticut", "monthly", "0.88"],
+    ["/engagement-ring-consultation-easton-bethlehem", "monthly", "0.92"],
+    ["/custom-jewelry-project-gallery", "monthly", "0.88"],
     ["/the-don-jewelers", "monthly", "0.95"],
     ["/the-don-jewelers-and-jewelry", "monthly", "0.95"],
     ["/don-jewelers-nyc", "monthly", "0.9"],

@@ -14,6 +14,31 @@ Reviewed for structure and customer experience only. No competitor text, images,
 
 Large online jewelers reduce decision friction with diamond filters, shape-first navigation, setting galleries, comparison education, saved designs, financing visibility, delivery guidance, and clear funnel progress. The Don should compete through personal review, custom flexibility, transparent process, fast human follow-up, and original visual proof rather than catalog volume alone.
 
+## July 2026 Market Review
+
+- Freeman Jewelers builds local authority with a deep bridal catalog, estate inventory, repair, financing, gold buying, designer relationships, testimonials, and consistent Easton location history.
+- Easton Rare Coin targets a different but valuable local intent: appraisals and selling gold or jewelry. Its advantage comes from direct service pages, local contact details, and a simple appraisal call to action.
+- Avianne and Johnny Dang use founder stories, recognizable client work, video, press coverage, behind-the-scenes content, and a sharply defined cultural niche to earn branded searches and editorial links.
+- Rare Carat, Brilliant Earth, and Kay reduce shopping friction with broad inventory architecture, education, comparison tools, filters, financing information, and strong internal linking.
+- TraxNYC combines a deep product taxonomy with custom-design forms, video, press, reviews, and educational content. Its links and authority cannot be copied; equivalent exposure must be earned from original work and real relationships.
+
+## Implemented From This Review
+
+- Added an original Easton and Bethlehem engagement-ring consultation page focused on full-ring comparison and appointment preparation.
+- Added an owned custom-jewelry project gallery using existing site photography, with links into the custom-design funnel.
+- Added both pages to navigation, canonical routing, and the XML sitemap.
+- Added an automated notification audit covering contact, product inquiry, custom design, engagement-ring request, appointment, checkout, Stripe status, customer confirmation, attachments, and database fallback behavior.
+
+## Legitimate Authority Targets
+
+- Lehigh Valley wedding venues, photographers, planners, bridal shops, and proposal businesses for real partner/resource pages.
+- Local chambers, business directories, supplier/manufacturer dealer locators, and professional associations where membership or eligibility is genuine.
+- Local media stories built around original CAD transformations, proposal stories with permission, jewelry education, and founder expertise.
+- Original short-form and long-form video showing consultation, CAD approval, sourcing, setting, quality control, and finished pieces.
+- Customer-approved project case studies that suppliers, venues, photographers, and clients have a genuine reason to reference.
+
+Do not buy bulk links, scrape competitor links, submit false locations, or create near-duplicate city pages. Those tactics create ranking and profile-suspension risk.
+
 ## Best Opportunities
 
 - Publish original CAD-to-finished-ring case studies with approval checkpoints and timelines.

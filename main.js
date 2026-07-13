@@ -2260,6 +2260,8 @@ const servicePages = [
   ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
   ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
   ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
+  ["engagement-ring-consultation-easton-bethlehem", "Engagement Ring Consultation Easton & Bethlehem", "Private engagement ring consultation for Easton and Bethlehem PA clients comparing diamonds, custom settings, CAD design, ring size, budget, and proposal timing.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings Easton PA", "engagement rings Bethlehem PA", "private jeweler Easton Bethlehem"], ["engagement-rings-lehigh-valley", "free-engagement-ring-consultation", "custom-engagement-rings"], "Easton and Bethlehem engagement ring clients"],
+  ["custom-jewelry-project-gallery", "Custom Jewelry Project Gallery", "Explore original custom engagement rings, pendants, bracelets, initials, wedding sets, and one-of-one jewelry inspiration from The Don Jewelers.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry projects", "custom jewelry gallery", "custom jeweler portfolio"], ["custom-jewelry", "custom-cad-design", "custom-orders"], "custom jewelry clients"],
   ["the-don-jewelers", "The Don Jewelers", "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.", "don-logo.jpg", ["The Don Jewelers", "Don Jewelers", "The Don Jewelers jewelry"], ["the-don-jewelers-and-jewelry", "custom-engagement-rings", "free-engagement-ring-consultation"], "clients searching The Don Jewelers"],
   ["the-don-jewelers-and-jewelry", "The Don Jewelers & Jewelry", "Official business page for The Don Jewelers & Jewelry with verified contact details, Google Business Profile, private jeweler service areas, and custom jewelry consultation.", "yellow-gold-diamond-cuban-link-bracelet.jpeg", ["The Don Jewelers and Jewelry", "The Don Jewelers & Jewelry", "Don Jewelers and Jewelry"], ["the-don-jewelers", "tri-state-custom-jeweler", "custom-jewelry"], "clients searching the official business name"],
   ["don-jewelers-nyc", "Don Jewelers NYC", "Don Jewelers NYC search page for clients looking for The Don Jewelers & Jewelry, custom engagement rings, diamond sourcing, and private jewelry consultation.", "diamond-banner.jpg", ["Don Jewelers NYC", "The Don Jewelers NYC", "NYC Don Jewelers"], ["custom-jewelry-nyc", "nyc-diamond-district-jeweler", "custom-engagement-rings-nyc"], "NYC brand search clients"],
@@ -3044,6 +3046,8 @@ function footer() {
         <a href="#/checkout">Checkout</a>
         <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
         <a href="#/engagement-rings-lehigh-valley">Engagement Rings Lehigh Valley</a>
+        <a href="#/engagement-ring-consultation-easton-bethlehem">Engagement Rings Easton & Bethlehem</a>
+        <a href="#/custom-jewelry-project-gallery">Custom Jewelry Project Gallery</a>
         <a href="#/custom-jewelry-nyc">Custom Jewelry NYC</a>
         <a href="#/custom-jeweler-new-jersey">Custom Jeweler New Jersey</a>
         <a href="#/diamond-jeweler-connecticut">Diamond Jeweler Connecticut</a>
@@ -3768,6 +3772,32 @@ function buyingGuide(page) {
   `;
 }
 
+function customProjectGallerySection() {
+  const projects = [
+    ["queen-aurelia-oval-marquise-ring.jpeg", "Oval and marquise custom engagement ring"],
+    ["custom-dejaun-diamond-name-pendant.jpeg", "Custom diamond name pendant"],
+    ["custom-st-diamond-initial-pendant-front.jpeg", "Custom diamond initial pendant"],
+    ["yellow-gold-diamond-cuban-link-bracelet.jpeg", "Yellow gold diamond Cuban link bracelet"],
+    ["gemstone-leaf-wedding-band-set.jpeg", "Gemstone leaf wedding band set"],
+    ["medusa-diamond-signet-ring.jpeg", "Custom diamond signet ring"],
+  ];
+  return `
+    <section class="seo-section" aria-label="Original custom jewelry projects">
+      <div class="section-heading">
+        <p class="eyebrow">Owned Work & Design Inspiration</p>
+        <h2>Custom pieces built around personal specifications</h2>
+      </div>
+      <div class="project-gallery-grid">
+        ${projects.map(([image, alt]) => `<figure><img src="${asset(image)}" alt="${alt} by The Don Jewelers & Jewelry" ${imageSafety}><figcaption>${alt}</figcaption></figure>`).join("")}
+      </div>
+      <div class="builder-actions">
+        <a class="button button-gold" href="${internalLink("custom-orders")}">Request a Custom Project</a>
+        <a class="button button-dark" href="${internalLink("request/appointment")}">Book Appointment</a>
+      </div>
+    </section>
+  `;
+}
+
 function servicePage(slug) {
   const page = servicePages.find(([id]) => id === slug);
   if (!page) return home();
@@ -3816,6 +3846,7 @@ function servicePage(slug) {
           </ul>
         </div>
       </section>
+      ${id === "custom-jewelry-project-gallery" ? customProjectGallerySection() : ""}
       ${id === "nyc-diamond-district-jeweler" ? nycJewelerStorySection() : ""}
       ${id === "nyc-diamond-district-jeweler" ? "" : relatedProductGrid(keywords.join(" "))}
       ${relatedCategoryLinks(related, relatedOptions)}
