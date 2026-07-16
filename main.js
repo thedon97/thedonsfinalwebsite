@@ -2729,11 +2729,11 @@ function payableCartItems() {
 }
 
 function stripePayButton(total) {
-  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer" data-stripe-checkout="true" data-stripe-total="${total || 0}">Pay Now with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
+  return `<button class="button button-gold" type="button" data-buy-cart="true">Pay Securely${total > 0 ? ` - ${money.format(total)}` : ""}</button>`;
 }
 
 function stripeCheckoutButton(total) {
-  return `<a class="button button-gold" href="${stripePaymentLink}" target="_blank" rel="noopener noreferrer" data-stripe-checkout="true" data-stripe-total="${total || 0}">Checkout with Stripe${total > 0 ? ` - ${money.format(total)}` : ""}</a>`;
+  return `<button class="button button-gold" type="button" data-buy-cart="true">Checkout Securely${total > 0 ? ` - ${money.format(total)}` : ""}</button>`;
 }
 
 function productCheckoutButton(product, total, label = "Buy Now / Checkout with Stripe") {
@@ -6181,41 +6181,79 @@ document.addEventListener("click", (event) => {
   if (link) sendStripeStartAlert(link);
 });
 
+let embeddedCheckout;
+
+function closeEmbeddedCheckout() {
+  if (embeddedCheckout) {
+    embeddedCheckout.destroy();
+    embeddedCheckout = null;
+  }
+  document.querySelector(".stripe-checkout-overlay")?.remove();
+  document.body.classList.remove("checkout-open");
+}
+
 async function startProductCheckout(button) {
   const original = button.textContent;
   button.disabled = true;
-  button.textContent = "Opening secure checkout...";
+  button.textContent = "Loading secure checkout...";
   trackEvent("begin_checkout", {
     checkout_type: "product_checkout",
     item_id: button.dataset.buyProduct || "",
     currency: "USD",
   });
   try {
-    const response = await fetchWithTimeout("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    if (!window.Stripe) throw new Error("Secure checkout failed to load. Please refresh and try again.");
+    const configResponse = await fetchWithTimeout("/api/stripe-config", { headers: { Accept: "application/json" } }, 10000);
+    const config = await configResponse.json();
+    if (!configResponse.ok || !config.publishableKey) throw new Error(config.message || "Stripe is not configured.");
+    const requestBody = button.dataset.buyCart ? {
+      kind: "cart",
+      items: payableCartItems().map((item) => ({
+        productId: item.id,
+        quantity: Math.max(1, Number(item.quantity || 1)),
+        selections: { ...(item.selections || {}) },
+      })),
+    } : {
         kind: "saved-product",
         productId: button.dataset.buyProduct,
         selections: location.hash.startsWith(`#/product/${button.dataset.buyProduct}`) ? { ...selections } : {},
-      }),
-    }, 20000);
-    const payload = await response.json();
-    if (!response.ok || !payload.url) throw new Error(payload.message || "Checkout could not be started.");
-    window.location.href = payload.url;
+      };
+
+    closeEmbeddedCheckout();
+    const overlay = document.createElement("div");
+    overlay.className = "stripe-checkout-overlay";
+    overlay.innerHTML = `<section class="stripe-checkout-dialog" role="dialog" aria-modal="true" aria-label="Secure checkout"><header><div><p class="eyebrow">Secure Payment</p><h2>Complete your purchase</h2></div><button class="stripe-checkout-close" type="button" aria-label="Close checkout">Close</button></header><p class="stripe-checkout-status" role="status">Loading payment, wallet, and financing options…</p><div id="stripe-embedded-checkout"></div></section>`;
+    document.body.appendChild(overlay);
+    document.body.classList.add("checkout-open");
+    overlay.querySelector(".stripe-checkout-close").addEventListener("click", closeEmbeddedCheckout);
+    overlay.addEventListener("click", (event) => { if (event.target === overlay) closeEmbeddedCheckout(); });
+
+    const stripe = window.Stripe(config.publishableKey);
+    embeddedCheckout = await stripe.initEmbeddedCheckout({
+      fetchClientSecret: async () => {
+        const response = await fetchWithTimeout("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        }, 20000);
+        const payload = await response.json();
+        if (!response.ok || !payload.clientSecret) throw new Error(payload.message || "Checkout could not be started.");
+        return payload.clientSecret;
+      },
+    });
+    overlay.querySelector(".stripe-checkout-status").hidden = true;
+    embeddedCheckout.mount("#stripe-embedded-checkout");
   } catch (error) {
+    closeEmbeddedCheckout();
+    window.alert(error.message || "Checkout could not be started. Please contact us for assistance.");
+  } finally {
     button.disabled = false;
     button.textContent = original;
-    if (/STRIPE_SECRET_KEY/i.test(error.message || "")) {
-      window.location.href = stripePaymentLink;
-      return;
-    }
-    window.alert(error.message || "Checkout could not be started. Please contact us for assistance.");
   }
 }
 
 document.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-buy-product]");
+  const button = event.target.closest("[data-buy-product], [data-buy-cart]");
   if (button) startProductCheckout(button);
 });
 

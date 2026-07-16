@@ -12,6 +12,7 @@ const adminSeoDashboard = require("../server/admin/seo-dashboard");
 const cronJewelrySync = require("../server/cron/jewelry-sync");
 const seoPages = require("../server/seo-pages");
 const stripeWebhook = require("../server/stripe-webhook");
+const stripeConfig = require("../server/stripe-config");
 
 const certified = routeFeed("certified");
 const certifiedColor = routeFeed("certified-color");
@@ -48,6 +49,7 @@ module.exports = async function handler(req, res) {
     "create-checkout-session": checkout,
     "send-request": sendRequest,
     "stripe-webhook": stripeWebhook,
+    "stripe-config": stripeConfig,
     "merchant-feed": merchantFeed,
     "site-config": siteConfig,
     "seo": seoPages,

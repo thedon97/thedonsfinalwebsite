@@ -21,6 +21,15 @@ function numericPrice(value) {
 
 function manualSelectedPrice(product, selections = {}) {
   const metadata = product.metadata || product;
+  for (const [label, values] of metadata.fields || []) {
+    const allowed = values.map((value) => Array.isArray(value) ? value[0] : value);
+    if (selections[label] != null && !allowed.includes(selections[label])) {
+      throw new Error(`Invalid ${label} selection.`);
+    }
+  }
+  if (/natural/i.test(String(selections["Diamond Type"] || ""))) {
+    throw new Error("Natural diamonds require a confirmed quote before payment.");
+  }
   const estimate = Number(metadata.estimate ?? product.price ?? 0);
   if (!estimate) return product.priceCents || null;
   let price = estimate;
@@ -103,6 +112,17 @@ async function liveDiamondLine(body) {
   };
 }
 
+async function checkoutLines(body) {
+  if (body.kind !== "cart") return [{ ...(await savedProductLine(body)), quantity: 1 }];
+  if (!Array.isArray(body.items) || !body.items.length || body.items.length > 20) {
+    throw new Error("A valid cart is required.");
+  }
+  return Promise.all(body.items.map(async (item) => ({
+    ...(await savedProductLine({ productId: item.productId, selections: item.selections || {} })),
+    quantity: Math.max(1, Math.min(10, Math.floor(Number(item.quantity) || 1))),
+  })));
+}
+
 function checkoutLeadPayload({ body, line, session, origin }) {
   const hasSession = Boolean(session?.id);
   return {
@@ -136,7 +156,14 @@ module.exports = async function handler(req, res) {
       return;
     }
     const body = await readJson(req);
-    const line = body.kind === "live-diamond" ? await liveDiamondLine(body) : await savedProductLine(body);
+    const lines = body.kind === "live-diamond"
+      ? [{ ...(await liveDiamondLine(body)), quantity: 1 }]
+      : await checkoutLines(body);
+    const line = {
+      ...lines[0],
+      name: lines.length === 1 ? lines[0].name : `${lines.length} jewelry items`,
+      unitAmount: lines.reduce((total, item) => total + item.unitAmount * item.quantity, 0),
+    };
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
     const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
@@ -170,25 +197,26 @@ module.exports = async function handler(req, res) {
     }
     const session = await stripeClient().checkout.sessions.create({
       mode: "payment",
-      line_items: [{
-        quantity: 1,
+      ui_mode: "embedded",
+      line_items: lines.map((item) => ({
+        quantity: item.quantity,
         price_data: {
           currency: "usd",
-          unit_amount: line.unitAmount,
+          unit_amount: item.unitAmount,
           product_data: {
-            name: line.name,
-            metadata: line.metadata,
-            ...((line.imageUrl || "") ? {
-              images: [/^https:\/\//i.test(line.imageUrl) ? line.imageUrl : `${origin}${line.imageUrl.startsWith("/") ? "" : "/"}${line.imageUrl}`],
+            name: item.name,
+            metadata: item.metadata,
+            ...((item.imageUrl || "") ? {
+              images: [/^https:\/\//i.test(item.imageUrl) ? item.imageUrl : `${origin}${item.imageUrl.startsWith("/") ? "" : "/"}${item.imageUrl}`],
             } : {}),
           },
         },
-      }],
+      })),
       metadata: line.metadata,
       billing_address_collection: "required",
       shipping_address_collection: { allowed_countries: ["US"] },
-      success_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/#/checkout-cancel`,
+      phone_number_collection: { enabled: true },
+      return_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
     });
     const payload = checkoutLeadPayload({ body, line, session, origin });
     if (lead) {
@@ -197,13 +225,13 @@ module.exports = async function handler(req, res) {
         checkoutSessionCreatedAt: new Date().toISOString(),
       });
       await processLeadEmails(updatedLead, payload);
-      sendJson(res, 200, { ok: true, url: session.url, leadId: updatedLead.publicId });
+      sendJson(res, 200, { ok: true, clientSecret: session.client_secret, leadId: updatedLead.publicId });
       return;
     }
     await processFallbackEmails(payload);
     sendJson(res, 200, {
       ok: true,
-      url: session.url,
+      clientSecret: session.client_secret,
       leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
     });
   } catch (error) {
