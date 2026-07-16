@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const { sendJson } = require("./_http");
 const { createLead, updateStripeStatus, configured } = require("./_lead-store");
-const { processLeadEmails } = require("./send-request")._test;
+const { processFallbackEmails, processLeadEmails } = require("./send-request")._test;
 
 function stripeClient() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Missing server environment variable: STRIPE_SECRET_KEY");
@@ -69,13 +69,22 @@ module.exports = async function handler(req, res) {
       sendJson(res, 200, { ok: true, ignored: true });
       return;
     }
+    const session = event.data?.object || {};
+    const payload = eventPayload(event, session);
     if (!configured()) {
-      sendJson(res, 503, { ok: false, message: "DATABASE_URL is not configured." });
+      const result = await processFallbackEmails(payload);
+      const ok = Boolean(result.businessResult?.ok && result.customerResult?.ok);
+      sendJson(res, ok ? 200 : 202, {
+        ok,
+        databaseConfigured: false,
+        businessEmailStatus: result.businessResult?.ok ? "sent" : "failed",
+        customerEmailStatus: result.customerResult?.ok
+          ? (result.customerResult?.skipped ? "skipped" : "sent")
+          : "failed",
+      });
       return;
     }
-    const session = event.data?.object || {};
     await updateStripeStatus(session.id, event.type, { eventId: event.id, eventType: event.type }).catch(() => null);
-    const payload = eventPayload(event, session);
     const lead = await createLead(payload);
     const result = await processLeadEmails(lead, payload);
     sendJson(res, 200, { ok: true, leadId: result.lead.publicId, status: result.lead.status });
