@@ -52,13 +52,19 @@ module.exports = async function handler(req, res) {
     sendJson(res, 405, { ok: false, message: "Method not allowed." });
     return;
   }
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) {
+    sendJson(res, 503, { ok: false, message: "Stripe webhook is not configured." });
+    return;
+  }
+  const signature = req.headers["stripe-signature"];
+  if (!signature) {
+    sendJson(res, 400, { ok: false, message: "Missing Stripe signature." });
+    return;
+  }
   try {
     const raw = await readRaw(req);
-    const signature = req.headers["stripe-signature"];
-    const secret = process.env.STRIPE_WEBHOOK_SECRET;
-    const event = secret
-      ? stripeClient().webhooks.constructEvent(raw, signature, secret)
-      : JSON.parse(raw.toString("utf8") || "{}");
+    const event = stripeClient().webhooks.constructEvent(raw, signature, secret);
     if (!["checkout.session.completed", "checkout.session.async_payment_failed", "checkout.session.expired"].includes(event.type)) {
       sendJson(res, 200, { ok: true, ignored: true });
       return;
