@@ -5184,28 +5184,8 @@ function wireDiamondInventory(initialParams = new URLSearchParams()) {
   document.getElementById("diamond-inventory-grid")?.addEventListener("click", (event) => {
     const checkoutButton = event.target.closest("[data-buy-live-diamond]");
     if (checkoutButton) {
-      const original = checkoutButton.textContent;
-      checkoutButton.disabled = true;
-      checkoutButton.textContent = "Validating live inventory...";
-      fetchWithTimeout("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind: "live-diamond",
-          diamondId: checkoutButton.dataset.buyLiveDiamond,
-          stockNumber: checkoutButton.dataset.stockNumber,
-          diamondType: checkoutButton.dataset.diamondType,
-          page: checkoutButton.dataset.livePage || 1,
-        }),
-      }, 25000).then(async (response) => {
-        const payload = await response.json();
-        if (!response.ok || !payload.url) throw new Error(payload.message || "Checkout could not be started.");
-        window.location.href = payload.url;
-      }).catch((error) => {
-        checkoutButton.disabled = false;
-        checkoutButton.textContent = original;
-        window.alert(error.message || "Checkout could not be started.");
-      });
+      event.stopPropagation();
+      startProductCheckout(checkoutButton);
       return;
     }
     const mediaLink = event.target.closest("[data-diamond-media-link]");
@@ -6206,7 +6186,13 @@ async function startProductCheckout(button) {
     const configResponse = await fetchWithTimeout("/api/stripe-config", { headers: { Accept: "application/json" } }, 10000);
     const config = await configResponse.json();
     if (!configResponse.ok || !config.publishableKey) throw new Error(config.message || "Stripe is not configured.");
-    const requestBody = button.dataset.buyCart ? {
+    const requestBody = button.dataset.buyLiveDiamond ? {
+      kind: "live-diamond",
+      diamondId: button.dataset.buyLiveDiamond,
+      stockNumber: button.dataset.stockNumber,
+      diamondType: button.dataset.diamondType,
+      page: button.dataset.livePage || 1,
+    } : button.dataset.buyCart ? {
       kind: "cart",
       items: payableCartItems().map((item) => ({
         productId: item.id,
@@ -6253,7 +6239,7 @@ async function startProductCheckout(button) {
 }
 
 document.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-buy-product], [data-buy-cart]");
+  const button = event.target.closest("[data-buy-product], [data-buy-cart], [data-buy-live-diamond]");
   if (button) startProductCheckout(button);
 });
 
