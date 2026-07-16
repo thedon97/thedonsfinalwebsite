@@ -197,7 +197,7 @@ module.exports = async function handler(req, res) {
     }
     const session = await stripeClient().checkout.sessions.create({
       mode: "payment",
-      ui_mode: "embedded",
+      ui_mode: "embedded_page",
       line_items: lines.map((item) => ({
         quantity: item.quantity,
         price_data: {
