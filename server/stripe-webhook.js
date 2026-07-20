@@ -104,10 +104,28 @@ module.exports = async function handler(req, res) {
     const session = event.data?.object || {};
     const payload = eventPayload(event, session);
     if (!configured()) {
-      const result = await processFallbackEmails(payload);
+      let result;
+      try {
+        result = await processFallbackEmails(payload);
+      } catch (emailError) {
+        console.error("Stripe webhook email processing failed after event acceptance", {
+          eventId: event.id,
+          eventType: event.type,
+          error: emailError?.message || emailError,
+        });
+        sendJson(res, 200, {
+          ok: false,
+          webhookAccepted: true,
+          databaseConfigured: false,
+          businessEmailStatus: "failed",
+          customerEmailStatus: "failed",
+        });
+        return;
+      }
       const ok = Boolean(result.businessResult?.ok && result.customerResult?.ok);
-      sendJson(res, ok ? 200 : 202, {
+      sendJson(res, 200, {
         ok,
+        webhookAccepted: true,
         databaseConfigured: false,
         businessEmailStatus: result.businessResult?.ok ? "sent" : "failed",
         customerEmailStatus: result.customerResult?.ok
@@ -118,7 +136,26 @@ module.exports = async function handler(req, res) {
     }
     await updateStripeStatus(session.id, event.type, { eventId: event.id, eventType: event.type }).catch(() => null);
     const lead = await createLead(payload);
-    const result = await processLeadEmails(lead, payload);
+    let result;
+    try {
+      result = await processLeadEmails(lead, payload);
+    } catch (emailError) {
+      console.error("Stripe webhook lead email processing failed after event acceptance", {
+        eventId: event.id,
+        eventType: event.type,
+        leadId: lead?.publicId,
+        error: emailError?.message || emailError,
+      });
+      sendJson(res, 200, {
+        ok: false,
+        webhookAccepted: true,
+        leadId: lead?.publicId,
+        status: lead?.status,
+        businessEmailStatus: "failed",
+        customerEmailStatus: "failed",
+      });
+      return;
+    }
     sendJson(res, 200, { ok: true, leadId: result.lead.publicId, status: result.lead.status });
   } catch (error) {
     sendJson(res, 400, { ok: false, message: error.message || "Stripe webhook failed." });
