@@ -29,6 +29,7 @@ const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
 const ROOT = path.resolve(__dirname, "..");
 const INDEX_HTML = path.join(ROOT, "index.html");
 const SITEMAP_LIMIT = 45000;
+const LIVE_VENDOR_SITEMAP_LIMIT = 250;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -503,12 +504,15 @@ function specEntries(product) {
   const specs = product?.specs || {};
   const metadata = product?.metadata || {};
   const rows = [
+    ["Jewelry Type", specs.jewelryType || metadata.jewelryType],
     ["Metal", specs.metal || metadata.metal],
     ["Diamond Type", specs.diamondType || metadata.growthMethod || (/lgd/i.test(product?.source || "") ? "CVD Lab-Grown Diamond" : "")],
     ["Carat Weight", specs.caratWeight ? `${specs.caratWeight} CTW` : metadata.diamondWeight ? `${metadata.diamondWeight} CTW` : ""],
+    ["Diamond Pieces", specs.diamondPieces || metadata.diamondPieces],
     ["Color", specs.color || metadata.color],
     ["Clarity", specs.clarity || metadata.clarity],
     ["Shape", specs.shape || metadata.shape],
+    ["Gross Weight", specs.grossWeight ? `${specs.grossWeight} g` : metadata.grossWeight ? `${metadata.grossWeight} g` : ""],
     ["Size / Length", specs.size || metadata.size],
     ["Stock Number", specs.stockNumber || metadata.stockNumber || product?.externalId],
     ["Availability", product?.availability || specs.availability || metadata.availability],
@@ -544,6 +548,75 @@ function productDescription(product) {
   const price = priceFromProduct(product);
   const priceText = price ? ` Pricing starts at ${money(price)} before final sizing, metal, and customization review.` : " Request current pricing, exact specifications, and availability before purchase.";
   return `Shop ${category}${product?.name || "diamond jewelry"}${suffix}, available from ${BUSINESS_NAME}. Request a private jeweler quote for metal, sizing, diamond quality, insured shipping, and appointment-based purchase support.${priceText}`;
+}
+
+function productSeoCopy(product) {
+  const specs = Object.fromEntries(specEntries(product));
+  const description = String(product?.description || product?.metadata?.remarks || "").trim();
+  const stock = specs["Stock Number"];
+  const detailText = [
+    specs["Jewelry Type"] && `jewelry type: ${specs["Jewelry Type"]}`,
+    specs.Metal && `metal: ${specs.Metal}`,
+    specs["Carat Weight"] && `diamond weight: ${specs["Carat Weight"]}`,
+    specs["Diamond Pieces"] && `diamond pieces: ${specs["Diamond Pieces"]}`,
+    specs.Shape && `shape: ${specs.Shape}`,
+    specs.Color && `color: ${specs.Color}`,
+    specs.Clarity && `clarity: ${specs.Clarity}`,
+    specs["Gross Weight"] && `gross weight: ${specs["Gross Weight"]}`,
+    specs["Size / Length"] && `size or length: ${specs["Size / Length"]}`,
+  ].filter(Boolean).join("; ");
+  const stockText = stock ? ` This listing is tied to stock ${stock} so The Don Jewelers can verify the exact item, availability, and checkout details before fulfillment.` : "";
+  return [description, detailText ? `Specifications include ${detailText}.` : "", stockText].filter(Boolean).join(" ");
+}
+
+function productSitemapDiversityKey(product) {
+  const specs = Object.fromEntries(specEntries(product));
+  return [
+    product?.source || "",
+    product?.category || "",
+    product?.name || "",
+    specs["Jewelry Type"] || "",
+    specs.Metal || "",
+    specs.Shape || "",
+    specs.Color || "",
+    specs.Clarity || "",
+    specs["Carat Weight"] || "",
+    specs["Size / Length"] || "",
+  ].map((value) => slugify(value)).join("|");
+}
+
+function productSitemapScore(product) {
+  const specs = Object.fromEntries(specEntries(product));
+  const price = priceFromProduct(product) || 0;
+  let score = 0;
+  if (product.source === "manual") score += 1000;
+  if (product.imageUrl || product.image) score += 40;
+  if (Array.isArray(product.gallery) && product.gallery.length) score += 20;
+  if (product.description || product?.metadata?.remarks) score += 20;
+  if (specs["Stock Number"]) score += 15;
+  if (specs["Carat Weight"]) score += 15;
+  if (specs.Metal) score += 10;
+  if (specs.Color) score += 8;
+  if (specs.Clarity) score += 8;
+  if (price > 0) score += Math.min(60, Math.round(price / 100));
+  return score;
+}
+
+function sitemapProducts(products) {
+  const manual = products.filter((product) => product.source === "manual");
+  const live = products
+    .filter((product) => product.source !== "manual")
+    .sort((a, b) => productSitemapScore(b) - productSitemapScore(a));
+  const seen = new Set();
+  const diverseLive = [];
+  for (const product of live) {
+    const key = productSitemapDiversityKey(product);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    diverseLive.push(product);
+    if (diverseLive.length >= LIVE_VENDOR_SITEMAP_LIMIT) break;
+  }
+  return [...manual, ...diverseLive].slice(0, SITEMAP_LIMIT);
 }
 
 function productTitle(product) {
@@ -734,6 +807,7 @@ function productMain(product) {
           <p class="eyebrow">${escapeHtml(product.category || "Fine Jewelry")}</p>
           <h1>${escapeHtml(product.name)}</h1>
           <p class="product-detail-price">${price ? escapeHtml(money(price)) : "Request Pricing"}</p>
+          <p>${escapeHtml(productSeoCopy(product))}</p>
           <dl class="summary-list product-spec-list">
             ${specs.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}
           </dl>
@@ -1273,7 +1347,7 @@ async function sitemap(req, res) {
   ];
   const urls = [
     ...basePaths.map(([pagePath, changefreq, priority]) => xmlUrl(`${SITE_URL}${pagePath}`, null, changefreq, priority)),
-    ...products.slice(0, SITEMAP_LIMIT).map((product) => xmlUrl(`${SITE_URL}${productPath(product)}`, product.updatedAt || product.sourceUpdatedAt, "daily", "0.75")),
+    ...sitemapProducts(products).map((product) => xmlUrl(`${SITE_URL}${productPath(product)}`, product.updatedAt || product.sourceUpdatedAt, product.source === "manual" ? "weekly" : "daily", product.source === "manual" ? "0.8" : "0.68")),
     ...diamonds.slice(0, 4000).map((diamond) => xmlUrl(`${SITE_URL}${diamondPath(diamond)}`, null, "daily", "0.65")),
     ...seoArticles.map((article) => xmlUrl(`${SITE_URL}/blog/${article.slug}`, article.updated, "monthly", "0.78")),
   ];
