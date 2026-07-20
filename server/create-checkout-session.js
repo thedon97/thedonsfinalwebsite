@@ -19,6 +19,18 @@ function numericPrice(value) {
   return Number.isFinite(number) && number > 0 ? number : 0;
 }
 
+function safeMetadataValue(value, max = 450) {
+  return String(value == null ? "" : value).slice(0, max);
+}
+
+function readableSelections(selections = {}) {
+  if (!selections || typeof selections !== "object") return "";
+  return Object.entries(selections)
+    .filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== "")
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(" | ");
+}
+
 function manualSelectedPrice(product, selections = {}) {
   const metadata = product.metadata || product;
   for (const [label, values] of metadata.fields || []) {
@@ -58,9 +70,11 @@ async function savedProductLine(body) {
     imageUrl: product.imageUrl,
     metadata: {
       product_id: product.id,
+      product_name: safeMetadataValue(product.name),
       product_source: product.source,
       category: product.category,
-      selections: JSON.stringify(body.selections || {}).slice(0, 450),
+      selected_options: safeMetadataValue(readableSelections(body.selections || {})),
+      selections: safeMetadataValue(JSON.stringify(body.selections || {})),
     },
   };
 }
@@ -104,10 +118,20 @@ async function liveDiamondLine(body) {
     imageUrl: diamond.imageUrl,
     metadata: {
       product_source: "live-diamond",
+      product_name: safeMetadataValue(`${diamond.shape || "CVD"} ${diamond.carat ? `${diamond.carat}ct ` : ""}${diamondType}`),
       diamond_id: String(diamond.id || ""),
       stock_number: String(diamond.stockNumber || ""),
       diamond_type: diamondType,
       report_number: String(diamond.reportNumber || diamond.certificate || ""),
+      selected_options: safeMetadataValue([
+        diamond.shape ? `Shape: ${diamond.shape}` : "",
+        diamond.carat ? `Carat: ${diamond.carat}` : "",
+        diamond.color ? `Color: ${diamond.color}` : "",
+        diamond.clarity ? `Clarity: ${diamond.clarity}` : "",
+        diamond.cut ? `Cut: ${diamond.cut}` : "",
+        diamond.stockNumber ? `Stock Number: ${diamond.stockNumber}` : "",
+        diamond.reportNumber || diamond.certificate ? `Report: ${diamond.reportNumber || diamond.certificate}` : "",
+      ].filter(Boolean).join(" | ")),
     },
   };
 }
@@ -134,7 +158,8 @@ function checkoutLeadPayload({ body, line, session, origin }) {
       productName: line.name,
       productCategory: line.metadata?.category || line.metadata?.product_source || "Checkout",
       budget: `$${Math.round(line.unitAmount / 100).toLocaleString("en-US")}`,
-      notes: `Customer opened a Stripe Checkout session. Kind: ${body.kind || "saved-product"}.`,
+      selectedOptions: line.metadata?.selected_options || line.metadata?.selections || "",
+      notes: `Customer opened a Stripe Checkout session. Kind: ${body.kind || "saved-product"}. Customer contact and address are collected by Stripe on the checkout page and sent after payment completion.`,
     },
     checkout: {
       event: hasSession ? "checkout.session.created" : "checkout.session.starting",
@@ -216,6 +241,20 @@ module.exports = async function handler(req, res) {
       billing_address_collection: "required",
       shipping_address_collection: { allowed_countries: ["US"] },
       phone_number_collection: { enabled: true },
+      custom_fields: [
+        {
+          key: "first_name",
+          label: { type: "custom", custom: "First name" },
+          type: "text",
+          optional: false,
+        },
+        {
+          key: "last_name",
+          label: { type: "custom", custom: "Last name" },
+          type: "text",
+          optional: false,
+        },
+      ],
       return_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
     });
     const payload = checkoutLeadPayload({ body, line, session, origin });

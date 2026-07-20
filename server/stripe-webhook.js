@@ -20,20 +20,48 @@ function eventPayload(event, session) {
     "checkout.session.async_payment_failed": "failed",
     "checkout.session.expired": "expired",
   };
+  const metadata = session.metadata || {};
+  const customFields = Object.fromEntries((session.custom_fields || [])
+    .map((field) => [field.key, field.text?.value || field.dropdown?.value || field.numeric?.value || ""])
+    .filter(([key, value]) => key && value));
+  const address = session.customer_details?.address || session.shipping_details?.address || {};
+  const shippingAddress = session.shipping_details?.address || {};
+  const billingAddress = session.customer_details?.address || {};
+  const fullName = session.customer_details?.name || [customFields.first_name, customFields.last_name].filter(Boolean).join(" ");
+  const selectedOptions = metadata.selected_options || metadata.selections || "";
   return {
     type: `Stripe ${statusByType[event.type] || event.type}`,
     source: "Stripe webhook",
     customer: {
-      fullName: session.customer_details?.name || "",
+      fullName,
+      firstName: customFields.first_name || "",
+      lastName: customFields.last_name || "",
       email: session.customer_details?.email || session.customer_email || "",
       phone: session.customer_details?.phone || "",
+      addressLine1: address.line1 || "",
+      addressLine2: address.line2 || "",
+      city: address.city || "",
+      state: address.state || "",
+      postalCode: address.postal_code || "",
+      country: address.country || "",
+      shippingName: session.shipping_details?.name || "",
+      shippingAddress: [shippingAddress.line1, shippingAddress.line2, shippingAddress.city, shippingAddress.state, shippingAddress.postal_code, shippingAddress.country].filter(Boolean).join(", "),
+      billingAddress: [billingAddress.line1, billingAddress.line2, billingAddress.city, billingAddress.state, billingAddress.postal_code, billingAddress.country].filter(Boolean).join(", "),
     },
     jewelry: {
       requestType: `Stripe ${statusByType[event.type] || event.type}`,
-      productName: session.metadata?.product_id || session.metadata?.diamond_id || "Stripe Checkout",
-      productCategory: session.metadata?.category || session.metadata?.product_source || "Checkout",
+      productName: metadata.product_name || metadata.product_id || metadata.diamond_id || "Stripe Checkout",
+      productCategory: metadata.category || metadata.product_source || "Checkout",
       budget: session.amount_total ? `$${Math.round(session.amount_total / 100).toLocaleString("en-US")}` : "",
-      notes: `Stripe session ${session.id} status ${session.payment_status || session.status || statusByType[event.type]}.`,
+      selectedOptions,
+      productId: metadata.product_id || "",
+      diamondId: metadata.diamond_id || "",
+      stockNumber: metadata.stock_number || "",
+      reportNumber: metadata.report_number || "",
+      notes: [
+        `Stripe session ${session.id} status ${session.payment_status || session.status || statusByType[event.type]}.`,
+        selectedOptions ? `Selected website options: ${selectedOptions}` : "",
+      ].filter(Boolean).join("\n"),
     },
     checkout: {
       event: event.type,
@@ -42,7 +70,11 @@ function eventPayload(event, session) {
       paymentStatus: session.payment_status || "",
       amountTotal: session.amount_total || "",
       currency: session.currency || "",
-      metadata: session.metadata || {},
+      customerEmail: session.customer_details?.email || session.customer_email || "",
+      customerPhone: session.customer_details?.phone || "",
+      paymentMethodTypes: (session.payment_method_types || []).join(", "),
+      selectedOptions,
+      metadata,
     },
   };
 }
