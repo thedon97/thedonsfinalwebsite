@@ -498,13 +498,48 @@ const categoryPageMeta = {
 
 function pageMetaForPath(pathname) {
   const clean = `/${String(pathname || "").replace(/^\/+|\/+$/g, "")}`.replace(/\/$/, "") || "/";
-  if (staticPageMeta[clean]) return { path: clean, ...staticPageMeta[clean] };
+  if (staticPageMeta[clean]) {
+    const meta = { path: clean, ...staticPageMeta[clean] };
+    const expanded = prioritySeoSections(meta);
+    return expanded.length && !meta.sections ? { ...meta, sections: expanded } : meta;
+  }
   const categoryMatch = clean.match(/^\/category\/([^/]+)$/);
   if (categoryMatch && categoryPageMeta[categoryMatch[1]]) {
     const [title, description, label, priority] = categoryPageMeta[categoryMatch[1]];
     return { path: clean, title, description, label, priority };
   }
   return null;
+}
+
+function prioritySeoSections(meta) {
+  const path = String(meta?.path || "");
+  const priorityPaths = [
+    "/custom-jewelry-nyc", "/nyc-diamond-district-jeweler", "/custom-engagement-rings-nyc",
+    "/diamond-pendants", "/diamond-tennis-chains", "/cvd-lab-grown-diamond-jewelry",
+    "/natural-diamond-jewelry", "/engagement-ring-consultation-easton-bethlehem",
+    "/engagement-rings-lehigh-valley", "/diamond-jeweler-pennsylvania", "/custom-jeweler-pennsylvania",
+  ];
+  if (!priorityPaths.includes(path)) return [];
+  const label = meta.label;
+  const isNyc = /nyc|diamond-district/i.test(path);
+  const isPa = /easton|bethlehem|lehigh|pennsylvania/i.test(path);
+  const isRing = /engagement/i.test(path);
+  const isPendant = /pendant/i.test(path);
+  const isTennis = /tennis-chain/i.test(path);
+  const isLab = /cvd|lab-grown/i.test(path);
+  const isNatural = /natural-diamond/i.test(path);
+  const productFocus = isRing ? "custom engagement rings" : isPendant ? "custom diamond pendants" : isTennis ? "diamond tennis chains" : isLab ? "CVD lab-grown diamond jewelry" : isNatural ? "natural diamond jewelry" : "custom jewelry and certified diamonds";
+  const audience = isNyc ? "NYC, Manhattan, and Diamond District clients" : isPa ? "Easton, Bethlehem, Lehigh Valley, and Pennsylvania clients" : "local, tri-state, and nationwide clients";
+  return [
+    [`Why buyers choose ${label}`, `${label} should offer more than a product grid. The Don Jewelers & Jewelry provides a private, quote-first buying path for ${audience} seeking ${productFocus}. Clients can compare design direction, diamond type, certification, metal, size, budget, and timing before approving an order. The goal is a clear one-to-one experience with direct access to the jeweler, not a rushed showroom transaction or a generic mass-produced recommendation.`],
+    ["Diamond sourcing and certification", `Diamond options can include GIA and IGI certified stones when appropriate for the project, along with detailed consideration of shape, carat weight, cut, color, clarity, measurements, fluorescence, growth method, and report number. Lab-grown and natural diamonds serve different priorities, so the best choice depends on budget, rarity preference, desired size, and the design itself. Certification details are reviewed before a client approves a center stone or major diamond purchase.`],
+    ["Custom design, CAD, and approval", `A custom project begins with inspiration, dimensions, budget, lifestyle, and the intended occasion. From there, the design can move through stone sourcing, metal selection, CAD direction, proportions, setting height, prong style, engraving, and production planning. Clients receive the relevant design and quote information before final approval. This process is especially useful when an off-the-shelf piece does not provide the shape, scale, symbolism, fit, or finish the buyer wants.`],
+    ["Materials, construction, and craftsmanship", `${productFocus} may be quoted in 14K or 18K yellow gold, white gold, or rose gold, with platinum considered for appropriate designs. Construction choices affect appearance, durability, comfort, maintenance, and price. The Don Jewelers explains practical tradeoffs such as hollow versus solid construction, stone-setting style, chain width, clasp choice, ring profile, or pendant bail size so the finished piece is built for the way the client expects to wear it.`],
+    ["Pricing, financing, and a clear next step", `Final pricing depends on live diamond and precious-metal costs, specifications, labor, complexity, certification, and timing. Eligible customers may see Buy Now, Pay Later options through Affirm, Klarna, or Afterpay in secure Stripe Checkout, subject to provider approval and displayed terms. New clients may also qualify for the published $500 first custom-order credit on an eligible order of $2,500 or more. Promotions cannot stack, and eligibility is confirmed during quote review.`],
+    ["Private service for local and nationwide clients", `${audience} can begin through the website, a phone consultation, or a private appointment. Clients outside the immediate area can share inspiration and specifications by phone, email, Zoom, FaceTime, or video chat. Finished orders can be arranged for insured nationwide shipping when appropriate. The website does not represent every service-area page as a separate storefront; it explains how clients in that market can work directly with The Don Jewelers.`],
+    ["Trust, policies, and after-purchase support", `Before purchase, clients can review payment, shipping, return, custom-order, warranty, privacy, and terms pages directly on the website. Custom and made-to-order pieces can have different cancellation or return limitations because work, sourcing, or production may begin after approval. Secure checkout, written specifications, diamond-report details, insured shipping options, and craftsmanship support make the order path easier to understand before money changes hands.`],
+    [`How to start a ${productFocus} request`, `Start by choosing the closest product or design path, then share the desired style, diamond preference, metal, approximate size, budget, timeline, and inspiration. For engagement rings, include ring size and proposal timing when known. For pendants or chains, include dimensions, length, width, and weight preference. The Don Jewelers reviews the request, identifies missing specifications, and follows up with the clearest available next step: a quote, sourcing options, a private consultation, or a custom CAD direction.`],
+  ];
 }
 
 function categoryPath(category) {
