@@ -2949,6 +2949,18 @@ function navLinks() {
   `;
 }
 
+function desktopNavLinks() {
+  return `
+    <a href="${internalLink("products")}">Shop</a>
+    <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
+    <a href="${internalLink("select-diamond")}">Diamonds</a>
+    <a href="${internalLink("custom-orders")}">Custom Design</a>
+    <a href="${internalLink("free-engagement-ring-consultation")}">Consultation</a>
+    <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
+    <a class="nav-cart" href="${internalLink("cart")}" aria-label="View cart">Cart <span class="cart-pill">${cart.length}</span></a>
+  `;
+}
+
 function globalSearchForm(context = "header") {
   return `
     <form class="global-search global-search-${context}" role="search" aria-label="Search jewelry, diamonds, and pages">
@@ -2965,7 +2977,7 @@ function shell(main) {
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
       </button>
-      <nav class="nav-links" aria-label="Primary navigation">${navLinks()}</nav>
+      <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
       ${globalSearchForm("header")}
     </header>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
@@ -3034,36 +3046,20 @@ function footer() {
         <a href="mailto:${contactEmail}">${contactEmail}</a>
         <span>Serving ${serviceArea}. Call, text, or email before returns, custom approvals, or order questions.</span>
       </div>
-      <div class="footer-links">
-        <a href="#/products">Shop Now</a>
-        <a href="#/free-engagement-ring-consultation">Free Engagement Ring Consultation</a>
-        <a href="${appointmentUrl}">Book Appointment</a>
-        <a href="#/start-custom-ring-design">Start Custom Ring Design</a>
-        <a href="#/ring-size-guide">Ring Size Guide</a>
-        <a href="#/diamond-shape-guide">Diamond Shape Guide</a>
-        <a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a>
-        <a href="#/request/contact">General Contact</a>
-        <a href="#/checkout">Checkout</a>
-        <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
-        <a href="#/engagement-rings-lehigh-valley">Engagement Rings Lehigh Valley</a>
-        <a href="#/engagement-ring-consultation-easton-bethlehem">Engagement Rings Easton & Bethlehem</a>
-        <a href="#/custom-jewelry-project-gallery">Custom Jewelry Project Gallery</a>
-        <a href="#/custom-jewelry-nyc">Custom Jewelry NYC</a>
-        <a href="#/custom-jeweler-new-jersey">Custom Jeweler New Jersey</a>
-        <a href="#/diamond-jeweler-connecticut">Diamond Jeweler Connecticut</a>
-        <a href="#/tri-state-custom-jeweler">Tri-State Custom Jeweler</a>
-        <a href="#/lab-diamond-engagement-rings-allentown">Lab Diamond Rings Allentown</a>
-        <a href="#/custom-engagement-rings-nyc">Custom Engagement Rings NYC</a>
-        <a href="#/diamond-rings-near-me">Diamond Rings Near Me</a>
-        <a href="#/the-don-jewelers">The Don Jewelers</a>
-        <a href="#/the-don-jewelers-and-jewelry">The Don Jewelers & Jewelry</a>
-        <a href="#/don-jewelers-nyc">Don Jewelers NYC</a>
-        <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Find us on Google</a>
-        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Official Google Reviews</a>
-        ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
-        <span class="site-version">Customer policies and checkout support</span>
+      <div class="footer-navigation">
+        <div class="footer-link-group"><strong>Shop & Design</strong>
+          <a href="#/products">Shop Jewelry</a><a href="#/select-diamond">Select a Diamond</a><a href="#/start-custom-ring-design">Build an Engagement Ring</a><a href="#/custom-orders">Custom Jewelry</a><a href="${appointmentUrl}">Book Appointment</a>
+        </div>
+        <div class="footer-link-group"><strong>Guidance</strong>
+          <a href="#/ring-size-guide">Ring Size Guide</a><a href="#/diamond-shape-guide">Diamond Shape Guide</a><a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a><a href="#/blog">Jewelry Journal</a><a href="#/request/contact">Contact</a>
+        </div>
+        <div class="footer-link-group"><strong>Trust & Policies</strong>
+          ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
+        </div>
+        <div class="footer-link-group"><strong>Follow & Review</strong>
+          <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a><a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google Reviews</a>
+        </div>
+        <span class="site-version">Private appointments · Secure checkout · Nationwide shipping</span>
       </div>
     </footer>
   `;
@@ -3974,43 +3970,20 @@ function home() {
     image: defaultSeoImage,
     faqs: globalFaqs,
   });
-  const heroProductIds = [
-    "silver-cross-chain",
-    "build-your-own-diamond-tennis-chain",
-    "rose-two-tone-flower-diamond-pendants",
-    "ruby-accent-crucifix-cross-pendant",
-    "saint-michael-diamond-angel-pendant",
-    "yellow-gold-diamond-ankh-pendant",
-    "large-round-diamond-cross-pendant",
-    "celeste-bezel-diamond-station-bracelet",
-    "lumiere-pearl-paperclip-bracelet",
-    "fleur-diamond-cluster-station-bracelet",
-    "celeste-bezel-diamond-station-anklet",
-    "lumiere-pearl-paperclip-anklet",
-    "queen-aurelia-oval-marquise-ring",
-    "marquise-crown-diamond-engagement-ring",
-    "rose-three-stone-diamond-engagement-ring",
-    "classic-marquise-engagement-ring",
-  ];
-  const heroProducts = heroProductIds.map((id) => allProducts().find((product) => product.id === id)).filter(Boolean);
+  const heroProduct = allProducts().find((product) => product.id === "queen-aurelia-oval-marquise-ring");
   shell(`
     <main>
       <section class="hero">
-        <div class="hero-rotator" aria-label="Featured jewelry pieces">
-          ${heroProducts.map((product, index) => `
-            <a class="hero-slide" href="${productUrl(product.id)}" style="animation-delay: ${index * 3}s">
-              <img ${index === 0 ? `src="${productImageSrc(product)}" loading="eager" fetchpriority="high"` : `data-deferred-src="${productImageSrc(product)}" loading="lazy" fetchpriority="low"`} decoding="async" alt="${product.alt || productName(product)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
-              <span>${productName(product)}</span>
-            </a>
-          `).join("")}
-        </div>
+        <a class="hero-media" href="${productUrl(heroProduct)}" aria-label="View ${productName(heroProduct)}">
+          <img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="1600" height="1200" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
+        </a>
         <div class="hero-content">
-          <p class="eyebrow">Custom fine jewelry</p>
-          <h1>The Don Jewelers & Jewelry</h1>
-          <p>Engagement rings, pendants, chains, bracelets, anklets, and custom pieces.</p>
+          <p class="eyebrow">Private jeweler · Custom made</p>
+          <h1>Jewelry, made personal.</h1>
+          <p>Custom engagement rings and fine jewelry designed around your story, your standards, and your style.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="${internalLink("products")}">Shop Jewelry</a>
-            <a class="button button-ghost" href="${internalLink("custom-orders")}">Custom Design</a>
+            <a class="button button-gold" href="${internalLink("products")}">Explore the Collection</a>
+            <a class="button button-ghost" href="${appointmentUrl}">Book a Private Consultation</a>
           </div>
         </div>
       </section>
