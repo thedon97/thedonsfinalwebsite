@@ -2653,7 +2653,8 @@ const educationResources = [
     related: ["engagement-rings", "tennis-chains", "tennis-bracelets", "custom-jewelry"],
     quote: "Financing should make the purchase clearer, not more confusing.",
     sections: [
-      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. The discount is separate from financing approval and may not combine with other offers."],
+      ["$500 first custom-order credit", "New customers can receive a $500 credit on a first eligible custom jewelry order of $2,500 or more. Mention the offer in the custom design request so eligibility can be confirmed during quote review. Promotions cannot stack."],
+      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. Choose either THEDON15 or the $500 first custom-order credit; promotions cannot stack."],
       ["How Buy Now, Pay Later works", "Add an eligible item to cart and continue to secure Stripe Checkout. If an eligible provider is available, select it, review the payment schedule and disclosures, then apply. Approval is handled by the provider, not The Don Jewelers."],
       ["Affirm", "Affirm may offer pay-over-time plans for eligible purchases. Available terms, interest or APR, required down payment, and total cost are shown by Affirm before acceptance."],
       ["Klarna", "Klarna may offer installment or pay-later choices for eligible purchases. The schedule, any fees or interest, and first payment timing appear before acceptance."],
@@ -3005,8 +3006,8 @@ function financingAnnouncement() {
   return `
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>15% off — use THEDON15</strong>
-      <span>Enter the code at secure Stripe Checkout. Eligible customers may also Buy Now, Pay Later.</span>
+      <strong>$500 first custom-order credit</strong>
+      <span>New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
       <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="${internalLink("jewelry-financing")}">Explore financing</a>
     </aside>
@@ -3014,7 +3015,7 @@ function financingAnnouncement() {
 }
 
 function sidebarFinancingCard() {
-  return `<div class="sidebar-financing-card"><strong>15% off with THEDON15</strong><span>Use at secure Stripe Checkout</span><div class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div><a href="${internalLink("jewelry-financing")}">Buy Now, Pay Later details</a></div>`;
+  return `<div class="sidebar-financing-card"><strong>$500 first custom-order credit</strong><span>Eligible new-client custom orders of $2,500+. Promotions cannot stack; choose this credit or THEDON15.</span><div class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div><a href="${internalLink("jewelry-financing")}">Offer & financing details</a></div>`;
 }
 
 function shell(main) {
@@ -3922,6 +3923,15 @@ function financingGuideSection() {
       <div class="builder-actions"><a class="button button-gold" href="${internalLink("products")}">Shop Eligible Jewelry</a><a class="button button-dark" href="${internalLink("request/appointment")}">Ask About Financing</a><a class="button button-light" href="${phoneHref}">Call ${phoneDisplay}</a></div>
     </section>
   `;
+}
+
+function firstCustomOrderCreditSection() {
+  return `
+    <section class="seo-section first-custom-credit" aria-labelledby="first-custom-credit-title">
+      <div><p class="eyebrow">New Client Custom Design Perk</p><h2 id="first-custom-credit-title">Receive a $500 credit on your first eligible custom order</h2><p>Available to first-time customers on an eligible custom jewelry order totaling $2,500 or more. Mention the offer in your design request; eligibility is confirmed during quote review and the credit is applied before final payment.</p></div>
+      <dl class="credit-terms"><div><dt>Credit</dt><dd>$500</dd></div><div><dt>Minimum order</dt><dd>$2,500</dd></div><div><dt>Who qualifies</dt><dd>New customers · first eligible custom order</dd></div><div><dt>Combining offers</dt><dd>Promotions cannot stack; choose this credit or THEDON15</dd></div></dl>
+      <div class="builder-actions"><a class="button button-gold" href="${internalLink("custom-orders?offer=first-custom-500")}">Claim in Custom Design Request</a><a class="button button-light" href="${phoneHref}">Call ${phoneDisplay}</a></div>
+    </section>`;
 }
 
 function consultationOfferSection() {
@@ -7054,6 +7064,7 @@ function customOrders() {
   shell(`
     <main>
       ${pageHero("Custom Design", "Message us for a custom design", `Send your name, phone number, email, and a clear description of what you are looking for. We will contact you to discuss the design, budget, timeline, and next steps.`)}
+      ${firstCustomOrderCreditSection()}
       <section class="custom-form-section">
         ${customRequestForm({ formId: "custom-form", requestType: "Request Custom Design Form" })}
       </section>
@@ -7083,6 +7094,7 @@ function customRingDesignPage() {
           <a class="button button-light" href="${internalLink("select-diamond")}">Start With Live Diamond</a>
         </div>
       `)}
+      ${firstCustomOrderCreditSection()}
       <section class="builder-choice-section">
         <div class="builder-choice-grid">
           <article class="builder-choice-card"><strong>Diamond</strong><p>Choose lab-grown or natural, shape, size, and any live diamond stock number you already like.</p></article>
