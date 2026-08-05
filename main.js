@@ -3892,6 +3892,7 @@ function servicePage(slug) {
           </ul>
         </div>
       </section>
+      ${id === "jewelry-financing" ? financingGuideSection() : ""}
       ${id === "custom-jewelry-project-gallery" ? customProjectGallerySection() : ""}
       ${id === "nyc-diamond-district-jeweler" ? nycJewelerStorySection() : ""}
       ${id === "nyc-diamond-district-jeweler" ? "" : relatedProductGrid(keywords.join(" "))}
@@ -3899,6 +3900,28 @@ function servicePage(slug) {
       ${faqSection(faqs)}
     </main>
   `);
+}
+
+function financingGuideSection() {
+  const guide = educationResources.find((item) => item.slug === "jewelry-financing");
+  return `
+    <section class="seo-section financing-guide-section" aria-labelledby="financing-guide-title">
+      <div class="financing-provider-panel">
+        <span class="promo-code-chip">15% OFF · THEDON15</span>
+        <div class="bnpl-logos" aria-label="Eligible Buy Now, Pay Later providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div>
+        <p>Subject to provider eligibility and approval. Terms are displayed before acceptance in secure Stripe Checkout.</p>
+      </div>
+      <div class="section-heading">
+        <p class="eyebrow">Financing Guide</p>
+        <h2 id="financing-guide-title">Understand every step before you apply</h2>
+        <p>Compare the possible providers, read the approval disclosures, and know how payments, returns, discounts, and custom orders work.</p>
+      </div>
+      <div class="trust-block-section">
+        ${(guide?.sections || []).map(([heading, body]) => `<article><strong>${htmlSafe(heading)}</strong><p>${htmlSafe(body)}</p></article>`).join("")}
+      </div>
+      <div class="builder-actions"><a class="button button-gold" href="${internalLink("products")}">Shop Eligible Jewelry</a><a class="button button-dark" href="${internalLink("request/appointment")}">Ask About Financing</a><a class="button button-light" href="${phoneHref}">Call ${phoneDisplay}</a></div>
+    </section>
+  `;
 }
 
 function consultationOfferSection() {
