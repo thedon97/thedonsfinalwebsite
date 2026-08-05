@@ -4011,8 +4011,8 @@ function home() {
         </a>
         <div class="hero-content">
           <p class="eyebrow">Private jeweler · Custom made</p>
-          <h1>Jewelry, made personal.</h1>
-          <p>Custom engagement rings and fine jewelry designed around your story, your standards, and your style.</p>
+          <h1>Jewelry. Made personal.</h1>
+          <p>Custom engagement rings and fine jewelry, made for you.</p>
           <div class="hero-actions">
             <a class="button button-gold" href="${internalLink("products")}">Explore the Collection</a>
             <a class="button button-ghost" href="${appointmentUrl}">Book a Private Consultation</a>
