@@ -21,7 +21,7 @@ const PHONE_DISPLAY = "(484) 761-2008";
 const GOOGLE_BUSINESS_PROFILE_URL = "https://share.google/8uvOiIx224kLzQU3Y";
 const OFFICIAL_SOCIAL_LINKS = [
   "https://www.instagram.com/los_thejeweler/",
-  "https://www.facebook.com/TheDonJewelers",
+  "https://www.facebook.com/profile.php?id=100089172553878",
   GOOGLE_BUSINESS_PROFILE_URL,
 ];
 const LOCATION_TARGETS = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
