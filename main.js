@@ -2985,10 +2985,8 @@ function navLinks() {
 function desktopNavLinks() {
   return `
     <a href="${internalLink("products")}">Fine Jewelry</a>
-    <a href="${categoryUrl("cvd-lab-grown-diamond-jewelry")}">CVD Lab Jewelry</a>
     <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
-    <a href="${categoryUrl("mens-earrings")}">Men's Earrings</a>
-    <a href="${categoryUrl("womens-earrings")}">Women's Earrings</a>
+    <a href="${internalLink("select-diamond")}">Live Diamonds</a>
     <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Custom Design</a>
   `;
 }
@@ -4094,13 +4092,25 @@ function home() {
           <img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="1600" height="1200" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
         </a>
         <div class="hero-content">
-          <p class="eyebrow">Private jeweler · Custom made</p>
-          <h1>Jewelry. Made personal.</h1>
-          <p>Custom engagement rings and fine jewelry, made for you.</p>
+          <p class="eyebrow">Private jeweler · NYC Diamond District access</p>
+          <h1>Luxury custom jewelry. Made personal.</h1>
+          <p>Designed for you. Built to last. Custom engagement rings, GIA and IGI certified diamond options, and one-to-one guidance from design through delivery.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="${internalLink("products")}">Explore the Collection</a>
-            <a class="button button-ghost" href="${appointmentUrl}">Book a Private Consultation</a>
+            <a class="button button-gold" href="${internalLink("start-custom-ring-design")}">Start Your Custom Design</a>
+            <a class="button button-ghost" href="${internalLink("select-diamond")}">View Live Diamonds</a>
           </div>
+          <div class="hero-trust-strip" aria-label="Why clients choose The Don Jewelers">
+            <span><strong>GIA & IGI</strong> certified options</span>
+            <span><strong>Insured</strong> nationwide shipping</span>
+            <span><strong>Financing</strong> for eligible buyers</span>
+            <span><strong>Lifetime</strong> craftsmanship support</span>
+          </div>
+          <a class="hero-review-preview" href="#google-reviews-title" aria-label="Read verified Google reviews">
+            <span class="review-stars" aria-hidden="true">★★★★★</span>
+            <span><strong>“Carlos is a 10/10 guy.”</strong><small>Matthew Haddad · Verified on Google</small></span>
+            <em>Read all 7 reviews →</em>
+          </a>
+          <div class="hero-assurance-links"><a href="${internalLink("shipping-policy")}">Insured shipping</a><a href="${internalLink("warranty-policy")}">Craftsmanship support</a><a href="${internalLink("refund-return-policy")}">Return policy</a><span>Secure Stripe checkout</span></div>
         </div>
       </section>
       <section class="section engagement-feature">
