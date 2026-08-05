@@ -2653,10 +2653,14 @@ const educationResources = [
     related: ["engagement-rings", "tennis-chains", "tennis-bracelets", "custom-jewelry"],
     quote: "Financing should make the purchase clearer, not more confusing.",
     sections: [
-      ["15% checkout promotion", "Enter THEDON15 in Stripe Checkout's promotion-code field for 15% off the current order. The code applies once to that Checkout Session and cannot be exchanged for cash."],
-      ["How financing usually works", "Jewelry financing is typically handled through third-party providers. Approval, terms, interest, payment schedule, and eligibility depend on that provider."],
-      ["Custom orders and deposits", "Custom work may require a deposit before sourcing, CAD design, or production begins. The balance is usually due before release, shipping, or pickup."],
-      ["Plan around the full cost", "Consider taxes, shipping, insurance, sizing, CAD, appraisal, or rush timing when planning the purchase."],
+      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. The discount is separate from financing approval and may not combine with other offers."],
+      ["How Buy Now, Pay Later works", "Add an eligible item to cart and continue to secure Stripe Checkout. If an eligible provider is available, select it, review the payment schedule and disclosures, then apply. Approval is handled by the provider, not The Don Jewelers."],
+      ["Affirm", "Affirm may offer pay-over-time plans for eligible purchases. Available terms, interest or APR, required down payment, and total cost are shown by Affirm before acceptance."],
+      ["Klarna", "Klarna may offer installment or pay-later choices for eligible purchases. The schedule, any fees or interest, and first payment timing appear before acceptance."],
+      ["Afterpay", "Afterpay may divide an eligible purchase into scheduled installments. The schedule, initial payment, spending limit, and late-fee rules are provided before acceptance."],
+      ["Eligibility and approval", "Provider availability can vary by order amount, location, currency, device, customer history, and Stripe eligibility. Financing logos explain possible options; they do not promise approval."],
+      ["Payments, returns, and custom orders", "Payments are managed through the selected provider. Refunds and cancellations follow the store return policy and provider timing. Custom work may require a deposit and have different cancellation limits."],
+      ["Questions before applying", "Call (484) 761-2008 or book a private consultation. The Don Jewelers can explain the purchase process but does not make credit decisions or change provider terms."],
     ],
     faqs: [
       ["Is financing guaranteed?", "No. Financing depends on third-party provider approval."],
