@@ -798,6 +798,13 @@ function renderShell(main, routePath) {
         <button type="submit">Search</button>
       </form>
     </header>
+    <aside class="financing-announcement" aria-label="Jewelry financing options">
+      <span class="financing-pulse" aria-hidden="true"></span>
+      <strong>Buy now. Pay over time.</strong>
+      <span>Eligible Stripe checkouts may offer Affirm, Klarna, or Afterpay. Provider approval and terms apply.</span>
+      <a href="/jewelry-financing">Explore financing</a>
+      <a href="/products">Shop fine jewelry</a>
+    </aside>
     ${main}
     <footer class="site-footer">
       <p><strong>${BUSINESS_NAME}</strong></p>

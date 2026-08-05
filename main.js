@@ -2963,6 +2963,7 @@ function navLinks() {
     <span class="sidebar-section-label">Private service</span>
     <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
     <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
+    <a class="nav-highlight" href="${internalLink("jewelry-financing")}">Jewelry Financing</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
     <a href="${internalLink("service-areas")}">Service Areas</a>
     <a href="${internalLink("blog")}">Blog</a>
@@ -2990,6 +2991,18 @@ function globalSearchForm(context = "header") {
   `;
 }
 
+function financingAnnouncement() {
+  return `
+    <aside class="financing-announcement" aria-label="Jewelry financing options">
+      <span class="financing-pulse" aria-hidden="true"></span>
+      <strong>Buy now. Pay over time.</strong>
+      <span>Eligible Stripe checkouts may offer Affirm, Klarna, or Afterpay. Provider approval and terms apply.</span>
+      <a href="${internalLink("jewelry-financing")}">Explore financing</a>
+      <a href="${internalLink("products")}">Shop fine jewelry</a>
+    </aside>
+  `;
+}
+
 function shell(main) {
   document.getElementById("app").innerHTML = `
     <header class="site-header">
@@ -3001,6 +3014,7 @@ function shell(main) {
       <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
       ${globalSearchForm("header")}
     </header>
+    ${financingAnnouncement()}
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside class="site-sidebar" id="site-sidebar" aria-label="Site menu" aria-hidden="true">
       <div class="sidebar-head">
