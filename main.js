@@ -9,7 +9,7 @@ const phoneDisplay = "(484) 761-2008";
 const phoneHref = "tel:+14847612008";
 const businessName = "The Don Jewelers & Jewelry";
 const brandAliases = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don Jewelers", "The Don Jewelers NYC", "The Don Jewelers & Jewelry NYC", "Don Jewelers NYC"];
-const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, Northampton County PA, Pennsylvania, and clients nationwide by shipping and private consultation";
+const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Pennsylvania, Florida clients by virtual consultation and insured shipping, and clients nationwide";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 const gaMeasurementId = "G-68DJH1C3QF";
@@ -34,6 +34,11 @@ const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
   googleBusinessProfileUrl,
+];
+const verifiedGoogleReviews = [
+  { name: "Johnny Billz", rating: 5, text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for. Highly recommend." },
+  { name: "Alex Cruz", rating: 5, text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!" },
+  { name: "Matthew Haddad", rating: 5, text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
 ];
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
@@ -2260,6 +2265,7 @@ const servicePages = [
   ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
   ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
   ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
+  ["custom-jeweler-florida", "Custom Jeweler for Florida Clients", "Custom engagement rings, CVD lab-grown diamonds, diamond jewelry, CAD design, virtual private consultation, and insured shipping for Florida clients. The Don Jewelers serves Florida remotely and does not represent this page as a Florida storefront.", "queen-aurelia-oval-marquise-ring.jpeg", ["custom jeweler Florida", "custom engagement rings Florida", "lab grown diamonds Florida"], ["custom-engagement-rings", "cvd-lab-grown-diamond-jewelry", "jewelry-financing"], "Florida clients by virtual consultation and insured shipping"],
   ["engagement-ring-consultation-easton-bethlehem", "Engagement Ring Consultation Easton & Bethlehem", "Private engagement ring consultation for Easton and Bethlehem PA clients comparing diamonds, custom settings, CAD design, ring size, budget, and proposal timing.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings Easton PA", "engagement rings Bethlehem PA", "private jeweler Easton Bethlehem"], ["engagement-rings-lehigh-valley", "free-engagement-ring-consultation", "custom-engagement-rings"], "Easton and Bethlehem engagement ring clients"],
   ["custom-jewelry-project-gallery", "Custom Jewelry Project Gallery", "Explore original custom engagement rings, pendants, bracelets, initials, wedding sets, and one-of-one jewelry inspiration from The Don Jewelers.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry projects", "custom jewelry gallery", "custom jeweler portfolio"], ["custom-jewelry", "custom-cad-design", "custom-orders"], "custom jewelry clients"],
   ["the-don-jewelers", "The Don Jewelers", "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.", "don-logo.jpg", ["The Don Jewelers", "Don Jewelers", "The Don Jewelers jewelry"], ["the-don-jewelers-and-jewelry", "custom-engagement-rings", "free-engagement-ring-consultation"], "clients searching The Don Jewelers"],
@@ -2841,7 +2847,7 @@ function trackPageView() {
 
 function installGa4(measurementId, options = {}) {
   const id = String(measurementId || "").trim();
-  if (!options.enabled || !/^G-[A-Z0-9]+$/i.test(id) || document.querySelector(`script[data-ga4="${id}"]`)) return;
+  if (!options.enabled || !/^G-[A-Z0-9]+$/i.test(id)) return;
   const consentRequired = Boolean(options.consentRequired);
   const consentGranted = !consentRequired || localStorage.getItem("donAnalyticsConsent") === "granted";
   if (!consentGranted || navigator.doNotTrack === "1") return;
@@ -2851,11 +2857,13 @@ function installGa4(measurementId, options = {}) {
   window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
   window.gtag("js", new Date());
   window.gtag("config", id, { send_page_view: false, debug_mode: analyticsDebug });
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
-  script.dataset.ga4 = id;
-  document.head.appendChild(script);
+  if (!document.querySelector(`script[data-ga4="${id}"]`)) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+    script.dataset.ga4 = id;
+    document.head.appendChild(script);
+  }
   lastTrackedPage = "";
   trackPageView();
 }
@@ -2949,6 +2957,15 @@ function navLinks() {
   `;
 }
 
+function desktopNavLinks() {
+  return `
+    <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Start Custom Design</a>
+    <a href="${internalLink("select-diamond")}">Live Diamonds</a>
+    <a href="${internalLink("cvd-lab-grown-diamond-jewelry")}">CVD Jewelry</a>
+    <a class="nav-cart" href="${internalLink("cart")}" aria-label="View cart">Cart <span class="cart-pill">${cart.length}</span></a>
+  `;
+}
+
 function globalSearchForm(context = "header") {
   return `
     <form class="global-search global-search-${context}" role="search" aria-label="Search jewelry, diamonds, and pages">
@@ -2965,8 +2982,7 @@ function shell(main) {
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
       </button>
-      <nav class="nav-links" aria-label="Primary navigation">${navLinks()}</nav>
-      ${globalSearchForm("header")}
+      <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
     </header>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside class="site-sidebar" id="site-sidebar" aria-label="Site menu" aria-hidden="true">
@@ -3034,36 +3050,20 @@ function footer() {
         <a href="mailto:${contactEmail}">${contactEmail}</a>
         <span>Serving ${serviceArea}. Call, text, or email before returns, custom approvals, or order questions.</span>
       </div>
-      <div class="footer-links">
-        <a href="#/products">Shop Now</a>
-        <a href="#/free-engagement-ring-consultation">Free Engagement Ring Consultation</a>
-        <a href="${appointmentUrl}">Book Appointment</a>
-        <a href="#/start-custom-ring-design">Start Custom Ring Design</a>
-        <a href="#/ring-size-guide">Ring Size Guide</a>
-        <a href="#/diamond-shape-guide">Diamond Shape Guide</a>
-        <a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a>
-        <a href="#/request/contact">General Contact</a>
-        <a href="#/checkout">Checkout</a>
-        <a href="#/engagement-rings-allentown-pa">Engagement Rings Allentown PA</a>
-        <a href="#/engagement-rings-lehigh-valley">Engagement Rings Lehigh Valley</a>
-        <a href="#/engagement-ring-consultation-easton-bethlehem">Engagement Rings Easton & Bethlehem</a>
-        <a href="#/custom-jewelry-project-gallery">Custom Jewelry Project Gallery</a>
-        <a href="#/custom-jewelry-nyc">Custom Jewelry NYC</a>
-        <a href="#/custom-jeweler-new-jersey">Custom Jeweler New Jersey</a>
-        <a href="#/diamond-jeweler-connecticut">Diamond Jeweler Connecticut</a>
-        <a href="#/tri-state-custom-jeweler">Tri-State Custom Jeweler</a>
-        <a href="#/lab-diamond-engagement-rings-allentown">Lab Diamond Rings Allentown</a>
-        <a href="#/custom-engagement-rings-nyc">Custom Engagement Rings NYC</a>
-        <a href="#/diamond-rings-near-me">Diamond Rings Near Me</a>
-        <a href="#/the-don-jewelers">The Don Jewelers</a>
-        <a href="#/the-don-jewelers-and-jewelry">The Don Jewelers & Jewelry</a>
-        <a href="#/don-jewelers-nyc">Don Jewelers NYC</a>
-        <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Find us on Google</a>
-        <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Official Google Reviews</a>
-        ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
-        <span class="site-version">Customer policies and checkout support</span>
+      <div class="footer-navigation">
+        <div class="footer-link-group"><strong>Shop & Design</strong>
+          <a href="#/products">Shop Jewelry</a><a href="#/select-diamond">Select a Diamond</a><a href="#/start-custom-ring-design">Build an Engagement Ring</a><a href="#/custom-orders">Custom Jewelry</a><a href="${appointmentUrl}">Book Appointment</a>
+        </div>
+        <div class="footer-link-group"><strong>Guidance</strong>
+          <a href="#/ring-size-guide">Ring Size Guide</a><a href="#/diamond-shape-guide">Diamond Shape Guide</a><a href="#/lab-diamonds-vs-natural-diamonds">Lab vs Natural Diamonds</a><a href="#/blog">Jewelry Journal</a><a href="#/request/contact">Contact</a>
+        </div>
+        <div class="footer-link-group"><strong>Trust & Policies</strong>
+          ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
+        </div>
+        <div class="footer-link-group"><strong>Follow & Review</strong>
+          <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a><a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google Reviews</a>
+        </div>
+        <span class="site-version">Private appointments · Secure checkout · Nationwide shipping</span>
       </div>
     </footer>
   `;
@@ -3968,49 +3968,50 @@ function customOrderBand() {
   `;
 }
 
+function googleReviewsSection() {
+  return `
+    <section class="section google-reviews-section" aria-labelledby="google-reviews-title">
+      <div class="section-heading review-summary-heading">
+        <div>
+          <p class="eyebrow">Verified Google Reviews</p>
+          <h2 id="google-reviews-title">Rated 5.0 by clients</h2>
+          <p>Real public feedback from the official The Don Jewelers & Jewelry Google Business Profile.</p>
+        </div>
+        <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Read all 4 Google reviews</a>
+      </div>
+      <div class="google-review-grid">
+        ${verifiedGoogleReviews.map((review) => `
+          <article class="google-review-card">
+            <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
+            <blockquote>“${htmlSafe(review.text)}”</blockquote>
+            <p><strong>${htmlSafe(review.name)}</strong><span>Verified on Google</span></p>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function home() {
   setSeo("Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers", "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, tennis bracelets, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.", {
     path: "/",
     image: defaultSeoImage,
     faqs: globalFaqs,
   });
-  const heroProductIds = [
-    "silver-cross-chain",
-    "build-your-own-diamond-tennis-chain",
-    "rose-two-tone-flower-diamond-pendants",
-    "ruby-accent-crucifix-cross-pendant",
-    "saint-michael-diamond-angel-pendant",
-    "yellow-gold-diamond-ankh-pendant",
-    "large-round-diamond-cross-pendant",
-    "celeste-bezel-diamond-station-bracelet",
-    "lumiere-pearl-paperclip-bracelet",
-    "fleur-diamond-cluster-station-bracelet",
-    "celeste-bezel-diamond-station-anklet",
-    "lumiere-pearl-paperclip-anklet",
-    "queen-aurelia-oval-marquise-ring",
-    "marquise-crown-diamond-engagement-ring",
-    "rose-three-stone-diamond-engagement-ring",
-    "classic-marquise-engagement-ring",
-  ];
-  const heroProducts = heroProductIds.map((id) => allProducts().find((product) => product.id === id)).filter(Boolean);
+  const heroProduct = allProducts().find((product) => product.id === "queen-aurelia-oval-marquise-ring");
   shell(`
     <main>
       <section class="hero">
-        <div class="hero-rotator" aria-label="Featured jewelry pieces">
-          ${heroProducts.map((product, index) => `
-            <a class="hero-slide" href="${productUrl(product.id)}" style="animation-delay: ${index * 3}s">
-              <img ${index === 0 ? `src="${productImageSrc(product)}" loading="eager" fetchpriority="high"` : `data-deferred-src="${productImageSrc(product)}" loading="lazy" fetchpriority="low"`} decoding="async" alt="${product.alt || productName(product)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
-              <span>${productName(product)}</span>
-            </a>
-          `).join("")}
-        </div>
+        <a class="hero-media" href="${productUrl(heroProduct)}" aria-label="View ${productName(heroProduct)}">
+          <img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="1600" height="1200" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
+        </a>
         <div class="hero-content">
-          <p class="eyebrow">Custom fine jewelry</p>
-          <h1>The Don Jewelers & Jewelry</h1>
-          <p>Engagement rings, pendants, chains, bracelets, anklets, and custom pieces.</p>
+          <p class="eyebrow">Private jeweler · Custom made</p>
+          <h1>Jewelry, made personal.</h1>
+          <p>Custom engagement rings and fine jewelry designed around your story, your standards, and your style.</p>
           <div class="hero-actions">
-            <a class="button button-gold" href="${internalLink("products")}">Shop Jewelry</a>
-            <a class="button button-ghost" href="${internalLink("custom-orders")}">Custom Design</a>
+            <a class="button button-gold" href="${internalLink("products")}">Explore the Collection</a>
+            <a class="button button-ghost" href="${appointmentUrl}">Book a Private Consultation</a>
           </div>
         </div>
       </section>
@@ -4044,6 +4045,7 @@ function home() {
       </section>
       ${customOrderBand()}
       ${trustBlockSection()}
+      ${googleReviewsSection()}
       ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"])}
       ${faqSection(globalFaqs)}
       <section class="trust-band" aria-label="Trust badges">
