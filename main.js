@@ -9,7 +9,7 @@ const phoneDisplay = "(484) 761-2008";
 const phoneHref = "tel:+14847612008";
 const businessName = "The Don Jewelers & Jewelry";
 const brandAliases = ["The Don Jewelers", "The Don Jewelers and Jewelry", "Don Jewelers", "The Don Jewelers NYC", "The Don Jewelers & Jewelry NYC", "Don Jewelers NYC"];
-const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Lehigh County PA, Northampton County PA, Pennsylvania, and clients nationwide by shipping and private consultation";
+const serviceArea = "NYC, Manhattan, the Diamond District, the Tri-State area, Easton PA, Bethlehem PA, Allentown PA, Pennsylvania, Florida clients by virtual consultation and insured shipping, and clients nationwide";
 const stripePaymentLink = "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
 const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 const gaMeasurementId = "G-68DJH1C3QF";
@@ -34,6 +34,11 @@ const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
   "https://www.facebook.com/TheDonJewelers",
   googleBusinessProfileUrl,
+];
+const verifiedGoogleReviews = [
+  { name: "Johnny Billz", rating: 5, text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for. Highly recommend." },
+  { name: "Alex Cruz", rating: 5, text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!" },
+  { name: "Matthew Haddad", rating: 5, text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
 ];
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
@@ -2260,6 +2265,7 @@ const servicePages = [
   ["diamond-rings-near-me", "Diamond Rings Near Me", "Diamond rings near me search page for clients looking for engagement rings, lab diamonds, natural diamonds, custom settings, and private jeweler quotes.", "classic-marquise-engagement-ring.jpeg", ["diamond rings near me", "engagement rings near me", "custom rings near me"], ["free-engagement-ring-consultation", "custom-engagement-rings", "lab-diamond-rings"], "local diamond ring shoppers"],
   ["engagement-rings-new-jersey", "Engagement Rings New Jersey", "Engagement rings for New Jersey clients with custom settings, lab diamonds, natural diamonds, private consultation, financing options, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings New Jersey", "custom engagement rings NJ", "diamond rings New Jersey"], ["custom-jeweler-new-jersey", "free-engagement-ring-consultation", "lab-diamond-rings"], "New Jersey engagement ring clients"],
   ["engagement-rings-connecticut", "Engagement Rings Connecticut", "Engagement rings for Connecticut clients comparing lab diamonds, natural diamonds, CAD settings, private jeweler consultation, and nationwide shipping.", "white-gold-marquise-pave-engagement-ring.jpeg", ["engagement rings Connecticut", "custom engagement rings CT", "diamond rings Connecticut"], ["diamond-jeweler-connecticut", "free-engagement-ring-consultation", "natural-diamond-rings"], "Connecticut engagement ring clients"],
+  ["custom-jeweler-florida", "Custom Jeweler for Florida Clients", "Custom engagement rings, CVD lab-grown diamonds, diamond jewelry, CAD design, virtual private consultation, and insured shipping for Florida clients. The Don Jewelers serves Florida remotely and does not represent this page as a Florida storefront.", "queen-aurelia-oval-marquise-ring.jpeg", ["custom jeweler Florida", "custom engagement rings Florida", "lab grown diamonds Florida"], ["custom-engagement-rings", "cvd-lab-grown-diamond-jewelry", "jewelry-financing"], "Florida clients by virtual consultation and insured shipping"],
   ["engagement-ring-consultation-easton-bethlehem", "Engagement Ring Consultation Easton & Bethlehem", "Private engagement ring consultation for Easton and Bethlehem PA clients comparing diamonds, custom settings, CAD design, ring size, budget, and proposal timing.", "queen-aurelia-oval-marquise-ring.jpeg", ["engagement rings Easton PA", "engagement rings Bethlehem PA", "private jeweler Easton Bethlehem"], ["engagement-rings-lehigh-valley", "free-engagement-ring-consultation", "custom-engagement-rings"], "Easton and Bethlehem engagement ring clients"],
   ["custom-jewelry-project-gallery", "Custom Jewelry Project Gallery", "Explore original custom engagement rings, pendants, bracelets, initials, wedding sets, and one-of-one jewelry inspiration from The Don Jewelers.", "custom-dejaun-diamond-name-pendant.jpeg", ["custom jewelry projects", "custom jewelry gallery", "custom jeweler portfolio"], ["custom-jewelry", "custom-cad-design", "custom-orders"], "custom jewelry clients"],
   ["the-don-jewelers", "The Don Jewelers", "Official page for The Don Jewelers, a private custom jeweler for engagement rings, diamond jewelry, tennis chains, pendants, CAD design, and jewelry consultation.", "don-logo.jpg", ["The Don Jewelers", "Don Jewelers", "The Don Jewelers jewelry"], ["the-don-jewelers-and-jewelry", "custom-engagement-rings", "free-engagement-ring-consultation"], "clients searching The Don Jewelers"],
@@ -3960,6 +3966,30 @@ function customOrderBand() {
   `;
 }
 
+function googleReviewsSection() {
+  return `
+    <section class="section google-reviews-section" aria-labelledby="google-reviews-title">
+      <div class="section-heading review-summary-heading">
+        <div>
+          <p class="eyebrow">Verified Google Reviews</p>
+          <h2 id="google-reviews-title">Rated 5.0 by clients</h2>
+          <p>Real public feedback from the official The Don Jewelers & Jewelry Google Business Profile.</p>
+        </div>
+        <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Read all 4 Google reviews</a>
+      </div>
+      <div class="google-review-grid">
+        ${verifiedGoogleReviews.map((review) => `
+          <article class="google-review-card">
+            <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
+            <blockquote>“${htmlSafe(review.text)}”</blockquote>
+            <p><strong>${htmlSafe(review.name)}</strong><span>Verified on Google</span></p>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function home() {
   setSeo("Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers", "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, tennis bracelets, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.", {
     path: "/",
@@ -4013,6 +4043,7 @@ function home() {
       </section>
       ${customOrderBand()}
       ${trustBlockSection()}
+      ${googleReviewsSection()}
       ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"])}
       ${faqSection(globalFaqs)}
       <section class="trust-band" aria-label="Trust badges">
