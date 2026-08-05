@@ -241,7 +241,13 @@ module.exports = async function handler(req, res) {
       return;
     }
     const stripe = stripeClient();
-    await ensurePromotionCode(stripe);
+    try {
+      await ensurePromotionCode(stripe);
+    } catch (promotionError) {
+      // A restricted Stripe key may create Checkout Sessions without permission
+      // to inspect promotion codes. Never let that optional setup block a sale.
+      console.warn("Stripe promotion-code setup skipped:", promotionError?.message || promotionError);
+    }
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "embedded_page",
