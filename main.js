@@ -2963,8 +2963,10 @@ function navLinks() {
 function desktopNavLinks() {
   return `
     <a href="${internalLink("products")}">Fine Jewelry</a>
+    <a href="${categoryUrl("cvd-lab-grown-diamond-jewelry")}">CVD Lab Jewelry</a>
     <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
-    <a href="${internalLink("select-diamond")}">Live Diamonds</a>
+    <a href="${categoryUrl("mens-earrings")}">Men's Earrings</a>
+    <a href="${categoryUrl("womens-earrings")}">Women's Earrings</a>
     <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Custom Design</a>
   `;
 }
@@ -2972,7 +2974,7 @@ function desktopNavLinks() {
 function globalSearchForm(context = "header") {
   return `
     <form class="global-search global-search-${context}" role="search" aria-label="Search jewelry, diamonds, and pages">
-      <input name="q" type="search" autocomplete="off" placeholder="Search rings, diamonds, chains..." aria-label="Search the website">
+      <input name="q" type="search" autocomplete="off" placeholder="Search all jewelry & diamonds" aria-label="Search every product, diamond, category, and page">
       <button type="submit">Search</button>
     </form>
   `;
@@ -2984,9 +2986,10 @@ function shell(main) {
       <button class="brand brand-menu-button" type="button" id="sidebar-open" aria-label="Open site menu" aria-controls="site-sidebar" aria-expanded="false">
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
-        <span class="header-menu-cue"><strong>Menu</strong><small>More jewelry</small></span>
+        <span class="header-menu-cue"><strong>More options</strong><small>Click here</small></span>
       </button>
       <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
+      ${globalSearchForm("header")}
     </header>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside class="site-sidebar" id="site-sidebar" aria-label="Site menu" aria-hidden="true">
@@ -6214,7 +6217,7 @@ async function startProductCheckout(button) {
     closeEmbeddedCheckout();
     const overlay = document.createElement("div");
     overlay.className = "stripe-checkout-overlay";
-    overlay.innerHTML = `<section class="stripe-checkout-dialog" role="dialog" aria-modal="true" aria-label="Secure checkout"><header><div><p class="eyebrow">Secure Payment</p><h2>Complete your purchase</h2></div><button class="stripe-checkout-close" type="button" aria-label="Close checkout">Close</button></header><p class="stripe-checkout-status" role="status">Loading payment, wallet, and financing options…</p><div id="stripe-embedded-checkout"></div></section>`;
+    overlay.innerHTML = `<section class="stripe-checkout-dialog" role="dialog" aria-modal="true" aria-label="Secure checkout"><header><div><p class="eyebrow">Secure Payment</p><h2>Complete your purchase</h2></div><button class="stripe-checkout-close" type="button" aria-label="Close checkout">Close</button></header><p class="stripe-checkout-status" role="status">Loading cards, wallets, and eligible financing options…</p><p class="checkout-financing-note">Stripe will display any eligible Affirm, Klarna, or Afterpay options enabled for this purchase. Availability and approval depend on the provider, order amount, and customer location.</p><div id="stripe-embedded-checkout"></div></section>`;
     document.body.appendChild(overlay);
     document.body.classList.add("checkout-open");
     overlay.querySelector(".stripe-checkout-close").addEventListener("click", closeEmbeddedCheckout);
