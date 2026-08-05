@@ -2948,7 +2948,10 @@ function navLinks() {
   }).join("");
   return `
     <a href="${internalLink("/")}">Home</a>
+    <span class="sidebar-section-label">Shop fine jewelry</span>
+    <a class="nav-highlight" href="${internalLink("products")}">View All Fine Jewelry</a>
     ${categoryLinks}
+    <span class="sidebar-section-label">Private service</span>
     <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
     <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
     <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a>
@@ -2959,10 +2962,10 @@ function navLinks() {
 
 function desktopNavLinks() {
   return `
-    <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Start Custom Design</a>
+    <a href="${internalLink("products")}">Fine Jewelry</a>
+    <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
     <a href="${internalLink("select-diamond")}">Live Diamonds</a>
-    <a href="${internalLink("cvd-lab-grown-diamond-jewelry")}">CVD Jewelry</a>
-    <a class="nav-cart" href="${internalLink("cart")}" aria-label="View cart">Cart <span class="cart-pill">${cart.length}</span></a>
+    <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Custom Design</a>
   `;
 }
 
@@ -2981,6 +2984,7 @@ function shell(main) {
       <button class="brand brand-menu-button" type="button" id="sidebar-open" aria-label="Open site menu" aria-controls="site-sidebar" aria-expanded="false">
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
+        <span class="header-menu-cue"><strong>Menu</strong><small>More jewelry</small></span>
       </button>
       <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
     </header>

@@ -12,6 +12,7 @@
     "typecheck": "node scripts/typecheck.js",
     "test:seo": "node scripts/seo-audit.js",
     "test:notifications": "node scripts/notification-audit.js",
+    "test:production": "node scripts/production-health.js",
     "validate": "npm run lint && npm run typecheck && npm run build && npm run test:notifications"
   },
   "dependencies": {
