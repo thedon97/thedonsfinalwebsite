@@ -182,10 +182,20 @@ const staticPageMeta = {
     priority: "0.9",
   },
   "/jewelry-financing": {
-    title: "Jewelry Financing | Engagement Ring & Diamond Jewelry Financing | The Don Jewelers",
-    description: "Learn about jewelry financing options for engagement rings, diamond jewelry, custom pieces, tennis chains, pendants, watches, and luxury gifts.",
+    title: "Jewelry Financing with Affirm, Klarna & Afterpay | The Don Jewelers",
+    description: "Explore eligible jewelry financing and Buy Now, Pay Later options through Affirm, Klarna, and Afterpay at secure Stripe Checkout. Learn approval, payment, return, and THEDON15 promotion details.",
     label: "Jewelry Financing",
     priority: "0.8",
+    sections: [
+      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. The discount is separate from financing approval and may not combine with other offers."],
+      ["How Buy Now, Pay Later works", "Add an eligible item to cart and continue to secure Stripe Checkout. If an eligible provider is available for the order and customer, select it, review the provider's payment schedule and disclosures, then submit an application. Approval is handled by the provider, not The Don Jewelers."],
+      ["Affirm", "Affirm may offer pay-over-time plans for eligible purchases. Available terms, interest or APR, required down payment, and total cost are shown by Affirm before acceptance. Eligibility and approval vary by customer and order."],
+      ["Klarna", "Klarna may offer installment or pay-later choices for eligible purchases. The available schedule, any fees or interest, and the first payment timing appear before acceptance. Klarna makes the approval decision."],
+      ["Afterpay", "Afterpay may divide an eligible purchase into scheduled installments. The exact schedule, initial payment, spending limit, and late-fee rules are provided by Afterpay before acceptance. Approval is not guaranteed."],
+      ["Eligibility and approval", "Provider availability can vary by order amount, location, currency, device, customer history, and Stripe eligibility. Financing logos explain possible options; they do not promise that every provider will appear or approve every application."],
+      ["Payments, returns, and custom orders", "Payments are managed through the selected financing provider. Refunds and canceled orders follow the store return policy and the provider's processing timeline. Custom or made-to-order work may require deposits and may have different cancellation limits, so review the order details before payment."],
+      ["Questions before applying", "Call (484) 761-2008 or book a private consultation for help choosing an item or understanding the checkout path. The Don Jewelers can explain the purchase process but does not make credit decisions or change a provider's terms."],
+    ],
   },
   "/diamond-education": {
     title: "Diamond Education | Diamond Buying Guide | The Don Jewelers",
@@ -1038,6 +1048,12 @@ function pageMain(meta) {
           <p class="eyebrow">${escapeHtml(BUSINESS_NAME)}</p>
           <h1>${escapeHtml(meta.label)}</h1>
           <p>${escapeHtml(meta.description)}</p>
+          ${meta.path === "/jewelry-financing" ? `
+            <div class="financing-provider-panel" aria-label="Eligible Buy Now, Pay Later providers">
+              <span class="promo-code-chip">15% OFF · THEDON15</span>
+              <div class="bnpl-logos"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div>
+              <p>Subject to provider eligibility and approval. Terms are displayed before acceptance in secure Stripe Checkout.</p>
+            </div>` : ""}
           <div class="builder-actions">
             ${ctas.map((cta, index) => `<a class="button ${index === 0 ? "button-gold" : index === 1 ? "button-dark" : "button-light"}" href="${escapeHtml(cta.href)}">${escapeHtml(cta.label)}</a>`).join("")}
           </div>
@@ -1090,18 +1106,18 @@ function pageMain(meta) {
 
 function moneyPageCtas(pathname = "") {
   const pathText = String(pathname || "");
+  if (/financing/i.test(pathText)) {
+    return [
+      { href: "/products", label: "Shop Eligible Jewelry" },
+      { href: "/request/appointment", label: "Ask About Financing" },
+      { href: "tel:+14847612008", label: "Call (484) 761-2008" },
+    ];
+  }
   if (/pendant|tennis|bracelet|chain|jewelry|private|appointment|custom|don-jewelers/i.test(pathText)) {
     return [
       { href: "/request/appointment", label: "Book Appointment" },
       { href: "/custom-orders", label: "Request Custom Quote" },
       { href: "/products", label: "Browse Jewelry" },
-    ];
-  }
-  if (/financing/i.test(pathText)) {
-    return [
-      { href: "/request/appointment", label: "Book Financing Consultation" },
-      { href: "/products", label: "Browse Jewelry" },
-      { href: "/start-custom-ring-design", label: "Start Ring Design" },
     ];
   }
   if (/ring|engagement|diamond/i.test(pathText)) {
