@@ -33,7 +33,7 @@ const googleReviewUrl = googleBusinessProfileUrl;
 const appointmentUrl = "#/request/appointment";
 const officialSocialLinks = [
   "https://www.instagram.com/los_thejeweler/",
-  "https://www.facebook.com/TheDonJewelers",
+  "https://www.facebook.com/profile.php?id=100089172553878",
   googleBusinessProfileUrl,
 ];
 const verifiedGoogleReviews = [
@@ -3106,7 +3106,7 @@ function footer() {
           ${policyLinks.map(([label, path]) => `<a href="#/${path}">${label}</a>`).join("")}
         </div>
         <div class="footer-link-group"><strong>Follow & Review</strong>
-          <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/TheDonJewelers" target="_blank" rel="noopener noreferrer">Facebook</a><a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google Reviews</a>
+          <a href="https://www.instagram.com/los_thejeweler/" target="_blank" rel="me noopener noreferrer" aria-label="Follow The Don Jewelers and Jewelry on Instagram at los_thejeweler">Instagram · @los_thejeweler</a><a href="https://www.facebook.com/profile.php?id=100089172553878" target="_blank" rel="me noopener noreferrer" aria-label="Visit The Don Jewelers and Jewelry on Facebook">Facebook · The Don Jewelers &amp; Jewelry</a><a href="${googleBusinessProfileUrl}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google Reviews</a>
         </div>
         <span class="site-version">Private appointments · Secure checkout · Nationwide shipping</span>
       </div>
