@@ -286,6 +286,15 @@
       "source": "/blog",
       "destination": "/api/index?route=seo&action=page&path=blog"
     },
+    { "source": "/service-areas", "destination": "/api/index?route=seo&action=page&path=service-areas" },
+    { "source": "/custom-jeweler-syracuse-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-syracuse-ny" },
+    { "source": "/custom-jeweler-floral-park-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-floral-park-ny" },
+    { "source": "/custom-jeweler-long-island-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-long-island-ny" },
+    { "source": "/custom-jeweler-new-york-state", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-new-york-state" },
+    { "source": "/custom-jeweler-philadelphia-pa", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-philadelphia-pa" },
+    { "source": "/custom-jeweler-pennsylvania", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-pennsylvania" },
+    { "source": "/custom-jeweler-northern-new-jersey", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-northern-new-jersey" },
+    { "source": "/custom-jeweler-ohio", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-ohio" },
     {
       "source": "/blog/:slug",
       "destination": "/api/index?route=seo&action=article&slug=:slug"
