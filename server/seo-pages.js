@@ -187,7 +187,8 @@ const staticPageMeta = {
     label: "Jewelry Financing",
     priority: "0.8",
     sections: [
-      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. The discount is separate from financing approval and may not combine with other offers."],
+      ["$500 first custom-order credit", "New customers can receive a $500 credit on a first eligible custom jewelry order of $2,500 or more. Mention the offer in the custom design request so eligibility can be confirmed during quote review. Promotions cannot stack."],
+      ["15% off with THEDON15", "Enter THEDON15 in the promotion-code field at secure Stripe Checkout for 15% off eligible items in the current order. Choose either THEDON15 or the $500 first custom-order credit; promotions cannot stack."],
       ["How Buy Now, Pay Later works", "Add an eligible item to cart and continue to secure Stripe Checkout. If an eligible provider is available for the order and customer, select it, review the provider's payment schedule and disclosures, then submit an application. Approval is handled by the provider, not The Don Jewelers."],
       ["Affirm", "Affirm may offer pay-over-time plans for eligible purchases. Available terms, interest or APR, required down payment, and total cost are shown by Affirm before acceptance. Eligibility and approval vary by customer and order."],
       ["Klarna", "Klarna may offer installment or pay-later choices for eligible purchases. The available schedule, any fees or interest, and the first payment timing appear before acceptance. Klarna makes the approval decision."],
@@ -810,8 +811,8 @@ function renderShell(main, routePath) {
     </header>
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>15% off — use THEDON15</strong>
-      <span>Enter the code at secure Stripe Checkout. Eligible customers may also Buy Now, Pay Later.</span>
+      <strong>$500 first custom-order credit</strong>
+      <span>New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
       <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="/jewelry-financing">Explore financing</a>
     </aside>
