@@ -220,6 +220,35 @@ async function fetchFeed(feed, page = 1) {
   };
 }
 
+async function loadFeed(feed, page = 1) {
+  const cacheKey = `${feed}:${page}`;
+  const memory = feedCache[feed];
+  const persistent = await getInventoryCache(cacheKey);
+  if (persistent?.payload?.diamonds?.length) {
+    return { diamonds: persistent.payload.diamonds, cached: true, persistent: true, stale: false };
+  }
+  if (memory?.diamonds?.length && Date.now() - memory.fetchedAt < CACHE_TTL_MS) {
+    return { diamonds: memory.diamonds, cached: true, persistent: false, stale: false };
+  }
+
+  try {
+    const result = await fetchFeed(feed, page);
+    if (!result.diamonds.length) throw new Error("The LGD feed returned no diamonds for this page.");
+    feedCache[feed] = { diamonds: result.diamonds, fetchedAt: Date.now(), error: "" };
+    await setInventoryCache(cacheKey, { diamonds: result.diamonds }, CACHE_TTL_MS / 1000);
+    return { diamonds: result.diamonds, cached: false, persistent: false, stale: false };
+  } catch (error) {
+    const stalePersistent = await getInventoryCache(cacheKey, { allowStale: true });
+    if (stalePersistent?.payload?.diamonds?.length) {
+      return { diamonds: stalePersistent.payload.diamonds, cached: true, persistent: true, stale: true, error: error.message };
+    }
+    if (memory?.diamonds?.length) {
+      return { diamonds: memory.diamonds, cached: true, persistent: false, stale: true, error: error.message };
+    }
+    throw error;
+  }
+}
+
 function routeFeed(feed) {
   return async function handler(req, res) {
     const page = Math.max(1, Number(new URL(req.url, "http://localhost").searchParams.get("page") || 1) || 1);
@@ -368,6 +397,7 @@ module.exports = {
   FALLBACK_MESSAGE,
   envStatus,
   fetchFeed,
+  loadFeed,
   routeFeed,
   sendJson,
   testDiamondApi,

@@ -1,4 +1,4 @@
-const { routeFeed, fetchFeed, FALLBACK_MESSAGE, sendJson, testDiamondApi } = require("../server/_diamond-utils");
+const { routeFeed, loadFeed, FALLBACK_MESSAGE, sendJson, testDiamondApi } = require("../server/_diamond-utils");
 const { routeInventory } = require("../server/_live-inventory-utils");
 const products = require("../server/products");
 const systemStatus = require("../server/system-status");
@@ -24,12 +24,13 @@ const matchingPairColor = routeInventory("matching-pair-color");
 async function combinedDiamonds(req, res) {
   const page = Math.max(1, Number(new URL(req.url, "http://localhost").searchParams.get("page") || 1) || 1);
   try {
-    const results = await Promise.allSettled([fetchFeed("certified", page), fetchFeed("certified-color", page)]);
+    const results = await Promise.allSettled([loadFeed("certified", page), loadFeed("certified-color", page)]);
     const diamonds = results.flatMap((result) => result.status === "fulfilled" ? result.value.diamonds : []);
     const errors = results.filter((result) => result.status === "rejected").map((result) => result.reason?.message || "LGD feed unavailable.");
     sendJson(res, 200, {
       ok: diamonds.length > 0,
-      cached: false,
+      cached: results.some((result) => result.status === "fulfilled" && result.value.cached),
+      stale: results.some((result) => result.status === "fulfilled" && result.value.stale),
       page,
       count: diamonds.length,
       diamonds,

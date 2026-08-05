@@ -2951,12 +2951,9 @@ function navLinks() {
 
 function desktopNavLinks() {
   return `
-    <a href="${internalLink("products")}">Shop</a>
-    <a href="${categoryUrl("engagement-rings")}">Engagement Rings</a>
-    <a href="${internalLink("select-diamond")}">Diamonds</a>
-    <a href="${internalLink("custom-orders")}">Custom Design</a>
-    <a href="${internalLink("free-engagement-ring-consultation")}">Consultation</a>
-    <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
+    <a class="nav-highlight" href="${internalLink("start-custom-ring-design")}">Start Custom Design</a>
+    <a href="${internalLink("select-diamond")}">Live Diamonds</a>
+    <a href="${internalLink("cvd-lab-grown-diamond-jewelry")}">CVD Jewelry</a>
     <a class="nav-cart" href="${internalLink("cart")}" aria-label="View cart">Cart <span class="cart-pill">${cart.length}</span></a>
   `;
 }
@@ -2978,7 +2975,6 @@ function shell(main) {
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
       </button>
       <nav class="nav-links" aria-label="Primary navigation">${desktopNavLinks()}</nav>
-      ${globalSearchForm("header")}
     </header>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside class="site-sidebar" id="site-sidebar" aria-label="Site menu" aria-hidden="true">

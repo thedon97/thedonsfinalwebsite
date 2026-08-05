@@ -171,16 +171,17 @@ img { display: block; width: 100%; }
   justify-content: flex-end;
   flex: 1 1 auto;
   flex-wrap: nowrap;
-  gap: clamp(4px, .65vw, 12px);
+  gap: clamp(8px, 1.15vw, 22px);
   min-width: 0;
   overflow: visible;
   color: rgba(255,255,255,.88);
-  font-size: clamp(.68rem, .78vw, .78rem);
+  font-size: clamp(.72rem, .82vw, .82rem);
+  letter-spacing: .035em;
 }
 .nav-links a {
   flex: 0 0 auto;
   white-space: nowrap;
-  padding: 9px 5px;
+  padding: 11px 4px;
   border-bottom: 1px solid transparent;
   background: transparent;
   text-shadow: 0 2px 8px rgba(0,0,0,.9), 0 0 16px rgba(0,0,0,.65);
