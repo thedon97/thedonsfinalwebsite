@@ -266,6 +266,14 @@ img { display: block; width: 100%; }
 .financing-announcement strong { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; }
 .financing-announcement a { padding-bottom: 2px; border-bottom: 1px solid currentColor; color: #6e4b06; font-weight: 900; white-space: nowrap; }
 .financing-pulse { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #b7831e; animation: financingPulse 2.4s ease-out infinite; }
+.bnpl-logos { display: inline-flex; align-items: center; gap: 6px; }
+.bnpl-logo { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border-radius: 5px; font: 900 .67rem/1 system-ui, sans-serif; letter-spacing: -.02em; white-space: nowrap; }
+.affirm-logo { background: #4a4af4; color: #fff; }
+.klarna-logo { background: #ffb3c7; color: #17120f; }
+.afterpay-logo { background: #b2fce4; color: #111; }
+.sidebar-financing-card { display: grid; gap: 8px; margin: 14px 0 8px; padding: 14px; border: 1px solid rgba(241,215,129,.3); border-radius: 12px; background: linear-gradient(145deg, rgba(241,215,129,.12), rgba(255,255,255,.04)); color: #fff7df; }
+.sidebar-financing-card > span { color: rgba(255,255,255,.7); font-size: .72rem; }
+.sidebar-financing-card > a { color: #f1d781; font-size: .78rem; font-weight: 900; text-decoration: underline; text-underline-offset: 3px; }
 @keyframes financingShine { 0%, 62%, 100% { transform: translateX(-120%); } 78% { transform: translateX(120%); } }
 @keyframes financingPulse { 0% { box-shadow: 0 0 0 0 rgba(183,131,30,.45); } 70%, 100% { box-shadow: 0 0 0 10px rgba(183,131,30,0); } }
 .checkout-financing-note {
@@ -390,12 +398,11 @@ main { min-height: 70vh; }
   justify-content: space-between;
   gap: 24px;
 }
-.google-review-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 28px;
-}
+.google-profile-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.review-carousel-controls { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 26px; color: var(--muted); font-size: .82rem; font-weight: 750; }
+.review-carousel-controls button { width: 42px; height: 42px; border: 1px solid rgba(132,94,24,.28); border-radius: 50%; background: #fffdfa; color: var(--ink); cursor: pointer; font-size: 1.15rem; box-shadow: 0 8px 24px rgba(43,31,14,.08); }
+.review-carousel-controls button:hover { border-color: #b7831e; color: #8a6418; }
+.google-review-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 32%); gap: 18px; margin-top: 14px; padding: 4px 4px 20px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-color: #b7831e #eee5d6; }
 .google-review-card {
   display: grid;
   align-content: space-between;
@@ -405,6 +412,7 @@ main { min-height: 70vh; }
   border-radius: 12px;
   background: linear-gradient(145deg, #fffdfa, #f7f1e7);
   box-shadow: 0 18px 48px rgba(43, 31, 14, .08);
+  scroll-snap-align: start;
 }
 .review-stars { margin: 0; color: #b7831e; font-size: 1.05rem; letter-spacing: .16em; }
 .google-review-card blockquote { margin: 22px 0; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.08rem, 1.35vw, 1.32rem); line-height: 1.55; }
@@ -2636,8 +2644,9 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .import-tool, .import-draft, .admin-product-card, .diamond-filter-bar, .diamond-inventory-grid, .sourcing-choice-grid,
   .trust-block-section, .engagement-funnel-steps, .builder-choice-grid, .builder-choice-grid.compact, .shape-guide-grid, .guide-table,
   .product-filter-panel, .builder-workbench, .ring-builder-shell, .search-link-grid { grid-template-columns: 1fr; }
-  .google-review-grid { grid-template-columns: 1fr; }
+  .google-review-carousel { grid-auto-columns: minmax(290px, 72%); }
   .review-summary-heading { align-items: flex-start; flex-direction: column; }
+  .google-profile-actions { justify-content: flex-start; }
   .ring-builder-left { position: static; }
   .ring-builder-stepper { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .ring-option-grid,
@@ -2787,6 +2796,8 @@ body.checkout-open { overflow: hidden; }
 .stripe-checkout-status { padding: 18px 0; color: #675d4f; }
 #stripe-embedded-checkout { min-height: 300px; }
 @media (max-width: 720px) {
+  .google-review-carousel { grid-auto-columns: 88%; }
+  .review-carousel-controls { justify-content: space-between; }
   .financing-announcement { flex-wrap: wrap; gap: 5px 10px; padding-block: 9px; text-align: center; }
   .financing-announcement > span:not(.financing-pulse) { width: 100%; }
 }

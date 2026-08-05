@@ -28,6 +28,7 @@ const featuredSeoImages = [
 const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://share.google/8uvOiIx224kLzQU3Y";
+const googleBusinessProfileUrlSecondary = "https://share.google/z4jwjnAfyaquvfGCz";
 const googleReviewUrl = googleBusinessProfileUrl;
 const appointmentUrl = "#/request/appointment";
 const officialSocialLinks = [
@@ -36,9 +37,13 @@ const officialSocialLinks = [
   googleBusinessProfileUrl,
 ];
 const verifiedGoogleReviews = [
-  { name: "Johnny Billz", rating: 5, text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for. Highly recommend." },
-  { name: "Alex Cruz", rating: 5, text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!" },
-  { name: "Matthew Haddad", rating: 5, text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
+  { name: "Alex Cruz", rating: 5, profile: "Google Profile · 4 reviews", text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!!" },
+  { name: "Los", rating: 5, profile: "Google Profile · 4 reviews", text: "Had the wonderful opportunity to work with Carlos on a giveaway. I won a beautiful gemstone and Carlos turned it into a ring." },
+  { name: "Matthew Haddad", rating: 5, profile: "Google Profile · 4 reviews", text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
+  { name: "Johnny Billz", rating: 5, profile: "Google Profile · 4 reviews", text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for! Highly recommend." },
+  { name: "Sasha", rating: 5, profile: "Google Profile · 3 reviews", text: "This is the jeweler to go to for a custom engagement ring and lab grown diamond. From the design to the pricing, the experience was phenomenal." },
+  { name: "Ahmed Mohammed", rating: 5, profile: "Google Profile · 3 reviews", text: "Ordered a custom engagement ring. The owner, Carlos, was super knowledgeable, accommodating, and very fair on price, especially for the quality he provides. Truly a gem to work with." },
+  { name: "Karen Meneses", rating: 5, profile: "Google Profile · 3 reviews", text: "Ordered something from here. He delivered in a timely manner and made sure I was happy with my piece." },
 ];
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
@@ -2641,13 +2646,14 @@ const educationResources = [
     slug: "jewelry-financing",
     title: "Jewelry Financing",
     eyebrow: "Buying Options",
-    description: "A clear guide to jewelry financing, custom order deposits, approval terms, and how to plan a fine jewelry purchase responsibly.",
+    description: "Use code THEDON15 for 15% off the current order at secure Stripe Checkout and review eligible Affirm, Klarna, and Afterpay Buy Now, Pay Later options.",
     image: "don-logo.jpg",
     keyword: "jewelry financing",
     productKeyword: "jewelry",
     related: ["engagement-rings", "tennis-chains", "tennis-bracelets", "custom-jewelry"],
     quote: "Financing should make the purchase clearer, not more confusing.",
     sections: [
+      ["15% checkout promotion", "Enter THEDON15 in Stripe Checkout's promotion-code field for 15% off the current order. The code applies once to that Checkout Session and cannot be exchanged for cash."],
       ["How financing usually works", "Jewelry financing is typically handled through third-party providers. Approval, terms, interest, payment schedule, and eligibility depend on that provider."],
       ["Custom orders and deposits", "Custom work may require a deposit before sourcing, CAD design, or production begins. The balance is usually due before release, shipping, or pickup."],
       ["Plan around the full cost", "Consider taxes, shipping, insurance, sizing, CAD, appraisal, or rush timing when planning the purchase."],
@@ -2995,12 +3001,16 @@ function financingAnnouncement() {
   return `
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>Buy now. Pay over time.</strong>
-      <span>Eligible Stripe checkouts may offer Affirm, Klarna, or Afterpay. Provider approval and terms apply.</span>
+      <strong>15% off — use THEDON15</strong>
+      <span>Enter the code at secure Stripe Checkout. Eligible customers may also Buy Now, Pay Later.</span>
+      <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="${internalLink("jewelry-financing")}">Explore financing</a>
-      <a href="${internalLink("products")}">Shop fine jewelry</a>
     </aside>
   `;
+}
+
+function sidebarFinancingCard() {
+  return `<div class="sidebar-financing-card"><strong>15% off with THEDON15</strong><span>Use at secure Stripe Checkout</span><div class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div><a href="${internalLink("jewelry-financing")}">Buy Now, Pay Later details</a></div>`;
 }
 
 function shell(main) {
@@ -3022,6 +3032,7 @@ function shell(main) {
         <button class="sidebar-close" type="button" id="sidebar-close" aria-label="Close site menu">Close</button>
       </div>
       ${globalSearchForm("sidebar")}
+      ${sidebarFinancingCard()}
       <nav class="sidebar-links" aria-label="Sidebar navigation">${navLinks()}</nav>
     </aside>
     ${main}
@@ -4006,16 +4017,25 @@ function googleReviewsSection() {
         <div>
           <p class="eyebrow">Verified Google Reviews</p>
           <h2 id="google-reviews-title">Rated 5.0 by clients</h2>
-          <p>Real public feedback from the official The Don Jewelers & Jewelry Google Business Profile.</p>
+          <p>All seven public reviews currently displayed across both verified Google Business Profile links.</p>
         </div>
-        <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Read all 4 Google reviews</a>
+        <div class="google-profile-actions">
+          <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google profile · 4 reviews</a>
+          <a class="button button-light" href="${googleBusinessProfileUrlSecondary}" target="_blank" rel="noopener noreferrer">Google profile · 3 reviews</a>
+          <a class="button button-dark" href="${phoneHref}">Call ${phoneDisplay}</a>
+        </div>
       </div>
-      <div class="google-review-grid">
+      <div class="review-carousel-controls" aria-label="Review carousel controls">
+        <button type="button" aria-label="Previous reviews" onclick="this.parentElement.nextElementSibling.scrollBy({left:-420,behavior:'smooth'})">&#8592;</button>
+        <span>Swipe or use the arrows to read all 7</span>
+        <button type="button" aria-label="Next reviews" onclick="this.parentElement.nextElementSibling.scrollBy({left:420,behavior:'smooth'})">&#8594;</button>
+      </div>
+      <div class="google-review-carousel" aria-label="Google client reviews">
         ${verifiedGoogleReviews.map((review) => `
           <article class="google-review-card">
             <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
             <blockquote>“${htmlSafe(review.text)}”</blockquote>
-            <p><strong>${htmlSafe(review.name)}</strong><span>Verified on Google</span></p>
+            <p><strong>${htmlSafe(review.name)}</strong><span>${htmlSafe(review.profile)} · Verified on Google</span></p>
           </article>
         `).join("")}
       </div>
