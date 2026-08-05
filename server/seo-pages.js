@@ -771,16 +771,20 @@ function renderShell(main, routePath) {
       <a class="brand brand-menu-button" href="/" aria-label="The Don Jewelers home">
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
+        <span class="header-menu-cue"><strong>More options</strong><small>Click here</small></span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="/">Home</a>
+        <a href="/products">Fine Jewelry</a>
+        <a href="/category/cvd-lab-grown-diamond-jewelry">CVD Lab Jewelry</a>
         <a href="/category/engagement-rings">Engagement Rings</a>
-        <a href="/select-diamond">Live Diamonds</a>
-        <a href="/category/bracelets">Bracelets</a>
-        <a href="/category/pendants-charms">Pendants</a>
-        <a href="/products">Products</a>
-        <a href="/cart">Cart</a>
+        <a href="/category/mens-earrings">Men's Earrings</a>
+        <a href="/category/womens-earrings">Women's Earrings</a>
+        <a class="nav-highlight" href="/start-custom-ring-design">Custom Design</a>
       </nav>
+      <form class="global-search global-search-header" role="search" action="/search" method="get" aria-label="Search jewelry, diamonds, and pages">
+        <input name="q" type="search" placeholder="Search all jewelry & diamonds" aria-label="Search every product, diamond, category, and page">
+        <button type="submit">Search</button>
+      </form>
     </header>
     ${main}
     <footer class="site-footer">
