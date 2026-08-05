@@ -266,6 +266,14 @@ img { display: block; width: 100%; }
 .financing-announcement strong { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; }
 .financing-announcement a { padding-bottom: 2px; border-bottom: 1px solid currentColor; color: #6e4b06; font-weight: 900; white-space: nowrap; }
 .financing-pulse { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #b7831e; animation: financingPulse 2.4s ease-out infinite; }
+.bnpl-logos { display: inline-flex; align-items: center; gap: 6px; }
+.bnpl-logo { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border-radius: 5px; font: 900 .67rem/1 system-ui, sans-serif; letter-spacing: -.02em; white-space: nowrap; }
+.affirm-logo { background: #4a4af4; color: #fff; }
+.klarna-logo { background: #ffb3c7; color: #17120f; }
+.afterpay-logo { background: #b2fce4; color: #111; }
+.sidebar-financing-card { display: grid; gap: 8px; margin: 14px 0 8px; padding: 14px; border: 1px solid rgba(241,215,129,.3); border-radius: 12px; background: linear-gradient(145deg, rgba(241,215,129,.12), rgba(255,255,255,.04)); color: #fff7df; }
+.sidebar-financing-card > span { color: rgba(255,255,255,.7); font-size: .72rem; }
+.sidebar-financing-card > a { color: #f1d781; font-size: .78rem; font-weight: 900; text-decoration: underline; text-underline-offset: 3px; }
 @keyframes financingShine { 0%, 62%, 100% { transform: translateX(-120%); } 78% { transform: translateX(120%); } }
 @keyframes financingPulse { 0% { box-shadow: 0 0 0 0 rgba(183,131,30,.45); } 70%, 100% { box-shadow: 0 0 0 10px rgba(183,131,30,0); } }
 .checkout-financing-note {

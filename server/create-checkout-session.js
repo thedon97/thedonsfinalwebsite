@@ -8,10 +8,30 @@ const { configured: leadDatabaseConfigured, createLead, updateLeadCheckout } = r
 const { processFallbackEmails, processLeadEmails } = require("./send-request")._test;
 
 const STRIPE_PAYMENT_LINK = process.env.STRIPE_PAYMENT_LINK || "https://buy.stripe.com/14A5kEeX9aYgfrKfCw5kk00";
+const PROMOTION_CODE = "THEDON15";
+const PROMOTION_COUPON_ID = "the-don-15-percent";
 
 function stripeClient() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Missing server environment variable: STRIPE_SECRET_KEY");
   return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
+
+async function ensurePromotionCode(stripe) {
+  const existing = await stripe.promotionCodes.list({ code: PROMOTION_CODE, active: true, limit: 1 });
+  if (existing.data?.length) return existing.data[0];
+  let coupon;
+  try {
+    coupon = await stripe.coupons.retrieve(PROMOTION_COUPON_ID);
+  } catch (error) {
+    if (error?.statusCode !== 404 && error?.code !== "resource_missing") throw error;
+    coupon = await stripe.coupons.create({ id: PROMOTION_COUPON_ID, name: "The Don 15% Off", percent_off: 15, duration: "once", metadata: { website_promotion: PROMOTION_CODE } });
+  }
+  try {
+    return await stripe.promotionCodes.create({ code: PROMOTION_CODE, promotion: { type: "coupon", coupon: coupon.id }, metadata: { website_promotion: PROMOTION_CODE } });
+  } catch (error) {
+    if (!/promotion/i.test(String(error?.message || ""))) throw error;
+    return stripe.promotionCodes.create({ code: PROMOTION_CODE, coupon: coupon.id, metadata: { website_promotion: PROMOTION_CODE } });
+  }
 }
 
 function numericPrice(value) {
@@ -220,9 +240,12 @@ module.exports = async function handler(req, res) {
       });
       return;
     }
-    const session = await stripeClient().checkout.sessions.create({
+    const stripe = stripeClient();
+    await ensurePromotionCode(stripe);
+    const session = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "embedded_page",
+      allow_promotion_codes: true,
       line_items: lines.map((item) => ({
         quantity: item.quantity,
         price_data: {
@@ -277,3 +300,5 @@ module.exports = async function handler(req, res) {
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });
   }
 };
+
+module.exports._test = { ensurePromotionCode, PROMOTION_CODE, PROMOTION_COUPON_ID };

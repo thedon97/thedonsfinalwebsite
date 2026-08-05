@@ -800,10 +800,10 @@ function renderShell(main, routePath) {
     </header>
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>Buy now. Pay over time.</strong>
-      <span>Eligible Stripe checkouts may offer Affirm, Klarna, or Afterpay. Provider approval and terms apply.</span>
+      <strong>15% off — use THEDON15</strong>
+      <span>Enter the code at secure Stripe Checkout. Eligible customers may also Buy Now, Pay Later.</span>
+      <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="/jewelry-financing">Explore financing</a>
-      <a href="/products">Shop fine jewelry</a>
     </aside>
     ${main}
     <footer class="site-footer">
