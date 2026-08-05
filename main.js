@@ -2847,7 +2847,7 @@ function trackPageView() {
 
 function installGa4(measurementId, options = {}) {
   const id = String(measurementId || "").trim();
-  if (!options.enabled || !/^G-[A-Z0-9]+$/i.test(id) || document.querySelector(`script[data-ga4="${id}"]`)) return;
+  if (!options.enabled || !/^G-[A-Z0-9]+$/i.test(id)) return;
   const consentRequired = Boolean(options.consentRequired);
   const consentGranted = !consentRequired || localStorage.getItem("donAnalyticsConsent") === "granted";
   if (!consentGranted || navigator.doNotTrack === "1") return;
@@ -2857,11 +2857,13 @@ function installGa4(measurementId, options = {}) {
   window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
   window.gtag("js", new Date());
   window.gtag("config", id, { send_page_view: false, debug_mode: analyticsDebug });
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
-  script.dataset.ga4 = id;
-  document.head.appendChild(script);
+  if (!document.querySelector(`script[data-ga4="${id}"]`)) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+    script.dataset.ga4 = id;
+    document.head.appendChild(script);
+  }
   lastTrackedPage = "";
   trackPageView();
 }
