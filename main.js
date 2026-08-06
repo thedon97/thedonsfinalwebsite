@@ -25,7 +25,7 @@ const featuredSeoImages = [
   "triple-row-diamond-tennis-bracelet.jpeg",
   "diamond-banner.jpg",
 ];
-const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
+const imageSafety = `loading="lazy" decoding="async" fetchpriority="low" width="720" height="720" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"`;
 const instagramHandle = "@los_thejeweler";
 const googleBusinessProfileUrl = "https://share.google/8uvOiIx224kLzQU3Y";
 const googleBusinessProfileUrlSecondary = "https://share.google/z4jwjnAfyaquvfGCz";
@@ -2209,7 +2209,7 @@ const categories = [
   ["select-diamond", "Live Diamond Selection", "live-diamond-selection.jpeg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "https://dna3.dnalinks.in/TJ4594NCW/1.jpg"],
   ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
-  ["wedding-bands", "Wedding Bands", "mens-band-black-04.png"],
+  ["wedding-bands", "Wedding Bands", "mens-asscher-cut-filigree-diamond-wedding-band.jpg"],
   ["diamond-tennis-chains", "Diamond Tennis Chains", "triple-row-diamond-tennis-bracelet.jpeg"],
   ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "diamond-bracelet.png"],
   ["mens-rings", "Men's Rings", "medusa-diamond-signet-ring.jpeg"],
@@ -4129,7 +4129,7 @@ function home() {
           </div>
         </div>
         <div class="ring-showcase" aria-label="Featured engagement rings">
-          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring", "yellow-oval-diamond-ring", "gold-halo-engagement-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
+          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
         </div>
       </section>
       <section class="section">
@@ -4138,13 +4138,14 @@ function home() {
           <h2>Browse by jewelry type</h2>
         </div>
         <div class="collection-grid">
-          ${categories.map(([slug, name, image]) => `
+          ${categories.slice(0, 8).map(([slug, name, image]) => `
             <a class="collection-tile" href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
             </a>
           `).join("")}
         </div>
+        <div class="hero-actions collection-more-action"><a class="button button-light" href="${internalLink("products")}">Browse All Jewelry Categories</a></div>
       </section>
       ${customOrderBand()}
       ${trustBlockSection()}
@@ -6267,6 +6268,21 @@ document.addEventListener("click", (event) => {
 });
 
 let embeddedCheckout;
+let stripeScriptPromise;
+
+function loadStripeJs() {
+  if (window.Stripe) return Promise.resolve(window.Stripe);
+  if (stripeScriptPromise) return stripeScriptPromise;
+  stripeScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://js.stripe.com/v3/";
+    script.async = true;
+    script.onload = () => window.Stripe ? resolve(window.Stripe) : reject(new Error("Stripe did not initialize."));
+    script.onerror = () => reject(new Error("Secure checkout could not be loaded."));
+    document.head.appendChild(script);
+  });
+  return stripeScriptPromise;
+}
 
 function closeEmbeddedCheckout() {
   if (embeddedCheckout) {
@@ -6287,7 +6303,7 @@ async function startProductCheckout(button) {
     currency: "USD",
   });
   try {
-    if (!window.Stripe) throw new Error("Secure checkout failed to load. Please refresh and try again.");
+    await loadStripeJs();
     const configResponse = await fetchWithTimeout("/api/stripe-config", { headers: { Accept: "application/json" } }, 10000);
     const config = await configResponse.json();
     if (!configResponse.ok || !config.publishableKey) throw new Error(config.message || "Stripe is not configured.");

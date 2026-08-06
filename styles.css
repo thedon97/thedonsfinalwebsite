@@ -2843,6 +2843,12 @@ body.checkout-open { overflow: hidden; }
 .stripe-checkout-status { padding: 18px 0; color: #675d4f; }
 #stripe-embedded-checkout { min-height: 300px; }
 @media (max-width: 720px) {
+  .section,
+  .trust-band,
+  .site-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 800px;
+  }
   .google-review-carousel { grid-auto-columns: 88%; }
   .review-carousel-controls { justify-content: space-between; }
   .financing-announcement { flex-wrap: wrap; gap: 5px 10px; padding-block: 9px; text-align: center; }
