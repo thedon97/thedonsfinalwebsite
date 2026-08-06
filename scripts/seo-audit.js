@@ -17,7 +17,11 @@ async function request(url) {
 }
 
 (async () => {
-  const pages = ["/", "/custom-engagement-rings", "/engagement-rings-allentown-pa", "/custom-jewelry-nyc", "/blog"];
+  const pages = [
+    "/", "/custom-engagement-rings", "/engagement-rings-allentown-pa", "/custom-jewelry-nyc", "/blog",
+    "/custom-jewelry-pennsylvania", "/jewelry-store-easton-pa", "/engagement-rings-easton-pa",
+    "/diamond-jewelry-pennsylvania", "/diamond-district-custom-jewelry-nyc",
+  ];
   for (const pathname of pages) {
     const res = await request(`/api/index?route=seo&action=page&path=${encodeURIComponent(pathname.replace(/^\//, ""))}`);
     assert.equal(res.statusCode, 200, `${pathname} must return 200`);
@@ -30,6 +34,8 @@ async function request(url) {
   assert.equal(sitemap.statusCode, 200);
   assert.match(sitemap.body, /<urlset/);
   for (const excluded of ["/admin", "/checkout", "/search", "/api/"]) assert(!sitemap.body.includes(`<loc>https://www.thedonjewelersandjewelrynyc.com${excluded}`));
+  assert(!sitemap.body.includes("/diamonds/"), "volatile loose-diamond detail URLs must not consume sitemap crawl budget");
+  assert(sitemap.body.includes("/engagement-rings-easton-pa"));
   const robots = await request("/api/index?route=seo&action=robots");
   assert.match(robots.body, /Sitemap: https:\/\/www\.thedonjewelersandjewelrynyc\.com\/sitemap\.xml/);
   const article = await request("/api/index?route=seo&action=article&slug=custom-engagement-ring-timeline");
@@ -37,6 +43,11 @@ async function request(url) {
   assert.match(article.body, /"@type":"Article"/);
   assert.match(article.body, /datePublished/);
   assert(sitemap.body.includes("/blog/custom-engagement-ring-timeline"));
+  const restored = await request("/api/index?route=seo&action=article&slug=how-to-protect-diamond-jewelry");
+  assert.equal(restored.statusCode, 200, "previously reported 404 article must be restored");
+  const richLanding = await request("/api/index?route=seo&action=page&path=engagement-rings-easton-pa");
+  assert.match(richLanding.body, /\"@type\":\"FAQPage\"/);
+  assert.match(richLanding.body, /\"@type\":\"WebSite\"/);
   const missing = await request("/api/index?route=seo&action=not-found");
   assert.equal(missing.statusCode, 404);
   assert.match(missing.body, /noindex,follow/);

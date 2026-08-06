@@ -29,7 +29,9 @@ const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
 const ROOT = path.resolve(__dirname, "..");
 const INDEX_HTML = path.join(ROOT, "index.html");
 const SITEMAP_LIMIT = 45000;
-const LIVE_VENDOR_SITEMAP_LIMIT = 250;
+// Keep the sitemap selective so crawl demand is focused on the strongest,
+// stable inventory instead of hundreds of near-similar supplier URLs.
+const LIVE_VENDOR_SITEMAP_LIMIT = 75;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -475,6 +477,11 @@ const staticPageMeta = {
   "/custom-jeweler-new-york-state": { title: "Custom Jeweler New York State | Private Diamond Jeweler", description: "Private custom jewelry and diamond sourcing across New York State, including NYC, Long Island, Syracuse, and Central New York.", label: "Custom Jeweler New York State", priority: "0.86" },
   "/custom-jeweler-philadelphia-pa": { title: "Custom Jeweler Philadelphia PA | Engagement Rings", description: "Custom engagement rings, certified diamonds, pendants, tennis bracelets, earrings, and CAD design for Philadelphia-area clients.", label: "Custom Jeweler Philadelphia PA", priority: "0.84" },
   "/custom-jeweler-pennsylvania": { title: "Custom Jeweler Pennsylvania | Statewide Private Jeweler", description: "Statewide private jeweler service from Allentown and the Lehigh Valley to Philadelphia, Harrisburg, Scranton, Pittsburgh, and surrounding Pennsylvania communities.", label: "Custom Jeweler Pennsylvania", priority: "0.88" },
+  "/custom-jewelry-pennsylvania": { title: "Custom Jewelry Pennsylvania | Private Design & Certified Diamonds", description: "Design custom jewelry in Pennsylvania with private consultation, CAD planning, GIA or IGI certified diamonds, insured nationwide shipping, and clear quote support.", label: "Custom Jewelry Pennsylvania", priority: "0.9" },
+  "/jewelry-store-easton-pa": { title: "Jewelry Store Easton PA | Private Jeweler & Custom Jewelry", description: "A private jewelry-store alternative for Easton PA clients seeking engagement rings, custom jewelry, certified diamonds, appointments, and insured delivery.", label: "Jewelry Store Easton PA", priority: "0.9" },
+  "/engagement-rings-easton-pa": { title: "Engagement Rings Easton PA | Custom Lab & Natural Diamond Rings", description: "Shop or design engagement rings for Easton PA with lab-grown or natural diamonds, CAD settings, ring-sizing guidance, financing options, and private consultation.", label: "Engagement Rings Easton PA", priority: "0.92" },
+  "/diamond-jewelry-pennsylvania": { title: "Diamond Jewelry Pennsylvania | Rings, Pendants & Tennis Jewelry", description: "Diamond jewelry for Pennsylvania clients including engagement rings, pendants, earrings, tennis bracelets, certified stones, custom design, and insured shipping.", label: "Diamond Jewelry Pennsylvania", priority: "0.9" },
+  "/diamond-district-custom-jewelry-nyc": { title: "Diamond District Custom Jewelry NYC | Private Jeweler", description: "Create Diamond District custom jewelry in NYC with one-to-one design guidance, CAD approval, certified diamond sourcing, secure checkout, and nationwide service.", label: "Diamond District Custom Jewelry NYC", priority: "0.94" },
   "/custom-jeweler-northern-new-jersey": { title: "Custom Jeweler Northern New Jersey | Engagement Rings", description: "Private custom jewelry service for Northern New Jersey clients seeking engagement rings, certified diamonds, pendants, earrings, and CAD design.", label: "Custom Jeweler Northern New Jersey", priority: "0.84" },
   "/custom-jeweler-ohio": { title: "Custom Jeweler Ohio | Engagement Rings & Lab Diamonds", description: "Remote private jeweler service for Ohio clients seeking custom engagement rings, CVD lab-grown diamonds, natural diamonds, pendants, and insured shipping.", label: "Custom Jeweler Ohio", priority: "0.82" },
   "/blog": {
@@ -518,6 +525,8 @@ function prioritySeoSections(meta) {
     "/diamond-pendants", "/diamond-tennis-chains", "/cvd-lab-grown-diamond-jewelry",
     "/natural-diamond-jewelry", "/engagement-ring-consultation-easton-bethlehem",
     "/engagement-rings-lehigh-valley", "/diamond-jeweler-pennsylvania", "/custom-jeweler-pennsylvania",
+    "/custom-jewelry-pennsylvania", "/jewelry-store-easton-pa", "/engagement-rings-easton-pa",
+    "/diamond-jewelry-pennsylvania", "/diamond-district-custom-jewelry-nyc",
   ];
   if (!priorityPaths.includes(path)) return [];
   const label = meta.label;
@@ -798,7 +807,7 @@ function breadcrumbJsonLd(items) {
   };
 }
 
-function injectHead(template, { title, description, url, image, jsonLd, noindex = false }) {
+function injectHead(template, { title, description, url, image, imageAlt = title, jsonLd, noindex = false, ogType = "website" }) {
   let html = template
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
     .replace(/<meta name="description" content="[^"]*"\s*\/?>/i, `<meta name="description" content="${escapeHtml(description)}" />`)
@@ -811,12 +820,15 @@ function injectHead(template, { title, description, url, image, jsonLd, noindex 
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:url" content="${escapeHtml(url)}" />
-    <meta property="og:type" content="product" />
+    <meta property="og:type" content="${escapeHtml(ogType)}" />
+    <meta property="og:site_name" content="${escapeHtml(BUSINESS_NAME)}" />
     <meta property="og:image" content="${escapeHtml(image)}" />
+    <meta property="og:image:alt" content="${escapeHtml(imageAlt)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(title)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${escapeHtml(image)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}" />
     ${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${escapeHtml(process.env.GOOGLE_SITE_VERIFICATION)}" />` : ""}
     ${jsonLd.map((item) => `<script type="application/ld+json" data-server-jsonld="true">${JSON.stringify(item).replace(/</g, "\\u003c")}</script>`).join("\n")}
   `;
@@ -925,7 +937,7 @@ async function productPage(req, res, slug) {
     ]),
   ];
   const template = fs.readFileSync(INDEX_HTML, "utf8");
-  const page = injectHead(template, { title, description, url, image, jsonLd })
+  const page = injectHead(template, { title, description, url, image, imageAlt: productAlt(product), jsonLd, ogType: "product" })
     .replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(productMain(product), canonicalPath)}</div>`);
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -1215,6 +1227,36 @@ function pageJsonLd(meta, url) {
   };
 }
 
+function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: BUSINESS_NAME,
+    alternateName: BRAND_ALIASES,
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+function faqJsonLd(sections = []) {
+  const questions = sections.filter((item) => Array.isArray(item) && item[0] && item[1]);
+  if (!questions.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map(([name, answer]) => ({
+      "@type": "Question",
+      name,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  };
+}
+
 function articleJsonLd(article, url) {
   return {
     "@context": "https://schema.org",
@@ -1259,7 +1301,9 @@ function articlePage(req, res, slug) {
     description: article.description,
     url,
     image: absoluteUrl(article.image),
-    jsonLd: [articleJsonLd(article, url), breadcrumbJsonLd([["Home", "/"], ["Blog", "/blog"], [article.title, pathname]])],
+    imageAlt: `${article.title} by ${BUSINESS_NAME}`,
+    ogType: "article",
+    jsonLd: [articleJsonLd(article, url), websiteJsonLd(), breadcrumbJsonLd([["Home", "/"], ["Blog", "/blog"], [article.title, pathname]])],
   }).replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(articleMain(article), pathname)}</div>`);
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -1328,11 +1372,13 @@ function staticPage(req, res, pathname) {
   const url = `${SITE_URL}${meta.path === "/" ? "/" : meta.path}`;
   const jsonLd = [
     pageJsonLd(meta, url),
+    websiteJsonLd(),
     localBusinessJsonLd(),
     breadcrumbJsonLd([
       ["Home", "/"],
       ...(meta.path === "/" ? [] : [[meta.label, meta.path]]),
     ]),
+    ...(faqJsonLd(meta.sections) ? [faqJsonLd(meta.sections)] : []),
   ];
   const template = fs.readFileSync(INDEX_HTML, "utf8");
   const page = injectHead(template, {
@@ -1340,6 +1386,7 @@ function staticPage(req, res, pathname) {
     description: meta.description,
     url,
     image: DEFAULT_IMAGE,
+    imageAlt: `${meta.label} by ${BUSINESS_NAME}`,
     jsonLd,
   }).replace(/<div id="app">[\s\S]*?<\/div>/i, `<div id="app">${renderShell(pageMain(meta), meta.path)}</div>`);
   res.statusCode = 200;
@@ -1355,7 +1402,6 @@ function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {
 async function sitemap(req, res) {
   await prepareProducts();
   const products = (await listVisibleProducts()).filter((product) => product.available !== false && !product.hidden);
-  const diamonds = await cachedLooseDiamonds();
   const basePaths = [
     ["/", "weekly", "1.0"],
     ["/products", "daily", "0.9"],
@@ -1425,6 +1471,11 @@ async function sitemap(req, res) {
     ["/custom-jeweler-new-york-state", "monthly", "0.86"],
     ["/custom-jeweler-philadelphia-pa", "monthly", "0.84"],
     ["/custom-jeweler-pennsylvania", "monthly", "0.88"],
+    ["/custom-jewelry-pennsylvania", "monthly", "0.9"],
+    ["/jewelry-store-easton-pa", "monthly", "0.9"],
+    ["/engagement-rings-easton-pa", "monthly", "0.92"],
+    ["/diamond-jewelry-pennsylvania", "monthly", "0.9"],
+    ["/diamond-district-custom-jewelry-nyc", "monthly", "0.94"],
     ["/custom-jeweler-northern-new-jersey", "monthly", "0.84"],
     ["/custom-jeweler-ohio", "monthly", "0.82"],
     ["/blog", "weekly", "0.7"],
@@ -1432,7 +1483,6 @@ async function sitemap(req, res) {
   const urls = [
     ...basePaths.map(([pagePath, changefreq, priority]) => xmlUrl(`${SITE_URL}${pagePath}`, null, changefreq, priority)),
     ...sitemapProducts(products).map((product) => xmlUrl(`${SITE_URL}${productPath(product)}`, product.updatedAt || product.sourceUpdatedAt, product.source === "manual" ? "weekly" : "daily", product.source === "manual" ? "0.8" : "0.68")),
-    ...diamonds.slice(0, 4000).map((diamond) => xmlUrl(`${SITE_URL}${diamondPath(diamond)}`, null, "daily", "0.65")),
     ...seoArticles.map((article) => xmlUrl(`${SITE_URL}/blog/${article.slug}`, article.updated, "monthly", "0.78")),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;

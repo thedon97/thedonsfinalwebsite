@@ -293,6 +293,11 @@
     { "source": "/custom-jeweler-new-york-state", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-new-york-state" },
     { "source": "/custom-jeweler-philadelphia-pa", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-philadelphia-pa" },
     { "source": "/custom-jeweler-pennsylvania", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-pennsylvania" },
+    { "source": "/custom-jewelry-pennsylvania", "destination": "/api/index?route=seo&action=page&path=custom-jewelry-pennsylvania" },
+    { "source": "/jewelry-store-easton-pa", "destination": "/api/index?route=seo&action=page&path=jewelry-store-easton-pa" },
+    { "source": "/engagement-rings-easton-pa", "destination": "/api/index?route=seo&action=page&path=engagement-rings-easton-pa" },
+    { "source": "/diamond-jewelry-pennsylvania", "destination": "/api/index?route=seo&action=page&path=diamond-jewelry-pennsylvania" },
+    { "source": "/diamond-district-custom-jewelry-nyc", "destination": "/api/index?route=seo&action=page&path=diamond-district-custom-jewelry-nyc" },
     { "source": "/custom-jeweler-northern-new-jersey", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-northern-new-jersey" },
     { "source": "/custom-jeweler-ohio", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-ohio" },
     {

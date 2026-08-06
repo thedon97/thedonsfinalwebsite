@@ -73,6 +73,7 @@ async function ensureSchema() {
         expires_at TIMESTAMPTZ NOT NULL,
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+
     `).then(() => true).catch((error) => {
       schemaPromise = null;
       throw error;
