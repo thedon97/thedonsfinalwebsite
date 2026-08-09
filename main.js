@@ -37,12 +37,12 @@ const officialSocialLinks = [
   googleBusinessProfileUrl,
 ];
 const verifiedGoogleReviews = [
+  { name: "Catlin Rogers", rating: 5, profile: "Google Profile · 4 reviews · 4 photos", featured: true, text: "I couldn’t be happier with my custom engagement ring from Don Jewelers & Jewelry! From the very beginning, the entire process was smooth, professional, and personalized. They took the time to listen to exactly what we wanted and brought our vision to life beautifully. The craftsmanship is absolutely stunning. Every detail is perfect, and the ring sparkles even more in person. I’ve received so many compliments, and I can’t stop looking at it! It’s clear they truly care about the quality of their work and making each piece special. If you’re looking for a trustworthy jeweler who creates beautiful custom jewelry and provides outstanding customer service, I highly recommend Don Jewelers & Jewelry. They made such an important moment in our lives even more memorable. Thank you for creating a ring I’ll cherish forever! Located in Lehigh Valley, PA!" },
   { name: "Chris Torres", rating: 5, profile: "Google Profile · 5 reviews", text: "This is the best jeweler in town. This place is trustworthy, kind, and truly experienced. The Don made it happen—my wife’s engagement ring came out extremely beautiful. This is all 100% real jewelry; you won’t have to go anywhere else! Kay Jewelers has nothing on The Don!" },
   { name: "Alex Cruz", rating: 5, profile: "Google Profile · 5 reviews", text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!!" },
   { name: "Los", rating: 5, profile: "Google Profile · 5 reviews", text: "Had the wonderful opportunity to work with Carlos on a giveaway. I won a beautiful gemstone and Carlos turned it into a ring." },
   { name: "Matthew Haddad", rating: 5, profile: "Google Profile · 5 reviews", text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
   { name: "Johnny Billz", rating: 5, profile: "Google Profile · 5 reviews", text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for! Highly recommend." },
-  { name: "Catlin Rogers", rating: 5, profile: "Google Profile · 4 reviews", text: "I couldn’t be happier with my custom engagement ring from Don Jewelers & Jewelry! From the very beginning, the entire process was smooth, professional, and personalized. They took the time to listen to exactly what we wanted and brought our vision to life beautifully. The craftsmanship is absolutely stunning. Every detail is perfect, and the ring sparkles even more in person. I’ve received so many compliments, and I can’t stop looking at it! It’s clear they truly care about the quality of their work and making each piece special. If you’re looking for a trustworthy jeweler who creates beautiful custom jewelry and provides outstanding customer service, I highly recommend Don Jewelers & Jewelry. They made such an important moment in our lives even more memorable. Thank you for creating a ring I’ll cherish forever! Located in Lehigh Valley, PA!" },
   { name: "Sasha", rating: 5, profile: "Google Profile · 4 reviews", text: "This is the jeweler to go to for a custom engagement ring and lab grown diamond. From the design to the pricing, the experience was phenomenal." },
   { name: "Ahmed Mohammed", rating: 5, profile: "Google Profile · 4 reviews", text: "Ordered a custom engagement ring. The owner, Carlos, was super knowledgeable, accommodating, and very fair on price, especially for the quality he provides. Truly a gem to work with." },
   { name: "Karen Meneses", rating: 5, profile: "Google Profile · 4 reviews", text: "Ordered something from here. He delivered in a timely manner and made sure I was happy with my piece." },
@@ -4074,7 +4074,8 @@ function googleReviewsSection() {
       </div>
       <div class="google-review-carousel" aria-label="Google client reviews">
         ${verifiedGoogleReviews.map((review) => `
-          <article class="google-review-card">
+          <article class="google-review-card${review.featured ? " google-review-card-featured" : ""}">
+            ${review.featured ? '<p class="review-featured-label">Featured client story</p>' : ""}
             <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
             <blockquote>“${htmlSafe(review.text)}”</blockquote>
             <p><strong>${htmlSafe(review.name)}</strong><span>${htmlSafe(review.profile)} · Verified on Google</span></p>
