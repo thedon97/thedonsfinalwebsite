@@ -27,7 +27,7 @@ const OFFICIAL_SOCIAL_LINKS = [
 const LOCATION_TARGETS = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
 const ROOT = path.resolve(__dirname, "..");
-const INDEX_HTML = path.join(ROOT, "index.html");
+const INDEX_HTML = path.join(__dirname, "template.html");
 const SITEMAP_LIMIT = 45000;
 // Keep the sitemap selective so crawl demand is focused on the strongest,
 // stable inventory instead of hundreds of near-similar supplier URLs.

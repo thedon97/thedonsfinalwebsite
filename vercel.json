@@ -43,10 +43,6 @@
   ],
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/api/index?route=seo&action=page&path=/"
-    },
-    {
       "source": "/sitemap.xml",
       "destination": "/api/index?route=seo&action=sitemap"
     },
