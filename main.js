@@ -2968,7 +2968,12 @@ function hideSplashScreen() {
 }
 
 function navLinks() {
-  const categoryLinks = categories.map(([slug, name]) => {
+  const prioritySlugs = new Set([
+    "start-custom-ring-design", "select-diamond", "cvd-lab-grown-diamond-jewelry",
+    "engagement-rings", "wedding-bands", "diamond-tennis-chains",
+    "diamond-tennis-bracelets", "mens-earrings", "womens-earrings", "custom-jewelry",
+  ]);
+  const categoryLinks = categories.filter(([slug]) => prioritySlugs.has(slug)).map(([slug, name]) => {
     const href = ["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug);
     const className = ["custom-orders", "start-custom-ring-design"].includes(slug) ? ` class="nav-highlight"` : "";
     return `<a${className} href="${href}">${name}</a>`;
@@ -2978,6 +2983,7 @@ function navLinks() {
     <span class="sidebar-section-label">Shop fine jewelry</span>
     <a class="nav-highlight" href="${internalLink("products")}">View All Fine Jewelry</a>
     ${categoryLinks}
+    <a href="${internalLink("products")}">Browse every jewelry category</a>
     <span class="sidebar-section-label">Private service</span>
     <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a>
     <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a>
@@ -3021,8 +3027,9 @@ function financingAnnouncement() {
   return `
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>$500 first custom-order credit</strong>
-      <span>New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
+      <strong><span class="finance-desktop-copy">$500 first custom-order credit</span><span class="finance-mobile-copy">$500 custom-order credit</span></strong>
+      <span class="finance-desktop-copy">New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
+      <span class="finance-mobile-copy">Eligible $2,500+ orders · Financing available · Terms apply</span>
       <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="${internalLink("jewelry-financing")}">Explore financing</a>
     </aside>
@@ -4063,6 +4070,14 @@ function customOrderBand() {
 }
 
 function googleReviewsSection() {
+  const featured = verifiedGoogleReviews.find((review) => review.featured) || verifiedGoogleReviews[0];
+  const remaining = verifiedGoogleReviews.filter((review) => review !== featured);
+  const card = (review) => `
+    <article class="google-review-card">
+      <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
+      <blockquote>“${htmlSafe(review.text)}”</blockquote>
+      <p><strong>${htmlSafe(review.name)}</strong><span>${htmlSafe(review.profile)} · Verified on Google</span></p>
+    </article>`;
   return `
     <section class="section google-reviews-section" aria-labelledby="google-reviews-title">
       <div class="section-heading review-summary-heading">
@@ -4077,21 +4092,24 @@ function googleReviewsSection() {
           <a class="button button-dark" href="${phoneHref}">Call ${phoneDisplay}</a>
         </div>
       </div>
+      <article class="google-review-feature">
+        <div class="review-feature-media">
+          <p class="review-featured-label">Featured client story</p>
+          <div class="review-photo-gallery" aria-label="Photos shared with ${htmlSafe(featured.name)}'s Google review">${featured.photos.map((photo) => `<a href="${htmlSafe(photo.src)}" target="_blank" rel="noopener" aria-label="View full-size review photo"><img src="${htmlSafe(photo.src)}" alt="${htmlSafe(photo.alt)}" width="320" height="320" loading="lazy" decoding="async"></a>`).join("")}</div>
+        </div>
+        <div class="review-feature-copy">
+          <p class="review-stars" aria-label="${featured.rating} out of 5 stars">★★★★★</p>
+          <blockquote>“${htmlSafe(featured.text)}”</blockquote>
+          <p><strong>${htmlSafe(featured.name)}</strong><span>${htmlSafe(featured.profile)} · Verified on Google</span></p>
+        </div>
+      </article>
       <div class="review-carousel-controls" aria-label="Review carousel controls">
         <button type="button" aria-label="Previous reviews" onclick="this.parentElement.nextElementSibling.scrollBy({left:-420,behavior:'smooth'})">&#8592;</button>
         <span>Swipe or use the arrows to read all 9</span>
         <button type="button" aria-label="Next reviews" onclick="this.parentElement.nextElementSibling.scrollBy({left:420,behavior:'smooth'})">&#8594;</button>
       </div>
       <div class="google-review-carousel" aria-label="Google client reviews">
-        ${verifiedGoogleReviews.map((review) => `
-          <article class="google-review-card${review.featured ? " google-review-card-featured" : ""}">
-            ${review.featured ? '<p class="review-featured-label">Featured client story</p>' : ""}
-            ${review.photos?.length ? `<div class="review-photo-gallery" aria-label="Photos shared with ${htmlSafe(review.name)}'s Google review">${review.photos.map((photo) => `<a href="${htmlSafe(photo.src)}" target="_blank" rel="noopener" aria-label="View full-size review photo"><img src="${htmlSafe(photo.src)}" alt="${htmlSafe(photo.alt)}" width="320" height="320" loading="lazy" decoding="async"></a>`).join("")}</div>` : ""}
-            <p class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★</p>
-            <blockquote>“${htmlSafe(review.text)}”</blockquote>
-            <p><strong>${htmlSafe(review.name)}</strong><span>${htmlSafe(review.profile)} · Verified on Google</span></p>
-          </article>
-        `).join("")}
+        ${remaining.map(card).join("")}
       </div>
     </section>
   `;
@@ -4152,7 +4170,7 @@ function home() {
           <h2>Browse by jewelry type</h2>
         </div>
         <div class="collection-grid">
-          ${categories.slice(0, 8).map(([slug, name, image]) => `
+          ${categories.slice(0, 6).map(([slug, name, image]) => `
             <a class="collection-tile" href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
               <span>${name}</span>
@@ -4162,10 +4180,18 @@ function home() {
         <div class="hero-actions collection-more-action"><a class="button button-light" href="${internalLink("products")}">Browse All Jewelry Categories</a></div>
       </section>
       ${customOrderBand()}
+      <section class="section authority-proof" aria-labelledby="authority-proof-title">
+        <div class="section-heading"><p class="eyebrow">Experience you can verify</p><h2 id="authority-proof-title">Real projects, clear guidance, documented buyer protection</h2><p>Review completed custom work, learn how diamonds and custom orders are evaluated, and confirm the policies that apply before payment.</p></div>
+        <div class="trust-block-section">
+          <article><strong>Original project gallery</strong><p>See custom jewelry examples and the design details behind one-of-one client work.</p><a href="${internalLink("custom-jewelry-project-gallery")}">View custom projects</a></article>
+          <article><strong>Diamond education</strong><p>Compare certification, cut, color, clarity, lab-grown and natural diamond options before choosing a stone.</p><a href="${internalLink("diamond-education")}">Read diamond guides</a></article>
+          <article><strong>Transparent policies</strong><p>Review shipping, warranty, returns, financing and custom-order approval terms before moving forward.</p><a href="${internalLink("custom-order-policy")}">Review buyer protections</a></article>
+        </div>
+      </section>
       ${trustBlockSection()}
       ${googleReviewsSection()}
-      ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "diamond-pendants", "custom-jewelry"])}
-      ${faqSection(globalFaqs)}
+      ${relatedCategoryLinks(["custom-engagement-rings", "diamond-tennis-chains", "custom-jewelry"])}
+      ${faqSection(globalFaqs.slice(0, 4))}
       <section class="trust-band" aria-label="Trust badges">
         <div><strong>Secure browsing</strong><span>Checkout handoff ready</span></div>
         <div><strong>Curated luxury pieces</strong><span>Custom options on every item</span></div>
@@ -8162,9 +8188,19 @@ document.addEventListener("click", (event) => {
   history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
   navigate();
 });
-loadAnalyticsConfig();
-loadApprovedProducts().finally(() => {
-  navigate();
-  hideSplashScreen();
+navigate();
+hideSplashScreen();
+
+const runWhenIdle = (callback) => {
+  if ("requestIdleCallback" in window) window.requestIdleCallback(callback, { timeout: 1500 });
+  else window.setTimeout(callback, 400);
+};
+
+runWhenIdle(() => loadAnalyticsConfig());
+runWhenIdle(() => {
+  loadApprovedProducts().then(() => {
+    const path = currentRoutePath();
+    if (/^\/(products|product|engagement-rings|diamonds|category|catalog-jewelry|admin)(\/|$)/.test(path)) navigate();
+  }).catch(() => {});
 });
 

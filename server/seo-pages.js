@@ -856,8 +856,9 @@ function renderShell(main, routePath) {
     </header>
     <aside class="financing-announcement" aria-label="Jewelry financing options">
       <span class="financing-pulse" aria-hidden="true"></span>
-      <strong>$500 first custom-order credit</strong>
-      <span>New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
+      <strong><span class="finance-desktop-copy">$500 first custom-order credit</span><span class="finance-mobile-copy">$500 custom-order credit</span></strong>
+      <span class="finance-desktop-copy">New clients: $500 off an eligible custom order of $2,500+. Or use THEDON15 at checkout. Promotions cannot stack.</span>
+      <span class="finance-mobile-copy">Eligible $2,500+ orders · Financing available · Terms apply</span>
       <span class="bnpl-logos" aria-label="Eligible financing providers"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></span>
       <a href="/jewelry-financing">Explore financing</a>
     </aside>
@@ -1277,6 +1278,14 @@ function homeMain() {
           <article><strong>Personal guidance</strong><p>Work one-to-one from the first idea through diamond approval, CAD review, production, checkout, and delivery.</p></article>
           <article><strong>Clear specifications</strong><p>Review the diamond report, metal, dimensions, setting details, pricing, and order terms before approving custom work.</p></article>
           <article><strong>Built around your next step</strong><p>Browse fine jewelry, choose a live diamond, start a custom ring, or book a consultation without navigating an overloaded menu.</p></article>
+        </div>
+      </section>
+      <section class="seo-guide-section authority-proof" aria-labelledby="home-authority-proof">
+        <div class="section-heading"><p class="eyebrow">Experience you can verify</p><h2 id="home-authority-proof">Real projects, clear guidance, documented buyer protection</h2><p>Review completed work, diamond education, and the policies that apply before payment.</p></div>
+        <div class="trust-block-section">
+          <article><strong>Original project gallery</strong><p>See custom jewelry examples and details behind one-of-one client work.</p><a href="/custom-jewelry-project-gallery">View custom projects</a></article>
+          <article><strong>Diamond education</strong><p>Compare certification, cut, color, clarity, lab-grown and natural diamond options.</p><a href="/diamond-education">Read diamond guides</a></article>
+          <article><strong>Transparent policies</strong><p>Review shipping, warranty, returns, financing and custom-order approval terms.</p><a href="/custom-order-policy">Review buyer protections</a></article>
         </div>
       </section>
     </main>`;

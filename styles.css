@@ -265,6 +265,7 @@ img { display: block; width: 100%; }
 .financing-announcement > * { position: relative; }
 .financing-announcement strong { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; }
 .financing-announcement a { padding-bottom: 2px; border-bottom: 1px solid currentColor; color: #6e4b06; font-weight: 900; white-space: nowrap; }
+.finance-mobile-copy { display: none; }
 .financing-pulse { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #b7831e; animation: financingPulse 2.4s ease-out infinite; }
 .bnpl-logos { display: inline-flex; align-items: center; gap: 6px; }
 .bnpl-logo { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border-radius: 5px; font: 900 .67rem/1 system-ui, sans-serif; letter-spacing: -.02em; white-space: nowrap; }
@@ -432,6 +433,11 @@ main { min-height: 70vh; }
 .review-carousel-controls { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 26px; color: var(--muted); font-size: .82rem; font-weight: 750; }
 .review-carousel-controls button { width: 42px; height: 42px; border: 1px solid rgba(132,94,24,.28); border-radius: 50%; background: #fffdfa; color: var(--ink); cursor: pointer; font-size: 1.15rem; box-shadow: 0 8px 24px rgba(43,31,14,.08); }
 .review-carousel-controls button:hover { border-color: #b7831e; color: #8a6418; }
+.google-review-feature { display: grid; grid-template-columns: minmax(300px,.8fr) minmax(0,1.2fr); gap: clamp(24px,4vw,56px); align-items: center; margin-top: 30px; padding: clamp(24px,4vw,48px); border: 1px solid rgba(183,131,30,.38); border-radius: 18px; background: linear-gradient(145deg,#fffefb 0%,#f6ead6 100%); box-shadow: 0 24px 64px rgba(64,43,12,.12); }
+.review-feature-copy { display: grid; align-content: center; }
+.review-feature-copy blockquote { display: -webkit-box; margin: 20px 0; overflow: hidden; color: var(--ink); font-family: Georgia,"Times New Roman",serif; font-size: clamp(1.15rem,1.6vw,1.55rem); line-height: 1.58; -webkit-box-orient: vertical; -webkit-line-clamp: 8; }
+.review-feature-copy > p:last-child { display: grid; gap: 3px; margin: 0; }
+.review-feature-copy > p:last-child span { color: var(--muted); font-size: .8rem; }
 .google-review-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 32%); gap: 18px; margin-top: 14px; padding: 4px 4px 20px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-color: #b7831e #eee5d6; }
 .google-review-card {
   display: grid;
@@ -2905,9 +2911,16 @@ body.checkout-open { overflow: hidden; }
     contain-intrinsic-size: 800px;
   }
   .google-review-carousel { grid-auto-columns: 88%; }
+  .google-review-feature { grid-template-columns: 1fr; gap: 18px; padding: 18px; }
+  .review-feature-copy blockquote { -webkit-line-clamp: 7; font-size: 1.08rem; }
   .review-carousel-controls { justify-content: space-between; }
-  .financing-announcement { flex-wrap: wrap; gap: 5px 10px; padding-block: 9px; text-align: center; }
-  .financing-announcement > span:not(.financing-pulse) { width: 100%; }
+  .financing-announcement { display: grid; grid-template-columns: 1fr auto; gap: 5px 10px; padding: 8px 16px 10px; text-align: left; }
+  .financing-announcement .financing-pulse { display: none; }
+  .financing-announcement strong, .financing-announcement > .finance-mobile-copy { grid-column: 1 / -1; }
+  .financing-announcement .bnpl-logos { justify-content: flex-start; }
+  .financing-announcement a { align-self: center; }
+  .finance-desktop-copy { display: none !important; }
+  .finance-mobile-copy { display: inline; }
 }
 @media (prefers-reduced-motion: reduce) {
   .review-photo-gallery img { transition: none; }
