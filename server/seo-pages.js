@@ -915,6 +915,17 @@ async function prepareProducts() {
 }
 
 async function productPage(req, res, slug) {
+  const retiredProductRedirects = {
+    "red-ruby-diamond-halo-necklace-lgd-marquise-arc": "/products",
+  };
+  const retiredDestination = retiredProductRedirects[String(slug || "")];
+  if (retiredDestination) {
+    res.statusCode = 301;
+    res.setHeader("Location", retiredDestination);
+    res.setHeader("Cache-Control", "public, max-age=3600, s-maxage=86400");
+    res.end();
+    return;
+  }
   await prepareProducts();
   const product = await getProductBySlug(slug);
   if (!product || product.hidden || product.available === false) {
