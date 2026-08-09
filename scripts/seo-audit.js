@@ -30,11 +30,18 @@ async function request(url) {
     assert.match(res.body, /application\/ld\+json/i, `${pathname} needs JSON-LD`);
     assert.doesNotMatch(res.body, /Store-level customer experience|Verified The Don Jewelers clients/, `${pathname} must not contain synthetic reviews`);
   }
+  const home = await request("/api/index?route=seo&action=page&path=/");
+  assert.equal((home.body.match(/<h1\b/gi) || []).length, 1, "homepage must ship exactly one server-rendered H1");
+  assert.match(home.body, /Luxury custom jewelry\. Made personal\./);
+  assert.match(home.body, /GIA (?:&|&amp;) IGI/);
+  assert.match(home.body, /"@type":"WebSite"/);
+  assert.match(home.body, /"@type":\["LocalBusiness","JewelryStore"\]/);
   const sitemap = await request("/api/index?route=seo&action=sitemap");
   assert.equal(sitemap.statusCode, 200);
   assert.match(sitemap.body, /<urlset/);
   for (const excluded of ["/admin", "/checkout", "/search", "/api/"]) assert(!sitemap.body.includes(`<loc>https://www.thedonjewelersandjewelrynyc.com${excluded}`));
   assert(!sitemap.body.includes("/diamonds/"), "volatile loose-diamond detail URLs must not consume sitemap crawl budget");
+  assert((sitemap.body.match(/<loc>/g) || []).length <= 260, "sitemap must stay focused on strong, stable URLs");
   assert(sitemap.body.includes("/engagement-rings-easton-pa"));
   const robots = await request("/api/index?route=seo&action=robots");
   assert.match(robots.body, /Sitemap: https:\/\/www\.thedonjewelersandjewelrynyc\.com\/sitemap\.xml/);

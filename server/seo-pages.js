@@ -31,7 +31,7 @@ const INDEX_HTML = path.join(ROOT, "index.html");
 const SITEMAP_LIMIT = 45000;
 // Keep the sitemap selective so crawl demand is focused on the strongest,
 // stable inventory instead of hundreds of near-similar supplier URLs.
-const LIVE_VENDOR_SITEMAP_LIMIT = 75;
+const LIVE_VENDOR_SITEMAP_LIMIT = 40;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -94,8 +94,8 @@ function categorySlug(category = "") {
 
 const staticPageMeta = {
   "/": {
-    title: "Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers",
-    description: "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, and Allentown.",
+    title: "Custom Jeweler NYC & Engagement Rings | The Don Jewelers",
+    description: "Design custom engagement rings and diamond jewelry with a private NYC jeweler. GIA and IGI options, financing, insured shipping, and personal service.",
     label: "Home",
     priority: "1.0",
   },
@@ -136,8 +136,8 @@ const staticPageMeta = {
     priority: "0.84",
   },
   "/custom-engagement-rings": {
-    title: "Custom Engagement Rings NYC | Private Jeweler | The Don Jewelers",
-    description: "Design a custom engagement ring with The Don Jewelers, serving NYC, Manhattan, the Diamond District, Lehigh Valley, and nationwide clients with lab grown or natural diamonds.",
+    title: "Custom Engagement Rings NYC | GIA & IGI Diamonds",
+    description: "Design a custom engagement ring with a private NYC jeweler. Compare GIA or IGI, lab-grown or natural diamonds, CAD design, financing, and insured shipping.",
     label: "Custom Engagement Rings",
     priority: "0.9",
   },
@@ -845,10 +845,8 @@ function renderShell(main, routePath) {
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="/products">Fine Jewelry</a>
-        <a href="/category/cvd-lab-grown-diamond-jewelry">CVD Lab Jewelry</a>
         <a href="/category/engagement-rings">Engagement Rings</a>
-        <a href="/category/mens-earrings">Men's Earrings</a>
-        <a href="/category/womens-earrings">Women's Earrings</a>
+        <a href="/select-diamond">Live Diamonds</a>
         <a class="nav-highlight" href="/start-custom-ring-design">Custom Design</a>
       </nav>
       <form class="global-search global-search-header" role="search" action="/search" method="get" aria-label="Search jewelry, diamonds, and pages">
@@ -1098,6 +1096,7 @@ async function diamondPage(req, res, certNumber) {
 }
 
 function pageMain(meta) {
+  if (meta.path === "/") return homeMain();
   const ctas = moneyPageCtas(meta.path);
   const supporting = moneyPageSupport(meta);
   return `
@@ -1236,6 +1235,51 @@ function pageJsonLd(meta, url) {
       logo: `${SITE_URL}/don-logo.jpg`,
     },
   };
+}
+
+function homeMain() {
+  return `
+    <main>
+      <section class="hero">
+        <a class="hero-media" href="/products/queen-aurelia-oval-marquise-ring" aria-label="View the Queen Aurelia engagement ring">
+          <img src="/queen-aurelia-oval-marquise-ring.jpeg" loading="eager" fetchpriority="high" decoding="async" width="1600" height="1200" alt="Queen Aurelia oval and marquise custom engagement ring by The Don Jewelers">
+        </a>
+        <div class="hero-content">
+          <p class="eyebrow">Private jeweler · NYC Diamond District access</p>
+          <h1>Luxury custom jewelry. Made personal.</h1>
+          <p>Designed for you and built to last, with custom engagement rings, GIA and IGI certified diamond options, and one-to-one guidance from design through insured delivery.</p>
+          <div class="hero-actions">
+            <a class="button button-gold" href="/start-custom-ring-design">Start Your Custom Design</a>
+            <a class="button button-ghost" href="/select-diamond">View Live Diamonds</a>
+          </div>
+          <div class="hero-trust-strip" aria-label="Why clients choose The Don Jewelers">
+            <span><strong>GIA & IGI</strong> certified options</span>
+            <span><strong>Insured</strong> nationwide shipping</span>
+            <span><strong>Financing</strong> for eligible buyers</span>
+            <span><strong>Lifetime</strong> craftsmanship support</span>
+          </div>
+          <a class="hero-review-preview" href="#google-reviews-title" aria-label="Read verified Google reviews">
+            <span class="review-stars" aria-hidden="true">★★★★★</span>
+            <span><strong>“Carlos is a 10/10 guy.”</strong><small>Matthew Haddad · Verified on Google</small></span>
+            <em>Read reviews →</em>
+          </a>
+          <div class="hero-assurance-links"><a href="/shipping-policy">Insured shipping</a><a href="/warranty-policy">Craftsmanship support</a><a href="/refund-return-policy">Return policy</a><span>Secure Stripe checkout</span></div>
+        </div>
+      </section>
+      <section class="trust-block-section" aria-label="Private jeweler services">
+        <article><strong>Custom engagement rings</strong><p>Plan the diamond, setting, metal, ring size, CAD design, budget, and timeline directly with a private jeweler.</p><a href="/custom-engagement-rings">Explore custom engagement rings</a></article>
+        <article><strong>Certified diamond sourcing</strong><p>Compare GIA and IGI certified lab-grown or natural diamonds by shape, measurements, cut, color, clarity, and price.</p><a href="/select-diamond">Select a live diamond</a></article>
+        <article><strong>Private service nationwide</strong><p>Work by appointment or remote consultation with secure Stripe checkout, eligible financing, and insured nationwide shipping.</p><a href="/request/appointment">Book a private appointment</a></article>
+      </section>
+      <section class="seo-guide-section" aria-labelledby="home-buying-path">
+        <div class="section-heading"><p class="eyebrow">A clearer way to buy</p><h2 id="home-buying-path">Why choose The Don Jewelers?</h2></div>
+        <div class="trust-block-section">
+          <article><strong>Personal guidance</strong><p>Work one-to-one from the first idea through diamond approval, CAD review, production, checkout, and delivery.</p></article>
+          <article><strong>Clear specifications</strong><p>Review the diamond report, metal, dimensions, setting details, pricing, and order terms before approving custom work.</p></article>
+          <article><strong>Built around your next step</strong><p>Browse fine jewelry, choose a live diamond, start a custom ring, or book a consultation without navigating an overloaded menu.</p></article>
+        </div>
+      </section>
+    </main>`;
 }
 
 function websiteJsonLd() {

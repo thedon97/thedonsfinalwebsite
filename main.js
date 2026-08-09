@@ -2959,11 +2959,11 @@ function requestHref(product, intent = "product") {
 function hideSplashScreen() {
   const splash = document.getElementById("site-splash");
   if (!splash) return;
-  const minimumVisibleMs = 250;
+  const minimumVisibleMs = 80;
   const remaining = Math.max(0, minimumVisibleMs - (Date.now() - splashStartedAt));
   window.setTimeout(() => {
     splash.classList.add("is-hiding");
-    window.setTimeout(() => splash.remove(), 900);
+    window.setTimeout(() => splash.remove(), 240);
   }, remaining);
 }
 
@@ -4098,7 +4098,7 @@ function googleReviewsSection() {
 }
 
 function home() {
-  setSeo("Custom Jeweler NYC | Engagement Rings & Diamond Jewelry | The Don Jewelers", "The Don Jewelers & Jewelry is a luxury private jeweler for custom engagement rings, diamond tennis chains, tennis bracelets, pendants, lab grown diamonds, natural diamonds, CAD design, and jewelry financing in NYC, Manhattan, the Diamond District, Lehigh Valley, Easton, Bethlehem, Allentown, and Pennsylvania.", {
+  setSeo("Custom Jeweler NYC & Engagement Rings | The Don Jewelers", "Design custom engagement rings and diamond jewelry with a private NYC jeweler. GIA and IGI options, financing, insured shipping, and personal service.", {
     path: "/",
     image: defaultSeoImage,
     faqs: globalFaqs,

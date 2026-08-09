@@ -406,6 +406,22 @@ img { display: block; width: 100%; }
 }
 
 main { min-height: 70vh; }
+.hero ~ .section,
+.hero ~ .seo-guide-section,
+.hero ~ .trust-block-section,
+.hero ~ .google-reviews-section,
+.hero ~ .trust-band {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
 .review-summary-heading {
   display: flex;
   align-items: end;
