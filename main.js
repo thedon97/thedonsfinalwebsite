@@ -37,13 +37,15 @@ const officialSocialLinks = [
   googleBusinessProfileUrl,
 ];
 const verifiedGoogleReviews = [
-  { name: "Alex Cruz", rating: 5, profile: "Google Profile · 4 reviews", text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!!" },
-  { name: "Los", rating: 5, profile: "Google Profile · 4 reviews", text: "Had the wonderful opportunity to work with Carlos on a giveaway. I won a beautiful gemstone and Carlos turned it into a ring." },
-  { name: "Matthew Haddad", rating: 5, profile: "Google Profile · 4 reviews", text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
-  { name: "Johnny Billz", rating: 5, profile: "Google Profile · 4 reviews", text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for! Highly recommend." },
-  { name: "Sasha", rating: 5, profile: "Google Profile · 3 reviews", text: "This is the jeweler to go to for a custom engagement ring and lab grown diamond. From the design to the pricing, the experience was phenomenal." },
-  { name: "Ahmed Mohammed", rating: 5, profile: "Google Profile · 3 reviews", text: "Ordered a custom engagement ring. The owner, Carlos, was super knowledgeable, accommodating, and very fair on price, especially for the quality he provides. Truly a gem to work with." },
-  { name: "Karen Meneses", rating: 5, profile: "Google Profile · 3 reviews", text: "Ordered something from here. He delivered in a timely manner and made sure I was happy with my piece." },
+  { name: "Chris Torres", rating: 5, profile: "Google Profile · 5 reviews", text: "This is the best jeweler in town. This place is trustworthy, kind, and truly experienced. The Don made it happen—my wife’s engagement ring came out extremely beautiful. This is all 100% real jewelry; you won’t have to go anywhere else! Kay Jewelers has nothing on The Don!" },
+  { name: "Alex Cruz", rating: 5, profile: "Google Profile · 5 reviews", text: "Los helped me out with a custom diamond pinky ring that looks great and helps represent the brand well! Thanks again!!" },
+  { name: "Los", rating: 5, profile: "Google Profile · 5 reviews", text: "Had the wonderful opportunity to work with Carlos on a giveaway. I won a beautiful gemstone and Carlos turned it into a ring." },
+  { name: "Matthew Haddad", rating: 5, profile: "Google Profile · 5 reviews", text: "Carlos is a 10/10 guy. Easy to deal with and completes all the orders I have in any reasonable timeframe!" },
+  { name: "Johnny Billz", rating: 5, profile: "Google Profile · 5 reviews", text: "Carlos is not only efficient but knowledgeable about everything that he has crafted. Ensures that his clients get exactly what they are looking for! Highly recommend." },
+  { name: "Catlin Rogers", rating: 5, profile: "Google Profile · 4 reviews", text: "I couldn’t be happier with my custom engagement ring from Don Jewelers & Jewelry! From the very beginning, the entire process was smooth, professional, and personalized. They took the time to listen to exactly what we wanted and brought our vision to life beautifully. The craftsmanship is absolutely stunning. Every detail is perfect, and the ring sparkles even more in person. I’ve received so many compliments, and I can’t stop looking at it! It’s clear they truly care about the quality of their work and making each piece special. If you’re looking for a trustworthy jeweler who creates beautiful custom jewelry and provides outstanding customer service, I highly recommend Don Jewelers & Jewelry. They made such an important moment in our lives even more memorable. Thank you for creating a ring I’ll cherish forever! Located in Lehigh Valley, PA!" },
+  { name: "Sasha", rating: 5, profile: "Google Profile · 4 reviews", text: "This is the jeweler to go to for a custom engagement ring and lab grown diamond. From the design to the pricing, the experience was phenomenal." },
+  { name: "Ahmed Mohammed", rating: 5, profile: "Google Profile · 4 reviews", text: "Ordered a custom engagement ring. The owner, Carlos, was super knowledgeable, accommodating, and very fair on price, especially for the quality he provides. Truly a gem to work with." },
+  { name: "Karen Meneses", rating: 5, profile: "Google Profile · 4 reviews", text: "Ordered something from here. He delivered in a timely manner and made sure I was happy with my piece." },
 ];
 const locationTargets = ["NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States"];
 const primaryKeywords = ["custom jeweler", "private jeweler", "engagement rings", "diamond engagement rings", "custom engagement rings", "diamond tennis chain", "diamond tennis bracelet", "lab grown diamonds", "natural diamonds", "diamond pendant", "diamond cross", "gold chains", "14k gold", "18k gold", "white gold", "yellow gold", "rose gold", "custom jewelry", "diamond jewelry", "wedding rings", "wedding bands", "bridal jewelry", "fine jewelry", "luxury jewelry", "jewelry financing", "diamond dealer", "NYC jeweler", "Manhattan jeweler", "Diamond District jeweler", "Easton jeweler", "Lehigh Valley jeweler", "custom jewelry NYC", "engagement rings NYC", "tennis chains NYC", "diamond chains", "lab diamond rings", "custom diamond pendant", "watch dealer", "Rolex", "Cartier", "Audemars Piguet", "Patek Philippe", "jewelry gifts", "anniversary jewelry", "birthday jewelry", "custom grillz", "CAD jewelry design", "diamond consultation"];
@@ -4057,11 +4059,11 @@ function googleReviewsSection() {
         <div>
           <p class="eyebrow">Verified Google Reviews</p>
           <h2 id="google-reviews-title">Rated 5.0 by clients</h2>
-          <p>All seven public reviews currently displayed across both verified Google Business Profile links.</p>
+          <p>All nine public reviews currently displayed across both verified Google Business Profile links.</p>
         </div>
         <div class="google-profile-actions">
-          <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google profile · 4 reviews</a>
-          <a class="button button-light" href="${googleBusinessProfileUrlSecondary}" target="_blank" rel="noopener noreferrer">Google profile · 3 reviews</a>
+          <a class="button button-light" href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer">Google profile · 5 reviews</a>
+          <a class="button button-light" href="${googleBusinessProfileUrlSecondary}" target="_blank" rel="noopener noreferrer">Google profile · 4 reviews</a>
           <a class="button button-dark" href="${phoneHref}">Call ${phoneDisplay}</a>
         </div>
       </div>
@@ -4113,7 +4115,7 @@ function home() {
           <a class="hero-review-preview" href="#google-reviews-title" aria-label="Read verified Google reviews">
             <span class="review-stars" aria-hidden="true">★★★★★</span>
             <span><strong>“Carlos is a 10/10 guy.”</strong><small>Matthew Haddad · Verified on Google</small></span>
-            <em>Read all 7 reviews →</em>
+            <em>Read all 9 reviews →</em>
           </a>
           <div class="hero-assurance-links"><a href="${internalLink("shipping-policy")}">Insured shipping</a><a href="${internalLink("warranty-policy")}">Craftsmanship support</a><a href="${internalLink("refund-return-policy")}">Return policy</a><span>Secure Stripe checkout</span></div>
         </div>
