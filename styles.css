@@ -429,11 +429,31 @@ main { min-height: 70vh; }
   scroll-snap-align: start;
 }
 .google-review-card-featured {
-  grid-auto-columns: 1fr;
   border-color: rgba(183, 131, 30, .48);
   background: linear-gradient(145deg, #fffefb 0%, #f6ead6 100%);
   box-shadow: 0 24px 64px rgba(64, 43, 12, .14);
 }
+.review-photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 2px 0 18px;
+}
+.review-photo-gallery a {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid rgba(183, 131, 30, .24);
+  border-radius: 10px;
+  background: #17120c;
+}
+.review-photo-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+.review-photo-gallery a:hover img { transform: scale(1.04); }
 .review-featured-label {
   width: max-content;
   margin: 0 0 12px;
@@ -2874,6 +2894,7 @@ body.checkout-open { overflow: hidden; }
   .financing-announcement > span:not(.financing-pulse) { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .review-photo-gallery img { transition: none; }
   .financing-announcement::before,
   .financing-pulse { animation: none; }
 }
