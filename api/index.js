@@ -14,6 +14,7 @@ const cronJewelrySync = require("../server/cron/jewelry-sync");
 const seoPages = require("../server/seo-pages");
 const stripeWebhook = require("../server/stripe-webhook");
 const stripeConfig = require("../server/stripe-config");
+const checkoutSessionStatus = require("../server/checkout-session-status");
 
 const certified = routeFeed("certified");
 const certifiedColor = routeFeed("certified-color");
@@ -52,6 +53,7 @@ module.exports = async function handler(req, res) {
     "send-request": sendRequest,
     "stripe-webhook": stripeWebhook,
     "stripe-config": stripeConfig,
+    "checkout-session-status": checkoutSessionStatus,
     "merchant-feed": merchantFeed,
     "site-config": siteConfig,
     "seo": seoPages,

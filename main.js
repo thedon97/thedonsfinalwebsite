@@ -2989,6 +2989,16 @@ function navLinks() {
   `;
 }
 
+function commerceItems(items = []) {
+  return items.map((item) => ({
+    item_id: String(item.item_id || item.id || ""),
+    item_name: String(item.item_name || item.name || "Jewelry"),
+    item_category: String(item.item_category || item.category || "Jewelry"),
+    price: Number(item.price || 0),
+    quantity: Math.max(1, Number(item.quantity || 1)),
+  }));
+}
+
 function desktopNavLinks() {
   return `
     <a href="${internalLink("products")}">Fine Jewelry</a>
@@ -6301,11 +6311,6 @@ async function startProductCheckout(button) {
   const original = button.textContent;
   button.disabled = true;
   button.textContent = "Loading secure checkout...";
-  trackEvent("begin_checkout", {
-    checkout_type: "product_checkout",
-    item_id: button.dataset.buyProduct || "",
-    currency: "USD",
-  });
   try {
     await loadStripeJs();
     const configResponse = await fetchWithTimeout("/api/stripe-config", { headers: { Accept: "application/json" } }, 10000);
@@ -6349,6 +6354,14 @@ async function startProductCheckout(button) {
         }, 20000);
         const payload = await response.json();
         if (!response.ok || !payload.clientSecret) throw new Error(payload.message || "Checkout could not be started.");
+        const checkoutItems = button.dataset.buyCart
+          ? commerceItems(payableCartItems())
+          : [{ item_id: button.dataset.buyProduct || button.dataset.buyLiveDiamond || "", item_name: button.dataset.stockNumber || "Jewelry purchase", item_category: button.dataset.buyLiveDiamond ? "Loose Diamond" : "Jewelry", quantity: 1 }];
+        trackEvent("begin_checkout", {
+          checkout_type: button.dataset.buyLiveDiamond ? "live_diamond" : button.dataset.buyCart ? "cart" : "product",
+          currency: "USD",
+          items: checkoutItems,
+        });
         return payload.clientSecret;
       },
     });
@@ -7896,6 +7909,30 @@ function checkout() {
   wireRequestForm("checkout-form", "Thank you for your checkout inquiry. Your request has been received and is currently under review. We will contact you regarding pricing, payment, and next steps.");
 }
 
+async function verifyAndTrackPurchase() {
+  const sessionId = new URLSearchParams(location.hash.split("?")[1] || "").get("session_id");
+  if (!sessionId) return;
+  const dedupeKey = `donGa4Purchase:${sessionId}`;
+  if (sessionStorage.getItem(dedupeKey)) return;
+  try {
+    const response = await fetchWithTimeout(`/api/checkout-session-status?session_id=${encodeURIComponent(sessionId)}`, { headers: { Accept: "application/json" } }, 10000);
+    const purchase = await response.json();
+    if (!response.ok || !purchase.paid) return;
+    trackEvent("purchase", {
+      transaction_id: purchase.transactionId,
+      value: Number(purchase.value || 0),
+      tax: Number(purchase.tax || 0),
+      shipping: Number(purchase.shipping || 0),
+      currency: String(purchase.currency || "USD").toUpperCase(),
+      coupon: purchase.coupon || "",
+      items: commerceItems(purchase.items),
+    });
+    sessionStorage.setItem(dedupeKey, new Date().toISOString());
+  } catch (error) {
+    console.warn("Purchase analytics verification failed", { message: error?.message || String(error) });
+  }
+}
+
 function paymentStatusPage(status) {
   const success = status === "success";
   shell(`
@@ -7910,6 +7947,7 @@ function paymentStatusPage(status) {
       ${aboutUs()}
     </main>
   `);
+  if (success) verifyAndTrackPurchase();
 }
 
 const policyPages = {
