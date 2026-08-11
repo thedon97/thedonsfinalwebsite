@@ -872,7 +872,7 @@ function renderShell(main, routePath) {
     ${main}
     <footer class="site-footer">
       <div><p><strong>${BUSINESS_NAME}</strong></p><p>Luxury private jeweler for custom jewelry, certified diamonds, and fine jewelry consultations nationwide.</p></div>
-      <div class="footer-contact"><strong>Speak with a private jeweler</strong><a href="tel:+19173300752">Call or text (917) 330-0752</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><span>Appointment-only service and insured nationwide shipping.</span></div>
+      <div class="footer-contact"><strong>Speak with a private jeweler</strong><a href="tel:+14847612008">Call or text ${PHONE_DISPLAY}</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><span>Appointment-only service and insured nationwide shipping.</span></div>
       <nav class="footer-navigation" aria-label="Footer navigation"><div class="footer-link-group"><strong>Shop</strong><a href="/products">Fine Jewelry</a><a href="/category/engagement-rings">Engagement Rings</a><a href="/select-diamond">Live Diamonds</a></div><div class="footer-link-group"><strong>Services</strong><a href="/start-custom-ring-design">Custom Design</a><a href="/request/appointment">Appointments</a><a href="/jewelry-financing">Financing</a></div><div class="footer-link-group"><strong>Buyer protection</strong><a href="/shipping-policy">Shipping</a><a href="/warranty-policy">Warranty</a><a href="/refund-return-policy">Returns</a></div><div class="footer-link-group"><strong>Learn</strong><a href="/diamond-education">Diamond Education</a><a href="/custom-jewelry-project-gallery">Project Gallery</a><a href="/blog">Journal</a></div></nav>
     </footer>
     <script>window.__SSR_ROUTE__=${JSON.stringify(routePath)};</script>
@@ -1274,6 +1274,17 @@ function homeMain() {
           </a>
           <div class="hero-assurance-links"><a href="/shipping-policy">Insured shipping</a><a href="/warranty-policy">Craftsmanship support</a><a href="/refund-return-policy">Return policy</a><span>Secure Stripe checkout</span></div>
         </div>
+      </section>
+      <section class="home-category-section" aria-labelledby="home-category-title">
+        <div class="home-category-heading"><p class="eyebrow">Shop the collection</p><h2 id="home-category-title">Find your piece</h2></div>
+        <nav class="home-category-carousel" aria-label="Featured jewelry categories">
+          <a href="/category/engagement-rings"><strong>Engagement Rings</strong><small>Premade and custom</small></a>
+          <a href="/products"><strong>Fine Jewelry</strong><small>Shop all products</small></a>
+          <a href="/select-diamond"><strong>Live Diamonds</strong><small>Certified stones</small></a>
+          <a href="/cvd-lab-grown-diamond-jewelry"><strong>CVD Lab Jewelry</strong><small>Modern diamond pieces</small></a>
+          <a href="/category/mens-earrings"><strong>Men's Earrings</strong><small>Studs and custom</small></a>
+          <a href="/category/womens-earrings"><strong>Women's Earrings</strong><small>Classic and custom</small></a>
+        </nav>
       </section>
       <section class="section google-reviews-section" aria-labelledby="google-reviews-title">
         <div class="section-heading review-summary-heading"><div><p class="eyebrow">Verified Google review</p><h2 id="google-reviews-title">A custom ring and a client story</h2><p>Photos from Catlin Rogers's featured five-star review are presented first, followed by direct links to both business profiles.</p></div><div class="google-profile-actions"><a class="button button-light" href="https://share.google/8uvOiIx224kLzQU3Y" target="_blank" rel="noopener noreferrer">View Google profile</a><a class="button button-light" href="https://share.google/z4jwjnAfyaquvfGCz" target="_blank" rel="noopener noreferrer">View second profile</a></div></div>

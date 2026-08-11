@@ -4164,12 +4164,12 @@ function home() {
           ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
         </div>
       </section>
-      <section class="section">
-        <div class="section-heading">
+      <section class="home-category-section">
+        <div class="home-category-heading">
           <p class="eyebrow">Luxury Categories</p>
           <h2>Browse by jewelry type</h2>
         </div>
-        <div class="collection-grid">
+        <div class="collection-grid home-category-image-carousel">
           ${categories.slice(0, 6).map(([slug, name, image]) => `
             <a class="collection-tile" href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
@@ -4499,7 +4499,7 @@ const chainDisplayImagePool = [
 ];
 
 function savedProductImage(product, index = 0) {
-  const source = product.imageUrl || product.image || "";
+  const source = product.imageUrl || product.image || product.metadata?.imageUrl || product.metadata?.image || product.gallery?.[0] || "";
   if (product.category === "Chains" && /triple-row-diamond-tennis-bracelet/i.test(source)) {
     return asset(chainDisplayImagePool[index % chainDisplayImagePool.length]);
   }
@@ -4513,7 +4513,7 @@ function savedProductCard(product, index = 0) {
   return `
     <article class="product-card">
       <a href="${href}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}">
-        ${imageSource ? `<img src="${htmlSafe(imageSource)}" alt="${htmlSafe(product.name)}" ${imageSafety}>` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
+        ${imageSource ? `<img src="${htmlSafe(imageSource)}" alt="${htmlSafe(product.name)}" loading="${index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index < 6 ? "high" : "low"}" width="720" height="720" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">` : `<div class="product-image-placeholder">Diamond Jewelry</div>`}
       </a>
       <div class="product-card-body">
         <p class="eyebrow">${htmlSafe(product.category)}</p>
@@ -4599,7 +4599,10 @@ function wireDatabaseCategory({ category, source, featured, fallbackProducts = [
         <button class="button button-light" type="button" data-db-page="${Math.min(payload.totalPages, payload.page + 1)}" ${payload.page >= payload.totalPages ? "disabled" : ""}>Next</button>
       `;
     } catch {
-      grid.innerHTML = `<div class="empty-state">Products are temporarily unavailable. Please refresh or contact us for assistance.</div>`;
+      const items = fallbackProducts.slice(0, 24);
+      grid.innerHTML = items.length
+        ? items.map((item, index) => savedProductCard(item, index)).join("")
+        : `<div class="empty-state">Products are temporarily unavailable. Please refresh or contact us for assistance.</div>`;
       pagination.innerHTML = "";
     }
   };

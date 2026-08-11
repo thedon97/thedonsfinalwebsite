@@ -15,6 +15,19 @@ const BRACELET_FEATURED_IDS = [
 ];
 let manualSeedPromise;
 let snapshotSeedPromise;
+const LGD_RETAIL_MULTIPLIER = 1.6;
+
+function applyRetailPricing(product) {
+  if (!product || product.source !== "lgd-jewelry" || !Number(product.priceCents)) return product;
+  const basePriceCents = Number(product.priceCents);
+  const priceCents = Math.round(basePriceCents * LGD_RETAIL_MULTIPLIER);
+  return {
+    ...product,
+    priceCents,
+    price: priceCents / 100,
+    metadata: { ...(product.metadata || {}), supplierBasePriceCents: basePriceCents, retailMarkupPercent: 60 },
+  };
+}
 
 function normalizeCategory(value) {
   const text = String(value || "").trim();
@@ -64,7 +77,7 @@ function snapshotProducts() {
 }
 
 function rowToProduct(row) {
-  return {
+  return applyRetailPricing({
     id: row.id,
     externalId: row.external_id,
     source: row.source,
@@ -85,7 +98,7 @@ function rowToProduct(row) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     sourceUpdatedAt: row.source_updated_at,
-  };
+  });
 }
 
 async function seedManualProducts() {
@@ -207,7 +220,7 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
       return sort === "price-desc" ? bPrice - aPrice : aPrice - bPrice;
     });
     return {
-      items: items.slice((safePage - 1) * safeLimit, safePage * safeLimit),
+      items: items.slice((safePage - 1) * safeLimit, safePage * safeLimit).map(applyRetailPricing),
       total: items.length,
       page: safePage,
       limit: safeLimit,
@@ -262,7 +275,7 @@ async function listVisibleProducts({ source = "" } = {}) {
   if (!databaseConfigured()) {
     let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
     if (source) items = items.filter((item) => item.source === source);
-    return items.map((item) => ({
+    return items.map(applyRetailPricing).map((item) => ({
       ...item,
       updatedAt: item.updatedAt || item.metadata?.updatedAt || item.metadata?.lastUpdated || null,
     }));
@@ -286,7 +299,7 @@ async function getProduct(id) {
   const clean = String(id || "").trim();
   if (!clean) return null;
   if (!databaseConfigured()) {
-    return [...manualProducts(), ...snapshotProducts()].find((item) => item.id === clean || item.externalId === clean) || null;
+    return applyRetailPricing([...manualProducts(), ...snapshotProducts()].find((item) => item.id === clean || item.externalId === clean) || null);
   }
   const result = await query("SELECT * FROM products WHERE (id=$1 OR external_id=$1) LIMIT 1", [clean]);
   return result.rows[0] ? rowToProduct(result.rows[0]) : null;
