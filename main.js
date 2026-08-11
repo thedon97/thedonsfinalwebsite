@@ -2080,8 +2080,11 @@ function allProducts() {
 
 function productImageSrc(product) {
   if (product.imageUrl) return product.imageUrl;
-  if (product.image && String(product.image).startsWith("/")) return product.image;
-  return asset(product.image || "don-logo.jpg");
+  const image = product.image || "don-logo.jpg";
+  if (/^https?:\/\//i.test(String(image))) return image;
+  if (/\.(?:png|jpe?g)$/i.test(String(image))) return asset(String(image).replace(/^\//, "").replace(/\.(?:png|jpe?g)$/i, "-catalog.webp"));
+  if (String(image).startsWith("/")) return image;
+  return asset(image);
 }
 
 function productGallery(product) {
@@ -4499,7 +4502,10 @@ const chainDisplayImagePool = [
 ];
 
 function savedProductImage(product, index = 0) {
-  const source = product.imageUrl || product.image || product.metadata?.imageUrl || product.metadata?.image || product.gallery?.[0] || "";
+  let source = product.imageUrl || product.image || product.metadata?.imageUrl || product.metadata?.image || product.gallery?.[0] || "";
+  if (source && !/^https?:\/\//i.test(String(source)) && /\.(?:png|jpe?g)$/i.test(String(source))) {
+    source = asset(String(source).replace(/^\//, "").replace(/\.(?:png|jpe?g)$/i, "-catalog.webp"));
+  }
   if (product.category === "Chains" && /triple-row-diamond-tennis-bracelet/i.test(source)) {
     return asset(chainDisplayImagePool[index % chainDisplayImagePool.length]);
   }

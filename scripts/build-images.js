@@ -1,16 +1,35 @@
 const path = require("path");
+const fs = require("fs");
 const sharp = require("sharp");
+const manualCatalog = require("../server/data/manual-products.json");
 
 const root = path.resolve(__dirname, "..");
 const source = path.join(root, "queen-aurelia-oval-marquise-ring.jpeg");
 const widths = [480, 768, 1200];
 
-Promise.all(widths.flatMap((width) => [
-  sharp(source).resize({ width, withoutEnlargement: true }).webp({ quality: 78, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.webp`)),
-  sharp(source).resize({ width, withoutEnlargement: true }).avif({ quality: 52, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.avif`)),
-])).then(() => {
-  console.log(`Generated ${widths.length * 2} responsive hero images.`);
-}).catch((error) => {
+function catalogOutputName(name) {
+  const parsed = path.parse(name);
+  return `${parsed.name}-catalog.webp`;
+}
+
+async function build() {
+  await Promise.all(widths.flatMap((width) => [
+    sharp(source).resize({ width, withoutEnlargement: true }).webp({ quality: 78, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.webp`)),
+    sharp(source).resize({ width, withoutEnlargement: true }).avif({ quality: 52, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.avif`)),
+  ]));
+
+  const images = [...new Set(manualCatalog.items.map((item) => item.image).filter(Boolean))]
+    .filter((name) => fs.existsSync(path.join(root, name)));
+  for (let index = 0; index < images.length; index += 8) {
+    await Promise.all(images.slice(index, index + 8).map((name) => sharp(path.join(root, name))
+      .resize({ width: 720, height: 720, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 74, effort: 4 })
+      .toFile(path.join(root, catalogOutputName(name)))));
+  }
+  console.log(`Generated ${widths.length * 2} responsive hero images and ${images.length} catalog images.`);
+}
+
+build().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });

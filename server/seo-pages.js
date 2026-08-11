@@ -564,7 +564,11 @@ function categoryProductPath(product) {
 }
 
 function productImage(product) {
-  return absoluteUrl(product?.imageUrl || product?.image || product?.metadata?.imageUrl || "don-logo.jpg") || DEFAULT_IMAGE;
+  const source = product?.imageUrl || product?.image || product?.metadata?.imageUrl || "don-logo.jpg";
+  const optimized = !/^https?:\/\//i.test(String(source)) && /\.(?:png|jpe?g)$/i.test(String(source))
+    ? String(source).replace(/^\//, "").replace(/\.(?:png|jpe?g)$/i, "-catalog.webp")
+    : source;
+  return absoluteUrl(optimized) || DEFAULT_IMAGE;
 }
 
 function specEntries(product) {
