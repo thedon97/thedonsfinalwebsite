@@ -4126,7 +4126,7 @@ function home() {
     <main>
       <section class="hero">
         <a class="hero-media" href="${productUrl(heroProduct)}" aria-label="View ${productName(heroProduct)}">
-          <img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="1600" height="1200" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">
+          <picture><source type="image/avif" srcset="/queen-aurelia-hero-480.avif 480w, /queen-aurelia-hero-768.avif 768w, /queen-aurelia-hero-1200.avif 1200w" sizes="100vw"><source type="image/webp" srcset="/queen-aurelia-hero-480.webp 480w, /queen-aurelia-hero-768.webp 768w, /queen-aurelia-hero-1200.webp 1200w" sizes="100vw"><img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="899" height="1600" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"></picture>
         </a>
         <div class="hero-content">
           <p class="eyebrow">Private jeweler · NYC Diamond District access</p>

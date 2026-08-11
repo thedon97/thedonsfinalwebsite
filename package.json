@@ -4,12 +4,13 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "build": "npm run build:client && npm run build:home && npm run check && npm run test:seo",
-    "build:client": "terser main.js --compress passes=2 --mangle --ecma 2020 --comments false --output main.min.js",
+    "build": "npm run build:images && npm run build:client && npm run build:home && npm run check && npm run test:seo",
+    "build:images": "node scripts/build-images.js",
+    "build:client": "terser main.js --compress passes=2 --mangle --ecma 2020 --comments false --output main.min.js && terser bootstrap.js --compress passes=2 --mangle --ecma 2020 --comments false --output bootstrap.min.js",
     "build:home": "node scripts/render-home.js",
     "dev": "node preview-server.js",
     "start": "node preview-server.js",
-    "check": "node --check main.js && node --check preview-server.js && node --check api/index.js && node --check server/_db.js && node --check server/_http.js && node --check server/_email-service.js && node --check server/_lead-store.js && node --check server/_product-store.js && node --check server/_inventory-cache.js && node --check server/_jewelry-sync.js && node --check server/_google-reporting.js && node --check server/seo-pages.js && node --check server/products.js && node --check server/site-config.js && node --check server/system-status.js && node --check server/create-checkout-session.js && node --check server/stripe-webhook.js && node --check server/admin/jewelry-sync.js && node --check server/admin/lead-recovery.js && node --check server/admin/seo-dashboard.js && node --check server/admin/integration-health.js && node --check server/cron/jewelry-sync.js && node --check server/_diamond-utils.js && node --check server/_live-inventory-utils.js && node --check server/send-request.js",
+    "check": "node --check bootstrap.js && node --check main.js && node --check preview-server.js && node --check api/index.js && node --check server/_db.js && node --check server/_http.js && node --check server/_email-service.js && node --check server/_lead-store.js && node --check server/_product-store.js && node --check server/_inventory-cache.js && node --check server/_jewelry-sync.js && node --check server/_google-reporting.js && node --check server/seo-pages.js && node --check server/products.js && node --check server/site-config.js && node --check server/system-status.js && node --check server/create-checkout-session.js && node --check server/stripe-webhook.js && node --check server/admin/jewelry-sync.js && node --check server/admin/lead-recovery.js && node --check server/admin/seo-dashboard.js && node --check server/admin/integration-health.js && node --check server/cron/jewelry-sync.js && node --check server/_diamond-utils.js && node --check server/_live-inventory-utils.js && node --check server/send-request.js",
     "lint": "npm run check",
     "typecheck": "node scripts/typecheck.js",
     "test:seo": "node scripts/seo-audit.js",
@@ -22,6 +23,7 @@
     "stripe": "^22.2.1"
   },
   "devDependencies": {
+    "sharp": "^0.35.3",
     "terser": "^5.43.1"
   }
 }

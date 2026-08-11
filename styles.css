@@ -536,6 +536,8 @@ main { min-height: 70vh; }
   object-position: center 42%;
   transform: scale(1.01);
 }
+.hero-media picture { display: block; width: 100%; height: 100%; }
+.mobile-store-menu { display: none; }
 .hero-content { position: relative; z-index: 2; max-width: 690px; }
 .eyebrow {
   margin: 0 0 10px;
@@ -2778,6 +2780,15 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .catalog-toolbar label { width: 100%; }
   .site-header { align-items: flex-start; }
   .nav-links, .global-search-header { display: none; }
+  .mobile-store-menu { display: block; margin: 12px 14px 0; border: 1px solid var(--line); border-radius: 8px; background: #fffdfa; }
+  .mobile-store-menu summary { padding: 13px 15px; cursor: pointer; color: var(--ink); font-weight: 850; }
+  .mobile-store-menu nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border-top: 1px solid var(--line); background: var(--line); }
+  .mobile-store-menu nav a { min-height: 46px; padding: 13px; background: #fff; color: var(--ink); font-size: .82rem; font-weight: 800; }
+  .mobile-store-menu form { display: grid; gap: 7px; padding: 13px; }
+  .mobile-store-menu form label { font-size: .72rem; font-weight: 800; }
+  .mobile-store-menu form div { display: grid; grid-template-columns: 1fr auto; }
+  .mobile-store-menu input, .mobile-store-menu button { min-height: 44px; border: 1px solid var(--line); padding: 9px 11px; font: inherit; }
+  .mobile-store-menu button { background: var(--black); color: #fff; font-weight: 800; }
   .brand-copy strong { max-width: 170px; font-size: .92rem; }
   .brand small { font-size: .54rem; }
   .hero {
