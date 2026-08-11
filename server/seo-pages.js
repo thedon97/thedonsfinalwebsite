@@ -838,7 +838,7 @@ function injectHead(template, { title, description, url, image, imageAlt = title
 function renderShell(main, routePath) {
   return `
     <header class="site-header">
-      <a class="brand brand-menu-button" href="/" aria-label="The Don Jewelers home">
+      <a class="brand brand-menu-button" href="/">
         <span class="brand-mark" aria-hidden="true">TD</span>
         <span class="brand-copy"><strong>The Don Jewelers & Jewelry</strong><small>Luxury custom jewelry</small></span>
         <span class="header-menu-cue"><strong>More options</strong><small>Click here</small></span>
@@ -1267,7 +1267,7 @@ function homeMain() {
             <span><strong>Financing</strong> for eligible buyers</span>
             <span><strong>Lifetime</strong> craftsmanship support</span>
           </div>
-          <a class="hero-review-preview" href="#google-reviews-title" aria-label="Read verified Google reviews">
+          <a class="hero-review-preview" href="#google-reviews-title">
             <span class="review-stars" aria-hidden="true">★★★★★</span>
             <span><strong>“Carlos is a 10/10 guy.”</strong><small>Matthew Haddad · Verified on Google</small></span>
             <em>Read reviews →</em>
@@ -1275,6 +1275,14 @@ function homeMain() {
           <div class="hero-assurance-links"><a href="/shipping-policy">Insured shipping</a><a href="/warranty-policy">Craftsmanship support</a><a href="/refund-return-policy">Return policy</a><span>Secure Stripe checkout</span></div>
         </div>
       </section>
+      <nav class="desktop-shop-rail" aria-label="Featured jewelry collections">
+        <a href="/category/engagement-rings"><span>01</span><strong>Engagement Rings</strong><small>Premade and custom</small></a>
+        <a href="/products"><span>02</span><strong>Fine Jewelry</strong><small>Shop every collection</small></a>
+        <a href="/select-diamond"><span>03</span><strong>Live Diamonds</strong><small>Compare certified stones</small></a>
+        <a href="/cvd-lab-grown-diamond-jewelry"><span>04</span><strong>CVD Lab Jewelry</strong><small>Modern diamond options</small></a>
+        <a href="/category/mens-earrings"><span>05</span><strong>Men's Earrings</strong><small>Diamond studs and custom</small></a>
+        <a href="/category/womens-earrings"><span>06</span><strong>Women's Earrings</strong><small>Classic and custom styles</small></a>
+      </nav>
       <section class="section google-reviews-section" aria-labelledby="google-reviews-title">
         <div class="section-heading review-summary-heading"><div><p class="eyebrow">Verified Google review</p><h2 id="google-reviews-title">A custom ring and a client story</h2><p>Photos from Catlin Rogers's featured five-star review are presented first, followed by direct links to both business profiles.</p></div><div class="google-profile-actions"><a class="button button-light" href="https://share.google/8uvOiIx224kLzQU3Y" target="_blank" rel="noopener noreferrer">View Google profile</a><a class="button button-light" href="https://share.google/z4jwjnAfyaquvfGCz" target="_blank" rel="noopener noreferrer">View second profile</a></div></div>
         <article class="google-review-feature"><div class="review-feature-media"><p class="review-featured-label">Featured client story</p><div class="review-photo-gallery"><a href="/catlin-rogers-review-ring.png" target="_blank" rel="noopener"><img src="/catlin-rogers-review-ring.png" alt="Catlin Rogers wearing her custom red gemstone engagement ring" width="320" height="320" loading="lazy" decoding="async"></a><a href="/catlin-rogers-review-proposal.png" target="_blank" rel="noopener"><img src="/catlin-rogers-review-proposal.png" alt="Catlin Rogers celebrating her engagement" width="320" height="320" loading="lazy" decoding="async"></a></div></div><div class="review-feature-copy"><p class="review-stars" aria-label="5 out of 5 stars">★★★★★</p><blockquote>“The entire process was smooth, professional, and personalized. They listened to exactly what we wanted and brought our vision to life beautifully. The craftsmanship is absolutely stunning.”</blockquote><p><strong>Catlin Rogers</strong><span>Verified on Google · Lehigh Valley, Pennsylvania</span></p></div></article>
