@@ -5,7 +5,7 @@
   // a static-only performance shell, which prevented the side menu, product
   // carousel, live catalog behavior, and client-side navigation from working.
   const application = document.createElement("script");
-  application.src = "/main.min.js?v=catalog-images-20260811";
+  application.src = "/main.min.js?v=mobile-categories-20260811";
   application.async = false;
   document.head.appendChild(application);
 })();

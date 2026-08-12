@@ -4173,12 +4173,15 @@ function home() {
           <h2>Browse by jewelry type</h2>
         </div>
         <div class="collection-grid home-category-image-carousel">
-          ${categories.slice(0, 6).map(([slug, name, image]) => `
+          ${categories.slice(0, 6).map(([slug, name, image]) => {
+            const mobileFriendlyName = slug === "start-custom-ring-design" ? "Custom Ring Design" : slug === "select-diamond" ? "Live Diamonds" : name;
+            return `
             <a class="collection-tile" href="${["custom-orders", "select-diamond", "start-custom-ring-design"].includes(slug) ? internalLink(slug) : categoryUrl(slug)}">
               <img src="${mediaSrc(image)}" alt="${name}" ${imageSafety}>
-              <span>${name}</span>
+              <span>${mobileFriendlyName}</span>
             </a>
-          `).join("")}
+          `;
+          }).join("")}
         </div>
         <div class="hero-actions collection-more-action"><a class="button button-light" href="${internalLink("products")}">Browse All Jewelry Categories</a></div>
       </section>
