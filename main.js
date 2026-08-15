@@ -2211,9 +2211,9 @@ function startingText(product) {
 
 const categories = [
   ["start-custom-ring-design", "Start Your Custom Ring Design", "engagement-ring-feature.jpg"],
+  ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
   ["select-diamond", "Live Diamond Selection", "live-diamond-selection.jpeg"],
   ["cvd-lab-grown-diamond-jewelry", "CVD Lab-Grown Diamond Jewelry", "https://dna3.dnalinks.in/TJ4594NCW/1.jpg"],
-  ["engagement-rings", "Engagement Rings", "emerald-accent-engagement-ring.jpeg"],
   ["wedding-bands", "Wedding Bands", "mens-asscher-cut-filigree-diamond-wedding-band.jpg"],
   ["diamond-tennis-chains", "Diamond Tennis Chains", "triple-row-diamond-tennis-bracelet.jpeg"],
   ["diamond-tennis-bracelets", "Diamond Tennis Bracelets", "diamond-bracelet.png"],
