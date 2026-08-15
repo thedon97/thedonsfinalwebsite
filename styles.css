@@ -665,7 +665,7 @@ h3 {
 @media (max-width: 820px) {
   .home-category-heading { align-items: start; flex-direction: column; gap: 4px; }
   .home-category-carousel { grid-auto-columns: minmax(168px, 78vw); }
-  .home-category-image-carousel {
+  .collection-grid.home-category-image-carousel {
     grid-auto-flow: column;
     grid-auto-columns: minmax(232px, 82vw);
     grid-template-columns: none;
@@ -699,8 +699,13 @@ h3 {
     background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.76));
   }
   .home-category-image-carousel .collection-tile span {
+    width: auto;
+    max-width: calc(100% - 12px);
     font-size: .94rem;
     line-height: 1.16;
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: normal;
     text-wrap: balance;
   }
   .home-category-section .collection-more-action .button { width: 100%; }
