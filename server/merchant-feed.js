@@ -54,6 +54,11 @@ async function xmlFeed(req, res) {
   const products = (await productsForFeed()).filter((product) => price(product)).slice(0, 4000);
   const items = products.map((product) => {
     const productPrice = price(product);
+    const gallery = (Array.isArray(product.gallery) ? product.gallery : [])
+      .filter(Boolean)
+      .slice(0, 8)
+      .map((image) => `<g:additional_image_link>${xml(absoluteImage(image))}</g:additional_image_link>`)
+      .join("\n        ");
     return `
       <item>
         <g:id>${xml(product.id || product.externalId)}</g:id>
@@ -61,12 +66,16 @@ async function xmlFeed(req, res) {
         <g:description>${xml(description(product)).slice(0, 5000)}</g:description>
         <g:link>${xml(productUrl(product))}</g:link>
         <g:image_link>${xml(absoluteImage(product.imageUrl || product.image))}</g:image_link>
+        ${gallery}
         <g:availability>${product.available === false ? "out_of_stock" : "in_stock"}</g:availability>
         ${productPrice ? `<g:price>${xml(productPrice)}</g:price>` : ""}
         <g:condition>new</g:condition>
         <g:brand>${xml(BUSINESS_NAME)}</g:brand>
         <g:google_product_category>Apparel &amp; Accessories &gt; Jewelry</g:google_product_category>
         <g:product_type>${xml(product.category || "Jewelry")}</g:product_type>
+        <g:shipping_label>insured-jewelry</g:shipping_label>
+        <g:custom_label_0>${product.madeToOrder || product.source === "lgd-jewelry" ? "made-to-order" : "ready-made"}</g:custom_label_0>
+        <g:custom_label_1>insured-shipping</g:custom_label_1>
         <g:identifier_exists>no</g:identifier_exists>
       </item>
     `;

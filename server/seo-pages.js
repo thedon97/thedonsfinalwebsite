@@ -1433,6 +1433,12 @@ function localBusinessJsonLd() {
     telephone: PHONE_DISPLAY,
     sameAs: OFFICIAL_SOCIAL_LINKS,
     hasMap: GOOGLE_BUSINESS_PROFILE_URL,
+    openingHoursSpecification: [{
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "08:00",
+      closes: "20:00",
+    }],
     priceRange: "$$$",
     description: "Appointment-only private jeweler for custom engagement rings, diamond jewelry, CAD design, diamond sourcing, and nationwide jewelry consultation.",
     areaServed: LOCATION_TARGETS.map((name) => ({ "@type": "Place", name })),

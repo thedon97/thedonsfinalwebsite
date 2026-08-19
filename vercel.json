@@ -2,6 +2,12 @@
   "cleanUrls": false,
   "outputDirectory": ".",
   "trailingSlash": false,
+  "crons": [
+    {
+      "path": "/api/cron/jewelry-sync",
+      "schedule": "0 5 * * 0"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.(jpg|jpeg|png|webp|avif|svg)",
