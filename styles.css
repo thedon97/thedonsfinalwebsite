@@ -2862,7 +2862,13 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .summary-list dd { max-width: 100%; text-align: left; }
   .catalog-toolbar { justify-content: stretch; }
   .catalog-toolbar label { width: 100%; }
-  .site-header { align-items: flex-start; }
+  .site-header {
+    align-items: flex-start;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(241,215,129,.2), transparent 34%),
+      linear-gradient(105deg, #080706, #211b12 55%, #080706);
+    backdrop-filter: none;
+  }
   .nav-links, .global-search-header { display: none; }
   .mobile-store-menu { display: block; margin: 12px 14px 0; border: 1px solid var(--line); border-radius: 8px; background: #fffdfa; }
   .mobile-store-menu summary { padding: 13px 15px; cursor: pointer; color: var(--ink); font-weight: 850; }
@@ -2876,15 +2882,26 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   .brand-copy strong { max-width: 170px; font-size: .92rem; }
   .brand small { font-size: .54rem; }
   .hero {
-    min-height: 74vh;
-    padding: 104px 18px 72px;
+    min-height: 0;
+    padding: 210px 18px 72px;
   }
   .hero::before {
     background:
       linear-gradient(180deg, rgba(5,5,4,.2), rgba(5,5,4,.82)),
       linear-gradient(90deg, rgba(5,5,4,.62), rgba(5,5,4,.12));
   }
-  .hero-media img { object-position: 58% center; }
+  .hero-media {
+    inset: 24px 24px auto auto;
+    width: 164px;
+    height: 164px;
+    overflow: hidden;
+    border: 1px solid rgba(241,215,129,.5);
+    border-radius: 50%;
+    box-shadow: 0 22px 54px rgba(0,0,0,.38), 0 0 0 8px rgba(200,162,74,.08);
+  }
+  .hero-media img { object-position: 58% center; transform: none; }
+  .hero-trust-strip,
+  .hero-review-preview { backdrop-filter: none; }
   .collection-grid, .product-grid, .blog-grid, .article-card-grid, .faq-grid, .related-links-section .policy-link-grid, .trust-band, .custom-order-form { grid-template-columns: 1fr; }
   .ring-option-grid,
   .ring-option-group.compact .ring-option-grid,

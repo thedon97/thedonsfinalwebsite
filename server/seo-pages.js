@@ -874,6 +874,7 @@ function renderShell(main, routePath) {
       <form role="search" action="/search" method="get"><label for="mobile-site-search">Search jewelry and diamonds</label><div><input id="mobile-site-search" name="q" type="search" placeholder="What are you looking for?"><button type="submit">Search</button></div></form>
     </details>
     ${main}
+    <a class="sticky-appointment-cta" href="/request/appointment" aria-label="Book a private jewelry appointment"><span>Book Appointment</span><small>Private jeweler consultation</small></a>
     <footer class="site-footer">
       <div><p><strong>${BUSINESS_NAME}</strong></p><p>Luxury private jeweler for custom jewelry, certified diamonds, and fine jewelry consultations nationwide.</p></div>
       <div class="footer-contact"><strong>Speak with a private jeweler</strong><a href="tel:+14847612008">Call or text ${PHONE_DISPLAY}</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><span>Appointment-only service and insured nationwide shipping.</span></div>
@@ -1255,7 +1256,7 @@ function homeMain() {
     <main>
       <section class="hero">
         <a class="hero-media" href="/products/queen-aurelia-oval-marquise-ring" aria-label="View the Queen Aurelia engagement ring">
-          <picture><source type="image/avif" srcset="/queen-aurelia-hero-480.avif 480w, /queen-aurelia-hero-768.avif 768w, /queen-aurelia-hero-1200.avif 1200w" sizes="100vw"><source type="image/webp" srcset="/queen-aurelia-hero-480.webp 480w, /queen-aurelia-hero-768.webp 768w, /queen-aurelia-hero-1200.webp 1200w" sizes="100vw"><img src="/queen-aurelia-oval-marquise-ring.jpeg" loading="eager" fetchpriority="high" decoding="async" width="899" height="1600" alt="Queen Aurelia oval and marquise custom engagement ring by The Don Jewelers"></picture>
+          <picture><source type="image/webp" srcset="/queen-aurelia-hero-480.webp 480w, /queen-aurelia-hero-768.webp 768w, /queen-aurelia-hero-1200.webp 1200w" sizes="100vw"><img src="/queen-aurelia-oval-marquise-ring.jpeg" loading="eager" fetchpriority="high" decoding="sync" width="899" height="1600" alt="Queen Aurelia oval and marquise custom engagement ring by The Don Jewelers"></picture>
         </a>
         <div class="hero-content">
           <p class="eyebrow">Private jeweler · NYC Diamond District access</p>

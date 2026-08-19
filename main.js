@@ -2857,6 +2857,11 @@ function trackPageView() {
   const pagePath = currentRoutePath();
   const pageKey = `${pagePath}|${document.title}`;
   if (pageKey === lastTrackedPage) return;
+  if (window.__DON_INITIAL_PAGEVIEW_SENT__ === pagePath) {
+    window.__DON_INITIAL_PAGEVIEW_SENT__ = "";
+    lastTrackedPage = pageKey;
+    return;
+  }
   lastTrackedPage = pageKey;
   if (analyticsEnabled && typeof window.gtag === "function") {
     window.gtag("event", "page_view", {
@@ -4135,7 +4140,7 @@ function home() {
     <main>
       <section class="hero">
         <a class="hero-media" href="${productUrl(heroProduct)}" aria-label="View ${productName(heroProduct)}">
-          <picture><source type="image/avif" srcset="/queen-aurelia-hero-480.avif 480w, /queen-aurelia-hero-768.avif 768w, /queen-aurelia-hero-1200.avif 1200w" sizes="100vw"><source type="image/webp" srcset="/queen-aurelia-hero-480.webp 480w, /queen-aurelia-hero-768.webp 768w, /queen-aurelia-hero-1200.webp 1200w" sizes="100vw"><img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="async" width="899" height="1600" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"></picture>
+          <picture><source type="image/webp" srcset="/queen-aurelia-hero-480.webp 480w, /queen-aurelia-hero-768.webp 768w, /queen-aurelia-hero-1200.webp 1200w" sizes="100vw"><img src="${productImageSrc(heroProduct)}" loading="eager" fetchpriority="high" decoding="sync" width="899" height="1600" alt="${heroProduct.alt || productName(heroProduct)}" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';"></picture>
         </a>
         <div class="hero-content">
           <p class="eyebrow">Private jeweler · NYC Diamond District access</p>
