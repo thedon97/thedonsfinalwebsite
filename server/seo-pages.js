@@ -1280,6 +1280,19 @@ function homeMain() {
           <div class="hero-assurance-links"><a href="/shipping-policy">Insured shipping</a><a href="/warranty-policy">Craftsmanship support</a><a href="/refund-return-policy">Return policy</a><span>Secure Stripe checkout</span></div>
         </div>
       </section>
+      <section class="section engagement-feature home-engagement-preview" aria-labelledby="featured-engagement-rings-title">
+        <div>
+          <p class="eyebrow">Engagement Rings</p>
+          <h2 id="featured-engagement-rings-title">Start with the ring</h2>
+          <p>Explore signature designs, then choose your diamond, metal, ring size, and custom details.</p>
+          <div class="hero-actions"><a class="button button-gold" href="/category/engagement-rings">View Engagement Rings</a><a class="button button-light" href="/start-custom-ring-design">Design Your Ring</a></div>
+        </div>
+        <div class="ring-showcase ring-preview-showcase" aria-label="Featured engagement ring designs">
+          <a class="engagement-preview-card" href="/products/queen-aurelia-oval-marquise-ring-queen-aurelia-oval-marquise-ring"><img src="/queen-aurelia-oval-marquise-ring.jpeg" alt="Queen Aurelia oval and marquise engagement ring" width="899" height="1600" loading="lazy" decoding="async"><span><strong>Queen Aurelia</strong><small>Oval & marquise design</small></span></a>
+          <a class="engagement-preview-card" href="/products/monarch-pink-diamond-ring-pink-oval-engagement-ring"><img src="/pink-oval-engagement-ring.jpeg" alt="Monarch Pink oval diamond engagement ring" width="900" height="900" loading="lazy" decoding="async"><span><strong>Monarch Pink</strong><small>Pink oval design</small></span></a>
+          <a class="engagement-preview-card" href="/products/monarch-canary-oval-ring-yellow-oval-diamond-ring"><img src="/yellow-oval-diamond-ring.jpeg" alt="Monarch Canary yellow oval diamond engagement ring" width="900" height="900" loading="lazy" decoding="async"><span><strong>Monarch Canary</strong><small>Yellow oval design</small></span></a>
+        </div>
+      </section>
       <section class="home-category-section" aria-labelledby="home-category-title">
         <div class="home-category-heading"><p class="eyebrow">Shop the collection</p><h2 id="home-category-title">Find your piece</h2></div>
         <nav class="home-category-carousel" aria-label="Featured jewelry categories">

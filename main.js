@@ -4175,7 +4175,7 @@ function home() {
           </div>
         </div>
         <div class="ring-showcase" aria-label="Featured engagement rings">
-          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
+          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring", "yellow-oval-diamond-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
         </div>
       </section>
       <section class="home-category-section">
