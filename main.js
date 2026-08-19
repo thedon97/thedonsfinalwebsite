@@ -4174,8 +4174,18 @@ function home() {
             <a class="button button-light" href="${categoryUrl("engagement-rings")}">View Engagement Rings</a>
           </div>
         </div>
-        <div class="ring-showcase" aria-label="Featured engagement rings">
-          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring", "yellow-oval-diamond-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
+        <div class="ring-showcase desktop-ring-showcase" aria-label="Featured engagement rings">
+          ${["queen-aurelia-oval-marquise-ring", "pink-oval-engagement-ring"].map((id) => productCard(allProducts().find((product) => product.id === id))).join("")}
+        </div>
+        <div class="ring-showcase ring-preview-showcase mobile-ring-showcase" aria-label="Featured engagement ring designs">
+          ${[
+            ["queen-aurelia-oval-marquise-ring", "Queen Aurelia", "Oval & marquise signature"],
+            ["pink-oval-engagement-ring", "Monarch Pink", "Pink oval design"],
+            ["yellow-oval-diamond-ring", "Monarch Canary", "Yellow oval design"],
+          ].map(([id, name, detail]) => {
+            const product = allProducts().find((item) => item.id === id);
+            return `<a class="engagement-preview-card" href="${productUrl(product)}"><img src="${productImageSrc(product)}" alt="${product.alt || name}" loading="lazy" decoding="async"><span><strong>${name}</strong><small>${detail}</small><em>View design</em></span></a>`;
+          }).join("")}
         </div>
       </section>
       <section class="home-category-section">
