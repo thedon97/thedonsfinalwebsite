@@ -4669,6 +4669,15 @@ function category(slug) {
     "queen-aurelia-oval-marquise-ring": 1,
     "pink-oval-engagement-ring": 2,
     "yellow-oval-diamond-ring": 3,
+    "marquise-crown-diamond-engagement-ring": 4,
+    "k24b-marquise-diamond-engagement-ring": 5,
+    "radiant-pave-diamond-engagement-ring": 6,
+    "radiant-marquise-accent-engagement-ring": 7,
+    "canary-pear-three-stone-engagement-ring": 8,
+    "oval-pave-yellow-gold-engagement-ring-2026": 9,
+    "radiant-three-stone-diamond-engagement-ring-2026": 10,
+    "blush-emerald-three-stone-engagement-ring": 11,
+    "oval-vine-yellow-gold-engagement-ring": 12,
   };
   const engagementFirst = (list) => [...list].sort((a, b) => {
     if (a.category === "Engagement Rings" && b.category !== "Engagement Rings") return -1;
