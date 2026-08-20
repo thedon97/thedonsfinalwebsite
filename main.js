@@ -4179,12 +4179,15 @@ function home() {
         </div>
         <div class="ring-showcase ring-preview-showcase mobile-ring-showcase" aria-label="Featured engagement ring designs">
           ${[
-            ["queen-aurelia-oval-marquise-ring", "Queen Aurelia", "Oval & marquise signature"],
-            ["pink-oval-engagement-ring", "Monarch Pink", "Pink oval design"],
-            ["yellow-oval-diamond-ring", "Monarch Canary", "Yellow oval design"],
-          ].map(([id, name, detail]) => {
+            ["queen-aurelia-oval-marquise-ring", "Queen Aurelia", "Oval & marquise signature", false],
+            ["pink-oval-engagement-ring", "Monarch Pink", "Pink oval design", false],
+            ["yellow-oval-diamond-ring", "Monarch Canary", "Yellow oval design", false],
+            ["marquise-crown-diamond-engagement-ring", "Marquise Crown", "Sculptural marquise design", true],
+            ["k24b-marquise-diamond-engagement-ring", "La Marquesa K24B", "Marquise with graduated accents", true],
+            ["radiant-pave-diamond-engagement-ring", "Reina Luz", "Radiant center & pavé band", true],
+          ].map(([id, name, detail, desktopOnly]) => {
             const product = allProducts().find((item) => item.id === id);
-            return `<a class="engagement-preview-card" href="${productUrl(product)}"><img src="${productImageSrc(product)}" alt="${product.alt || name}" loading="lazy" decoding="async"><span><strong>${name}</strong><small>${detail}</small><em>View design</em></span></a>`;
+            return `<a class="engagement-preview-card${desktopOnly ? " desktop-only-featured-ring" : ""}" href="${productUrl(product)}"><img src="${productImageSrc(product)}" alt="${product.alt || name}" loading="lazy" decoding="async"><span><strong>${name}</strong><small>${detail}</small><em>View &amp; Buy</em></span></a>`;
           }).join("")}
         </div>
       </section>
