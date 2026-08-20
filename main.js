@@ -2074,7 +2074,7 @@ function storedImportProducts() {
 }
 
 function allProducts() {
-  return [...products, ...storedImportProducts(), ...approvedPreviewProducts]
+  return [...products, ...(window.__CUSTOMER_PRODUCTS__ || []), ...storedImportProducts(), ...approvedPreviewProducts]
     .filter((product) => !/marquise.*surround|surround.*marquise/i.test(product.name || ""));
 }
 

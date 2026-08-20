@@ -14,6 +14,11 @@ function catalogOutputName(name) {
 }
 
 async function build() {
+  fs.writeFileSync(
+    path.join(root, "customer-products.js"),
+    `window.__CUSTOMER_PRODUCTS__=${JSON.stringify(customerCatalog.items)};\n`,
+    "utf8",
+  );
   await Promise.all(widths.flatMap((width) => [
     sharp(source).resize({ width, withoutEnlargement: true }).webp({ quality: 78, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.webp`)),
     sharp(source).resize({ width, withoutEnlargement: true }).avif({ quality: 52, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.avif`)),
@@ -27,7 +32,7 @@ async function build() {
       .webp({ quality: 74, effort: 4 })
       .toFile(path.join(root, path.dirname(name), catalogOutputName(path.basename(name))))));
   }
-  console.log(`Generated ${widths.length * 2} responsive hero images and ${images.length} catalog images.`);
+  console.log(`Generated the customer catalog, ${widths.length * 2} responsive hero images, and ${images.length} catalog images.`);
 }
 
 build().catch((error) => {
