@@ -349,3 +349,17 @@ module.exports = {
   slugify,
   snapshotProducts,
 };
+
+
+async function getProductByExpandedSlug(slug) {
+  const clean = String(slug || "").trim().toLowerCase();
+  if (!clean) return null;
+  const direct = await getProductBySlug(clean);
+  if (direct) return direct;
+  const products = await listVisibleProducts();
+  return products
+    .filter((product) => clean.startsWith(`${productSlug(product)}-`))
+    .sort((a, b) => productSlug(b).length - productSlug(a).length)[0] || null;
+}
+
+module.exports.getProductBySlug = getProductByExpandedSlug;
