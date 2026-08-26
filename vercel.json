@@ -12,13 +12,19 @@
     {
       "source": "/(.*)\\.(jpg|jpeg|png|webp|avif|svg)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
       ]
     },
     {
       "source": "/(bootstrap.js|bootstrap.min.js|main.js|main.min.js|styles.css)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
@@ -26,7 +32,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.stripe.com https://*.stripe.com https://www.google-analytics.com https://region1.google-analytics.com; frame-src https://js.stripe.com https://hooks.stripe.com https://*.stripe.com https://*.stripe.network; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://*.stripe.com"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.stripe.com https://*.stripe.com https://www.google-analytics.com https://region1.google-analytics.com; frame-src https://www.instagram.com https://js.stripe.com https://hooks.stripe.com https://*.stripe.com https://*.stripe.network; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://*.stripe.com"
         },
         {
           "key": "X-Frame-Options",
@@ -292,20 +298,62 @@
       "source": "/blog",
       "destination": "/api/index?route=seo&action=page&path=blog"
     },
-    { "source": "/service-areas", "destination": "/api/index?route=seo&action=page&path=service-areas" },
-    { "source": "/custom-jeweler-syracuse-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-syracuse-ny" },
-    { "source": "/custom-jeweler-floral-park-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-floral-park-ny" },
-    { "source": "/custom-jeweler-long-island-ny", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-long-island-ny" },
-    { "source": "/custom-jeweler-new-york-state", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-new-york-state" },
-    { "source": "/custom-jeweler-philadelphia-pa", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-philadelphia-pa" },
-    { "source": "/custom-jeweler-pennsylvania", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-pennsylvania" },
-    { "source": "/custom-jewelry-pennsylvania", "destination": "/api/index?route=seo&action=page&path=custom-jewelry-pennsylvania" },
-    { "source": "/jewelry-store-easton-pa", "destination": "/api/index?route=seo&action=page&path=jewelry-store-easton-pa" },
-    { "source": "/engagement-rings-easton-pa", "destination": "/api/index?route=seo&action=page&path=engagement-rings-easton-pa" },
-    { "source": "/diamond-jewelry-pennsylvania", "destination": "/api/index?route=seo&action=page&path=diamond-jewelry-pennsylvania" },
-    { "source": "/diamond-district-custom-jewelry-nyc", "destination": "/api/index?route=seo&action=page&path=diamond-district-custom-jewelry-nyc" },
-    { "source": "/custom-jeweler-northern-new-jersey", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-northern-new-jersey" },
-    { "source": "/custom-jeweler-ohio", "destination": "/api/index?route=seo&action=page&path=custom-jeweler-ohio" },
+    {
+      "source": "/service-areas",
+      "destination": "/api/index?route=seo&action=page&path=service-areas"
+    },
+    {
+      "source": "/custom-jeweler-syracuse-ny",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-syracuse-ny"
+    },
+    {
+      "source": "/custom-jeweler-floral-park-ny",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-floral-park-ny"
+    },
+    {
+      "source": "/custom-jeweler-long-island-ny",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-long-island-ny"
+    },
+    {
+      "source": "/custom-jeweler-new-york-state",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-new-york-state"
+    },
+    {
+      "source": "/custom-jeweler-philadelphia-pa",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-philadelphia-pa"
+    },
+    {
+      "source": "/custom-jeweler-pennsylvania",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-pennsylvania"
+    },
+    {
+      "source": "/custom-jewelry-pennsylvania",
+      "destination": "/api/index?route=seo&action=page&path=custom-jewelry-pennsylvania"
+    },
+    {
+      "source": "/jewelry-store-easton-pa",
+      "destination": "/api/index?route=seo&action=page&path=jewelry-store-easton-pa"
+    },
+    {
+      "source": "/engagement-rings-easton-pa",
+      "destination": "/api/index?route=seo&action=page&path=engagement-rings-easton-pa"
+    },
+    {
+      "source": "/diamond-jewelry-pennsylvania",
+      "destination": "/api/index?route=seo&action=page&path=diamond-jewelry-pennsylvania"
+    },
+    {
+      "source": "/diamond-district-custom-jewelry-nyc",
+      "destination": "/api/index?route=seo&action=page&path=diamond-district-custom-jewelry-nyc"
+    },
+    {
+      "source": "/custom-jeweler-northern-new-jersey",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-northern-new-jersey"
+    },
+    {
+      "source": "/custom-jeweler-ohio",
+      "destination": "/api/index?route=seo&action=page&path=custom-jeweler-ohio"
+    },
     {
       "source": "/blog/:slug",
       "destination": "/api/index?route=seo&action=article&slug=:slug"
@@ -350,14 +398,38 @@
       "source": "/checkout-cancel",
       "destination": "/index.html"
     },
-    { "source": "/refund-return-policy", "destination": "/index.html" },
-    { "source": "/payment-policy", "destination": "/index.html" },
-    { "source": "/shipping-policy", "destination": "/index.html" },
-    { "source": "/custom-order-policy", "destination": "/index.html" },
-    { "source": "/warranty-policy", "destination": "/index.html" },
-    { "source": "/terms", "destination": "/index.html" },
-    { "source": "/privacy-policy", "destination": "/index.html" },
-    { "source": "/financing-policy", "destination": "/index.html" },
+    {
+      "source": "/refund-return-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/payment-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/shipping-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/custom-order-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/warranty-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/financing-policy",
+      "destination": "/index.html"
+    },
     {
       "source": "/products/:slug",
       "destination": "/api/index?route=seo&action=product&slug=:slug"
@@ -377,6 +449,10 @@
     {
       "source": "/api/:path*",
       "destination": "/api/index?route=:path*"
+    },
+    {
+      "source": "/instagram",
+      "destination": "/instagram.html"
     },
     {
       "source": "/((?!api/|.*\\..*).*)",
