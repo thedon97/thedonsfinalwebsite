@@ -4935,7 +4935,7 @@ async function catalogJewelryDetail(productId) {
 
 function productDetailFromCleanSlug(slug) {
   const clean = decodeURIComponent(String(slug || ""));
-  const manual = allProducts().find((product) => productSlug(product) === clean || slugify(product.id) === clean);
+  const manual = allProducts().find((product) => productSlug(product) === clean || slugify(product.id) === clean || clean.endsWith("-" + slugify(product.id)));
   if (manual) return productDetail(manual.id);
   const stock = clean.split("-").filter(Boolean).pop() || clean;
   return catalogJewelryDetail(stock.toUpperCase());
