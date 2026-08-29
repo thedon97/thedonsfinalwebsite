@@ -64,6 +64,9 @@ async function request(url) {
   assert.equal(missing.statusCode, 404);
   assert.match(missing.body, /noindex,follow/);
   const main = fs.readFileSync("main.js", "utf8");
+  const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+  const customCollectionRewrite = vercel.rewrites.find((rule) => rule.source === "/category/custom-jewelry");
+  assert.equal(customCollectionRewrite?.destination, "/index.html", "custom jewelry collection must load the storefront router");
   assert.equal((main.match(/gtag\("config"/g) || []).length, 1, "GA4 must have one config call");
   assert.match(main, /send_page_view: false/);
   console.log(`SEO checks passed for ${pages.length} priority pages, sitemap, robots, schema, and GA4 duplication guards.`);
