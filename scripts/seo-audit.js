@@ -1,5 +1,10 @@
 const assert = require("assert");
 const fs = require("fs");
+
+// Build-time SEO checks must be deterministic and must not consume or depend on
+// the production database allowance. Runtime functions retain DATABASE_URL.
+delete process.env.DATABASE_URL;
+
 const seo = require("../server/seo-pages");
 
 function response() {
