@@ -1,11 +1,13 @@
 {
-  "generatedAt": "2026-08-19T21:05:05-04:00",
+  "generatedAt": "2026-08-28T23:58:30.459Z",
   "items": [
     {
       "id": "fleur-de-lis-diamond-mens-wedding-band",
       "name": "El Jardín Fleur Diamond Men's Wedding Band",
       "category": "Wedding Bands",
-      "secondaryCategories": ["Men's Rings"],
+      "secondaryCategories": [
+        "Men's Rings"
+      ],
       "price": 2600,
       "estimate": 2600,
       "priceLabel": "Starting at $2,600",
@@ -14,66 +16,1726 @@
       "gallery": [],
       "description": "A substantial white-metal men's wedding band with sculpted floral engraving, milgrain borders, and diamond accents. Made to order by width, ring size, metal, and diamond preference.",
       "specs": "",
-      "fields": [["Band Width", [["6mm", 2600], ["7mm", 3000], ["8mm", 3400], ["9mm", 3800], ["10mm", 4200], ["11mm", 4600], ["12mm", 5000], ["13mm", 5400], ["14mm", 5800], ["15mm", 6200], ["Custom width", 6600]]], ["Diamond Type", ["Lab-Grown Diamond", "Natural Diamond"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]],
-      "metalSurcharges": {}, "badges": ["Men's Wedding Band", "Floral Engraving", "Made to Order"], "notice": "Final specifications and pricing depend on exact width, metal weight, ring size, and diamond selection.", "madeToOrder": true, "available": true, "source": "manual"
+      "fields": [
+        [
+          "Band Width",
+          [
+            [
+              "6mm",
+              2600
+            ],
+            [
+              "7mm",
+              3000
+            ],
+            [
+              "8mm",
+              3400
+            ],
+            [
+              "9mm",
+              3800
+            ],
+            [
+              "10mm",
+              4200
+            ],
+            [
+              "11mm",
+              4600
+            ],
+            [
+              "12mm",
+              5000
+            ],
+            [
+              "13mm",
+              5400
+            ],
+            [
+              "14mm",
+              5800
+            ],
+            [
+              "15mm",
+              6200
+            ],
+            [
+              "Custom width",
+              6600
+            ]
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond",
+            "Natural Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Men's Wedding Band",
+        "Floral Engraving",
+        "Made to Order"
+      ],
+      "notice": "Final specifications and pricing depend on exact width, metal weight, ring size, and diamond selection.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "k24b-marquise-diamond-engagement-ring",
       "name": "La Marquesa K24B Marquise Engagement Ring",
       "category": "Engagement Rings",
-      "secondaryCategories": ["Women's Rings"],
-      "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/02-BDD4A1EE-BA1A-4B48-9782-CBF67D6172D2.png", "imageUrl": "", "gallery": [],
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/02-BDD4A1EE-BA1A-4B48-9782-CBF67D6172D2.png",
+      "imageUrl": "",
+      "gallery": [],
       "description": "A marquise-center engagement ring with graduated round side stones and a diamond band. Choose the center-diamond size, metal, quality, and exact ring size.",
-      "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Marquise"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]],
-      "metalSurcharges": {}, "badges": ["Engagement Ring", "Marquise Center", "Made to Order"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Marquise"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Marquise Center",
+        "Made to Order"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "radiant-pave-diamond-engagement-ring",
       "name": "Reina Luz Radiant Pave Engagement Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/03-548DB3E3-12A3-46B9-B2B6-F55850911923.png", "imageUrl": "", "gallery": [],
-      "description": "A radiant-cut center diamond engagement ring with a classic pave band and refined four-prong setting.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Radiant"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Radiant Center", "Pave Band"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/03-548DB3E3-12A3-46B9-B2B6-F55850911923.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A radiant-cut center diamond engagement ring with a classic pave band and refined four-prong setting.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Radiant"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Radiant Center",
+        "Pave Band"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "radiant-marquise-accent-engagement-ring",
       "name": "Sol de Mar Radiant Marquise Accent Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/04-152202CB-C3F7-47D0-BCDA-E5F65F56A045.png", "imageUrl": "", "gallery": [],
-      "description": "A radiant-cut center diamond with marquise and round accent stones arranged along a graceful white-metal band.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Radiant"]], ["Side Stone Shape", ["Marquise and round"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Radiant Center", "Marquise Accents"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/04-152202CB-C3F7-47D0-BCDA-E5F65F56A045.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A radiant-cut center diamond with marquise and round accent stones arranged along a graceful white-metal band.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Radiant"
+          ]
+        ],
+        [
+          "Side Stone Shape",
+          [
+            "Marquise and round"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Radiant Center",
+        "Marquise Accents"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "aureate-floral-diamond-mens-wedding-band-2026",
       "name": "Oro de Sevilla Floral Diamond Men's Wedding Band",
-      "category": "Wedding Bands", "secondaryCategories": ["Men's Rings"], "price": 2600, "estimate": 2600, "priceLabel": "Starting at $2,600", "image": "assets/customer-products/05-B6824B56-390D-49CD-8024-52EFF3F0297F.png", "imageUrl": "", "gallery": [],
-      "description": "A wide yellow-gold men's wedding band with sculpted floral engraving, milgrain borders, and diamond accents.", "specs": "", "fields": [["Band Width", [["6mm", 2600], ["7mm", 3000], ["8mm", 3400], ["9mm", 3800], ["10mm", 4200], ["11mm", 4600], ["12mm", 5000], ["13mm", 5400], ["14mm", 5800], ["15mm", 6200], ["Custom width", 6600]]], ["Diamond Type", ["Lab-Grown Diamond", "Natural Diamond"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Men's Wedding Band", "Yellow Gold", "Floral Engraving"], "notice": "Final specifications and pricing depend on exact width, metal weight, ring size, and diamond selection.", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Wedding Bands",
+      "secondaryCategories": [
+        "Men's Rings"
+      ],
+      "price": 2600,
+      "estimate": 2600,
+      "priceLabel": "Starting at $2,600",
+      "image": "assets/customer-products/05-B6824B56-390D-49CD-8024-52EFF3F0297F.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A wide yellow-gold men's wedding band with sculpted floral engraving, milgrain borders, and diamond accents.",
+      "specs": "",
+      "fields": [
+        [
+          "Band Width",
+          [
+            [
+              "6mm",
+              2600
+            ],
+            [
+              "7mm",
+              3000
+            ],
+            [
+              "8mm",
+              3400
+            ],
+            [
+              "9mm",
+              3800
+            ],
+            [
+              "10mm",
+              4200
+            ],
+            [
+              "11mm",
+              4600
+            ],
+            [
+              "12mm",
+              5000
+            ],
+            [
+              "13mm",
+              5400
+            ],
+            [
+              "14mm",
+              5800
+            ],
+            [
+              "15mm",
+              6200
+            ],
+            [
+              "Custom width",
+              6600
+            ]
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond",
+            "Natural Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Men's Wedding Band",
+        "Yellow Gold",
+        "Floral Engraving"
+      ],
+      "notice": "Final specifications and pricing depend on exact width, metal weight, ring size, and diamond selection.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "canary-pear-three-stone-engagement-ring",
       "name": "Canaria Real Pear Three-Stone Engagement Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/06-FDB218F9-35E5-4A26-BAD4-15CF66A01435.png", "imageUrl": "", "gallery": [],
-      "description": "A vivid canary pear-shape center diamond with round side stones and a polished yellow-gold band.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Pear"]], ["Center Stone Color", ["Canary yellow", "D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Canary Pear", "Three-Stone"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/06-FDB218F9-35E5-4A26-BAD4-15CF66A01435.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A vivid canary pear-shape center diamond with round side stones and a polished yellow-gold band.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Pear"
+          ]
+        ],
+        [
+          "Center Stone Color",
+          [
+            "Canary yellow",
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Canary Pear",
+        "Three-Stone"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "oval-pave-yellow-gold-engagement-ring-2026",
       "name": "Valentina Oval Pave Engagement Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/07-18ADEBB5-7217-4DF7-A91A-EE51BF267643.png", "imageUrl": "", "gallery": [],
-      "description": "A classic oval center diamond with a refined pave band and warm yellow-gold prongs.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Oval"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Oval Center", "Pave Band"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/07-18ADEBB5-7217-4DF7-A91A-EE51BF267643.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A classic oval center diamond with a refined pave band and warm yellow-gold prongs.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Oval"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Oval Center",
+        "Pave Band"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "radiant-three-stone-diamond-engagement-ring-2026",
       "name": "Reina Trío Radiant Engagement Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/08-9F1D8F21-E9C0-4AF6-9340-698B6A67CEC4.png", "imageUrl": "", "gallery": [],
-      "description": "A radiant-cut center diamond framed by two round side diamonds on a polished white-metal band.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Radiant"]], ["Side Stone Shape", ["Round"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Radiant Center", "Three-Stone"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/08-9F1D8F21-E9C0-4AF6-9340-698B6A67CEC4.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A radiant-cut center diamond framed by two round side diamonds on a polished white-metal band.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Radiant"
+          ]
+        ],
+        [
+          "Side Stone Shape",
+          [
+            "Round"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Radiant Center",
+        "Three-Stone"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "blush-emerald-three-stone-engagement-ring",
       "name": "Rosa Imperial Emerald Three-Stone Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/09-3A86AE71-A365-40F8-8E7F-F83C4F1E7738.png", "imageUrl": "", "gallery": [],
-      "description": "A blush-pink emerald-cut center stone with round diamond side stones and a diamond band.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Emerald"]], ["Center Stone Color", ["Blush pink", "D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Pink Emerald", "Three-Stone"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/09-3A86AE71-A365-40F8-8E7F-F83C4F1E7738.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A blush-pink emerald-cut center stone with round diamond side stones and a diamond band.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Emerald"
+          ]
+        ],
+        [
+          "Center Stone Color",
+          [
+            "Blush pink",
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Pink Emerald",
+        "Three-Stone"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     },
     {
       "id": "oval-vine-yellow-gold-engagement-ring",
       "name": "Jardín de Oro Oval Vine Engagement Ring",
-      "category": "Engagement Rings", "secondaryCategories": ["Women's Rings"], "price": 2625, "estimate": 2625, "priceLabel": "", "image": "assets/customer-products/10-8E0AFE94-D2BD-4AEF-B18F-AE67F1366F6F.png", "imageUrl": "", "gallery": [],
-      "description": "An oval center diamond set above a sculptural yellow-gold vine band with diamond leaf accents.", "specs": "", "fields": [["Diamond Size", [["1 carat", 2625], ["1.5 carat", 3025], ["2 carats", 3425], ["2.5 carats", 3825], ["3 carats", 4225], ["3.5 carats", 4625], ["4 carats", 5025], ["4.5 carats", 5425], ["5 carats", 5825], ["5.5 carats", 6225], ["6 carats", 6625]]], ["Center Stone Shape", ["Oval"]], ["Diamond Color", ["D", "E", "F"]], ["Clarity", ["VVS", "VS"]], ["Metal", ["14K Yellow Gold", "14K White Gold", "14K Rose Gold", "18K Yellow Gold", "18K White Gold", "18K Rose Gold", "Platinum"]], ["Ring Size", ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]]], "metalSurcharges": {}, "badges": ["Engagement Ring", "Oval Center", "Vine Band"], "notice": "", "madeToOrder": true, "available": true, "source": "manual"
+      "category": "Engagement Rings",
+      "secondaryCategories": [
+        "Women's Rings"
+      ],
+      "price": 2625,
+      "estimate": 2625,
+      "priceLabel": "",
+      "image": "assets/customer-products/10-8E0AFE94-D2BD-4AEF-B18F-AE67F1366F6F.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "An oval center diamond set above a sculptural yellow-gold vine band with diamond leaf accents.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            [
+              "1 carat",
+              2625
+            ],
+            [
+              "1.5 carat",
+              3025
+            ],
+            [
+              "2 carats",
+              3425
+            ],
+            [
+              "2.5 carats",
+              3825
+            ],
+            [
+              "3 carats",
+              4225
+            ],
+            [
+              "3.5 carats",
+              4625
+            ],
+            [
+              "4 carats",
+              5025
+            ],
+            [
+              "4.5 carats",
+              5425
+            ],
+            [
+              "5 carats",
+              5825
+            ],
+            [
+              "5.5 carats",
+              6225
+            ],
+            [
+              "6 carats",
+              6625
+            ]
+          ]
+        ],
+        [
+          "Center Stone Shape",
+          [
+            "Oval"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VVS",
+            "VS"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold",
+            "14K White Gold",
+            "14K Rose Gold",
+            "18K Yellow Gold",
+            "18K White Gold",
+            "18K Rose Gold",
+            "Platinum"
+          ]
+        ],
+        [
+          "Ring Size",
+          [
+            "3",
+            "3.5",
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "Engagement Ring",
+        "Oval Center",
+        "Vine Band"
+      ],
+      "notice": "",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
+    },
+    {
+      "id": "don-2pt-lab-diamond-tennis-bracelet",
+      "name": "Essential 2PT Lab Diamond Tennis Bracelet",
+      "category": "Bracelets",
+      "secondaryCategories": [
+        "Men",
+        "Women"
+      ],
+      "price": 2700,
+      "estimate": 2700,
+      "priceLabel": "$2,700",
+      "image": "tennis-bracelet-pointer-lineup.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A classic 14K yellow-gold tennis bracelet set with approximately 2-point round brilliant lab-grown diamonds per stone. Designed for everyday luxury with a secure box clasp and safety latch. Select your preferred bracelet length and check out securely online.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            "2 pointers per stone"
+          ]
+        ],
+        [
+          "Bracelet Length",
+          [
+            "6.5 inches",
+            "7 inches",
+            "8 inches",
+            "8.5 inches",
+            "9 inches"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold"
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VS",
+            "VVS"
+          ]
+        ],
+        [
+          "Setting",
+          [
+            "Classic four-prong tennis link"
+          ]
+        ],
+        [
+          "Clasp",
+          [
+            "Box clasp with safety latch"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "2PT Diamonds",
+        "Lab-Grown Diamonds",
+        "14K Yellow Gold",
+        "Men's & Women's"
+      ],
+      "buttons": [
+        "Add to Cart",
+        "Buy Now",
+        "Financing Available"
+      ],
+      "notice": "Final total carat weight and gold weight vary by selected bracelet length. Product images are design renders; exact stone count varies by length.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
+    },
+    {
+      "id": "don-5pt-lab-diamond-tennis-bracelet",
+      "name": "Signature 5PT Lab Diamond Tennis Bracelet",
+      "category": "Bracelets",
+      "secondaryCategories": [
+        "Men",
+        "Women"
+      ],
+      "price": 3450,
+      "estimate": 3450,
+      "priceLabel": "$3,450",
+      "image": "tennis-bracelet-pointer-lineup.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A classic 14K yellow-gold tennis bracelet set with approximately 5-point round brilliant lab-grown diamonds per stone. Designed for everyday luxury with a secure box clasp and safety latch. Select your preferred bracelet length and check out securely online.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            "5 pointers per stone"
+          ]
+        ],
+        [
+          "Bracelet Length",
+          [
+            "6.5 inches",
+            "7 inches",
+            "8 inches",
+            "8.5 inches",
+            "9 inches"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold"
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VS",
+            "VVS"
+          ]
+        ],
+        [
+          "Setting",
+          [
+            "Classic four-prong tennis link"
+          ]
+        ],
+        [
+          "Clasp",
+          [
+            "Box clasp with safety latch"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "5PT Diamonds",
+        "Lab-Grown Diamonds",
+        "14K Yellow Gold",
+        "Men's & Women's"
+      ],
+      "buttons": [
+        "Add to Cart",
+        "Buy Now",
+        "Financing Available"
+      ],
+      "notice": "Final total carat weight and gold weight vary by selected bracelet length. Product images are design renders; exact stone count varies by length.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
+    },
+    {
+      "id": "don-10pt-lab-diamond-tennis-bracelet",
+      "name": "Luxe 10PT Lab Diamond Tennis Bracelet",
+      "category": "Bracelets",
+      "secondaryCategories": [
+        "Men",
+        "Women"
+      ],
+      "price": 4250,
+      "estimate": 4250,
+      "priceLabel": "$4,250",
+      "image": "tennis-bracelet-pointer-lineup.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A classic 14K yellow-gold tennis bracelet set with approximately 10-point round brilliant lab-grown diamonds per stone. Designed for everyday luxury with a secure box clasp and safety latch. Select your preferred bracelet length and check out securely online.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            "10 pointers per stone"
+          ]
+        ],
+        [
+          "Bracelet Length",
+          [
+            "6.5 inches",
+            "7 inches",
+            "8 inches",
+            "8.5 inches",
+            "9 inches"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold"
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VS",
+            "VVS"
+          ]
+        ],
+        [
+          "Setting",
+          [
+            "Classic four-prong tennis link"
+          ]
+        ],
+        [
+          "Clasp",
+          [
+            "Box clasp with safety latch"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "10PT Diamonds",
+        "Lab-Grown Diamonds",
+        "14K Yellow Gold",
+        "Men's & Women's"
+      ],
+      "buttons": [
+        "Add to Cart",
+        "Buy Now",
+        "Financing Available"
+      ],
+      "notice": "Final total carat weight and gold weight vary by selected bracelet length. Product images are design renders; exact stone count varies by length.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
+    },
+    {
+      "id": "don-15pt-lab-diamond-tennis-bracelet",
+      "name": "Prestige 15PT Lab Diamond Tennis Bracelet",
+      "category": "Bracelets",
+      "secondaryCategories": [
+        "Men",
+        "Women"
+      ],
+      "price": 4800,
+      "estimate": 4800,
+      "priceLabel": "$4,800",
+      "image": "tennis-bracelet-pointer-lineup.png",
+      "imageUrl": "",
+      "gallery": [],
+      "description": "A classic 14K yellow-gold tennis bracelet set with approximately 15-point round brilliant lab-grown diamonds per stone. Designed for everyday luxury with a secure box clasp and safety latch. Select your preferred bracelet length and check out securely online.",
+      "specs": "",
+      "fields": [
+        [
+          "Diamond Size",
+          [
+            "15 pointers per stone"
+          ]
+        ],
+        [
+          "Bracelet Length",
+          [
+            "6.5 inches",
+            "7 inches",
+            "8 inches",
+            "8.5 inches",
+            "9 inches"
+          ]
+        ],
+        [
+          "Metal",
+          [
+            "14K Yellow Gold"
+          ]
+        ],
+        [
+          "Diamond Type",
+          [
+            "Lab-Grown Diamond"
+          ]
+        ],
+        [
+          "Diamond Color",
+          [
+            "D",
+            "E",
+            "F"
+          ]
+        ],
+        [
+          "Clarity",
+          [
+            "VS",
+            "VVS"
+          ]
+        ],
+        [
+          "Setting",
+          [
+            "Classic four-prong tennis link"
+          ]
+        ],
+        [
+          "Clasp",
+          [
+            "Box clasp with safety latch"
+          ]
+        ]
+      ],
+      "metalSurcharges": {},
+      "badges": [
+        "15PT Diamonds",
+        "Lab-Grown Diamonds",
+        "14K Yellow Gold",
+        "Men's & Women's"
+      ],
+      "buttons": [
+        "Add to Cart",
+        "Buy Now",
+        "Financing Available"
+      ],
+      "notice": "Final total carat weight and gold weight vary by selected bracelet length. Product images are design renders; exact stone count varies by length.",
+      "madeToOrder": true,
+      "available": true,
+      "source": "manual"
     }
   ]
 }
