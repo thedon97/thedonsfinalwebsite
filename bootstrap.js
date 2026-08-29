@@ -9,7 +9,7 @@
     if (applicationPromise) return applicationPromise;
     applicationPromise = new Promise((resolve, reject) => {
       const application = document.createElement("script");
-      application.src = "/main.min.js?v=custom-collections-20260829";
+      application.src = "/main.min.js?v=approved-custom-renders-20260829";
       application.async = true;
       application.addEventListener("load", resolve, { once: true });
       application.addEventListener("error", reject, { once: true });
