@@ -1,5 +1,6 @@
 const manualCatalog = require("./data/manual-products.json");
 const customerCatalog = require("./data/customer-products-20260819.json");
+const customCollectionCatalog = require("./data/custom-collection-products.json");
 const jewelrySnapshot = require("./data/jewelry.json");
 const { databaseConfigured, query } = require("./_db");
 
@@ -37,7 +38,7 @@ function normalizeCategory(value) {
 }
 
 function manualProducts() {
-  return [...manualCatalog.items, ...customerCatalog.items]
+  return [...manualCatalog.items, ...customerCatalog.items, ...customCollectionCatalog.items]
     .filter((item) => !HIDDEN_MANUAL_IDS.has(item.id) && !/marquise surround/i.test(item.name))
     .map((item) => ({
       ...item,
