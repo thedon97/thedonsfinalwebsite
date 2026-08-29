@@ -2453,6 +2453,16 @@ dd { margin: 0; min-width: 0; max-width: 68%; font-weight: 850; text-align: righ
   background: white;
 }
 .cart-item img { aspect-ratio: 1 / 1; object-fit: cover; border-radius: 6px; }
+
+/* Preserve the full black-background composition for the newest custom renders. */
+img[src*="archangel-slaying-lucifer-concept"],
+img[src*="fear-no-evil-baby-angel"],
+img[src*="jesus-ring-by-the-don-jewelers"],
+img[src*="twin-dragon"] {
+  object-fit: contain !important;
+  object-position: center;
+  background: #000;
+}
 .quantity-controls {
   display: inline-flex;
   align-items: center;
