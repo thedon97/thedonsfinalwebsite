@@ -95,6 +95,10 @@
       "destination": "/api/index?route=seo&action=page&path=diamond-shape-guide"
     },
     {
+      "source": "/category/custom-jewelry",
+      "destination": "/index.html"
+    },
+    {
       "source": "/category/:slug",
       "destination": "/api/index?route=seo&action=page&path=category/:slug"
     },
