@@ -2686,7 +2686,7 @@ function navLinks() {
         const className = [ "custom-orders", "start-custom-ring-design" ].includes(slug) ? ` class="nav-highlight"` : "";
         return `<a${className} href="${href}">${name}</a>`;
     }).join("");
-    return ` <a href="${internalLink("/")}">Home</a> <span class="sidebar-section-label">Shop fine jewelry</span> <a class="nav-highlight" href="${internalLink("products")}">View All Fine Jewelry</a> ${categoryLinks} <a href="${internalLink("products")}">Browse every jewelry category</a> <span class="sidebar-section-label">Private service</span> <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a> <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a> <a class="nav-highlight" href="${internalLink("jewelry-financing")}">Jewelry Financing</a> <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a> <a href="${internalLink("service-areas")}">Service Areas</a> <a href="${internalLink("blog")}">Blog</a> <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a> `;
+    return ` <a href="/" data-hard-navigation="true">Home</a> <span class="sidebar-section-label">Shop fine jewelry</span> <a class="nav-highlight" href="${internalLink("products")}">View All Fine Jewelry</a> ${categoryLinks} <a href="${internalLink("products")}">Browse every jewelry category</a> <span class="sidebar-section-label">Private service</span> <a class="nav-highlight" href="${internalLink("free-engagement-ring-consultation")}">Free Ring Consult</a> <a class="nav-highlight" href="${appointmentUrl}">Book Appointment</a> <a class="nav-highlight" href="${internalLink("jewelry-financing")}">Jewelry Financing</a> <a href="${internalLink("nyc-diamond-district-jeweler")}">NYC Jeweler</a> <a href="${internalLink("service-areas")}">Service Areas</a> <a href="${internalLink("blog")}">Blog</a> <a href="${internalLink("cart")}">Cart <span class="cart-pill">${cart.length}</span></a> `;
 }
 
 function commerceItems(items = []) {
@@ -4116,7 +4116,8 @@ function manualProductInformation(product) {
 }
 
 function productDetail(id) {
-    const product = allProducts().find(p => p.id === id) || products[0];
+    const product = allProducts().find(p => p.id === id);
+    if (!product) return clientNotFoundPage();
     if (product.imported) return importedProductDetail(product);
     trackEvent("view_item", {
         item_id: product.id,
@@ -6200,7 +6201,13 @@ function clientNotFoundPage() {
 
 window.addEventListener("hashchange", navigate);
 
-window.addEventListener("popstate", navigate);
+window.addEventListener("popstate", () => {
+    if (location.pathname === "/" && !location.search && !location.hash) {
+        location.reload();
+        return;
+    }
+    navigate();
+});
 
 document.addEventListener("click", event => {
     const link = event.target.closest("a[href]");
@@ -6222,6 +6229,7 @@ document.addEventListener("click", event => {
     if (!href.startsWith("/") || link.target || link.hasAttribute("download")) return;
     const url = new URL(href, location.origin);
     if (url.origin !== location.origin) return;
+    if (url.pathname === "/" && !url.search && !url.hash) return;
     event.preventDefault();
     history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
     navigate();
