@@ -211,14 +211,7 @@ module.exports = async function handler(req, res) {
     };
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
-    let lead = null;
-    if (leadDatabaseConfigured()) {
-      try {
-        lead = await createLead(startingPayload);
-      } catch (error) {
-        console.warn("Lead database unavailable; continuing checkout with email fallback.", error.message);
-      }
-    }
+    const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
     if (!process.env.STRIPE_SECRET_KEY) {
       const fallbackPayload = {
         ...startingPayload,
@@ -248,17 +241,9 @@ module.exports = async function handler(req, res) {
       return;
     }
     const stripe = stripeClient();
-    try {
-      await ensurePromotionCode(stripe);
-    } catch (promotionError) {
-      // A restricted Stripe key may create Checkout Sessions without permission
-      // to inspect promotion codes. Never let that optional setup block a sale.
-      console.warn("Stripe promotion-code setup skipped:", promotionError?.message || promotionError);
-    }
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "embedded_page",
-      allow_promotion_codes: true,
       line_items: lines.map((item) => ({
         quantity: item.quantity,
         price_data: {
@@ -290,7 +275,18 @@ module.exports = async function handler(req, res) {
           type: "text",
           optional: false,
         },
+        {
+          key: "offer_code",
+          label: { type: "custom", custom: "Promo code or first-purchase offer" },
+          type: "text",
+          optional: true,
+        },
       ],
+      custom_text: {
+        submit: {
+          message: "Promo codes do not change the checkout total automatically. After purchase, someone from our team will contact you to verify the purchase and first-time customer eligibility for either the $500 credit or 15% offer. Offers cannot be combined.",
+        },
+      },
       return_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
     });
     const payload = checkoutLeadPayload({ body, line, session, origin });
@@ -307,7 +303,7 @@ module.exports = async function handler(req, res) {
     sendJson(res, 200, {
       ok: true,
       clientSecret: session.client_secret,
-      leadWarning: "Checkout email notification sent without database lead recovery because the lead database is unavailable.",
+      leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
     });
   } catch (error) {
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });
