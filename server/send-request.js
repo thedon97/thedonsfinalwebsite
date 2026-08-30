@@ -78,6 +78,24 @@ async function processFallbackEmails(payload) {
   return { businessResult, customerResult };
 }
 
+function sendFallbackResult(res, result, databaseAvailable) {
+  const ok = Boolean(result.businessResult?.ok && result.customerResult?.ok);
+  sendJson(res, ok ? 200 : 202, {
+    ok,
+    message: ok
+      ? "Request email notifications sent."
+      : "Request email attempted, but one or more emails failed.",
+    emailConfigured: resendConfigured(),
+    databaseConfigured: databaseAvailable,
+    businessEmailStatus: result.businessResult?.ok ? "sent" : "failed",
+    customerEmailStatus: result.customerResult?.ok ? (result.customerResult?.skipped ? "skipped" : "sent") : "failed",
+    lastError: [
+      result.businessResult?.ok ? "" : result.businessResult?.message,
+      result.customerResult?.ok ? "" : result.customerResult?.message,
+    ].filter(Boolean).join(" | "),
+  });
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     sendJson(res, 405, { ok: false, message: "Method not allowed." });
@@ -88,25 +106,19 @@ module.exports = async function handler(req, res) {
     const payload = await readJson(req);
     if (!leadDatabaseConfigured()) {
       const result = await processFallbackEmails(payload);
-      const ok = result.businessResult?.ok && result.customerResult?.ok;
-      sendJson(res, ok ? 200 : 202, {
-        ok,
-        message: ok
-          ? "Request email notifications sent. Database lead recovery is not configured yet."
-          : "Request email attempted, but one or more emails failed.",
-        emailConfigured: resendConfigured(),
-        databaseConfigured: false,
-        businessEmailStatus: result.businessResult?.ok ? "sent" : "failed",
-        customerEmailStatus: result.customerResult?.ok ? (result.customerResult?.skipped ? "skipped" : "sent") : "failed",
-        lastError: [
-          result.businessResult?.ok ? "" : result.businessResult?.message,
-          result.customerResult?.ok ? "" : result.customerResult?.message,
-        ].filter(Boolean).join(" | "),
-      });
+      sendFallbackResult(res, result, false);
       return;
     }
 
-    const lead = await createLead(payload);
+    let lead;
+    try {
+      lead = await createLead(payload);
+    } catch (databaseError) {
+      console.warn("Lead database unavailable; sending inquiry emails without persistence.", databaseError.message);
+      const fallback = await processFallbackEmails(payload);
+      sendFallbackResult(res, fallback, false);
+      return;
+    }
     const result = await processLeadEmails(lead, payload);
     const ok = result.businessResult?.ok && result.customerResult?.ok;
     sendJson(res, ok ? 200 : 202, {
