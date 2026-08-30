@@ -2373,7 +2373,7 @@ const educationResources = [ {
     slug: "jewelry-financing",
     title: "Jewelry Financing",
     eyebrow: "Buying Options",
-    description: "Use code THEDON15 for 15% off the current order at secure Stripe Checkout and review eligible Affirm, Klarna, and Afterpay Buy Now, Pay Later options.",
+    description: "Enter THEDON15 or FIRST500 in the checkout offer field. The checkout total stays unchanged; someone from our team will contact you after purchase to verify the purchase and first-time customer eligibility.",
     image: "don-logo.jpg",
     keyword: "jewelry financing",
     productKeyword: "jewelry",
