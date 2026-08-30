@@ -3,6 +3,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const manualCatalog = require("../server/data/manual-products.json");
 const customerCatalog = require("../server/data/customer-products-20260819.json");
+const customCollectionCatalog = require("../server/data/custom-collection-products.json");
 
 const root = path.resolve(__dirname, "..");
 const source = path.join(root, "queen-aurelia-oval-marquise-ring.jpeg");
@@ -24,7 +25,9 @@ async function build() {
     sharp(source).resize({ width, withoutEnlargement: true }).avif({ quality: 52, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.avif`)),
   ]));
 
-  const images = [...new Set([...manualCatalog.items, ...customerCatalog.items].map((item) => item.image).filter(Boolean))]
+  const images = [...new Set([...manualCatalog.items, ...customerCatalog.items, ...customCollectionCatalog.items]
+    .map((item) => String(item.image || "").replace(/-catalog\.webp$/i, ".png"))
+    .filter(Boolean))]
     .filter((name) => fs.existsSync(path.join(root, name)));
   for (let index = 0; index < images.length; index += 8) {
     await Promise.all(images.slice(index, index + 8).map((name) => sharp(path.join(root, name))
