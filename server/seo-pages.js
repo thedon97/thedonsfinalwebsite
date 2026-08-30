@@ -11,6 +11,20 @@ const {fetchFeed: fetchFeed} = require("./_diamond-utils");
 const {databaseConfigured: databaseConfigured, getProductBySlug: getProductBySlug, listVisibleProducts: listVisibleProducts, productSlug: productSlug, seedManualProducts: seedManualProducts, seedSnapshotProducts: seedSnapshotProducts, slugify: slugify} = require("./_product-store");
 
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
+const CUSTOM_IMAGE_REPLACEMENTS = Object.freeze({
+    "/archangel-slaying-lucifer-concept.png": "/archangel-slaying-lucifer-concept-catalog.webp",
+    "/jesus-ring-by-the-don-jewelers.png": "/jesus-ring-by-the-don-jewelers-catalog.webp",
+    "/fear-no-evil-baby-angel-ring.png": "/fear-no-evil-baby-angel-ring-catalog.webp",
+    "/fear-no-evil-baby-angel-pendant.png": "/fear-no-evil-baby-angel-pendant-catalog.webp",
+    "/rose-gold-ruby-twin-dragon-ring.png": "/rose-gold-ruby-twin-dragon-ring-catalog.webp"
+});
+
+function optimizeCustomImageUrls(html) {
+    return Object.entries(CUSTOM_IMAGE_REPLACEMENTS).reduce(
+        (output, [source, optimized]) => output.replaceAll(source, optimized),
+        String(html || "")
+    );
+}
 
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
 
@@ -846,7 +860,7 @@ async function productPage(req, res, slug) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function diamondTitle(diamond) {
@@ -950,7 +964,7 @@ async function diamondPage(req, res, certNumber) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function pageMain(meta) {
@@ -1220,7 +1234,7 @@ function staticPage(req, res, pathname) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {
