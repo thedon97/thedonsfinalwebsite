@@ -4682,12 +4682,19 @@ async function requestPayloadFromForm(form, submitter = null) {
     const requestType = form.dataset.requestType || selectedFormValue(form, "requestType") || "General Contact Form";
     const productCategory = form.dataset.productCategory || selectedFormValue(form, "productCategory") || requestType;
     const submitIntent = submitter?.value || selectedFormValue(form, "requestIntent") || "";
+    const submission = {};
+    for (const [key, value] of new FormData(form).entries()) {
+        if (value instanceof File || !String(value || "").trim()) continue;
+        if (submission[key] === undefined) submission[key] = String(value).trim();
+        else submission[key] = [ submission[key], String(value).trim() ].flat();
+    }
     return {
+        type: requestType,
         source: location.href,
         customer: {
-            fullName: selectedFormValue(form, "fullName") || selectedFormValue(form, "name"),
+            fullName: selectedFormValue(form, "fullName") || selectedFormValue(form, "name") || selectedFormValue(form, "customerName"),
             email: selectedFormValue(form, "email"),
-            phone: selectedFormValue(form, "phone")
+            phone: selectedFormValue(form, "phone") || selectedFormValue(form, "phoneNumber")
         },
         jewelry: {
             requestType: requestType,
@@ -4728,6 +4735,7 @@ async function requestPayloadFromForm(form, submitter = null) {
             timeline: selectedFormValue(form, "timeline"),
             notes: [ selectedFormValue(form, "buildSummary") ? `Engagement ring build summary:\n${selectedFormValue(form, "buildSummary")}` : "", selectedFormValue(form, "builderUrl") ? `Saved builder URL: ${selectedFormValue(form, "builderUrl")}` : "", selectedFormValue(form, "renderReference") ? `Builder render reference: ${selectedFormValue(form, "renderReference")}` : "", selectedFormValue(form, "internalAdjustmentTotal") ? `Internal builder adjustment total: ${selectedFormValue(form, "internalAdjustmentTotal")}` : "", selectedFormValue(form, "priceEstimate") ? `Quote display: ${selectedFormValue(form, "priceEstimate")}` : "", selectedFormValue(form, "description"), selectedFormValue(form, "customDesignRequest") ? `Unique custom design request: ${selectedFormValue(form, "customDesignRequest")}` : "", selectedFormValue(form, "notes"), form.dataset.cartSummary ? `Cart summary: ${form.dataset.cartSummary}` : "", Object.keys(selections).length ? `Selected website options: ${Object.entries(selections).map(([key, value]) => `${key}: ${value}`).join(" | ")}` : "" ].filter(Boolean).join("\n")
         },
+        submission: submission,
         files: files
     };
 }
