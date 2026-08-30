@@ -211,7 +211,14 @@ module.exports = async function handler(req, res) {
     };
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
-    const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
+    let lead = null;
+    if (leadDatabaseConfigured()) {
+      try {
+        lead = await createLead(startingPayload);
+      } catch (error) {
+        console.warn("Lead database unavailable; continuing checkout with email fallback.", error.message);
+      }
+    }
     if (!process.env.STRIPE_SECRET_KEY) {
       const fallbackPayload = {
         ...startingPayload,
@@ -300,7 +307,7 @@ module.exports = async function handler(req, res) {
     sendJson(res, 200, {
       ok: true,
       clientSecret: session.client_secret,
-      leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
+      leadWarning: "Checkout email notification sent without database lead recovery because the lead database is unavailable.",
     });
   } catch (error) {
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });

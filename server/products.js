@@ -4,7 +4,11 @@ const { databaseConfigured, getProduct, listProducts, seedManualProducts, seedSn
 module.exports = async function handler(req, res) {
   try {
     if (databaseConfigured()) {
-      await Promise.all([seedManualProducts(), seedSnapshotProducts()]);
+      try {
+        await Promise.all([seedManualProducts(), seedSnapshotProducts()]);
+      } catch (error) {
+        console.warn("Product database seed skipped; serving the local catalog.", error.message);
+      }
     }
     const params = new URL(req.url, "http://localhost").searchParams;
     const id = params.get("id") || "";

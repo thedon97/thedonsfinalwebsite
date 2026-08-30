@@ -799,7 +799,12 @@ function productMain(product) {
 }
 
 async function prepareProducts() {
-    if (databaseConfigured()) await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
+    if (!databaseConfigured()) return;
+    try {
+        await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
+    } catch (error) {
+        console.warn("Product database seed skipped; serving the local catalog.", error.message);
+    }
 }
 
 async function productPage(req, res, slug) {
