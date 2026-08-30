@@ -46,7 +46,13 @@ function description(product) {
 }
 
 async function productsForFeed() {
-  if (databaseConfigured()) await Promise.all([seedManualProducts(), seedSnapshotProducts()]);
+  if (databaseConfigured()) {
+    try {
+      await Promise.all([seedManualProducts(), seedSnapshotProducts()]);
+    } catch (error) {
+      console.warn("Product database unavailable while refreshing the merchant feed; using the local catalog.", error.message);
+    }
+  }
   return (await listVisibleProducts()).filter((product) => product.available !== false && !product.hidden);
 }
 
