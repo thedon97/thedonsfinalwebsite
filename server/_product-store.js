@@ -395,8 +395,16 @@ async function getProductByExpandedSlug(slug) {
   if (direct) return direct;
   const products = await listVisibleProducts();
   return products
-    .filter((product) => clean.startsWith(`${productSlug(product)}-`))
-    .sort((a, b) => productSlug(b).length - productSlug(a).length)[0] || null;
+    .map((product) => {
+      const identifiers = [productSlug(product), slugify(product.id), slugify(product.externalId)]
+        .filter(Boolean);
+      const matchLength = Math.max(0, ...identifiers
+        .filter((identifier) => clean.startsWith(`${identifier}-`) || clean.endsWith(`-${identifier}`))
+        .map((identifier) => identifier.length));
+      return { product, matchLength };
+    })
+    .filter(({ matchLength }) => matchLength > 0)
+    .sort((a, b) => b.matchLength - a.matchLength)[0]?.product || null;
 }
 
 module.exports.getProductBySlug = getProductByExpandedSlug;
