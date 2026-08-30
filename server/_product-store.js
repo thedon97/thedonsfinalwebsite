@@ -78,6 +78,16 @@ function snapshotProducts() {
   }));
 }
 
+function localProducts() {
+  return [...manualProducts(), ...snapshotProducts()];
+}
+
+function localProductById(id) {
+  const clean = String(id || "").trim();
+  if (!clean) return null;
+  return applyRetailPricing(localProducts().find((item) => item.id === clean || item.externalId === clean) || null);
+}
+
 function rowToProduct(row) {
   return applyRetailPricing({
     id: row.id,
@@ -203,8 +213,8 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   const safePage = Math.max(1, Number(page) || 1);
   const safeLimit = Math.min(48, Math.max(1, Number(limit) || 24));
   const cleanSearch = String(search || "").trim().toLowerCase();
-  if (!databaseConfigured()) {
-    let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
+  const localResult = () => {
+    let items = localProducts().filter((item) => item.available !== false && !item.hidden);
     if (category) items = items.filter((item) => item.category === normalizeCategory(category));
     if (source) items = items.filter((item) => item.source === source);
     if (cleanSearch) items = items.filter((item) => productSearchText(item).includes(cleanSearch));
@@ -228,6 +238,9 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
       limit: safeLimit,
       fallback: true,
     };
+  };
+  if (!databaseConfigured()) {
+    return localResult();
   }
   const values = [];
   const where = ["available=TRUE", "hidden=FALSE"];
@@ -259,11 +272,17 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
     : "";
   const order = `${featuredOrder}${priceOrder}`;
   values.push(safeLimit, (safePage - 1) * safeLimit);
-  const result = await query(`
+  let result;
+  try {
+    result = await query(`
     SELECT *, COUNT(*) OVER()::int AS full_count
     FROM products WHERE ${where.join(" AND ")}
     ORDER BY ${order} LIMIT $${values.length - 1} OFFSET $${values.length}
   `, values);
+  } catch (error) {
+    console.warn("Product database unavailable; serving the local catalog.", error.message);
+    return localResult();
+  }
   return {
     items: result.rows.map(rowToProduct),
     total: result.rows[0]?.full_count || 0,
@@ -274,13 +293,16 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
 }
 
 async function listVisibleProducts({ source = "" } = {}) {
-  if (!databaseConfigured()) {
-    let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
+  const localResult = () => {
+    let items = localProducts().filter((item) => item.available !== false && !item.hidden);
     if (source) items = items.filter((item) => item.source === source);
     return items.map(applyRetailPricing).map((item) => ({
       ...item,
       updatedAt: item.updatedAt || item.metadata?.updatedAt || item.metadata?.lastUpdated || null,
     }));
+  };
+  if (!databaseConfigured()) {
+    return localResult();
   }
   const values = [];
   const where = ["available=TRUE", "hidden=FALSE"];
@@ -288,22 +310,36 @@ async function listVisibleProducts({ source = "" } = {}) {
     values.push(source);
     where.push(`source=$${values.length}`);
   }
-  const result = await query(`
+  let result;
+  try {
+    result = await query(`
     SELECT *
     FROM products
     WHERE ${where.join(" AND ")}
     ORDER BY updated_at DESC NULLS LAST, name ASC
   `, values);
+  } catch (error) {
+    console.warn("Product database unavailable; serving the local catalog.", error.message);
+    return localResult();
+  }
   return result.rows.map(rowToProduct);
 }
 
 async function getProduct(id) {
   const clean = String(id || "").trim();
   if (!clean) return null;
+  const local = localProductById(clean);
+  if (local) return local;
   if (!databaseConfigured()) {
-    return applyRetailPricing([...manualProducts(), ...snapshotProducts()].find((item) => item.id === clean || item.externalId === clean) || null);
+    return null;
   }
-  const result = await query("SELECT * FROM products WHERE (id=$1 OR external_id=$1) LIMIT 1", [clean]);
+  let result;
+  try {
+    result = await query("SELECT * FROM products WHERE (id=$1 OR external_id=$1) LIMIT 1", [clean]);
+  } catch (error) {
+    console.warn("Product database unavailable; serving the local catalog.", error.message);
+    return null;
+  }
   return result.rows[0] ? rowToProduct(result.rows[0]) : null;
 }
 
