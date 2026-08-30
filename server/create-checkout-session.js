@@ -306,6 +306,7 @@ module.exports = async function handler(req, res) {
       leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
     });
   } catch (error) {
+    console.error("Checkout session creation failed:", error?.message || error);
     sendJson(res, 400, { ok: false, message: error.message || "Checkout could not be started." });
   }
 };
