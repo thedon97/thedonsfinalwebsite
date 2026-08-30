@@ -11,20 +11,6 @@ const {fetchFeed: fetchFeed} = require("./_diamond-utils");
 const {databaseConfigured: databaseConfigured, getProductBySlug: getProductBySlug, listVisibleProducts: listVisibleProducts, productSlug: productSlug, seedManualProducts: seedManualProducts, seedSnapshotProducts: seedSnapshotProducts, slugify: slugify} = require("./_product-store");
 
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
-const CUSTOM_IMAGE_REPLACEMENTS = Object.freeze({
-    "/archangel-slaying-lucifer-concept.png": "/archangel-slaying-lucifer-concept-catalog.webp",
-    "/jesus-ring-by-the-don-jewelers.png": "/jesus-ring-by-the-don-jewelers-catalog.webp",
-    "/fear-no-evil-baby-angel-ring.png": "/fear-no-evil-baby-angel-ring-catalog.webp",
-    "/fear-no-evil-baby-angel-pendant.png": "/fear-no-evil-baby-angel-pendant-catalog.webp",
-    "/rose-gold-ruby-twin-dragon-ring.png": "/rose-gold-ruby-twin-dragon-ring-catalog.webp"
-});
-
-function optimizeCustomImageUrls(html) {
-    return Object.entries(CUSTOM_IMAGE_REPLACEMENTS).reduce(
-        (output, [source, optimized]) => output.replaceAll(source, optimized),
-        String(html || "")
-    );
-}
 
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
 
@@ -136,12 +122,6 @@ const staticPageMeta = {
         title: "Start Your Custom Ring Design | The Don Jewelers",
         description: "Request a custom engagement ring or custom ring design with stone shape, metal, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
         label: "Start Your Custom Ring Design",
-        priority: "0.95"
-    },
-    "/build-engagement-ring": {
-        title: "Build Your Engagement Ring | The Don Jewelers",
-        description: "Build a custom engagement ring with stone shape, metal, setting, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
-        label: "Build Your Engagement Ring",
         priority: "0.95"
     },
     "/ring-size-guide": {
@@ -819,12 +799,7 @@ function productMain(product) {
 }
 
 async function prepareProducts() {
-    if (!databaseConfigured()) return;
-    try {
-        await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
-    } catch (error) {
-        console.warn("Product database seed skipped; serving the local catalog.", error.message);
-    }
+    if (databaseConfigured()) await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
 }
 
 async function productPage(req, res, slug) {
@@ -866,7 +841,7 @@ async function productPage(req, res, slug) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(optimizeCustomImageUrls(page));
+    res.end(page);
 }
 
 function diamondTitle(diamond) {
@@ -970,11 +945,11 @@ async function diamondPage(req, res, certNumber) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(optimizeCustomImageUrls(page));
+    res.end(page);
 }
 
 function pageMain(meta) {
-    if (meta.path === "/") return homeMain();
+    if (meta.path === "/") return applyHomepageCustomPricing(homeMain());
     const ctas = moneyPageCtas(meta.path);
     const supporting = moneyPageSupport(meta);
     return ` <main> <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero"> <div> <p class="eyebrow">${escapeHtml(BUSINESS_NAME)}</p> <h1>${escapeHtml(meta.label)}</h1> <p>${escapeHtml(meta.description)}</p> ${meta.path === "/jewelry-financing" ? ` <div class="financing-provider-panel" aria-label="Eligible Buy Now, Pay Later providers"> <span class="promo-code-chip">15% OFF · THEDON15</span> <div class="bnpl-logos"><span class="bnpl-logo affirm-logo">affirm</span><span class="bnpl-logo klarna-logo">Klarna.</span><span class="bnpl-logo afterpay-logo">Afterpay</span></div> <p>Subject to provider eligibility and approval. Terms are displayed before acceptance in secure Stripe Checkout.</p> </div>` : ""} <div class="builder-actions"> ${ctas.map((cta, index) => `<a class="button ${index === 0 ? "button-gold" : index === 1 ? "button-dark" : "button-light"}" href="${escapeHtml(cta.href)}">${escapeHtml(cta.label)}</a>`).join("")} </div> </div> </section> <section class="trust-block-section" aria-label="${escapeHtml(meta.label)} trust and next steps"> ${supporting.map(item => `<article><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></article>`).join("")} </section> ${meta.path === "/blog" ? ` <section class="seo-guide-section" aria-label="Jewelry education articles"> <div class="section-heading"><p class="eyebrow">Original Buying Guides</p><h2>Plan the ring, diamond, and appointment with confidence</h2></div> <div class="trust-block-section"> ${seoArticles.map(article => `<article><img src="/${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy" decoding="async" width="640" height="420"><strong><a href="/blog/${escapeHtml(article.slug)}">${escapeHtml(article.title)}</a></strong><p>${escapeHtml(article.description)}</p></article>`).join("")} </div> </section>` : ""} ${meta.path === "/custom-jewelry-project-gallery" ? ` <section class="seo-guide-section" aria-label="Original custom jewelry projects"> <div class="section-heading"><p class="eyebrow">Owned Work & Design Inspiration</p><h2>Custom pieces built around personal specifications</h2></div> <div class="project-gallery-grid"> ${[ [ "queen-aurelia-oval-marquise-ring.jpeg", "Oval and marquise custom engagement ring" ], [ "custom-dejaun-diamond-name-pendant.jpeg", "Custom diamond name pendant" ], [ "custom-st-diamond-initial-pendant-front.jpeg", "Custom diamond initial pendant" ], [ "yellow-gold-diamond-cuban-link-bracelet.jpeg", "Yellow gold diamond Cuban link bracelet" ], [ "gemstone-leaf-wedding-band-set.jpeg", "Gemstone leaf wedding band set" ], [ "medusa-diamond-signet-ring.jpeg", "Custom diamond signet ring" ] ].map(([image, alt]) => `<figure><img src="/${image}" alt="${escapeHtml(alt)} by The Don Jewelers & Jewelry" loading="lazy" decoding="async" width="720" height="720"><figcaption>${escapeHtml(alt)}</figcaption></figure>`).join("")} </div> <div class="builder-actions"><a class="button button-gold" href="/custom-orders">Request a Custom Project</a><a class="button button-dark" href="/request/appointment">Book Appointment</a></div> </section>` : ""} ${Array.isArray(meta.sections) && meta.sections.length ? ` <section class="seo-guide-section" aria-label="${escapeHtml(meta.label)} guide"> <div class="section-heading"> <p class="eyebrow">Buying Guide</p> <h2>${escapeHtml(meta.label)}: what to compare before you buy</h2> </div> <div class="trust-block-section"> ${meta.sections.map(([title, body]) => `<article><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></article>`).join("")} </div> <div class="builder-actions"> <a class="button button-gold" href="/request/appointment">Book a Private Appointment</a> <a class="button button-dark" href="/start-custom-ring-design">Start Custom Ring Design</a> <a class="button button-light" href="/search?q=engagement%20ring">Search Rings & Diamonds</a> </div> </section> ` : ""} </main> `;
@@ -1068,6 +1043,22 @@ function pageJsonLd(meta, url) {
             logo: `${SITE_URL}/don-logo.jpg`
         }
     };
+}
+
+function applyHomepageCustomPricing(markup) {
+    const pricedProducts = [
+        [ "Archangel Slaying Lucifer Pendant", "archangel-slaying-lucifer-concept", "$7,600 in solid 14K gold" ],
+        [ "Jesus Ring by The Don Jewelers", "jesus-ring-by-the-don-jewelers", "From $3,200 in solid 14K gold" ],
+        [ "Fear No Evil Baby Angel Ring by The Don Jewelers", "fear-no-evil-baby-angel-ring", "$2,800 in solid 14K gold" ],
+        [ "Fear No Evil Baby Angel Pendant by The Don Jewelers", "fear-no-evil-baby-angel-pendant", "$4,400 in solid 14K gold" ],
+        [ "Rose Gold &amp; Ruby Twin Dragon Ring", "rose-gold-ruby-twin-dragon-ring", "$2,800 in solid 14K rose gold" ],
+    ];
+    for (const [name, slug, priceLabel] of pricedProducts) {
+        const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const cardPattern = new RegExp(`(<h3>${escapedName}</h3>)<p class="muted">Price available upon request</p>([\\s\\S]*?)(<a class="button button-gold"[^>]*>Request Price</a>)([\\s\\S]*?</article>)`);
+        markup = markup.replace(cardPattern, (_match, heading, between, _requestPrice, articleEnd) => `${heading}<p class="muted">${priceLabel}</p>${between}<a class="button button-gold" href="/products/${slug}">View &amp; Buy</a>${articleEnd}`);
+    }
+    return markup;
 }
 
 function homeMain() {
@@ -1240,7 +1231,7 @@ function staticPage(req, res, pathname) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(optimizeCustomImageUrls(page));
+    res.end(page);
 }
 
 function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {
