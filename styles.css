@@ -3252,3 +3252,15 @@ body.checkout-open { overflow: hidden; }
   .financing-announcement::before,
   .financing-pulse { animation: none; }
 }
+/* Keep live diamond inventory inside narrow mobile viewports. */
+.diamond-inventory-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.diamond-inventory-card .builder-actions > *,
+.diamond-media-links > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
