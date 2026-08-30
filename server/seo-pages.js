@@ -138,6 +138,12 @@ const staticPageMeta = {
         label: "Start Your Custom Ring Design",
         priority: "0.95"
     },
+    "/build-engagement-ring": {
+        title: "Build Your Engagement Ring | The Don Jewelers",
+        description: "Build a custom engagement ring with stone shape, metal, setting, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
+        label: "Build Your Engagement Ring",
+        priority: "0.95"
+    },
     "/ring-size-guide": {
         title: "Ring Size Guide | Engagement Ring Sizing | The Don Jewelers",
         description: "Use The Don Jewelers ring size guide to plan engagement ring sizing, comfort fit, resizing questions, measuring tips, and final approval before custom ring production.",
