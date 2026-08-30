@@ -1,4 +1,29 @@
-const money = new Intl.NumberFormat("en-US", {
+const uploadedMensBandProducts
+    const customCollectionPricing = {
+    "archangel-slaying-lucifer-concept": { price: 7600, estimate: 7600, priceLabel: "$7,600 in solid 14K gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 7600 ], [ "Solid 18K Yellow Gold", 7600 ], [ "Solid 24K Yellow Gold", 7600 ] ] ] ] },
+    "fear-no-evil-baby-angel-pendant": { price: 4400, estimate: 4400, priceLabel: "$4,400 in solid 14K gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 4400 ] ] ] ] },
+    "fear-no-evil-baby-angel-ring": { price: 2800, estimate: 2800, priceLabel: "$2,800 in solid 14K gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 2800 ] ] ] ] },
+    "jesus-ring-by-the-don-jewelers": { price: 3200, estimate: 3200, priceLabel: "From $3,200 in solid 14K gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 3200 ], [ "Solid 18K Yellow Gold", 4600 ] ] ] ] },
+    "rose-gold-ruby-twin-dragon-ring": { price: 2800, estimate: 2800, priceLabel: "$2,800 in solid 14K rose gold", fields: [ [ "Metal", [ [ "Solid 14K Rose Gold", 2800 ] ] ] ] },
+    "rose-gold-sapphire-twin-dragon-ring": { price: 2800, estimate: 2800, priceLabel: "$2,800 in solid 14K rose gold", fields: [ [ "Metal", [ [ "Solid 14K Rose Gold", 2800 ] ] ] ] },
+    "yellow-gold-ruby-twin-dragon-ring": { price: 2800, estimate: 2800, priceLabel: "$2,800 in solid 14K yellow gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 2800 ] ] ] ] },
+    "yellow-gold-ruby-twin-dragon-pendant": { price: 4800, estimate: 4800, priceLabel: "$4,800 in solid 14K yellow gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 4800 ] ] ] ] },
+    "yellow-gold-sapphire-twin-dragon-pendant": { price: 4800, estimate: 4800, priceLabel: "$4,800 in solid 14K yellow gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 4800 ] ] ] ] },
+    "yellow-gold-sapphire-twin-dragon-ring": { price: 2800, estimate: 2800, priceLabel: "$2,800 in solid 14K yellow gold", fields: [ [ "Metal", [ [ "Solid 14K Yellow Gold", 2800 ] ] ] ] }
+};
+
+customCollectionProducts.forEach(product => {
+    const pricing = customCollectionPricing[product.id];
+    if (!pricing) return;
+    const originalFields = product.fields.filter(([label]) => ![ "Metal", "Production", "Specification Note", "Price Notice" ].includes(label));
+    Object.assign(product, pricing, {
+        buttons: [ "Add to Cart", "Request Exact Weight & Specifications", "Custom Order Inquiry", "Financing Available" ],
+        fields: [ ...pricing.fields, [ "Production", [ "Made to Order" ] ], ...originalFields, [ "Specification Note", [ "Message for exact specifications and more information before purchase" ] ], [ "Price Notice", [ "Prices are subject to change; the team will confirm final specifications and current pricing" ] ] ],
+        notice: "Prices are subject to change. Message us for exact metal weight, dimensions, stone specifications, and more information. A team member will contact you to confirm the purchase and final specifications before production."
+    });
+});
+
+const uploadedMensBandProductsconst money = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0
