@@ -77,8 +77,19 @@ function requestSubject(payload) {
   return [type, product, customer].filter(Boolean).join(" - ").slice(0, 180);
 }
 
+function normalizedCustomer(payload) {
+  const submitted = payload.submission || payload.details || {};
+  const customer = payload.customer || {};
+  return {
+    fullName: customer.fullName || customer.name || submitted.fullName || submitted.name || submitted.customerName,
+    email: customer.email || submitted.email,
+    phone: customer.phone || customer.phoneNumber || submitted.phone || submitted.phoneNumber,
+  };
+}
+
 function requestText(payload) {
   const fileNames = (payload.files || []).map((file) => `${clean(file.name)} (${Math.round(Number(file.size || 0) / 1024)} KB)`).join(", ");
+  const customer = normalizedCustomer(payload);
   return [
     "New website request for The Don Jewelers & Jewelry",
     "",
@@ -87,10 +98,13 @@ function requestText(payload) {
     `Source: ${clean(payload.source)}`,
     "",
     "Customer",
-    formatLines(payload.customer) || "Not provided",
+    formatLines(customer) || "Not provided",
     "",
     "Jewelry / Order Details",
     formatLines(payload.jewelry) || "Not provided",
+    "",
+    "Complete Form Submission",
+    formatLines(payload.submission || payload.details) || "No additional fields",
     "",
     payload.checkout ? ["Checkout / Stripe", formatLines(payload.checkout)].join("\n") : "",
     fileNames ? ["", "Inspiration images attached", fileNames].join("\n") : "",
@@ -100,6 +114,7 @@ function requestText(payload) {
 function requestHtml(payload) {
   const submitted = new Date().toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "long", timeStyle: "short" });
   const files = payload.files || [];
+  const customer = normalizedCustomer(payload);
   return `
     <div style="margin:0;padding:24px;background:#f4efe6;font-family:Arial,sans-serif;color:#18140f">
       <div style="max-width:720px;margin:0 auto;background:#fff;border:1px solid #ded4c4">
@@ -110,8 +125,9 @@ function requestHtml(payload) {
         <div style="padding:26px">
           <p style="margin:0 0 6px;font-size:18px;font-weight:700">${htmlEscape(payload.type || payload.jewelry?.requestType || "Website Request")}</p>
           <p style="margin:0 0 24px;color:#766b5a;font-size:13px">Submitted ${htmlEscape(submitted)}${payload.source ? ` - <a href="${htmlEscape(payload.source)}" style="color:#8a6418">View source page</a>` : ""}</p>
-          ${emailSection("Customer Information", detailRows(payload.customer))}
+          ${emailSection("Customer Information", detailRows(customer))}
           ${emailSection("Jewelry & Order Details", detailRows(payload.jewelry))}
+          ${emailSection("Complete Form Submission", detailRows(payload.submission || payload.details))}
           ${payload.checkout ? emailSection("Checkout Information", detailRows(payload.checkout)) : ""}
           ${files.length ? `
             <div style="padding:16px;border:1px solid #ded4c4;background:#fbf8f2">
@@ -211,9 +227,10 @@ async function sendResendEmail({ to, subject, text, html, replyTo, attachments =
 }
 
 async function sendBusinessEmail(payload) {
+  const customer = normalizedCustomer(payload);
   return sendResendEmail({
     to: businessEmail(),
-    replyTo: clean(payload.customer?.email),
+    replyTo: clean(customer.email),
     subject: requestSubject(payload),
     text: requestText(payload),
     html: requestHtml(payload),
