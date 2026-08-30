@@ -211,7 +211,14 @@ module.exports = async function handler(req, res) {
     };
     const origin = process.env.SITE_URL || `https://${req.headers?.host || "www.thedonjewelersandjewelrynyc.com"}`;
     const startingPayload = checkoutLeadPayload({ body, line, session: null, origin });
-    const lead = leadDatabaseConfigured() ? await createLead(startingPayload) : null;
+    let lead = null;
+    if (leadDatabaseConfigured()) {
+      try {
+        lead = await createLead(startingPayload);
+      } catch (leadError) {
+        console.warn("Checkout lead creation failed; continuing without database lead recovery:", leadError?.message || leadError);
+      }
+    }
     if (!process.env.STRIPE_SECRET_KEY) {
       const fallbackPayload = {
         ...startingPayload,
@@ -291,19 +298,29 @@ module.exports = async function handler(req, res) {
     });
     const payload = checkoutLeadPayload({ body, line, session, origin });
     if (lead) {
-      const updatedLead = await updateLeadCheckout(lead.id, payload.checkout, {
-        checkout: payload.checkout,
-        checkoutSessionCreatedAt: new Date().toISOString(),
-      });
-      await processLeadEmails(updatedLead, payload);
-      sendJson(res, 200, { ok: true, clientSecret: session.client_secret, leadId: updatedLead.publicId });
-      return;
+      try {
+        const updatedLead = await updateLeadCheckout(lead.id, payload.checkout, {
+          checkout: payload.checkout,
+          checkoutSessionCreatedAt: new Date().toISOString(),
+        });
+        await processLeadEmails(updatedLead, payload);
+        sendJson(res, 200, { ok: true, clientSecret: session.client_secret, leadId: updatedLead.publicId });
+        return;
+      } catch (leadError) {
+        console.warn("Checkout lead update failed; returning Stripe session without database recovery:", leadError?.message || leadError);
+      }
     }
-    await processFallbackEmails(payload);
+    let notificationWarning = "";
+    try {
+      await processFallbackEmails(payload);
+    } catch (notificationError) {
+      notificationWarning = " Checkout notification could not be sent automatically; Stripe still collected the customer and order details.";
+      console.warn("Checkout fallback notification failed; returning Stripe session:", notificationError?.message || notificationError);
+    }
     sendJson(res, 200, {
       ok: true,
       clientSecret: session.client_secret,
-      leadWarning: "Checkout email notification sent without database lead recovery because DATABASE_URL is not configured.",
+      leadWarning: `Checkout continued without database lead recovery.${notificationWarning}`,
     });
   } catch (error) {
     console.error("Checkout session creation failed:", error?.message || error);
