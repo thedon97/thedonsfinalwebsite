@@ -61,6 +61,7 @@ function eventPayload(event, session) {
       notes: [
         `Stripe session ${session.id} status ${session.payment_status || session.status || statusByType[event.type]}.`,
         selectedOptions ? `Selected website options: ${selectedOptions}` : "",
+        customFields.offer_code ? `Customer-entered offer code: ${customFields.offer_code}. Team verification required before any credit or discount is issued.` : "",
       ].filter(Boolean).join("\n"),
     },
     checkout: {
@@ -135,24 +136,7 @@ module.exports = async function handler(req, res) {
       return;
     }
     await updateStripeStatus(session.id, event.type, { eventId: event.id, eventType: event.type }).catch(() => null);
-    let lead;
-    try {
-      lead = await createLead(payload);
-    } catch (databaseError) {
-      console.warn("Lead database unavailable during Stripe webhook; sending emails without persistence.", databaseError.message);
-      const fallback = await processFallbackEmails(payload);
-      const ok = Boolean(fallback.businessResult?.ok && fallback.customerResult?.ok);
-      sendJson(res, 200, {
-        ok,
-        webhookAccepted: true,
-        databaseConfigured: false,
-        businessEmailStatus: fallback.businessResult?.ok ? "sent" : "failed",
-        customerEmailStatus: fallback.customerResult?.ok
-          ? (fallback.customerResult?.skipped ? "skipped" : "sent")
-          : "failed",
-      });
-      return;
-    }
+    const lead = await createLead(payload);
     let result;
     try {
       result = await processLeadEmails(lead, payload);
