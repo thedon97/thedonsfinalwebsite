@@ -26,14 +26,23 @@ async function build() {
   ]));
 
   const images = [...new Set([...manualCatalog.items, ...customerCatalog.items, ...customCollectionCatalog.items]
-    .map((item) => String(item.image || "").replace(/-catalog\.webp$/i, ".png"))
+    .flatMap((item) => {
+      const image = String(item.image || "");
+      if (!/-catalog\.webp$/i.test(image)) return [image];
+      const stem = image.replace(/-catalog\.webp$/i, "");
+      return [`${stem}.png`, `${stem}.jpeg`, `${stem}.jpg`];
+    })
     .filter(Boolean))]
     .filter((name) => fs.existsSync(path.join(root, name)));
   for (let index = 0; index < images.length; index += 8) {
-    await Promise.all(images.slice(index, index + 8).map((name) => sharp(path.join(root, name))
-      .resize({ width: 720, height: 720, fit: "inside", withoutEnlargement: true })
-      .webp({ quality: 74, effort: 4 })
-      .toFile(path.join(root, path.dirname(name), catalogOutputName(path.basename(name))))));
+    await Promise.all(images.slice(index, index + 8).map((name) => {
+      const floralRender = /^IMG_97/i.test(path.basename(name));
+      const size = floralRender ? 1200 : 720;
+      return sharp(path.join(root, name))
+        .resize({ width: size, height: size, fit: "inside", withoutEnlargement: true })
+        .webp({ quality: floralRender ? 82 : 74, effort: 4 })
+        .toFile(path.join(root, path.dirname(name), catalogOutputName(path.basename(name))));
+    }));
   }
   console.log(`Generated the customer catalog, ${widths.length * 2} responsive hero images, and ${images.length} catalog images.`);
 }
