@@ -2612,8 +2612,12 @@ function productSlug(productOrId) {
     };
     const id = slugify(product.externalId || product.stockNumber || product.id || "");
     const name = slugify(productName(product) || product.name || "jewelry");
+    const normalizedName = slugify(String(productName(product) || product.name || "jewelry")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, ""));
     if (!name) return id;
     if (!id || id === name) return name;
+    if (id === normalizedName) return id;
     return `${name}-${id}`;
 }
 
