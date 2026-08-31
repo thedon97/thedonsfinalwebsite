@@ -2,6 +2,8 @@ const { Pool } = require("pg");
 
 let pool;
 let schemaPromise;
+let circuitOpenUntil = 0;
+const DATABASE_RETRY_DELAY_MS = 5 * 60 * 1000;
 
 function databaseConfigured() {
   return Boolean(process.env.DATABASE_URL);
@@ -15,7 +17,7 @@ function getPool() {
       ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
       max: 3,
       idleTimeoutMillis: 10000,
-      connectionTimeoutMillis: 8000,
+      connectionTimeoutMillis: 2500,
     });
   }
   return pool;
@@ -83,8 +85,18 @@ async function ensureSchema() {
 }
 
 async function query(text, values = []) {
-  await ensureSchema();
-  return getPool().query(text, values);
+  if (Date.now() < circuitOpenUntil) {
+    throw new Error("Database temporarily bypassed after an availability or quota failure.");
+  }
+  try {
+    await ensureSchema();
+    const result = await getPool().query(text, values);
+    circuitOpenUntil = 0;
+    return result;
+  } catch (error) {
+    circuitOpenUntil = Date.now() + DATABASE_RETRY_DELAY_MS;
+    throw error;
+  }
 }
 
 module.exports = { databaseConfigured, ensureSchema, getPool, query };

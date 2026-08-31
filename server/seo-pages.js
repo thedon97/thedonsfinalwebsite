@@ -11,6 +11,35 @@ const {fetchFeed: fetchFeed} = require("./_diamond-utils");
 const {databaseConfigured: databaseConfigured, getProductBySlug: getProductBySlug, listVisibleProducts: listVisibleProducts, productSlug: productSlug, seedManualProducts: seedManualProducts, seedSnapshotProducts: seedSnapshotProducts, slugify: slugify} = require("./_product-store");
 
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
+const CUSTOM_IMAGE_REPLACEMENTS = Object.freeze({
+    "/archangel-slaying-lucifer-concept.png": "/archangel-slaying-lucifer-concept-catalog.webp",
+    "/jesus-ring-by-the-don-jewelers.png": "/jesus-ring-by-the-don-jewelers-catalog.webp",
+    "/fear-no-evil-baby-angel-ring.png": "/fear-no-evil-baby-angel-ring-catalog.webp",
+    "/fear-no-evil-baby-angel-pendant.png": "/fear-no-evil-baby-angel-pendant-catalog.webp",
+    "/rose-gold-ruby-twin-dragon-ring.png": "/rose-gold-ruby-twin-dragon-ring-catalog.webp"
+});
+
+const HOME_FEATURED_FLORALS = Object.freeze([
+    ["the-danya-eternal-rose-engagement-ring", "The Danya Eternal Rose Engagement Ring", "/IMG_9728-catalog.webp"],
+    ["the-donya-rose-bloom-earrings", "The Donya Rosé Bloom Earrings", "/IMG_9727-catalog.webp"],
+    ["the-donya-midnight-bloom-earrings", "The Donya Midnight Bloom Earrings", "/IMG_9726-catalog.webp"]
+]);
+
+function homepageFloralCollection() {
+    const cards = HOME_FEATURED_FLORALS.map(([slug, name, image]) => {
+        const request = `/request/product?product=${encodeURIComponent(name)}&category=${encodeURIComponent("Custom Jewelry & Collections")}&intent=custom-quote`;
+        return `<article class="product-card"><a class="product-image-link" href="/products/${slug}"><img src="${image}" alt="${escapeHtml(name)} on a black luxury background" loading="lazy" decoding="async" width="1200" height="1200"></a><div class="product-card-body"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h3>${escapeHtml(name)}</h3><p class="muted">Pricing Available Upon Request</p><div class="card-actions"><a class="button button-dark" href="/products/${slug}">View Details</a><a class="button button-gold" href="${request}">Request Pricing</a></div></div></article>`;
+    }).join("");
+    return `<section class="section custom-collection-home" aria-labelledby="custom-collection-home-title"><div class="section-heading"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h2 id="custom-collection-home-title">The Donya Floral Collection</h2><p>Explore sculptural floral designs created for a private quote and made-to-order consultation.</p></div><div class="product-grid">${cards}</div><div class="hero-actions collection-more-action"><a class="button button-gold" href="/category/custom-jewelry">View All Custom Jewelry</a><a class="button button-light" href="/start-custom-ring-design">Start a Custom Design</a></div></section>`;
+}
+
+function optimizeCustomImageUrls(html) {
+    const optimized = Object.entries(CUSTOM_IMAGE_REPLACEMENTS).reduce(
+        (output, [source, optimized]) => output.replaceAll(source, optimized),
+        String(html || "")
+    );
+    return optimized.replace(/<section class="section custom-collection-home"[\s\S]*?<\/section>/i, homepageFloralCollection());
+}
 
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
 
@@ -88,7 +117,8 @@ function categorySlug(category = "") {
         "Women's Rings": "womens-rings",
         "Men's Earrings": "mens-earrings",
         "Women's Earrings": "womens-earrings",
-        "Custom Jewelry": "custom-jewelry"
+        "Custom Jewelry": "custom-jewelry",
+        "Custom Jewelry & Collections": "custom-jewelry"
     };
     return map[normalized] || slugify(normalized || "products");
 }
@@ -122,6 +152,12 @@ const staticPageMeta = {
         title: "Start Your Custom Ring Design | The Don Jewelers",
         description: "Request a custom engagement ring or custom ring design with stone shape, metal, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
         label: "Start Your Custom Ring Design",
+        priority: "0.95"
+    },
+    "/build-engagement-ring": {
+        title: "Build Your Engagement Ring | The Don Jewelers",
+        description: "Build a custom engagement ring with stone shape, metal, setting, ring size, budget, timeline, inspiration photos, and private jeweler follow-up.",
+        label: "Build Your Engagement Ring",
         priority: "0.95"
     },
     "/ring-size-guide": {
@@ -530,6 +566,7 @@ const staticPageMeta = {
 };
 
 const categoryPageMeta = {
+    "custom-jewelry": [ "Custom Jewelry & Collections | The Don Jewelers", "Explore made-to-order custom jewelry, signature collections, engagement rings, earrings, pendants, and one-of-one designs from The Don Jewelers.", "Custom Jewelry & Collections", "0.9" ],
     "engagement-rings": [ "Engagement Rings | Custom Diamond Engagement Rings | The Don Jewelers", "Shop engagement rings and custom diamond engagement rings with lab grown or natural diamond options from The Don Jewelers.", "Engagement Rings", "0.9" ],
     "cvd-lab-grown-diamond-jewelry": [ "CVD Lab-Grown Diamond Jewelry | The Don Jewelers", "Shop CVD lab-grown diamond jewelry including engagement rings, earrings, pendants, bracelets, and custom designs from The Don Jewelers.", "CVD Lab-Grown Diamond Jewelry", "0.88" ],
     "mens-earrings": [ "Men's Diamond Earrings | The Don Jewelers", "Shop men's diamond earrings, lab-grown diamond studs, and custom earring designs from The Don Jewelers.", "Men's Earrings", "0.82" ],
@@ -610,11 +647,16 @@ function specEntries(product) {
 }
 
 function productAlt(product) {
+    if (String(product?.alt || "").trim()) return String(product.alt).trim();
     const values = Object.fromEntries(specEntries(product));
     return [ product?.name, values["Carat Weight"] && String(values["Carat Weight"]).replace(/ CTW$/i, " carat"), values.Shape, /lab|cvd/i.test(values["Diamond Type"] || "") ? "lab-grown diamond" : "diamond jewelry", values.Color && `${values.Color} color`, values.Clarity && `${values.Clarity} clarity`, values["Stock Number"] && `stock ${values["Stock Number"]}` ].filter(Boolean).join(" ") || product?.name || "The Don Jewelers diamond jewelry";
 }
 
 function productDescription(product) {
+    const visibleDescription = String(product?.description || "").trim();
+    if (visibleDescription) {
+        return `${visibleDescription} Pricing Available Upon Request from ${BUSINESS_NAME}.`.replace(/\s+/g, " ").slice(0, 250);
+    }
     const specs = Object.fromEntries(specEntries(product));
     const details = [ specs["Carat Weight"], specs.Shape, specs["Diamond Type"], specs.Color && `${specs.Color} color`, specs.Clarity && `${specs.Clarity} clarity`, specs["Stock Number"] && `stock ${specs["Stock Number"]}` ].filter(Boolean);
     const suffix = details.length ? `, ${details.join(", ")}` : "";
@@ -795,11 +837,17 @@ function productMain(product) {
     const image = productImage(product);
     const specs = specEntries(product);
     const gallery = Array.isArray(product.gallery) ? product.gallery.map(absoluteUrl).filter(Boolean).slice(0, 3) : [];
-    return ` <main> <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero"> <div class="product-media-stack"> <img src="${escapeHtml(image)}" alt="${escapeHtml(productAlt(product))}" loading="eager"> ${gallery.map((url, index) => `<img src="${escapeHtml(url)}" alt="${escapeHtml(`${product.name} alternate view ${index + 1}`)}" loading="lazy">`).join("")} </div> <div> <p class="eyebrow">${escapeHtml(product.category || "Fine Jewelry")}</p> <h1>${escapeHtml(product.name)}</h1> <p class="product-detail-price">${price ? escapeHtml(money(price)) : "Request Pricing"}</p> <p>${escapeHtml(productSeoCopy(product))}</p> <dl class="summary-list product-spec-list"> ${specs.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")} </dl> <div class="builder-actions"> ${price && product.available !== false ? `<button class="button button-gold" type="button" data-buy-product="${escapeHtml(product.id)}">Buy Now / Checkout with Stripe - ${escapeHtml(money(price))}</button>` : `<a class="button button-gold" href="/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Product Inquiry")}">Request Pricing</a>`} <a class="button button-dark" href="/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Product Inquiry")}">Ask a Question</a> <a class="button button-light" href="/request/appointment">Book Appointment</a> </div> </div> </section> <section class="trust-block-section" aria-label="Product purchase trust"> <article><strong>Private quote review</strong><p>Every product inquiry can be reviewed for exact diamond weight, gold weight, size, availability, and customization before purchase.</p></article> <article><strong>Secure checkout support</strong><p>Checkout-start and payment events are logged and emailed so customer purchase attempts do not disappear.</p></article> <article><strong>Insured shipping</strong><p>Jewelry orders can be handled with secure payment review, insured shipping, and appointment-based pickup or consultation where applicable.</p></article> </section> </main> `;
+    const requestBase = `/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Product Inquiry")}`;
+    return ` <main> <nav class="product-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="${categoryPath(product.category)}">${escapeHtml(product.category || "Products")}</a><span aria-hidden="true">/</span><span>${escapeHtml(product.name)}</span></nav> <section class="product-detail-hero catalog-jewelry-detail supplier-product-hero"> <div class="product-media-stack"> <img src="${escapeHtml(image)}" alt="${escapeHtml(productAlt(product))}" loading="eager" decoding="async"> ${gallery.map((url, index) => `<img src="${escapeHtml(url)}" alt="${escapeHtml(`${product.name} alternate view ${index + 1}`)}" loading="lazy">`).join("")} </div> <div> <p class="eyebrow">${escapeHtml(product.category || "Fine Jewelry")}</p> <h1>${escapeHtml(product.name)}</h1> <p class="product-detail-price">${price ? escapeHtml(money(price)) : escapeHtml(product.priceLabel || "Pricing Available Upon Request")}</p> <p>${escapeHtml(productSeoCopy(product))}</p> <dl class="summary-list product-spec-list"> ${specs.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")} </dl> <div class="builder-actions"> ${price && product.available !== false ? `<button class="button button-gold" type="button" data-buy-product="${escapeHtml(product.id)}">Buy Now / Checkout with Stripe - ${escapeHtml(money(price))}</button>` : `<a class="button button-gold" href="${requestBase}&intent=custom-quote">Request Pricing</a><a class="button button-dark" href="${requestBase}&intent=start-order">Start Your Order</a>`} <a class="button button-light" href="/jewelry-financing">Explore Financing</a> </div> </div> </section> <section class="trust-block-section" aria-label="Product purchase trust"> <article><strong>Private quote review</strong><p>Every product inquiry can be reviewed for exact diamond weight, gold weight, size, availability, and customization before purchase.</p></article> <article><strong>Secure checkout support</strong><p>Checkout-start and payment events are logged and emailed so customer purchase attempts do not disappear.</p></article> <article><strong>Insured shipping</strong><p>Jewelry orders can be handled with secure payment review, insured shipping, and appointment-based pickup or consultation where applicable.</p></article> </section> </main> `;
 }
 
 async function prepareProducts() {
-    if (databaseConfigured()) await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
+    if (!databaseConfigured()) return;
+    try {
+        await Promise.all([ seedManualProducts(), seedSnapshotProducts() ]);
+    } catch (error) {
+        console.warn("Product database seed skipped; serving the local catalog.", error.message);
+    }
 }
 
 async function productPage(req, res, slug) {
@@ -841,7 +889,7 @@ async function productPage(req, res, slug) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function diamondTitle(diamond) {
@@ -945,7 +993,7 @@ async function diamondPage(req, res, certNumber) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function pageMain(meta) {
@@ -1231,7 +1279,7 @@ function staticPage(req, res, pathname) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {

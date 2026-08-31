@@ -272,7 +272,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "archangel-slaying-lucifer-concept.png",
+    image: "archangel-slaying-lucifer-concept-catalog.webp",
     alt: "Archangel and Lucifer sculptural pendant concept shown from front, side, and back",
     lede: "Archangel and Lucifer sculptural pendant concept shown from front, side, and back. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Archangel Slaying Lucifer Pendant Consultation",
@@ -288,7 +288,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "fear-no-evil-baby-angel-pendant.png",
+    image: "fear-no-evil-baby-angel-pendant-catalog.webp",
     alt: "Fear No Evil baby angel pendant concept shown from front and back",
     lede: "Fear No Evil baby angel pendant concept shown from front and back. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Fear No Evil Baby Angel Pendant Consultation",
@@ -304,7 +304,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "fear-no-evil-baby-angel-ring.png",
+    image: "fear-no-evil-baby-angel-ring-catalog.webp",
     alt: "Fear No Evil baby angel statement ring concept shown from front and side",
     lede: "Fear No Evil baby angel statement ring concept shown from front and side. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Fear No Evil Baby Angel Ring Consultation",
@@ -320,7 +320,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "jesus-ring-by-the-don-jewelers.png",
+    image: "jesus-ring-by-the-don-jewelers-catalog.webp",
     alt: "Detailed Jesus portrait ring concept with cathedral-inspired side architecture",
     lede: "Detailed Jesus portrait ring concept with cathedral-inspired side architecture. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Jesus Ring by The Don Jewelers Consultation",
@@ -336,7 +336,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "rose-gold-ruby-twin-dragon-ring.png",
+    image: "rose-gold-ruby-twin-dragon-ring-catalog.webp",
     alt: "Twin dragon ring concept in rose gold with ruby and diamond accents",
     lede: "Twin dragon ring concept in rose gold with ruby and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Rose Gold & Ruby Twin Dragon Ring Consultation",
@@ -352,7 +352,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "rose-gold-sapphire-twin-dragon-ring.png",
+    image: "rose-gold-sapphire-twin-dragon-ring-catalog.webp",
     alt: "Twin dragon ring concept in rose gold with sapphire and diamond accents",
     lede: "Twin dragon ring concept in rose gold with sapphire and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Rose Gold & Sapphire Twin Dragon Ring Consultation",
@@ -368,7 +368,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "yellow-gold-ruby-twin-dragon-ring.png",
+    image: "yellow-gold-ruby-twin-dragon-ring-catalog.webp",
     alt: "Twin dragon ring concept in yellow gold with ruby and diamond accents",
     lede: "Twin dragon ring concept in yellow gold with ruby and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Yellow Gold & Ruby Twin Dragon Ring Consultation",
@@ -384,7 +384,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "yellow-gold-ruby-twin-dragon-pendant.png",
+    image: "yellow-gold-ruby-twin-dragon-pendant-catalog.webp",
     alt: "Twin dragon pendant concept in yellow gold with ruby and diamond accents",
     lede: "Twin dragon pendant concept in yellow gold with ruby and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Yellow Gold & Ruby Twin Dragon Pendant Consultation",
@@ -400,7 +400,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "yellow-gold-sapphire-twin-dragon-pendant.png",
+    image: "yellow-gold-sapphire-twin-dragon-pendant-catalog.webp",
     alt: "Twin dragon pendant concept in yellow gold with sapphire and diamond accents",
     lede: "Twin dragon pendant concept in yellow gold with sapphire and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Yellow Gold & Sapphire Twin Dragon Pendant Consultation",
@@ -416,7 +416,7 @@ const customCollectionProducts = [ {
     price: "Request Pricing",
     estimate: null,
     priceLabel: "Price available upon request",
-    image: "yellow-gold-sapphire-twin-dragon-ring.png",
+    image: "yellow-gold-sapphire-twin-dragon-ring-catalog.webp",
     alt: "Twin dragon ring concept in yellow gold with sapphire and diamond accents",
     lede: "Twin dragon ring concept in yellow gold with sapphire and diamond accents. Final metal weight, stone specifications, dimensions, and pricing are confirmed during consultation.",
     cta: "Request Yellow Gold & Sapphire Twin Dragon Ring Consultation",
@@ -741,7 +741,112 @@ const uploadedRingProducts = [ {
     fields: ringQuoteFields("Emerald", [ "Halo setting", "Pave band" ])
 } ];
 
-const products = [ ...customCollectionProducts, ...ankletProducts, ...uploadedMensBandProducts, ...uploadedRingProducts, {
+const donyaFloralCollectionProducts = [
+    {
+        id: "the-donya-fleur-royale-engagement-ring",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Engagement Rings", "Women's Rings", "Made to Order", "Signature Collection" ],
+        name: "The Donya Fleur Royale Engagement Ring",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9729-catalog.webp",
+        alt: "The Donya Fleur Royale yellow-gold engagement ring with an elongated cushion-cut white center diamond and diamond-set leaf shoulders",
+        lede: "A yellow-gold cathedral engagement ring centered by an elongated cushion-cut white diamond. Sculpted leaf forms sweep through the raised shoulders, with fine white-diamond pavé accenting the botanical details.",
+        cta: "Start Your Order",
+        badges: [ "Engagement Ring", "Botanical Cathedral", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Engagement Ring" ] ], [ "Visible Design", [ "Elongated cushion-cut white center diamond, yellow-gold cathedral setting, and diamond-set leaf shoulders" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, ring size, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, ring size, production details, and pricing are confirmed before the order begins."
+    },
+    {
+        id: "the-danya-eternal-rose-engagement-ring",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Engagement Rings", "Women's Rings", "Made to Order", "Signature Collection" ],
+        name: "The Danya Eternal Rose Engagement Ring",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9728-catalog.webp",
+        alt: "The Danya Eternal Rose rose-gold engagement ring with a round white center diamond and white-diamond rose petals",
+        lede: "A rose-gold cathedral engagement ring shaped as a layered bloom around a round white center diamond. Polished petal borders frame delicate white-diamond pavé, while open shoulders lift the floral setting above a smooth shank.",
+        cta: "Start Your Order",
+        badges: [ "Engagement Ring", "Rose Bloom", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Engagement Ring" ] ], [ "Visible Design", [ "Round white center diamond, rose-gold layered bloom, white-diamond pavé petals, and cathedral shoulders" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, ring size, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, ring size, production details, and pricing are confirmed before the order begins."
+    },
+    {
+        id: "the-donya-pink-rose-engagement-ring",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Engagement Rings", "Women's Rings", "Made to Order", "Signature Collection" ],
+        name: "The Donya Pink Rose Engagement Ring",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9725-catalog.webp",
+        alt: "The Donya Pink Rose rose-gold engagement ring with a white center diamond and pink-diamond pavé petals",
+        lede: "A rose-gold floral engagement ring with a round white center diamond rising from layered pink-diamond pavé petals. Polished rose-gold edges define the bloom, and the petal-inspired cathedral shoulders flow into a clean rounded shank.",
+        cta: "Start Your Order",
+        badges: [ "Engagement Ring", "Pink Diamond Bloom", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Engagement Ring" ] ], [ "Visible Design", [ "Round white center diamond, rose-gold floral setting, pink-diamond pavé petals, and cathedral shoulders" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, ring size, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, ring size, production details, and pricing are confirmed before the order begins."
+    },
+    {
+        id: "the-donya-rose-bloom-earrings",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Women's Earrings", "Made to Order", "Signature Collection" ],
+        name: "The Donya Rosé Bloom Earrings",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9727-catalog.webp",
+        alt: "Matching Donya Rosé Bloom rose-gold earrings with pink-diamond pavé petals and white center diamonds",
+        lede: "A matching pair of rose-gold floral stud earrings formed by polished spiral petals filled with pink-diamond micro-pavé. Each bloom is centered by a round white diamond held in an evenly spaced prong setting.",
+        cta: "Start Your Order",
+        badges: [ "Women's Earrings", "Pink Diamond Bloom", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Women's Stud Earrings" ] ], [ "Visible Design", [ "Rose-gold spiral petals, pink-diamond micro-pavé, round white center diamonds, and post backs" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, earring dimensions, backing, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, dimensions, backing style, production details, and pricing are confirmed before the order begins."
+    },
+    {
+        id: "the-donya-golden-bloom-earrings",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Women's Earrings", "Made to Order", "Signature Collection" ],
+        name: "The Donya Golden Bloom Earrings",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9724-catalog.webp",
+        alt: "Matching Donya Golden Bloom yellow-gold earrings with white-diamond pavé petals and white center diamonds",
+        lede: "A matching pair of yellow-gold floral stud earrings with layered spiral petals outlined in polished gold. White-diamond micro-pavé fills each petal, surrounding a larger round white center diamond in an evenly spaced prong setting.",
+        cta: "Start Your Order",
+        badges: [ "Women's Earrings", "White Diamond Bloom", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Women's Stud Earrings" ] ], [ "Visible Design", [ "Yellow-gold spiral petals, white-diamond micro-pavé, round white center diamonds, and post backs" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, earring dimensions, backing, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, dimensions, backing style, production details, and pricing are confirmed before the order begins."
+    },
+    {
+        id: "the-donya-midnight-bloom-earrings",
+        category: "Custom Jewelry & Collections",
+        secondaryCategories: [ "Women's Earrings", "Made to Order", "Signature Collection" ],
+        name: "The Donya Midnight Bloom Earrings",
+        price: "Request Pricing",
+        estimate: null,
+        priceLabel: "Pricing Available Upon Request",
+        image: "IMG_9726-catalog.webp",
+        alt: "Matching Donya Midnight Bloom white-gold earrings with blue-diamond pavé petals and white center diamonds",
+        lede: "A matching pair of white-gold floral stud earrings defined by polished spiral petals set with deep blue-diamond micro-pavé. A round white center diamond brightens each bloom in an evenly spaced prong setting.",
+        cta: "Start Your Order",
+        badges: [ "Women's Earrings", "Blue Diamond Bloom", "Made to Order" ],
+        buttons: [ "Request Pricing", "Start Your Order", "Financing Available" ],
+        fields: [ [ "Collection", [ "Custom Jewelry & Collections" ] ], [ "Jewelry Type", [ "Women's Stud Earrings" ] ], [ "Visible Design", [ "White-gold spiral petals, blue-diamond micro-pavé, round white center diamonds, and post backs" ] ], [ "Production", [ "Made to Order" ] ], [ "Customization", [ "Confirm metal, center-stone specifications, earring dimensions, backing, and final pavé details during consultation" ] ] ],
+        notice: "Final metal, diamond specifications, dimensions, backing style, production details, and pricing are confirmed before the order begins."
+    }
+];
+
+const products = [ ...customCollectionProducts, ...donyaFloralCollectionProducts, ...ankletProducts, ...uploadedMensBandProducts, ...uploadedRingProducts, {
     id: "queen-aurelia-oval-marquise-ring",
     category: "Engagement Rings",
     name: "Queen Aurelia Oval Marquise Ring",
@@ -2168,6 +2273,7 @@ function productActionButtons(product) {
         if (/cart/i.test(label)) return "";
         if (/exact weight|specifications/i.test(label)) return requestHref(product, "exact-weight-specifications");
         if (/custom order/i.test(label)) return "#/custom-orders";
+        if (/start your order/i.test(label)) return requestHref(product, "start-order");
         if (/request price|custom quote|pricing|custom size|custom letter|build your chain|build your bracelet/i.test(label)) return requestHref(product, "custom-quote");
         return requestHref(product, "product-request");
     };
@@ -3521,7 +3627,7 @@ function savedProductCard(product, index = 0) {
     const price = Number(product.price ?? (product.priceCents ? product.priceCents / 100 : 0));
     const href = catalogProductUrl(product);
     const imageSource = savedProductImage(product, index);
-    return ` <article class="product-card"> <a href="${href}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}"> ${imageSource ? `<img src="${htmlSafe(imageSource)}" alt="${htmlSafe(product.name)}" loading="${index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index < 6 ? "high" : "low"}" width="720" height="720" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">` : `<div class="product-image-placeholder">Diamond Jewelry</div>`} </a> <div class="product-card-body"> <p class="eyebrow">${htmlSafe(product.category)}</p> <h3>${htmlSafe(product.name)}</h3> <p class="muted">${price ? `Starting at ${money.format(price)}` : "Request Pricing"}</p> <div class="card-actions"> <a class="button button-dark" href="${href}">View Details</a> ${price && product.available !== false ? productCheckoutButton(product, price, "Buy Now") : `<span class="quote-note">Contact us for current pricing.</span>`} </div> </div> </article> `;
+    return ` <article class="product-card"> <a href="${href}" class="product-image-link" aria-label="View ${htmlSafe(product.name)}"> ${imageSource ? `<img src="${htmlSafe(imageSource)}" alt="${htmlSafe(product.alt || product.name)}" loading="${index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index < 6 ? "high" : "low"}" width="720" height="720" onerror="this.onerror=null;this.src='${asset(fallbackImage)}';">` : `<div class="product-image-placeholder">Diamond Jewelry</div>`} </a> <div class="product-card-body"> <p class="eyebrow">${htmlSafe(product.category)}</p> <h3>${htmlSafe(product.name)}</h3> <p class="muted">${price ? `Starting at ${money.format(price)}` : htmlSafe(product.priceLabel || "Pricing Available Upon Request")}</p> <div class="card-actions"> <a class="button button-dark" href="${href}">View Details</a> ${price && product.available !== false ? productCheckoutButton(product, price, "Buy Now") : `<a class="button button-gold" href="${requestHref(product, "custom-quote")}">Request Pricing</a>`} </div> </div> </article> `;
 }
 
 function databaseCategoryPage(slug, label) {
@@ -3572,8 +3678,9 @@ function wireDatabaseCategory({category: category, source: source, featured: fea
                     return aRank - bRank;
                 });
             }
-            if (!items.length && fallbackProducts.length) {
-                items = fallbackProducts.slice(0, 24);
+            if (page === 1 && fallbackProducts.length) {
+                const seen = new Set(items.map(item => item.id));
+                items = [ ...fallbackProducts.filter(item => !seen.has(item.id)), ...items ];
             }
             grid.innerHTML = items.length ? items.map((item, index) => savedProductCard(item, index)).join("") : `<div class="empty-state">No available products were found in this category.</div>`;
             pagination.innerHTML = ` <button class="button button-light" type="button" data-db-page="${Math.max(1, payload.page - 1)}" ${payload.page <= 1 ? "disabled" : ""}>Previous</button> <span>Page ${payload.page} of ${payload.totalPages}</span> <button class="button button-light" type="button" data-db-page="${Math.min(payload.totalPages, payload.page + 1)}" ${payload.page >= payload.totalPages ? "disabled" : ""}>Next</button> `;
@@ -3661,7 +3768,7 @@ function category(slug) {
     const label = categories.find(([id]) => id === slug)?.[1] || categoryLabels[slug];
     const manualCategorySlugs = [ "engagement-rings", "diamond-tennis-chains", "diamond-tennis-bracelets", "chains", "custom-jewelry" ];
     if (!manualCategorySlugs.includes(slug)) return databaseCategoryPage(slug, label);
-    const list = slug === "engagement-rings" ? allProducts().filter(p => p.category === "Engagement Rings") : slug === "diamond-tennis-chains" ? allProducts().filter(p => /tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : slug === "diamond-tennis-bracelets" ? allProducts().filter(p => p.category === "Tennis Bracelets" || /tennis bracelet/i.test(`${p.name} ${p.lede || ""}`)) : slug === "chains" ? allProducts().filter(p => p.category === "Chains" && !/tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : allProducts().filter(p => productMatchesCategory(p, label) || /^custom-/i.test(p.id) || /custom/i.test(p.name || ""));
+    const list = slug === "engagement-rings" ? allProducts().filter(p => productMatchesCategory(p, "Engagement Rings")) : slug === "diamond-tennis-chains" ? allProducts().filter(p => /tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : slug === "diamond-tennis-bracelets" ? allProducts().filter(p => p.category === "Tennis Bracelets" || /tennis bracelet/i.test(`${p.name} ${p.lede || ""}`)) : slug === "chains" ? allProducts().filter(p => p.category === "Chains" && !/tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : allProducts().filter(p => productMatchesCategory(p, label) || /^custom-/i.test(p.id) || /custom/i.test(p.name || ""));
     const relatedProducts = slug === "engagement-rings" ? allProducts().filter(p => [ "Wedding Bands", "Earrings", "Womens Rings" ].includes(p.category) || /wedding band|stud/i.test(p.name)) : slug === "diamond-tennis-chains" ? allProducts().filter(p => p.category === "Chains" && !/tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : slug === "diamond-tennis-bracelets" ? allProducts().filter(p => p.category === "Bracelets" && !/tennis bracelet/i.test(`${p.name} ${p.lede || ""}`)) : slug === "chains" ? allProducts().filter(p => /tennis chain/i.test(`${p.name} ${p.lede || ""}`)) : allProducts().filter(p => [ "Pendants / Charms", "Chains", "Bracelets" ].includes(p.category));
     const action = slug === "engagement-rings" ? `<a class="button button-gold" href="#/start-custom-ring-design">Start Your Custom Ring Design</a>` : slug === "diamond-tennis-chains" ? `<a class="button button-gold" href="#/product/build-your-own-diamond-tennis-chain">Build Your Tennis Chain</a>` : "";
     const body = slug === "engagement-rings" ? "Shop engagement ring styles and request a custom ring with your preferred diamond, metal, ring size, budget, and design notes." : slug === "diamond-tennis-chains" ? "Shop diamond tennis chain options and build a chain by pointer size, length, metal, diamond type, and clasp style." : slug === "diamond-tennis-bracelets" ? "Shop diamond tennis bracelet styles with custom carat weight, gold color, clasp style, and diamond options." : slug === "chains" ? "Shop gold chains and chain styles separate from diamond tennis chain builds." : "Shop custom jewelry pieces and start a one-of-one design request.";
@@ -4161,7 +4268,7 @@ function productDetail(id) {
         if (label === "Diamond Type") return [ label, "Lab-Grown Diamond" ];
         return [ label, Array.isArray(values[0]) ? values[0][0] : values[0] ];
     }));
-    shell(` <main> <section class="product-detail-hero"> <div class="product-media-stack"> <img src="${productImageSrc(product)}" alt="${product.alt || productName(product)}" ${imageSafety}> ${productGallery(product)} </div> <div> <p class="eyebrow">${product.category}</p> <h1>${productName(product)}</h1> <p class="product-description">${startingText(product)} before diamond, color, size, and style modifiers.</p> ${productBadges(product)} ${diamondOriginNote(product)} ${engagementCertificationNote(product)} ${productNotice(product)} </div> </section> ${manualProductInformation(product)} <section class="customizer-layout"> <div class="customizer-panel"> <p class="eyebrow">Custom Jewelry Builder</p> <h2>${productName(product)}</h2> <p class="lede">${product.lede}</p> ${productBadges(product)} ${diamondOriginNote(product)} ${engagementCertificationNote(product)} ${productFields(product).map(([label, values]) => optionGroup(label, values, product)).join("")} <div class="builder-actions"> <a class="button button-gold" href="${requestHref(product, "quote-message")}">Request Quote / Message Us</a> <a class="button button-dark" href="#/custom-orders">${product.cta}</a> ${product.extraCta ? `<a class="button button-light" href="${requestHref(product, "special-request")}">${product.extraCta}</a>` : ""} </div> ${productActionButtons(product)} </div> <aside class="summary-panel" id="summary"></aside> </section> <section class="custom-form-section"> <div class="section-heading"> <p class="eyebrow">Product Inquiry</p> <h2>Ask about ${productName(product)}</h2> </div> ${customRequestForm({
+    shell(` <main> <section class="product-detail-hero"> <div class="product-media-stack"> <img src="${productImageSrc(product)}" alt="${product.alt || productName(product)}" ${imageSafety}> ${productGallery(product)} </div> <div> <p class="eyebrow">${product.category}</p> <h1>${productName(product)}</h1> <p class="product-description">${startingText(product)} before diamond, color, size, and style modifiers.</p> ${productBadges(product)} ${diamondOriginNote(product)} ${engagementCertificationNote(product)} ${productNotice(product)} </div> </section> ${manualProductInformation(product)} <section class="customizer-layout"> <div class="customizer-panel"> <p class="eyebrow">Custom Jewelry Builder</p> <h2>${productName(product)}</h2> <p class="lede">${product.lede}</p> ${productBadges(product)} ${diamondOriginNote(product)} ${engagementCertificationNote(product)} ${productFields(product).map(([label, values]) => optionGroup(label, values, product)).join("")} <div class="builder-actions"> <a class="button button-gold" href="${requestHref(product, "quote-message")}">Request Quote / Message Us</a> <a class="button button-dark" href="${requestHref(product, "start-order")}">${product.cta}</a> ${product.extraCta ? `<a class="button button-light" href="${requestHref(product, "special-request")}">${product.extraCta}</a>` : ""} </div> ${productActionButtons(product)} </div> <aside class="summary-panel" id="summary"></aside> </section> <section class="custom-form-section"> <div class="section-heading"> <p class="eyebrow">Product Inquiry</p> <h2>Ask about ${productName(product)}</h2> </div> ${customRequestForm({
         formId: "product-inquiry-form",
         requestType: "Product Inquiry Form",
         productCategory: product.category,
@@ -4706,12 +4813,19 @@ async function requestPayloadFromForm(form, submitter = null) {
     const requestType = form.dataset.requestType || selectedFormValue(form, "requestType") || "General Contact Form";
     const productCategory = form.dataset.productCategory || selectedFormValue(form, "productCategory") || requestType;
     const submitIntent = submitter?.value || selectedFormValue(form, "requestIntent") || "";
+    const submission = {};
+    for (const [key, value] of new FormData(form).entries()) {
+        if (value instanceof File || !String(value || "").trim()) continue;
+        if (submission[key] === undefined) submission[key] = String(value).trim();
+        else submission[key] = [ submission[key], String(value).trim() ].flat();
+    }
     return {
+        type: requestType,
         source: location.href,
         customer: {
-            fullName: selectedFormValue(form, "fullName") || selectedFormValue(form, "name"),
+            fullName: selectedFormValue(form, "fullName") || selectedFormValue(form, "name") || selectedFormValue(form, "customerName"),
             email: selectedFormValue(form, "email"),
-            phone: selectedFormValue(form, "phone")
+            phone: selectedFormValue(form, "phone") || selectedFormValue(form, "phoneNumber")
         },
         jewelry: {
             requestType: requestType,
@@ -4752,6 +4866,7 @@ async function requestPayloadFromForm(form, submitter = null) {
             timeline: selectedFormValue(form, "timeline"),
             notes: [ selectedFormValue(form, "buildSummary") ? `Engagement ring build summary:\n${selectedFormValue(form, "buildSummary")}` : "", selectedFormValue(form, "builderUrl") ? `Saved builder URL: ${selectedFormValue(form, "builderUrl")}` : "", selectedFormValue(form, "renderReference") ? `Builder render reference: ${selectedFormValue(form, "renderReference")}` : "", selectedFormValue(form, "internalAdjustmentTotal") ? `Internal builder adjustment total: ${selectedFormValue(form, "internalAdjustmentTotal")}` : "", selectedFormValue(form, "priceEstimate") ? `Quote display: ${selectedFormValue(form, "priceEstimate")}` : "", selectedFormValue(form, "description"), selectedFormValue(form, "customDesignRequest") ? `Unique custom design request: ${selectedFormValue(form, "customDesignRequest")}` : "", selectedFormValue(form, "notes"), form.dataset.cartSummary ? `Cart summary: ${form.dataset.cartSummary}` : "", Object.keys(selections).length ? `Selected website options: ${Object.entries(selections).map(([key, value]) => `${key}: ${value}`).join(" | ")}` : "" ].filter(Boolean).join("\n")
         },
+        submission: submission,
         files: files
     };
 }

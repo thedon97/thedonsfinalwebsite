@@ -230,13 +230,17 @@ module.exports = async function handler(req, res) {
         },
       };
       if (lead) {
-        const updatedLead = await updateLeadCheckout(lead.id, fallbackPayload.checkout, {
-          checkout: fallbackPayload.checkout,
-          checkoutSessionCreatedAt: new Date().toISOString(),
-        });
-        await processLeadEmails(updatedLead, fallbackPayload);
-        sendJson(res, 200, { ok: true, url: STRIPE_PAYMENT_LINK, leadId: updatedLead.publicId, fallback: true });
-        return;
+        try {
+          const updatedLead = await updateLeadCheckout(lead.id, fallbackPayload.checkout, {
+            checkout: fallbackPayload.checkout,
+            checkoutSessionCreatedAt: new Date().toISOString(),
+          });
+          await processLeadEmails(updatedLead, fallbackPayload);
+          sendJson(res, 200, { ok: true, url: STRIPE_PAYMENT_LINK, leadId: updatedLead.publicId, fallback: true });
+          return;
+        } catch (leadError) {
+          console.warn("Lead database failed after checkout started; continuing with email fallback:", leadError?.message || leadError);
+        }
       }
       await processFallbackEmails(fallbackPayload);
       sendJson(res, 200, {

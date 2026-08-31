@@ -207,10 +207,20 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   const cleanSearch = String(search || "").trim().toLowerCase();
   const localResult = () => {
     let items = [...manualProducts(), ...snapshotProducts()].filter((item) => item.available !== false && !item.hidden);
-    if (category) items = items.filter((item) => item.category === normalizeCategory(category));
+    if (category) {
+      const normalizedCategory = normalizeCategory(category);
+      items = items.filter((item) => item.category === normalizedCategory
+        || (item.secondaryCategories || item.metadata?.secondaryCategories || []).includes(normalizedCategory));
+    }
     if (source) items = items.filter((item) => item.source === source);
     if (cleanSearch) items = items.filter((item) => productSearchText(item).includes(cleanSearch));
     items.sort((a, b) => {
+      if (category) {
+        const normalizedCategory = normalizeCategory(category);
+        const aSecondary = (a.secondaryCategories || a.metadata?.secondaryCategories || []).includes(normalizedCategory);
+        const bSecondary = (b.secondaryCategories || b.metadata?.secondaryCategories || []).includes(normalizedCategory);
+        if (aSecondary !== bSecondary) return aSecondary ? -1 : 1;
+      }
       if (normalizeCategory(category) === "Bracelets") {
         const aRank = BRACELET_FEATURED_IDS.indexOf(a.id);
         const bRank = BRACELET_FEATURED_IDS.indexOf(b.id);
@@ -234,9 +244,11 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   if (!databaseConfigured()) return localResult();
   const values = [];
   const where = ["available=TRUE", "hidden=FALSE"];
+  let categoryValueIndex = 0;
   if (category) {
     values.push(normalizeCategory(category));
-    where.push(`category=$${values.length}`);
+    categoryValueIndex = values.length;
+    where.push(`(category=$${values.length} OR COALESCE(metadata->'secondaryCategories', '[]'::jsonb) ? $${values.length})`);
   }
   if (source) {
     values.push(source);
@@ -260,7 +272,10 @@ async function listProducts({ category = "", page = 1, limit = 24, sort = "price
   const featuredOrder = normalizeCategory(category) === "Bracelets"
     ? `CASE id ${BRACELET_FEATURED_IDS.map((id, index) => `WHEN '${id}' THEN ${index}`).join(" ")} ELSE 999 END ASC, `
     : "";
-  const order = `${featuredOrder}${priceOrder}`;
+  const secondaryOrder = categoryValueIndex
+    ? `CASE WHEN COALESCE(metadata->'secondaryCategories', '[]'::jsonb) ? $${categoryValueIndex} THEN 0 ELSE 1 END ASC, `
+    : "";
+  const order = `${secondaryOrder}${featuredOrder}${priceOrder}`;
   values.push(safeLimit, (safePage - 1) * safeLimit);
   try {
     const result = await query(`
