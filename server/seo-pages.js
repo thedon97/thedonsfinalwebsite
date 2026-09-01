@@ -572,9 +572,16 @@ const categoryPageMeta = {
     "mens-earrings": [ "Men's Diamond Earrings | The Don Jewelers", "Shop men's diamond earrings, lab-grown diamond studs, and custom earring designs from The Don Jewelers.", "Men's Earrings", "0.82" ],
     "womens-earrings": [ "Women's Diamond Earrings | The Don Jewelers", "Shop women's diamond earrings, lab-grown diamond studs, and custom earring designs from The Don Jewelers.", "Women's Earrings", "0.82" ],
     "wedding-bands": [ "Wedding Bands | Diamond Wedding Rings | The Don Jewelers", "Shop wedding bands, diamond wedding rings, and custom bands for men and women from The Don Jewelers.", "Wedding Bands", "0.8" ],
+    "diamond-tennis-chains": [ "Diamond Tennis Chains | Custom Tennis Chains | The Don Jewelers", "Shop diamond tennis chains and custom tennis chain options in lab grown or natural diamonds from The Don Jewelers.", "Diamond Tennis Chains", "0.85" ],
+    "diamond-tennis-bracelets": [ "Diamond Tennis Bracelets | The Don Jewelers", "Shop diamond tennis bracelets, custom bracelet builds, and fine diamond jewelry from The Don Jewelers.", "Diamond Tennis Bracelets", "0.85" ],
+    "mens-rings": [ "Men's Diamond Rings | The Don Jewelers", "Shop men's diamond rings, gold rings, wedding bands, and custom ring designs from The Don Jewelers.", "Men's Rings", "0.82" ],
+    "womens-rings": [ "Women's Diamond Rings | The Don Jewelers", "Shop women's diamond rings, gemstone rings, eternity bands, and custom ring designs from The Don Jewelers.", "Women's Rings", "0.82" ],
     chains: [ "Gold Chains & Diamond Chains | The Don Jewelers", "Shop gold chains, diamond chains, Cuban chains, and tennis chains from The Don Jewelers.", "Chains", "0.8" ],
+    necklaces: [ "Diamond Necklaces & Gold Necklaces | The Don Jewelers", "Shop diamond necklaces, gold necklaces, and custom necklace designs from The Don Jewelers.", "Necklaces", "0.8" ],
     bracelets: [ "Diamond Bracelets & Tennis Bracelets | The Don Jewelers", "Shop diamond bracelets, tennis bracelets, gold bracelets, and custom bracelet designs from The Don Jewelers.", "Bracelets", "0.8" ],
-    "pendants-charms": [ "Diamond Pendants & Charms | The Don Jewelers", "Shop diamond pendants, custom charms, cross pendants, initials, and luxury pendant designs from The Don Jewelers.", "Pendants & Charms", "0.8" ]
+    "pendants-charms": [ "Diamond Pendants & Charms | The Don Jewelers", "Shop diamond pendants, custom charms, cross pendants, initials, and luxury pendant designs from The Don Jewelers.", "Pendants & Charms", "0.8" ],
+    anklets: [ "Diamond Anklets & Gold Anklets | The Don Jewelers", "Shop diamond anklets, gold anklets, and custom anklet designs from The Don Jewelers.", "Anklets", "0.78" ],
+    watches: [ "Luxury Diamond Watches | The Don Jewelers", "Shop luxury watches, diamond watches, and custom iced-out watch designs from The Don Jewelers.", "Watches", "0.8" ]
 };
 
 function pageMetaForPath(pathname) {
