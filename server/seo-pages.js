@@ -4,6 +4,8 @@ const path = require("path");
 
 const seoArticles = require("./data/seo-articles");
 
+const customCollectionCatalog = require("./data/custom-collection-products.json");
+
 const {getInventoryCache: getInventoryCache} = require("./_inventory-cache");
 
 const {fetchFeed: fetchFeed} = require("./_diamond-utils");
@@ -19,18 +21,28 @@ const CUSTOM_IMAGE_REPLACEMENTS = Object.freeze({
     "/rose-gold-ruby-twin-dragon-ring.png": "/rose-gold-ruby-twin-dragon-ring-catalog.webp"
 });
 
-const HOME_FEATURED_FLORALS = Object.freeze([
-    ["the-danya-eternal-rose-engagement-ring", "The Danya Eternal Rose Engagement Ring", "/IMG_9728-catalog.webp"],
-    ["the-donya-rose-bloom-earrings", "The Donya Rosé Bloom Earrings", "/IMG_9727-catalog.webp"],
-    ["the-donya-midnight-bloom-earrings", "The Donya Midnight Bloom Earrings", "/IMG_9726-catalog.webp"]
+const HOME_FEATURED_FLORAL_IDS = Object.freeze([
+    "the-donya-fleur-royale-engagement-ring",
+    "the-danya-eternal-rose-engagement-ring",
+    "the-donya-pink-rose-engagement-ring",
+    "the-donya-rose-bloom-earrings",
+    "the-donya-golden-bloom-earrings",
+    "the-donya-midnight-bloom-earrings"
 ]);
 
 function homepageFloralCollection() {
-    const cards = HOME_FEATURED_FLORALS.map(([slug, name, image]) => {
-        const request = `/request/product?product=${encodeURIComponent(name)}&category=${encodeURIComponent("Custom Jewelry & Collections")}&intent=custom-quote`;
-        return `<article class="product-card"><a class="product-image-link" href="/products/${slug}"><img src="${image}" alt="${escapeHtml(name)} on a black luxury background" loading="lazy" decoding="async" width="1200" height="1200"></a><div class="product-card-body"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h3>${escapeHtml(name)}</h3><p class="muted">Pricing Available Upon Request</p><div class="card-actions"><a class="button button-dark" href="/products/${slug}">View Details</a><a class="button button-gold" href="${request}">Request Pricing</a></div></div></article>`;
+    const productIndex = new Map((customCollectionCatalog.items || []).map(product => [product.id, product]));
+    const cards = HOME_FEATURED_FLORAL_IDS.map(id => productIndex.get(id)).filter(Boolean).map(product => {
+        const slug = product.id;
+        const price = priceFromProduct(product);
+        const image = `/${String(product.image || product.imageUrl || "don-logo.jpg").replace(/^\/+/, "")}`;
+        const priceText = product.priceLabel || (price ? `Starting at ${money(price)}` : "Pricing Available Upon Request");
+        const action = price && product.available !== false
+            ? `<button class="button button-gold" type="button" data-buy-product="${escapeHtml(product.id)}">Buy Now - ${escapeHtml(money(price))}</button>`
+            : `<a class="button button-gold" href="/request/product?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category || "Custom Jewelry & Collections")}&intent=custom-quote">Request Pricing</a>`;
+        return `<article class="product-card"><a class="product-image-link" href="/products/${slug}"><img src="${escapeHtml(image)}" alt="${escapeHtml(product.alt || product.name)}" loading="lazy" decoding="async" width="1200" height="1200"></a><div class="product-card-body"><p class="eyebrow">${escapeHtml(product.category || "Custom Jewelry & Collections")}</p><h3>${escapeHtml(product.name)}</h3><p class="muted">${escapeHtml(priceText)}</p><div class="card-actions"><a class="button button-dark" href="/products/${slug}">View Details</a>${action}</div></div></article>`;
     }).join("");
-    return `<section class="section custom-collection-home" aria-labelledby="custom-collection-home-title"><div class="section-heading"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h2 id="custom-collection-home-title">The Donya Floral Collection</h2><p>Explore sculptural floral designs created for a private quote and made-to-order consultation.</p></div><div class="product-grid">${cards}</div><div class="hero-actions collection-more-action"><a class="button button-gold" href="/category/custom-jewelry">View All Custom Jewelry</a><a class="button button-light" href="/start-custom-ring-design">Start a Custom Design</a></div></section>`;
+    return `<section class="section custom-collection-home" aria-labelledby="custom-collection-home-title"><div class="section-heading"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h2 id="custom-collection-home-title">The Donya Floral Collection</h2><p>Explore all six Donya floral designs with the same current pricing and purchase options shown in the full collection.</p></div><div class="product-grid">${cards}</div><div class="hero-actions collection-more-action"><a class="button button-gold" href="/category/custom-jewelry">View All Custom Jewelry</a><a class="button button-light" href="/start-custom-ring-design">Start a Custom Design</a></div></section>`;
 }
 
 function optimizeCustomImageUrls(html) {

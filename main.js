@@ -2638,6 +2638,9 @@ function productSlug(productOrId) {
 
 function productUrl(id) {
     const product = typeof id === "object" ? id : allProducts().find(item => item.id === id);
+    if (product && donyaFloralCollectionProducts.some(item => item.id === product.id)) {
+        return routePath(`products/${product.id}`);
+    }
     return routePath(`products/${productSlug(product || id)}`);
 }
 
@@ -3466,10 +3469,10 @@ function googleReviewsSection() {
 }
 
 function customCollectionHomeSection() {
-    const featuredIds = [ "archangel-slaying-lucifer-concept", "jesus-ring-by-the-don-jewelers", "fear-no-evil-baby-angel-ring", "fear-no-evil-baby-angel-pendant", "rose-gold-ruby-twin-dragon-ring", "custom-dejaun-diamond-name-pendant" ];
+    const featuredIds = [ "the-donya-fleur-royale-engagement-ring", "the-danya-eternal-rose-engagement-ring", "the-donya-pink-rose-engagement-ring", "the-donya-rose-bloom-earrings", "the-donya-golden-bloom-earrings", "the-donya-midnight-bloom-earrings" ];
     const productIndex = new Map(allProducts().map(product => [ product.id, product ]));
     const featured = featuredIds.map(id => productIndex.get(id)).filter(Boolean);
-    return `<section class="section custom-collection-home" aria-labelledby="custom-collection-home-title"><div class="section-heading"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h2 id="custom-collection-home-title">Start Your Custom Today</h2><p>Explore all current one-of-one concepts, signature pieces, and made-to-order designs, then request the metal, stones, dimensions, engraving, and finish you want.</p></div><div class="product-grid">${featured.map(product => productCard(product)).join("")}</div><div class="hero-actions collection-more-action"><a class="button button-gold" href="${categoryUrl("custom-jewelry")}">View All Custom Jewelry</a><a class="button button-light" href="${internalLink("start-custom-ring-design")}">Start a Custom Design</a></div></section>`;
+    return `<section class="section custom-collection-home" aria-labelledby="custom-collection-home-title"><div class="section-heading"><p class="eyebrow">Custom Jewelry &amp; Collections</p><h2 id="custom-collection-home-title">The Donya Floral Collection</h2><p>Explore all six Donya floral designs with the same current pricing and purchase options shown in the full collection.</p></div><div class="product-grid">${featured.map(product => productCard(product)).join("")}</div><div class="hero-actions collection-more-action"><a class="button button-gold" href="${categoryUrl("custom-jewelry")}">View All Custom Jewelry</a><a class="button button-light" href="${internalLink("start-custom-ring-design")}">Start a Custom Design</a></div></section>`;
 }
 
 function home() {
