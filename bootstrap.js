@@ -9,7 +9,7 @@
     if (applicationPromise) return applicationPromise;
     applicationPromise = new Promise((resolve, reject) => {
       const application = document.createElement("script");
-      application.src = "/main.min.js?v=ring-pricing-20260831";
+      application.src = "/main.min.js?v=donya-home-pricing-v2-20260831";
       application.async = true;
       application.addEventListener("load", resolve, { once: true });
       application.addEventListener("error", reject, { once: true });
