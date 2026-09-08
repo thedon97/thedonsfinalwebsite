@@ -2,6 +2,11 @@ const { listVisibleProducts, productSlug, seedManualProducts, seedSnapshotProduc
 
 const SITE_URL = "https://www.thedonjewelersandjewelrynyc.com";
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
+function optimizedLocalImage(value) {
+  const text = String(value || "").replace(/^\/+/, "");
+  if (!/\.(?:png|jpe?g)$/i.test(text)) return text;
+  return text.replace(/\.(?:png|jpe?g)$/i, "-catalog.webp");
+}
 
 function xml(value) {
   return String(value ?? "")
@@ -14,9 +19,9 @@ function xml(value) {
 
 function absoluteImage(value) {
   const text = String(value || "").trim();
-  if (!text) return `${SITE_URL}/don-logo.jpg`;
+  if (!text) return `${SITE_URL}/don-logo-catalog.webp`;
   if (/^https?:\/\//i.test(text)) return text;
-  return `${SITE_URL}/${text.replace(/^\/+/, "")}`;
+  return `${SITE_URL}/${optimizedLocalImage(text)}`;
 }
 
 function productUrl(product) {
