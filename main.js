@@ -22,7 +22,7 @@ const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 
 const gaMeasurementId = "G-68DJH1C3QF";
 
-const asset = name => `/${name}`;
+const asset = name => `/${String(name || "").replace(/^\/+/, "").replace(/\.(?:png|jpe?g)$/i, "-catalog.webp")}`;
 
 const mediaSrc = name => /^https?:\/\//i.test(String(name || "")) ? name : asset(name);
 
@@ -3153,15 +3153,17 @@ function productSchema(product) {
         },
         category: product.category,
         sku: product.id,
-        offers: {
-            "@type": "Offer",
-            url: canonicalUrl(productUrl(product.id)),
-            priceCurrency: "USD",
-            price: Number.isFinite(amount) ? amount : undefined,
-            availability: "https://schema.org/InStock",
-            itemCondition: "https://schema.org/NewCondition",
-            ...merchantOfferDefaultsSchema()
-        }
+        ...Number.isFinite(amount) && amount > 0 ? {
+            offers: {
+                "@type": "Offer",
+                url: canonicalUrl(productUrl(product.id)),
+                priceCurrency: "USD",
+                price: amount,
+                availability: "https://schema.org/InStock",
+                itemCondition: "https://schema.org/NewCondition",
+                ...merchantOfferDefaultsSchema()
+            }
+        } : {}
     };
 }
 
@@ -3246,7 +3248,7 @@ function setSeo(title, description, options = {}) {
     upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
     upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
     upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", image);
-    upsertMeta('meta[name="robots"]', "name", "robots", "index,follow,max-image-preview:large");
+    upsertMeta('meta[name="robots"]', "name", "robots", options.noindex ? "noindex,follow" : "index,follow,max-image-preview:large");
     injectJsonLd([ organizationSchema(), websiteSchema(), localBusinessSchema(), webPageSchema(title, description, path), breadcrumbSchema(options.breadcrumbs || []), faqSchema(options.faqs || []), ...options.schema || [] ]);
 }
 
@@ -3533,6 +3535,7 @@ function searchPage(params = new URLSearchParams) {
     setSeo(`Search ${q ? q : "Jewelry"} | ${businessName}`, `Search The Don Jewelers & Jewelry for engagement rings, diamonds, custom jewelry, products, guides, and quote request pages.`, {
         path: `search${q ? `?q=${encodeURIComponent(q)}` : ""}`,
         image: defaultSeoImage,
+        noindex: true,
         breadcrumbs: [ [ "Search", "search" ] ]
     });
     shell(` <main> ${pageHero("Search", q ? `Search results for "${htmlSafe(q)}"` : "Search the website", "Find engagement rings, loose diamonds, custom jewelry, product pages, guides, and quote request options.", ` <form class="search-page-form global-search" role="search" aria-label="Search the website"> <input name="q" type="search" value="${htmlSafe(q)}" placeholder="Search engagement rings, diamond pendants, chains..." aria-label="Search the website"> <button class="button button-gold" type="submit">Search</button> </form> `)} <section class="search-results-section"> <div class="section-heading"> <p class="eyebrow">Product Results</p> <h2>${productMatches.length ? `${productMatches.length} product matches` : "No direct product matches yet"}</h2> </div> <div class="product-grid">${productMatches.length ? productMatches.map(productCard).join("") : `<div class="empty-state">Try a broader term like "oval", "engagement ring", "pendant", "Cuban", or submit a request and we will source it.</div>`}</div> </section> <section class="search-results-section"> <div class="section-heading"> <p class="eyebrow">Marketplace & Supplier Results</p> <h2>Matching jewelry from the full catalog</h2> </div> <div class="product-grid" id="search-api-results"> ${q ? Array.from({
@@ -5910,6 +5913,7 @@ function customRequestPage(slug, params = new URLSearchParams) {
         setSeo(`Book Appointment | ${businessName}`, "Book a private jewelry appointment for engagement rings, live diamonds, custom jewelry, product questions, checkout help, and private jeweler consultation.", {
             path: "request/appointment",
             image: defaultSeoImage,
+            noindex: true,
             breadcrumbs: [ [ "Appointment", "request/appointment" ] ]
         });
         shell(` <main> ${pageHero("Book Appointment", "Private jewelry appointment", "Send your preferred time and what you want to discuss. Your appointment request is emailed directly to The Don Jewelers & Jewelry.")} <section class="custom-form-section"> ${appointmentRequestForm("appointment-request-form")} </section> ${officialGoogleProfileSection()} </main> `);
@@ -5917,6 +5921,12 @@ function customRequestPage(slug, params = new URLSearchParams) {
         return;
     }
     const detail = productName ? `Request for ${productName}${intent ? ` (${intent.replace(/-/g, " ")})` : ""}.` : "Submit your details and inspiration photos.";
+    setSeo(`${requestType} | ${businessName}`, `${detail} Every request is routed to The Don Jewelers & Jewelry for follow-up.`, {
+        path: `request/${slug || "contact"}`,
+        image: defaultSeoImage,
+        noindex: true,
+        breadcrumbs: [ [ requestType, `request/${slug || "contact"}` ] ]
+    });
     shell(` <main> ${pageHero("Custom Quote", requestType, `${detail} Every request is routed to The Don Jewelers & Jewelry for follow-up.`)} <section class="custom-form-section"> ${customRequestForm({
         formId: "request-form",
         requestType: requestType,
@@ -6150,6 +6160,10 @@ function adminDashboard() {
 }
 
 function cartPage() {
+    setSeo(`Cart | ${businessName}`, "Review saved jewelry selections before checkout or requesting support.", {
+        path: "cart",
+        noindex: true
+    });
     const total = cartTotal();
     const payableItems = payableCartItems();
     const payableTotal = cartTotal(payableItems);
@@ -6173,6 +6187,10 @@ function cartPage() {
 }
 
 function checkout() {
+    setSeo(`Checkout | ${businessName}`, "Submit saved jewelry details or continue to secure Stripe checkout.", {
+        path: "checkout",
+        noindex: true
+    });
     const total = cartTotal();
     const payableItems = payableCartItems();
     const payableTotal = cartTotal(payableItems);
@@ -6224,6 +6242,10 @@ async function verifyAndTrackPurchase() {
 
 function paymentStatusPage(status) {
     const success = status === "success";
+    setSeo(`${success ? "Payment Received" : "Checkout Canceled"} | ${businessName}`, "Private checkout status for The Don Jewelers & Jewelry.", {
+        path: success ? "checkout-success" : "checkout-cancel",
+        noindex: true
+    });
     shell(` <main> ${pageHero(success ? "Payment Received" : "Checkout Canceled", success ? "Thank you for your payment" : "Your checkout was not completed", success ? "Your Stripe payment page has confirmed checkout. Please submit or email any custom sizing, stone, shipping, or design details so we can match payment to the correct order." : "No payment was completed. You can return to cart, request a quote, or contact us for help finishing the order.", ` <div class="hero-actions"> <a class="button button-gold" href="#/cart">Return to Cart</a> <a class="button button-dark" href="#/checkout">Checkout Details</a> <a class="button button-light" href="#/request/contact?intent=order-payment-support">Email Support</a> </div> `)} ${aboutUs()} </main> `);
     if (success) verifyAndTrackPurchase();
 }
@@ -6414,3 +6436,22 @@ runWhenIdle(() => {
         if (/^\/(products|product|engagement-rings|diamonds|category|catalog-jewelry|admin)(\/|$)/.test(path)) navigate();
     }).catch(() => {});
 });
+
+// Keep client-side routing aligned with server-rendered pages included in the sitemap.
+// Without these entries, hydration replaces valid SEO pages with the client 404 view
+// and changes their robots directive to noindex.
+servicePages.push(
+    [ "engagement-rings-nyc", "Engagement Rings NYC", "Design an engagement ring in NYC with private guidance on certified lab-grown or natural diamonds, custom settings, CAD approval, sizing, financing, and insured delivery.", "engagement-ring-feature.jpg", [ "engagement rings NYC", "custom engagement rings NYC", "NYC diamond jeweler" ], [ "custom-engagement-rings-nyc", "nyc-diamond-district-jeweler", "start-custom-ring-design" ], "NYC engagement ring clients" ],
+    [ "engagement-rings-tri-state", "Engagement Rings Tri-State", "Custom engagement rings for clients across New York, New Jersey, Connecticut, and Pennsylvania with certified diamonds, CAD design, private consultation, and insured delivery.", "queen-aurelia-oval-marquise-ring.jpeg", [ "engagement rings Tri-State", "custom engagement rings New York New Jersey Connecticut", "private diamond jeweler" ], [ "tri-state-custom-jeweler", "custom-engagement-rings", "free-engagement-ring-consultation" ], "Tri-State engagement ring clients" ],
+    [ "custom-jewelry-allentown-pa", "Custom Jewelry Allentown PA", "Create custom jewelry for Allentown PA with private design guidance, CAD approval, certified diamonds, pendants, rings, bracelets, earrings, and insured delivery.", "custom-dejaun-diamond-name-pendant.jpeg", [ "custom jewelry Allentown PA", "custom jeweler Allentown", "diamond jewelry Lehigh Valley" ], [ "private-jeweler-allentown", "custom-jewelry-lehigh-valley", "custom-orders" ], "Allentown custom jewelry clients" ],
+    [ "custom-jewelry-lehigh-valley", "Custom Jewelry Lehigh Valley", "Design custom jewelry in the Lehigh Valley with private consultation, CAD planning, certified diamonds, clear quote support, and insured delivery.", "custom-dejaun-diamond-name-pendant.jpeg", [ "custom jewelry Lehigh Valley", "custom jeweler Lehigh Valley", "diamond jewelry Pennsylvania" ], [ "custom-jewelry-allentown-pa", "engagement-rings-lehigh-valley", "custom-orders" ], "Lehigh Valley custom jewelry clients" ],
+    [ "diamond-pendants-allentown-pa", "Diamond Pendants Allentown PA", "Shop or design diamond pendants for Allentown PA with custom initials, names, crosses, meaningful designs, lab-grown or natural diamonds, and private quote guidance.", "saint-michael-diamond-angel-pendant.jpeg", [ "diamond pendants Allentown PA", "custom diamond pendant Allentown", "diamond jewelry Lehigh Valley" ], [ "diamond-pendants", "custom-jewelry-allentown-pa", "custom-cad-design" ], "Allentown diamond pendant clients" ]
+);
+
+if ([
+    "/engagement-rings-nyc",
+    "/engagement-rings-tri-state",
+    "/custom-jewelry-allentown-pa",
+    "/custom-jewelry-lehigh-valley",
+    "/diamond-pendants-allentown-pa"
+].includes(currentRoutePath())) navigate();

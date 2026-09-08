@@ -50,7 +50,12 @@ function optimizeCustomImageUrls(html) {
         (output, [source, optimized]) => output.replaceAll(source, optimized),
         String(html || "")
     );
-    return optimized.replace(/<section class="section custom-collection-home"[\s\S]*?<\/section>/i, homepageFloralCollection());
+    return optimized
+        .replace(/(["'(])\/([^"'()?\s]+\.(?:png|jpe?g))(\?[^"'()\s]*)?/gi, (match, prefix, imagePath, query = "") => {
+            const optimizedPath = optimizedLocalImagePath(imagePath);
+            return `${prefix}/${optimizedPath}${query}`;
+        })
+        .replace(/<section class="section custom-collection-home"[\s\S]*?<\/section>/i, homepageFloralCollection());
 }
 
 const BUSINESS_NAME = "The Don Jewelers & Jewelry";
@@ -67,7 +72,7 @@ const OFFICIAL_SOCIAL_LINKS = [ "https://www.instagram.com/los_thejeweler/", "ht
 
 const LOCATION_TARGETS = [ "NYC Diamond District", "Manhattan NY", "New York City", "Tri-State Area", "New York", "New Jersey", "Connecticut", "Lehigh Valley PA", "Easton PA", "Bethlehem PA", "Allentown PA", "Pennsylvania", "United States" ];
 
-const DEFAULT_IMAGE = `${SITE_URL}/don-logo.jpg`;
+const DEFAULT_IMAGE = `${SITE_URL}/don-logo-catalog.webp`;
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -76,6 +81,12 @@ const INDEX_HTML = path.join(__dirname, "template.html");
 const SITEMAP_LIMIT = 165;
 
 const LIVE_VENDOR_SITEMAP_LIMIT = 40;
+
+function optimizedLocalImagePath(value) {
+    const text = String(value || "").replace(/^\/+/, "");
+    if (!/\.(?:png|jpe?g)$/i.test(text)) return text;
+    return text.replace(/\.(?:png|jpe?g)$/i, "-catalog.webp");
+}
 
 function escapeHtml(value) {
     return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -89,7 +100,7 @@ function absoluteUrl(value) {
     const text = String(value || "").trim();
     if (!text) return "";
     if (/^https?:\/\//i.test(text)) return text;
-    return `${SITE_URL}/${text.replace(/^\/+/, "")}`;
+    return `${SITE_URL}/${optimizedLocalImagePath(text)}`;
 }
 
 function money(centsOrPrice) {
@@ -569,6 +580,54 @@ const staticPageMeta = {
         label: "Custom Jeweler Ohio",
         priority: "0.82"
     },
+    "/refund-return-policy": {
+        title: "Refund & Return Policy | The Don Jewelers",
+        description: "Review return eligibility, custom-order exclusions, damage reporting, deposits, refund timing, and approval requirements.",
+        label: "Refund & Return Policy",
+        priority: "0.55"
+    },
+    "/payment-policy": {
+        title: "Payment Policy | The Don Jewelers",
+        description: "Review accepted payments, cleared-payment requirements, billing verification, deposits, and order review terms.",
+        label: "Payment Policy",
+        priority: "0.55"
+    },
+    "/shipping-policy": {
+        title: "Insured Jewelry Shipping Policy | The Don Jewelers",
+        description: "Review insured jewelry shipping, signature delivery, processing timelines, carrier delays, and delivery reporting.",
+        label: "Shipping Policy",
+        priority: "0.6"
+    },
+    "/custom-order-policy": {
+        title: "Custom Jewelry Order Policy | The Don Jewelers",
+        description: "Review CAD approvals, design changes, production timelines, final-sale terms, and client responsibilities for custom jewelry.",
+        label: "Custom Order Policy",
+        priority: "0.6"
+    },
+    "/warranty-policy": {
+        title: "Jewelry Warranty Policy | The Don Jewelers",
+        description: "Review manufacturing-defect coverage, jewelry care, excluded damage, inspections, and paid repair terms.",
+        label: "Warranty Policy",
+        priority: "0.6"
+    },
+    "/terms": {
+        title: "Terms & Conditions | The Don Jewelers",
+        description: "Review purchase, custom-order, product-photo, pricing, fraud-prevention, and dispute terms for The Don Jewelers.",
+        label: "Terms & Conditions",
+        priority: "0.5"
+    },
+    "/privacy-policy": {
+        title: "Privacy Policy | The Don Jewelers",
+        description: "Review how customer information is used for inquiries, appointments, payments, shipping, fraud checks, and support.",
+        label: "Privacy Policy",
+        priority: "0.5"
+    },
+    "/financing-policy": {
+        title: "Jewelry Financing Policy | The Don Jewelers",
+        description: "Review third-party financing approvals, payment schedules, refund timing, and customer responsibilities.",
+        label: "Financing Policy",
+        priority: "0.55"
+    },
     "/blog": {
         title: "Jewelry Education Blog | The Don Jewelers",
         description: "Read diamond education, engagement ring guides, jewelry care tips, custom jewelry advice, and luxury buying guides from The Don Jewelers.",
@@ -815,15 +874,17 @@ function productJsonLd(product, url) {
             name: name,
             value: String(value)
         })),
-        offers: {
-            "@type": "Offer",
-            url: url,
-            priceCurrency: "USD",
-            price: price || undefined,
-            availability: product.available === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-            itemCondition: "https://schema.org/NewCondition",
-            ...merchantOfferDefaults()
-        }
+        ...price ? {
+            offers: {
+                "@type": "Offer",
+                url: url,
+                priceCurrency: "USD",
+                price: price,
+                availability: product.available === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+                itemCondition: "https://schema.org/NewCondition",
+                ...merchantOfferDefaults()
+            }
+        } : {}
     };
 }
 
@@ -1214,7 +1275,7 @@ function articlePage(req, res, slug) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=86400");
-    res.end(page);
+    res.end(optimizeCustomImageUrls(page));
 }
 
 function notFoundPage(req, res) {
@@ -1301,6 +1362,23 @@ function staticPage(req, res, pathname) {
     res.end(optimizeCustomImageUrls(page));
 }
 
+function utilityPage(req, res, pathname) {
+    const cleanPath = `/${String(pathname || "").replace(/^\/+/, "")}`.replace(/[^a-z0-9_\-/?=&.%]/gi, "") || "/";
+    const template = fs.readFileSync(INDEX_HTML, "utf8");
+    const page = injectHead(template, {
+        title: `Secure Customer Service | ${BUSINESS_NAME}`,
+        description: "Secure customer service, appointment, search, cart, or checkout page for The Don Jewelers & Jewelry.",
+        url: `${SITE_URL}${cleanPath}`,
+        image: DEFAULT_IMAGE,
+        jsonLd: [],
+        noindex: true
+    });
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", "private, no-store");
+    res.end(optimizeCustomImageUrls(page));
+}
+
 function xmlUrl(loc, lastmod, changefreq = "weekly", priority = "0.7") {
     return ` <url><loc>${escapeXml(loc)}</loc>${lastmod ? `<lastmod>${escapeXml(new Date(lastmod).toISOString())}</lastmod>` : ""}<changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
 }
@@ -1333,6 +1411,7 @@ module.exports = async function handler(req, res) {
     if (action === "article") return articlePage(req, res, url.searchParams.get("slug") || "");
     if (action === "not-found") return notFoundPage(req, res);
     if (action === "page") return staticPage(req, res, url.searchParams.get("path") || "/");
+    if (action === "utility") return utilityPage(req, res, url.searchParams.get("path") || "/");
     if (action === "sitemap") return sitemap(req, res);
     if (action === "robots") return robots(req, res);
     res.statusCode = 404;

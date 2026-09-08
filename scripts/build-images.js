@@ -25,23 +25,44 @@ async function build() {
     sharp(source).resize({ width, withoutEnlargement: true }).avif({ quality: 52, effort: 5 }).toFile(path.join(root, `queen-aurelia-hero-${width}.avif`)),
   ]));
 
-  const images = [...new Set([...manualCatalog.items, ...customerCatalog.items, ...customCollectionCatalog.items]
+  const catalogImages = [...manualCatalog.items, ...customerCatalog.items, ...customCollectionCatalog.items]
     .flatMap((item) => {
       const image = String(item.image || "");
       if (!/-catalog\.webp$/i.test(image)) return [image];
       const stem = image.replace(/-catalog\.webp$/i, "");
       return [`${stem}.png`, `${stem}.jpeg`, `${stem}.jpg`];
-    })
-    .filter(Boolean))]
+    });
+  const staticImageRoots = [root, path.join(root, "public")];
+  const discoveredImages = [];
+  for (const directory of staticImageRoots) {
+    const pending = [directory];
+    while (pending.length) {
+      const current = pending.pop();
+      for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+        const fullPath = path.join(current, entry.name);
+        if (entry.isDirectory()) {
+          if (!/[\\/](?:dist|node_modules|\.git)(?:[\\/]|$)/i.test(fullPath)) pending.push(fullPath);
+          continue;
+        }
+        if (!/\.(?:png|jpe?g)$/i.test(entry.name) || /-catalog\.webp$/i.test(entry.name)) continue;
+        discoveredImages.push(path.relative(root, fullPath));
+      }
+    }
+  }
+  const images = [...new Set([...catalogImages, ...discoveredImages].filter(Boolean))]
     .filter((name) => fs.existsSync(path.join(root, name)));
   for (let index = 0; index < images.length; index += 8) {
-    await Promise.all(images.slice(index, index + 8).map((name) => {
+    await Promise.all(images.slice(index, index + 8).map(async (name) => {
       const floralRender = /^IMG_97/i.test(path.basename(name));
       const size = floralRender ? 1200 : 720;
-      return sharp(path.join(root, name))
+      const inputPath = path.join(root, name);
+      const outputPath = path.join(root, path.dirname(name), catalogOutputName(path.basename(name)));
+      const outputExists = fs.existsSync(outputPath);
+      if (outputExists && fs.statSync(outputPath).mtimeMs >= fs.statSync(inputPath).mtimeMs) return;
+      await sharp(inputPath)
         .resize({ width: size, height: size, fit: "inside", withoutEnlargement: true })
         .webp({ quality: floralRender ? 82 : 74, effort: 4 })
-        .toFile(path.join(root, path.dirname(name), catalogOutputName(path.basename(name))));
+        .toFile(outputPath);
     }));
   }
   console.log(`Generated the customer catalog, ${widths.length * 2} responsive hero images, and ${images.length} catalog images.`);
