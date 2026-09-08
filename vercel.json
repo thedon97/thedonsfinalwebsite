@@ -1,6 +1,6 @@
 {
   "cleanUrls": false,
-  "outputDirectory": ".",
+  "outputDirectory": "dist",
   "trailingSlash": false,
   "crons": [
     {
@@ -364,7 +364,7 @@
     },
     {
       "source": "/search",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=search"
     },
     {
       "source": "/admin",
@@ -372,7 +372,7 @@
     },
     {
       "source": "/request/:path*",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=request/:path*"
     },
     {
       "source": "/education/:path*",
@@ -388,51 +388,51 @@
     },
     {
       "source": "/cart",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=cart"
     },
     {
       "source": "/checkout",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=checkout"
     },
     {
       "source": "/checkout-success",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=checkout-success"
     },
     {
       "source": "/checkout-cancel",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=utility&path=checkout-cancel"
     },
     {
       "source": "/refund-return-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=refund-return-policy"
     },
     {
       "source": "/payment-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=payment-policy"
     },
     {
       "source": "/shipping-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=shipping-policy"
     },
     {
       "source": "/custom-order-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=custom-order-policy"
     },
     {
       "source": "/warranty-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=warranty-policy"
     },
     {
       "source": "/terms",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=terms"
     },
     {
       "source": "/privacy-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=privacy-policy"
     },
     {
       "source": "/financing-policy",
-      "destination": "/index.html"
+      "destination": "/api/index?route=seo&action=page&path=financing-policy"
     },
     {
       "source": "/products/:slug",

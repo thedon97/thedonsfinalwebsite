@@ -14,6 +14,7 @@ const types = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".avif": "image/avif",
   ".svg": "image/svg+xml; charset=utf-8",
 };
 
@@ -59,14 +60,32 @@ function routeApi(pathname, req, res) {
     "/nyc-diamond-district-jeweler",
     "/private-jeweler",
     "/appointment-only-jeweler",
+    "/engagement-rings-nyc",
+    "/engagement-rings-tri-state",
+    "/custom-jewelry-allentown-pa",
+    "/custom-jewelry-lehigh-valley",
+    "/diamond-pendants-allentown-pa",
     "/lab-diamond-engagement-rings-nyc",
     "/custom-diamond-pendants-nyc",
     "/tennis-bracelets-allentown-pa",
     "/cvd-lab-grown-diamond-jewelry",
+    "/refund-return-policy",
+    "/payment-policy",
+    "/shipping-policy",
+    "/custom-order-policy",
+    "/warranty-policy",
+    "/terms",
+    "/privacy-policy",
+    "/financing-policy",
     "/blog",
   ]);
   if (seoPagePaths.has(pathname) || /^\/category\/[^/]+$/.test(pathname)) {
     req.url = `/api/seo?action=page&path=${encodeURIComponent(pathname.replace(/^\/+/, "") || "/")}`;
+    apiRouter(req, res);
+    return true;
+  }
+  if (["/search", "/cart", "/checkout", "/checkout-success", "/checkout-cancel"].includes(pathname) || /^\/request\/[^/]+$/.test(pathname)) {
+    req.url = `/api/seo?action=utility&path=${encodeURIComponent(pathname.replace(/^\/+/, ""))}`;
     apiRouter(req, res);
     return true;
   }
