@@ -7,7 +7,10 @@
     { "source": "/blog/how-to-buy-a-diamond-pendant", "destination": "/diamond-pendants", "permanent": true },
     { "source": "/blog/best-engagement-ring-styles", "destination": "/custom-engagement-rings", "permanent": true },
     { "source": "/blog/how-to-clean-jewelry", "destination": "/jewelry-care", "permanent": true },
-    { "source": "/blog/what-makes-vvs-diamonds-better", "destination": "/blog/vvs-vs-vs-diamonds", "permanent": true }
+    { "source": "/blog/what-makes-vvs-diamonds-better", "destination": "/blog/vvs-vs-vs-diamonds", "permanent": true },
+    { "source": "/products/round-hoops-earrings-tj9116ehc", "destination": "/products", "permanent": true },
+    { "source": "/products/pear-drop-earrings-tj9218efc", "destination": "/category/womens-earrings", "permanent": true },
+    { "source": "/products/round-basket-stud-earrings-tj6988esc", "destination": "/category/mens-earrings", "permanent": true }
   ],
   "crons": [
     {
