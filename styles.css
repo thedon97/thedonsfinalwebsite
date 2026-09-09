@@ -3264,3 +3264,55 @@ body.checkout-open { overflow: hidden; }
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+
+/* Lightweight homepage depth. Shopping controls and product layouts stay unchanged. */
+main > .hero { isolation: isolate; }
+main > .hero::after {
+  height: 56px;
+  background: linear-gradient(transparent, #080706);
+  border-bottom: 1px solid rgba(200,162,74,.3);
+}
+main > .hero h1 { line-height: 1.02; text-wrap: balance; }
+main > .hero .eyebrow { color: #e4cb91; }
+main > .hero .hero-trust-strip,
+main > .hero .hero-review-preview {
+  border-color: rgba(228,203,145,.32);
+  box-shadow: 0 18px 42px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.08);
+  background-color: rgba(15,13,10,.78);
+}
+main > .hero .button-gold {
+  background: linear-gradient(125deg, #f0d995, #c8a24a);
+  box-shadow: 0 7px 22px rgba(200,162,74,.16), inset 0 1px rgba(255,255,255,.4);
+}
+.hero ~ .custom-collection-home .product-card {
+  border-color: #e5dccd;
+  box-shadow: 0 8px 24px rgba(25,23,21,.06);
+}
+.hero ~ .engagement-feature .engagement-preview-card {
+  box-shadow: 0 12px 28px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.08);
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* One short entrance, then rest: no perpetual animation or extra scripts. */
+  main > .hero .hero-media img { animation: donHeroDepth 4.5s ease-out both; }
+  @keyframes donHeroDepth {
+    from { transform: perspective(1400px) scale(1.045) rotateY(-1deg); }
+    to { transform: perspective(1400px) scale(1.01) rotateY(0); }
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero ~ .engagement-feature .engagement-preview-card,
+  .hero ~ .custom-collection-home .product-card {
+    transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  }
+  .hero ~ .engagement-feature .engagement-preview-card:hover,
+  .hero ~ .custom-collection-home .product-card:hover {
+    transform: perspective(1200px) translateY(-3px) rotateX(1deg) rotateY(-1deg);
+    border-color: #c8a24a;
+    box-shadow: 0 18px 34px rgba(25,23,21,.15);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  main > .hero .hero-media img { animation: none; transform: none; }
+  .hero ~ .engagement-feature .engagement-preview-card,
+  .hero ~ .custom-collection-home .product-card { transition: none; transform: none; }
+}

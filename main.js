@@ -22,7 +22,11 @@ const siteUrl = "https://www.thedonjewelersandjewelrynyc.com";
 
 const gaMeasurementId = "G-68DJH1C3QF";
 
-const asset = name => `/${String(name || "").replace(/^\/+/, "").replace(/\.(?:png|jpe?g)$/i, "-catalog.webp")}`;
+const asset = name => {
+    const source = String(name || "");
+    if (/^(?:https?:)?\/\//i.test(source) || /^(?:data|blob):/i.test(source)) return source;
+    return `/${source.replace(/^\/+/, "").replace(/\.(?:png|jpe?g)(?=$|[?#])/i, "-catalog.webp")}`;
+};
 
 const mediaSrc = name => /^https?:\/\//i.test(String(name || "")) ? name : asset(name);
 
@@ -2192,7 +2196,7 @@ function allProducts() {
 }
 
 function productImageSrc(product) {
-    if (product.imageUrl) return product.imageUrl;
+    if (product.imageUrl) return mediaSrc(product.imageUrl);
     const image = product.image || "don-logo.jpg";
     if (/^https?:\/\//i.test(String(image))) return image;
     if (product.category === "Custom Jewelry & Collections") return `${asset(String(image).replace(/^\//, ""))}?v=approved-custom-renders-20260829`;
@@ -2209,8 +2213,7 @@ function productGallery(product) {
 
 function cartImageSrc(item) {
     if (!item.image) return asset("don-logo.jpg");
-    if (String(item.image).startsWith("/") || String(item.image).startsWith("data:")) return item.image;
-    return asset(item.image);
+    return mediaSrc(item.image);
 }
 
 function productName(product) {
@@ -3645,7 +3648,7 @@ function savedProductImage(product, index = 0) {
     if (product.category === "Chains" && /triple-row-diamond-tennis-bracelet/i.test(source)) {
         return asset(chainDisplayImagePool[index % chainDisplayImagePool.length]);
     }
-    return source;
+    return source ? mediaSrc(source) : "";
 }
 
 function savedProductCard(product, index = 0) {
